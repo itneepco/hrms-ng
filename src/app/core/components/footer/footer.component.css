@@ -1,0 +1,11 @@
+p {
+  font-size: 13px;
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  color: rgba(255,255,255,0.7)!important
+}
+
+mat-toolbar {
+  height: 55px;
+}

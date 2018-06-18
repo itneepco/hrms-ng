@@ -1,0 +1,22 @@
+mat-toolbar { 
+  padding-right: 0px;
+  padding-left: 14px; 
+}
+
+.flex-spacer {
+  flex: 1;
+}
+
+.user-profile {
+  height: 68px;
+  font-size: 14px !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+  mat-icon {
+      color: rgba(0, 0, 0, 0.54) !important;
+  }
+}
+
+.notification {
+  padding: 0px;
+  min-width: 60px !important;
+}

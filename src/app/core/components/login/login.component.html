@@ -1,0 +1,32 @@
+<div fxLayout="row" fxLayoutAlign="center center" id="login">
+  <mat-card fxFlex.gt-md="30" fxFlex.md="40" fxFlex.sm="60" fxFlex.lt-sm="90">
+      
+    <mat-card-title>NEEPCO Leave Portal</mat-card-title>
+    <mat-card-subtitle>Log in to your account</mat-card-subtitle>
+
+    <form fxLayout="column" id="form" [formGroup]="loginForm">
+      <p id="error" *ngIf="errorMsg">{{errorMsg}}</p>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="Employee Code" formControlName="emp_code">
+        <mat-error *ngIf="emp_code.dirty && emp_code.errors?.required">
+          Employee Code is required
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password">
+        <mat-error *ngIf="password.dirty && password.errors?.required">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <div id="buttons" fxLayout="column">
+        <button mat-raised-button color="primary" (click)="login()">
+          <mat-icon>exit_to_app</mat-icon>&nbsp;Login
+        </button>
+      </div>  
+      <!-- <div id="forgot-password">Forgot Password? <a routerLink="/admin/forget-password">Click here</a></div> -->
+    </form>
+  </mat-card>
+</div>

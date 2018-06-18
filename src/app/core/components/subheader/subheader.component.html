@@ -1,0 +1,13 @@
+<mat-toolbar fxLayout="column" fxLayoutAlign="end start">
+	<div fxFlex	class="header" fxLayoutAlign="start center">	
+		<span class="title">{{title}}</span>
+	</div>
+	<div>
+		<button *ngFor="let nav of navObj"
+			[routerLink]="nav.path" 
+			routerLinkActive="link-active"	
+			mat-button class="link-btn">
+				{{ nav.name }}
+		</button>
+	</div>
+</mat-toolbar>

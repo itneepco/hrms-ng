@@ -1,0 +1,32 @@
+mat-toolbar {
+	height: 120px;
+	padding: 0px;
+	background: url('/assets/images/header-bg.png');
+	background-color: #039be5;
+	background-size: cover;
+}
+
+.header {
+	padding-left: 15px;
+	padding-top: 15px;
+}
+
+.title {
+   font-size: 26px !important;
+   /* color: rgba(0, 0, 0, 0.54) !important; */
+   color: #fff !important;
+}
+
+.link-btn {
+	font-size: 12px;
+	text-transform: uppercase;
+	border-radius: 0px; 
+	color: gainsboro !important
+	/* color: rgba(255,255,255,0.7)!important */
+	/* color: rgba(0, 0, 0, 0.54) !important; */
+}
+
+.link-active {
+   border-bottom: 3px solid #fff;
+   color: #fff !important;
+}

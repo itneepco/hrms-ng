@@ -1,0 +1,20 @@
+mat-sidenav {
+  width: 256px;
+  background-color: #3c4252 !important;
+}
+
+#container {
+  height: 100vh;
+}
+
+app-header {
+  z-index: 2;
+}
+
+mat-sidenav-container {
+  z-index: 1;
+}
+
+app-footer {
+  margin-top: 56px;
+}
