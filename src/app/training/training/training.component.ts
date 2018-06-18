@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavObject } from '../../model/nav-object';
+import { NavObject } from '../../shared/model/nav-object';
 
 @Component({
   selector: 'app-training',

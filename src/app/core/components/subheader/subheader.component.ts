@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { NavObject } from '../../../model/nav-object';
+import { NavObject } from '../../../shared/model/nav-object';
 import { MenuService } from '../../services/menu.service';
 
 @Component({

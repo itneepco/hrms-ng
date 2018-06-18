@@ -4,8 +4,11 @@
   text-transform: uppercase;
   font-size: 20px;
   padding-left: 24px;
-  span {
+  #brand-name {
+    margin-left: 10px;
+    font-family: 'Sofia', cursive;
     line-height: 28px;
+    font-size: 24px;
     font-weight: 300;
   }
   z-index: 100;

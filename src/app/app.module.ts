@@ -25,6 +25,8 @@ import { NewTrainingComponent } from './training/new-training/new-training.compo
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
 import { HierarchyComponent } from './hierarchy/hierarchy/hierarchy.component';
+import { HierarchyHomeComponent } from './hierarchy/hierarchy-home/hierarchy-home.component';
+import { HierarchyTreeComponent } from './hierarchy/hierarchy-tree/hierarchy-tree.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { HierarchyComponent } from './hierarchy/hierarchy/hierarchy.component';
     UpcomingComponent,
     FeedbackComponent,
     LoginComponent,
-    HierarchyComponent
+    HierarchyComponent,
+    HierarchyHomeComponent,
+    HierarchyTreeComponent
   ],
   imports: [
     BrowserModule,

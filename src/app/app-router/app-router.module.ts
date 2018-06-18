@@ -11,11 +11,16 @@ import { NewTrainingComponent } from './../training/new-training/new-training.co
 import { UpcomingComponent } from './../training/upcoming/upcoming.component';
 import { LoginComponent } from '../core/components/login/login.component';
 import { HierarchyComponent } from '../hierarchy/hierarchy/hierarchy.component';
+import { HierarchyHomeComponent } from '../hierarchy/hierarchy-home/hierarchy-home.component';
 
 const routes: Routes = [
   {
     path: 'hierarchy',
-    component: HierarchyComponent
+    component: HierarchyComponent,
+    children: [
+      { path: 'home', component: HierarchyHomeComponent },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
+    ] 
   },
   { path: 'login', component: LoginComponent },
   { 

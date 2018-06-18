@@ -1,3 +1,4 @@
+import { NavObject } from './../../shared/model/nav-object';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,11 +6,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss']
 })
-export class HierarchyComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class HierarchyComponent {
+  nav: NavObject[] = [
+    { name: 'Home', path: 'home' }
+  ]
 }
