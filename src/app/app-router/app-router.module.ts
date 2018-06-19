@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { LoginComponent } from '../auth/components/login/login.component';
+import { HierarchyHomeComponent } from '../hierarchy/components/hierarchy-home/hierarchy-home.component';
+import { HierarchyComponent } from '../hierarchy/components/hierarchy/hierarchy.component';
 import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
 import { LeaveListComponent } from './../leave/leave-list/leave-list.component';
@@ -9,9 +12,6 @@ import { LeaveComponent } from './../leave/leave/leave.component';
 import { ArchivedComponent } from './../training/archived/archived.component';
 import { NewTrainingComponent } from './../training/new-training/new-training.component';
 import { UpcomingComponent } from './../training/upcoming/upcoming.component';
-import { LoginComponent } from '../core/components/login/login.component';
-import { HierarchyComponent } from '../hierarchy/hierarchy/hierarchy.component';
-import { HierarchyHomeComponent } from '../hierarchy/hierarchy-home/hierarchy-home.component';
 
 const routes: Routes = [
   {

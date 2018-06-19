@@ -1,0 +1,19 @@
+<div id="container">
+  <mat-card style="margin-bottom: 20px;">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Please Enter Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
+        <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint> 
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
+        <mat-icon>search</mat-icon>Search
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="employee">
+
+  </mat-card>
+
+  <mat-spinner diameter="60" *ngIf="isSearching"></mat-spinner>
+</div> 

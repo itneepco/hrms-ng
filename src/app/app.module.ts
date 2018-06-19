@@ -1,3 +1,4 @@
+import { MenuService } from './core/services/menu.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -8,13 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { AppRouterModule } from './app-router/app-router.module';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './auth/components/login/login.component';
+import { AuthService } from './auth/services/auth.service';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
-import { LoginComponent } from './core/components/login/login.component';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 import { SubheaderComponent } from './core/components/subheader/subheader.component';
-import { AuthService } from './core/services/auth.service';
-import { MenuService } from './core/services/menu.service';
+import { HierarchyHomeComponent } from './hierarchy/components/hierarchy-home/hierarchy-home.component';
+import { HierarchyTreeComponent } from './hierarchy/components/hierarchy-tree/hierarchy-tree.component';
+import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { ApplyLeaveComponent } from './leave/apply-leave/apply-leave.component';
 import { LeaveListComponent } from './leave/leave-list/leave-list.component';
 import { LeaveTransactionComponent } from './leave/leave-transaction/leave-transaction.component';
@@ -24,9 +27,6 @@ import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
-import { HierarchyComponent } from './hierarchy/hierarchy/hierarchy.component';
-import { HierarchyHomeComponent } from './hierarchy/hierarchy-home/hierarchy-home.component';
-import { HierarchyTreeComponent } from './hierarchy/hierarchy-tree/hierarchy-tree.component';
 
 @NgModule({
   declarations: [
@@ -60,8 +60,8 @@ import { HierarchyTreeComponent } from './hierarchy/hierarchy-tree/hierarchy-tre
     HttpClientModule
   ],
   providers: [
-    MenuService,
-    AuthService
+    AuthService,
+    MenuService
   ],
   bootstrap: [AppComponent]
 })
