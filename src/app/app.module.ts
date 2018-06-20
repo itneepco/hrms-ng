@@ -27,6 +27,8 @@ import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
+import { HierarchyService } from './hierarchy/services/hierarchy.service';
+import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,11 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     LoginComponent,
     HierarchyComponent,
     HierarchyHomeComponent,
-    HierarchyTreeComponent
+    HierarchyTreeComponent,
+    AddChildNodeComponent
+  ],
+  entryComponents: [
+    AddChildNodeComponent
   ],
   imports: [
     BrowserModule,
@@ -60,8 +66,7 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     HttpClientModule
   ],
   providers: [
-    AuthService,
-    MenuService
+    MenuService,
   ],
   bootstrap: [AppComponent]
 })

@@ -7,6 +7,11 @@ mat-sidenav {
   height: 100vh;
 }
 
+#main {
+  height: 100vh;
+  padding-bottom: 40px;
+}
+
 app-header {
   z-index: 2;
 }

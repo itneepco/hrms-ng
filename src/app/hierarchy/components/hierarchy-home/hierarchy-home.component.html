@@ -1,5 +1,5 @@
 <div id="container">
-  <mat-card style="margin-bottom: 20px;">
+  <mat-card class="search">
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
       <mat-form-field fxFlex>
         <input matInput placeholder="Please Enter Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
@@ -11,8 +11,84 @@
     </div>
   </mat-card>
 
-  <mat-card *ngIf="employee">
+  <mat-card *ngIf="node" id="employee-details"> 
+    <div fxLayout="row">
+      <div fxFlex="50">
+        Employee Information:
+        <mat-divider></mat-divider>
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
+            <h3 matLine>{{node.first_name}} {{node.last_name}}</h3>
+            <p matLine>
+              <span>{{node.emp_code}}</span>
+              <span>,&nbsp;</span>
+              <span>{{node.project}}</span>
+            </p>
+            <p matLine>{{node.designation}}</p>
+          </mat-list-item>
+        </mat-list>  
+      </div>
 
+      <div fxFLex="50">
+        Reporting To:
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
+            <h3 matLine>{{node.first_name}} {{node.last_name}}</h3>
+            <p matLine>
+              <span>{{node.emp_code}}</span>
+              <span>,&nbsp;</span>
+              <span>{{node.project}}</span>
+            </p>
+            <p matLine>{{node.designation}}</p>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="node" id="subordinates">
+    <mat-card-header>
+      <h3>List of employees under {{node.first_name}}&nbsp;{{node.last_name}}</h3>
+      <button mat-fab color="accent" (click)="addChild()" id="add-btn">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-header>
+    
+    <mat-table [dataSource]="subordinates">
+      <ng-container matColumnDef="emp_code">
+        <mat-header-cell *matHeaderCellDef fxFlex="20"> Emp Code </mat-header-cell>
+        <mat-cell *matCellDef="let subordinate" fxFlex="20"> {{subordinate.emp_code}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name"> 
+        <mat-header-cell *matHeaderCellDef fxFlex="25"> Name </mat-header-cell>
+        <mat-cell *matCellDef="let subordinate" fxFlex="25"> {{subordinate.first_name}}&nbsp;{{subordinate.last_name}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="designation">
+        <mat-header-cell *matHeaderCellDef fxFlex="25"> Designation </mat-header-cell>
+        <mat-cell *matCellDef="let subordinate" fxFlex="25"> {{subordinate.designation}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="project">
+          <mat-header-cell *matHeaderCellDef fxFlex="20"> Project </mat-header-cell>
+          <mat-cell *matCellDef="let subordinate" fxFlex="20"> {{subordinate.project}} </mat-cell>
+        </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let subordinate" fxFlex="10"> 
+          <button mat-icon-button (click)="removeChild(subordinate)" color="warn">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </mat-card>
 
   <mat-spinner diameter="60" *ngIf="isSearching"></mat-spinner>
