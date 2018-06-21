@@ -8,3 +8,13 @@ mat-divider {
   margin-top: 8px;
   margin-bottom: 20px;
 }
+
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  #search {
+    width: 90%;
+  }
+}

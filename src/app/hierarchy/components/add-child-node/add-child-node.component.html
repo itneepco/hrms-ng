@@ -1,3 +1,4 @@
+
 <div fxLayout="row" fxLayoutAlign="start center">
   <div mat-dialog-title fxFlex id="heading">Add employee as child node</div>
   <button mat-icon-button (click)="dialogRef.close()">
@@ -7,16 +8,29 @@
 
 <mat-divider></mat-divider>
 
-<div fxLayout="row" fxLayoutAlign="space-around center">
-  <mat-form-field fxFlex="60">
-    <input matInput placeholder="Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
-    <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint> 
-  </mat-form-field>
-  <div fxFlex="20" fxFlex.sm="30">
-    <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
-      <mat-icon>search</mat-icon>Search
-    </button>
+<div id="container">
+  <div fxLayout="row" id="search"
+      fxLayoutAlign="space-around center" 
+      fxLayoutGap="30px" fxLayoutGap.xs="10px">
+
+    <mat-form-field fxFlex >
+      <input matInput placeholder="Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
+      <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint> 
+    </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
+        <mat-icon>search</mat-icon>Search
+      </button>
+    </div>
   </div>
+  
+  <mat-spinner diameter="50" *ngIf="isSearching" fxLayoutAlign="center center"></mat-spinner>
 </div>
 
-<mat-spinner diameter="60" *ngIf="isSearching"></mat-spinner>
+<div *ngIf="node" fxLayout="column" fxLayoutAlign="start">
+  <app-node-info [node]="node"></app-node-info>
+  <mat-divider></mat-divider>
+  <div fxLayout="row-reverse">
+    <button mat-raised-button color="accent" (click)="dialogRef.close()">Add</button>
+  </div>
+</div>

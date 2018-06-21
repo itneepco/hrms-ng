@@ -16,34 +16,12 @@
       <div fxFlex="50">
         Employee Information:
         <mat-divider></mat-divider>
-        <mat-list>
-          <mat-list-item>
-            <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
-            <h3 matLine>{{node.first_name}} {{node.last_name}}</h3>
-            <p matLine>
-              <span>{{node.emp_code}}</span>
-              <span>,&nbsp;</span>
-              <span>{{node.project}}</span>
-            </p>
-            <p matLine>{{node.designation}}</p>
-          </mat-list-item>
-        </mat-list>  
+        <app-node-info [node]="node"></app-node-info>
       </div>
 
       <div fxFLex="50">
         Reporting To:
-        <mat-list>
-          <mat-list-item>
-            <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
-            <h3 matLine>{{node.first_name}} {{node.last_name}}</h3>
-            <p matLine>
-              <span>{{node.emp_code}}</span>
-              <span>,&nbsp;</span>
-              <span>{{node.project}}</span>
-            </p>
-            <p matLine>{{node.designation}}</p>
-          </mat-list-item>
-        </mat-list>
+        <app-node-info [node]="node"></app-node-info>
       </div>
     </div>
   </mat-card>

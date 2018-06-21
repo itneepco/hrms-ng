@@ -31,6 +31,17 @@ export class HierarchyService {
     return node
   }
 
+  searchEmployee(empCode: string): TreeNode {
+    return {
+      id: 2,
+      first_name: "Dinesh",
+      last_name: "Goswami",
+      designation: "LVD(SG)",
+      project: "AGBP",
+      emp_code: "002274",
+    }
+  }
+
   addChildNode(node: TreeNode) {
 
   }

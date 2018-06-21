@@ -29,6 +29,7 @@ import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
 import { HierarchyService } from './hierarchy/services/hierarchy.service';
 import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
+import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add
     HierarchyComponent,
     HierarchyHomeComponent,
     HierarchyTreeComponent,
-    AddChildNodeComponent
+    AddChildNodeComponent,
+    NodeInfoComponent
   ],
   entryComponents: [
     AddChildNodeComponent
