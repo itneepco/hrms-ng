@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { MatSidenav } from '@angular/material/sidenav';
 
+import { AuthService } from './auth/services/auth.service';
 import { MenuService } from './core/services/menu.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
   constructor(private media: ObservableMedia,
     private menuService: MenuService,
-    private route: ActivatedRoute
+    public auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -40,11 +40,5 @@ export class AppComponent implements OnInit {
           this.sidenav.close()
       }
     })
-
-    this.isLogin()
-  }
-
-  isLogin() {
-    this.route.url.subscribe(path => console.log(path))
   }
 }

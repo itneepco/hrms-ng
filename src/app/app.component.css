@@ -9,7 +9,6 @@ mat-sidenav {
 
 #main {
   height: 100vh;
-  padding-bottom: 40px;
 }
 
 app-header {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -9,20 +11,33 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup
+  errorMsg: string;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, 
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      emp_code: ['', Validators.required],
+      emp_code: ['', [Validators.required, Validators.pattern('[0-9]{6}')]],
       password: ['', Validators.required]
     })
-
-    console.log(this.loginForm)
   }
 
   login() {
-    this.authService.login(this.loginForm.value)
+    if(this.loginForm.invalid) return
+    
+    this.authService.login(this.emp_code.value, this.password.value)
+      .then(user => {
+        console.log(user)
+        let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/'
+        this.router.navigateByUrl(returnUrl)
+      })
+      .catch(error => {
+        this.errorMsg = "Invalid employee code and password combination"
+        console.log(error)
+      })
   }
 
   get password() {

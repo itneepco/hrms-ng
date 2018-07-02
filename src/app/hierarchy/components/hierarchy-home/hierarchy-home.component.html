@@ -28,7 +28,7 @@
 
   <mat-card *ngIf="node" id="subordinates">
     <mat-card-header>
-      <h3>List of employees under {{node.first_name}}&nbsp;{{node.last_name}}</h3>
+      <h3>List of employees under immediately {{node.first_name}}&nbsp;{{node.last_name}}</h3>
       <button mat-fab color="accent" (click)="addChild()" id="add-btn">
         <mat-icon>add</mat-icon>
       </button>
