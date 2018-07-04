@@ -7,7 +7,7 @@ import { HierarchyComponent } from '../hierarchy/components/hierarchy/hierarchy.
 import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
 import { AuthGuard } from './../auth/services/auth-guard.service';
-import { LoggedInGuard } from './../auth/services/logged-in-guard';
+import { LoginGuard } from '../auth/services/login-guard';
 import { LeaveListComponent } from './../leave/leave-list/leave-list.component';
 import { LeaveTransactionComponent } from './../leave/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './../leave/leave/leave.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [LoggedInGuard]
+    canActivate: [LoginGuard]
   },
   {
     path: 'leave',

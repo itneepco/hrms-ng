@@ -9,13 +9,13 @@
     
   mat-card {
     padding: 70px 34px;
-    min-height: 560px;
+    min-height: 500px;
   }
   
   @media only screen and (max-width: 599px) {
     mat-card {
       padding: 40px 24px;
-      min-height: 460px;
+      min-height: 440px;
     }    
     mat-card-title {
       font-size: 30px;

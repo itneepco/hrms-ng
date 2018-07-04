@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
@@ -8,27 +10,40 @@ import { baseURL } from '../../shared/config/baseUrl';
   providedIn: 'root'
 })
 export class AuthService {
+  constructor(private http: HttpClient, 
+    private router: Router) {}
 
-  constructor(private http: HttpClient) { }
-
-  login(username: string, password: string) {
-    return this.http.post(baseURL + 'auth', { username, password })
+  login(emp_code: string, password: string) {
+    return this.http.post(baseURL + 'auth/login', { emp_code, password })
       .pipe(
-        map(user => {
-          console.log(user)
-          if (user && user['token']) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+        map(res => {
+          console.log(res)
+          if (res && res['token']) {
+            this.setToken(JSON.stringify(res['token']));
           }
-          return user;
+          return res;
         })
       ).toPromise()
   }
 
-  get currentUser() {
-    return JSON.parse(localStorage.getItem('currentUser'))
+  getToken(): string {
+    return localStorage.getItem("token");
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem("token", token);
+  }
+
+  isTokenExpired(): boolean {
+    const helper = new JwtHelperService();
+    let token = this.getToken()
+    
+    if(!token) return true
+    return helper.isTokenExpired(token);
   }
 
   logout() {
-    localStorage.removeItem('currentUser')
+    localStorage.removeItem('token')
+    this.router.navigate(['/login'])
   }
 }

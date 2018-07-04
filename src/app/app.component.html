@@ -1,11 +1,11 @@
 <div id="container" fxLayout="column">
   <mat-sidenav-container fxFlex>
-    <mat-sidenav class="mat-elevation-z6" [mode]="mode" [opened]="opened" *ngIf="auth.currentUser">
+    <mat-sidenav class="mat-elevation-z6" [mode]="mode" [opened]="opened" *ngIf="!auth.isTokenExpired()">
       <app-sidenav fxFlex fxLayout="column"></app-sidenav>
     </mat-sidenav>
     
     <mat-sidenav-content fxLayout="column" id="main">
-      <app-header class="mat-elevation-z6" *ngIf="auth.currentUser"></app-header>
+      <app-header class="mat-elevation-z6" *ngIf="!auth.isTokenExpired()"></app-header>
       <div fxFlex>
         <router-outlet></router-outlet>
       </div>
