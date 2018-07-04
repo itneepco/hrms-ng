@@ -8,7 +8,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 export class LoginGuard implements CanActivate {
   constructor(private router: Router, private auth: AuthService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     if (this.auth.isTokenExpired()) {
       //token is expired, not logged in, so return true
       return true;

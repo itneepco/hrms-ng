@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { MatSidenav } from '@angular/material/sidenav';
 
-import { AuthService } from './auth/services/auth.service';
 import { MenuService } from './core/services/menu.service';
 
 @Component({
@@ -16,8 +15,7 @@ export class AppComponent implements OnInit {
   mode = "side";
 
   constructor(private media: ObservableMedia,
-    private menuService: MenuService,
-    public auth: AuthService
+    private menuService: MenuService
   ) {}
 
   ngOnInit() {
@@ -40,5 +38,9 @@ export class AppComponent implements OnInit {
           this.sidenav.close()
       }
     })
+  }
+
+  isLoginPath() {
+    return window.location.pathname == '/login'
   }
 }

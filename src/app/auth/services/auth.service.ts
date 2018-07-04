@@ -42,6 +42,14 @@ export class AuthService {
     return helper.isTokenExpired(token);
   }
 
+  get currentUser() {
+    const helper = new JwtHelperService();
+    let token = this.getToken()
+    
+    if(!token) return null
+    return helper.decodeToken(token);
+  }
+
   logout() {
     localStorage.removeItem('token')
     this.router.navigate(['/login'])

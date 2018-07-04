@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+mat-card {
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 649px) {
+  mat-card {
+    width: 90%;
+  }
+}

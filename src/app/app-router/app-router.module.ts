@@ -2,15 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from '../auth/components/login/login.component';
+import { AuthGuard } from '../auth/services/auth-guard';
+import { LoginGuard } from '../auth/services/login-guard';
 import { HierarchyHomeComponent } from '../hierarchy/components/hierarchy-home/hierarchy-home.component';
 import { HierarchyComponent } from '../hierarchy/components/hierarchy/hierarchy.component';
+import { LeaveListComponent } from '../leave/components/leave-list/leave-list.component';
+import { LeaveTransactionComponent } from '../leave/components/leave-transaction/leave-transaction.component';
+import { LeaveComponent } from '../leave/components/leave/leave.component';
 import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
-import { AuthGuard } from './../auth/services/auth-guard.service';
-import { LoginGuard } from '../auth/services/login-guard';
-import { LeaveListComponent } from './../leave/leave-list/leave-list.component';
-import { LeaveTransactionComponent } from './../leave/leave-transaction/leave-transaction.component';
-import { LeaveComponent } from './../leave/leave/leave.component';
+import { HolidayListComponent } from './../leave/components/holiday-list/holiday-list.component';
 import { ArchivedComponent } from './../training/archived/archived.component';
 import { NewTrainingComponent } from './../training/new-training/new-training.component';
 import { UpcomingComponent } from './../training/upcoming/upcoming.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   {
     path: 'hierarchy',
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: HierarchyComponent,
     children: [
       { path: 'home', component: HierarchyHomeComponent },
@@ -33,16 +35,19 @@ const routes: Routes = [
   {
     path: 'leave',
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LeaveComponent,
     children: [
       { path: 'leave-transaction', component: LeaveTransactionComponent },
       { path: 'leave-list', component: LeaveListComponent },
+      { path: 'holiday-list', component: HolidayListComponent },
       { path: '', redirectTo: 'leave-list', pathMatch: 'full' }
     ]
   },
   {
     path: 'training',
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: TrainingComponent,
     children: [
       { path: 'new', component: NewTrainingComponent },
@@ -52,9 +57,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'new', pathMatch: 'full' }
     ]
   },
-  {
-    path: '', redirectTo: '/leave/leave-list', pathMatch: "full"
-  }
+  { path: '', redirectTo: '/leave/leave-list', pathMatch: "full" },
+  { path: '**', redirectTo: '/leave/leave-list', pathMatch: "full" }
 ]
 
 @NgModule({

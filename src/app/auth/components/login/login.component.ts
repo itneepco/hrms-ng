@@ -30,13 +30,12 @@ export class LoginComponent implements OnInit {
     
     this.authService.login(this.emp_code.value, this.password.value)
       .then(user => {
-        console.log(user)
         let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/'
         this.router.navigateByUrl(returnUrl)
       })
       .catch(error => {
-        this.errorMsg = "Invalid employee code and password combination"
         console.log(error)
+        this.errorMsg = "Invalid employee code and password combination"
       })
   }
 
