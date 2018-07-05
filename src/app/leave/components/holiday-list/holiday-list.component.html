@@ -1,6 +1,51 @@
 <mat-card>
+  <mat-card-subtitle>Add new holiday for current year</mat-card-subtitle>
+  <form [formGroup]="holidayForm">
+    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
+      <mat-form-field fxFlex="30" fxFlex.md="25">
+        <input matInput placeholder="Name" formControlName="holiday">
+        <mat-error *ngIf="holiday.touched && holiday.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="15">
+        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="holiday_date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="holiday_date.touched && holiday_date.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="15">
+        <mat-select placeholder="Type" formControlName="holiday_type">
+          <mat-option *ngFor="let h_type of holiday_types" [value]="h_type">
+            {{h_type}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="holiday_type.touched && holiday_type.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="20">
+        <mat-select placeholder="Project" formControlName="project">
+          <mat-option *ngFor="let project of projects" [value]="project.id">
+            {{project.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="project.touched && project.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+      <div fxFlex="10">
+        <button mat-raised-button color="accent">Add</button>
+      </div>
+    </div>
+  </form>
+</mat-card>
+
+<mat-card *ngIf="holidays">
   <mat-table [dataSource]="holidays">
-    <ng-container matColumnDef="name"> 
+    <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef fxFlex="35"> Name </mat-header-cell>
       <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.name}} </mat-cell>
     </ng-container>
@@ -11,13 +56,13 @@
     </ng-container>
 
     <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef fxFlex="25"> Type </mat-header-cell>
-        <mat-cell *matCellDef="let holiday" fxFlex="25"> {{holiday.type}} </mat-cell>
-      </ng-container>
+      <mat-header-cell *matHeaderCellDef fxFlex="25"> Type </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="25"> {{holiday.type}} </mat-cell>
+    </ng-container>
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="20"> 
+      <mat-cell *matCellDef="let holiday" fxFlex="20">
         <button mat-icon-button (click)="removeChild(holiday)" color="warn">
           <mat-icon>cancel</mat-icon>
         </button>
@@ -29,3 +74,8 @@
   </mat-table>
 </mat-card>
 
+<!-- <mat-card *ngIf="errMsg">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card> -->
+
+<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

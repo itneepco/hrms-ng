@@ -1,6 +1,6 @@
 export interface User {
-  username: string;
-  password: string;
+  emp_code: string;
+  name: string;
   role: number;
-  project_id: number;
+  project: number;
 }

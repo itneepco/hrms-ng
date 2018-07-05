@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
+import { User } from '../../shared/model/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +43,7 @@ export class AuthService {
     return helper.isTokenExpired(token);
   }
 
-  get currentUser() {
+  get currentUser(): User {
     const helper = new JwtHelperService();
     let token = this.getToken()
     
