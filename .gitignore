@@ -9,6 +9,9 @@
 # dependencies
 /node_modules
 
+# assets
+src/assets/images/*
+
 # IDEs and editors
 /.idea
 .project
