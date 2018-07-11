@@ -10,7 +10,7 @@
 /node_modules
 
 # assets
-src/assets/images/*
+/src/assets/
 
 # IDEs and editors
 /.idea
