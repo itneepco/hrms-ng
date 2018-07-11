@@ -1,69 +1,75 @@
 <mat-card>
   <mat-card-subtitle>Add new holiday for current year</mat-card-subtitle>
-  <form [formGroup]="holidayForm">
+  <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
     <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
       <mat-form-field fxFlex="30" fxFlex.md="25">
-        <input matInput placeholder="Name" formControlName="holiday">
-        <mat-error *ngIf="holiday.touched && holiday.errors?.required">
+        <input matInput placeholder="Name" formControlName="name">
+        <mat-error *ngIf="name.touched && name.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="15">
-        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="holiday_date">
+        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="day">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="holiday_date.touched && holiday_date.errors?.required">
+        <mat-error *ngIf="day.touched && day.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="15">
-        <mat-select placeholder="Type" formControlName="holiday_type">
+        <mat-select placeholder="Type" formControlName="type">
           <mat-option *ngFor="let h_type of holiday_types" [value]="h_type">
             {{h_type}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="holiday_type.touched && holiday_type.errors?.required">
+        <mat-error *ngIf="type.touched && type.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="20">
-        <mat-select placeholder="Project" formControlName="project">
+        <mat-select placeholder="Project" formControlName="project_id">
           <mat-option *ngFor="let project of projects" [value]="project.id">
             {{project.name}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="project.touched && project.errors?.required">
+        <mat-error *ngIf="project_id.touched && project_id.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
       <div fxFlex="10">
-        <button mat-raised-button color="accent">Add</button>
+        <button mat-raised-button *ngIf="_holiday.id"
+          color="accent" [disabled]="holidayForm.invalid">Update</button>
+        <button mat-raised-button *ngIf="!_holiday.id"
+          color="accent" [disabled]="holidayForm.invalid">Add</button>
       </div>
     </div>
   </form>
 </mat-card>
 
-<mat-card *ngIf="holidays">
-  <mat-table [dataSource]="holidays">
+<mat-card *ngIf="dataSource">
+  <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef fxFlex="35"> Name </mat-header-cell>
       <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef fxFlex="20"> Date </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="20"> {{holiday.date}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="35"> Date </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.day | date:'fullDate'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> Type </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="25"> {{holiday.type}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.lt-md="10"> Type </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="15" fxFlex.lt-md="10"> {{holiday.type}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="20">
-        <button mat-icon-button (click)="removeChild(holiday)" color="warn">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="15" fxFlex.lt-md="20">
+        <button mat-icon-button (click)="onEdit(holiday)" color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onRemove(holiday)" color="warn">
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-cell>

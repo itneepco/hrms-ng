@@ -3,25 +3,47 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { AuthService } from '../../auth/services/auth.service';
+import { baseURL } from '../../shared/config/baseUrl';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { Holiday } from '../shared/holiday';
-import { AuthService } from './../../auth/services/auth.service';
-import { baseURL } from './../../shared/config/baseUrl';
-import { ErrorHandlerService } from './../../shared/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HolidayService {
-  rest_url: string
-
   constructor(private http: HttpClient, 
     private handler: ErrorHandlerService,
     private auth: AuthService) {
-    this.rest_url = baseURL + 'project/' + this.auth.currentUser.project + '/holidays'
+  }
+
+  getUrl() {
+    return baseURL + 'api/projects/' + this.auth.currentUser.project + '/holidays/'
   }
 
   getHolidays(): Observable<Holiday[]> {
-    return this.http.get<Holiday[]>(this.rest_url)
+    return this.http.get<Holiday[]>(this.getUrl())
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  addHoliday(holiday: Holiday) {
+    return this.http.post(this.getUrl(), holiday)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  editHoliday(id: number, holiday: Holiday) {
+    return this.http.put(this.getUrl() + id, holiday)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  deleteHoliday(id: number) {
+    return this.http.delete(this.getUrl() + id)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

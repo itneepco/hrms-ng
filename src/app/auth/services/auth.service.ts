@@ -18,7 +18,6 @@ export class AuthService {
     return this.http.post(baseURL + 'auth/login', { emp_code, password })
       .pipe(
         map(res => {
-          console.log(res)
           if (res && res['token']) {
             this.setToken(JSON.stringify(res['token']));
           }
@@ -48,7 +47,7 @@ export class AuthService {
     let token = this.getToken()
     
     if(!token) return null
-    return helper.decodeToken(token);
+    return helper.decodeToken(token)
   }
 
   logout() {

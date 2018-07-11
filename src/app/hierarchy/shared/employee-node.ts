@@ -8,10 +8,13 @@ export interface TreeNode {
 }
 
 export interface EmployeeNode extends TreeNode {
-  parent_emp_code: string
-  parent_first_name: string
-  parent_last_name: string
-  parent_designation: string
-
+  id: number
+  parent: TreeNode
   children: TreeNode[]
+}
+
+export interface Hierarchy {
+  id: number
+  emp_code: string
+  parent_code: string
 }

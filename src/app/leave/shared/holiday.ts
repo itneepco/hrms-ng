@@ -1,6 +1,7 @@
 export interface Holiday {
   id: number
   name: string
-  date: Date
+  day: Date
   type: string
+  project_id: number
 }

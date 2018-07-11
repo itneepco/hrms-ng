@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs/operators';
 
-import { HolidayService } from './../../services/holiday.service';
-import { Holiday } from './../../shared/holiday';
+import { HolidayService } from '../../services/holiday.service';
+import { Holiday } from '../../shared/holiday';
+import { Project } from './../../../shared/model/project.model';
+import { ProjectService } from './../../../shared/services/project.service';
 
 @Component({
   selector: 'app-holiday-list',
@@ -10,54 +14,108 @@ import { Holiday } from './../../shared/holiday';
   styleUrls: ['./holiday-list.component.scss']
 })
 export class HolidayListComponent implements OnInit {
-  holiday_types = [ "CL", "RH" ]
-  projects = [{id:1, name: "Shillong"}, {id: 2, name: "AGBP"}]
-  displayedColumns = [ "name", "date", "type", "actions" ]
-  holidays: Holiday[]
+  holiday_types = ["CH", "RH"]
+  projects: Project[]
+  displayedColumns = ["name", "date", "type", "actions"]
+  dataSource: MatTableDataSource<Holiday>
   errMsg: string
   isLoading = true
   holidayForm: FormGroup
+  _holiday: Holiday = {} as Holiday
 
-  constructor(private holidayService: HolidayService, private fb: FormBuilder) { }
+  constructor(private holidayService: HolidayService,
+    private projectService: ProjectService,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
     this.initializeForm()
-    
-    this.holidayService.getHolidays()
+    this.projectService.getProjects()
+      .pipe(
+        switchMap((projects: Project[]) => { 
+          this.projects = projects
+          return this.holidayService.getHolidays()
+        })
+      )
       .subscribe(holidays => {
-        this.holidays = holidays
-        this.isLoading = false
-      },
-      errMsg => {
-        this.errMsg = errMsg
-        this.isLoading = false 
-      }
-    )
+          this.dataSource = new MatTableDataSource<Holiday>(holidays)
+          this.isLoading = false
+        },
+        errMsg => {
+          this.errMsg = errMsg
+          this.isLoading = false
+        }
+      )
   }
 
   initializeForm() {
     this.holidayForm = this.fb.group({
-      holiday: ['', [Validators.required]],
-      holiday_date: ['', [Validators.required]],
-      holiday_type: ['', [Validators.required]],
-      project: ['', [Validators.required]]
+      name: [this._holiday.name, [Validators.required]],
+      day: [this._holiday.day, [Validators.required]],
+      type: [this._holiday.type, [Validators.required]],
+      project_id: [this._holiday.project_id, [Validators.required]]
     })
   }
 
+  onSubmit() {
+    let holidayFormValue = <Holiday> this.holidayForm.value
+    console.log(this.holidayForm.value)
+
+    if(this._holiday.id) {
+      this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(
+        (holiday: Holiday) => {
+          console.log(holiday)
+
+          let index = this.dataSource.data.indexOf(this._holiday)
+          let temp = this.dataSource.data
+          temp.splice(index, 1, holiday)
+          this.dataSource.data = temp
+
+          this._holiday = {} as Holiday
+        }
+      )
+    }
+    else {
+      this.holidayService.addHoliday(holidayFormValue).subscribe(
+        (holiday: Holiday) => {
+          let temp = this.dataSource.data
+          temp.splice(0, 0, holiday)
+          this.dataSource.data = temp
+        }
+      )
+    }
+    
+    this.holidayForm.reset()
+    Object.keys(this.holidayForm.controls).forEach((name) => {
+      let control = this.holidayForm.controls[name];
+      control.setErrors(null);
+    });
+  }
+
+  onEdit(holiday: Holiday) {
+    this._holiday = holiday
+    this.initializeForm()
+  }
+
   onRemove(holiday: Holiday) {
-
+    this.holidayService.deleteHoliday(holiday.id)
+      .subscribe(() => {
+        let index = this.dataSource.data.indexOf(holiday)
+        let temp = this.dataSource.data
+        temp.splice(index, 1)
+        this.dataSource.data = temp
+      })
   }
 
-  get holiday() {
-    return this.holidayForm.get('holiday')
+  get name() {
+    return this.holidayForm.get('name')
   }
-  get holiday_date() {
-    return this.holidayForm.get('holiday_date')
+  get day() {
+    return this.holidayForm.get('day')
   }
-  get holiday_type() {
-    return this.holidayForm.get('holiday_type')
+  get type() {
+    return this.holidayForm.get('type')
   }
-  get project(){
-    return this.holidayForm.get('project')
+  get project_id() {
+    return this.holidayForm.get('project_id')
   }
 }
