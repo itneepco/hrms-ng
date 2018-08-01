@@ -1,45 +1,32 @@
-import { TreeNode, EmployeeNode } from '../shared/employee-node';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { EmployeeNode, TreeNode } from '../shared/employee-node';
+import { baseURL } from './../../shared/config/baseUrl';
+import { ErrorHandlerService } from './../../shared/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HierarchyService {
+  hierarchyUrl = baseURL + 'api/hierarchy/'
 
-  constructor() { }
+  constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 
-  getEmployeeNode(empCode: string) {
-    let node = {} as EmployeeNode
-
-    node.id = 1
-    node.first_name = "Nepuni"
-    node.last_name = "Pfotte"
-    node.designation = "Assistant Manager"
-    node.project = "AGBP"
-    node.emp_code = "006368"
-    node.children = [
-      {
-        id: 2,
-        first_name: "Dinesh",
-        last_name: "Goswami",
-        designation: "LVD(SG)",
-        project: "AGBP",
-        emp_code: "002274",
-      }
-    ]
-
-    return node
+  getEmployeeNode(empCode: string): Observable<EmployeeNode | any> {
+    return this.http.get(this.hierarchyUrl + empCode)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 
-  searchEmployee(empCode: string): TreeNode {
-    return {
-      id: 2,
-      first_name: "Dinesh",
-      last_name: "Goswami",
-      designation: "LVD(SG)",
-      project: "AGBP",
-      emp_code: "002274",
-    }
+  searchEmployee(empCode: string): Observable<TreeNode | any> {
+    return this.http.get(baseURL + 'api/employees/hierarchy/' + empCode)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 
   addChildNode(node: TreeNode) {

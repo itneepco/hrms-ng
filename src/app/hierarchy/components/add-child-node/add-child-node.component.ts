@@ -1,7 +1,8 @@
-import { HierarchyService } from './../../services/hierarchy.service';
-import { TreeNode } from '../../shared/employee-node';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+
+import { TreeNode } from '../../shared/employee-node';
+import { HierarchyService } from './../../services/hierarchy.service';
 
 @Component({
   selector: 'app-add-child-node',
@@ -12,6 +13,7 @@ export class AddChildNodeComponent implements OnInit {
   isSearching = false;
   emp_code: string;
   node: TreeNode;
+  errMsg: string;
 
   constructor(
     private hierarchyService: HierarchyService,
@@ -21,13 +23,17 @@ export class AddChildNodeComponent implements OnInit {
   }
 
   onSearch() {
-    this.isSearching = true
-    this.node = undefined
+    if(!this.emp_code) return
 
-    setTimeout(() => { 
-      this.isSearching = false 
-      this.node = this.hierarchyService.searchEmployee(this.emp_code)
-    }, 2000)
+    this.isSearching = true
+    this.hierarchyService.searchEmployee(this.emp_code)
+      .subscribe(
+        node => {
+          this.isSearching = false
+          this.node = node
+        },
+        errMsg => this.errMsg = errMsg
+      )
   }
 
 }

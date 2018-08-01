@@ -1,7 +1,7 @@
 <mat-list>
   <mat-list-item>
     <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
-    <h3 matLine>{{node.first_name}} {{node.last_name}}</h3>
+    <h3 matLine>{{node.first_name | titlecase }} {{node.last_name | titlecase }}</h3>
     <p matLine>
       <span>{{node.emp_code}}</span>
       <span>,&nbsp;</span>

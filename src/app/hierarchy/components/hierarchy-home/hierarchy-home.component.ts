@@ -1,8 +1,9 @@
-import { EmployeeNode, TreeNode } from './../../shared/employee-node';
-import { HierarchyService } from '../../services/hierarchy.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+
+import { HierarchyService } from '../../services/hierarchy.service';
 import { AddChildNodeComponent } from '../add-child-node/add-child-node.component';
+import { EmployeeNode } from './../../shared/employee-node';
 
 @Component({
   selector: 'app-hierarchy-home',
@@ -10,22 +11,25 @@ import { AddChildNodeComponent } from '../add-child-node/add-child-node.componen
   styleUrls: ['./hierarchy-home.component.scss']
 })
 export class HierarchyHomeComponent {
+  node: EmployeeNode;
   isSearching = false;
-  node: EmployeeNode
   emp_code: string;
-  subordinates: TreeNode[];
+  errMsg: string;
   displayedColumns = [ "emp_code", "name", "designation", "project", "actions" ];
 
   constructor(private hierarchyService: HierarchyService, private dialog: MatDialog) { }
 
   onSearch() {
+    if(!this.emp_code) return
     this.isSearching = true
-    this.node = undefined
-    setTimeout(() => { 
-      this.isSearching = false 
-      this.node = this.hierarchyService.getEmployeeNode(this.emp_code);
-      this.subordinates = this.node.children
-    }, 2000)
+    this.hierarchyService.getEmployeeNode(this.emp_code)
+      .subscribe(
+        node => { 
+          this.node = node 
+          this.isSearching = false
+        },
+        errMsg => this.errMsg = errMsg
+      )
   }
 
   removeChild() {

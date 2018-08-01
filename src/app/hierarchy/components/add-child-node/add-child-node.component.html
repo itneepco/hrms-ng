@@ -23,14 +23,17 @@
       </button>
     </div>
   </div>
-  
-  <mat-spinner diameter="50" *ngIf="isSearching" fxLayoutAlign="center center"></mat-spinner>
 </div>
 
-<div *ngIf="node" fxLayout="column" fxLayoutAlign="start">
+<div *ngIf="node; else spinner" fxLayout="column" fxLayoutAlign="start">
   <app-node-info [node]="node"></app-node-info>
   <mat-divider></mat-divider>
   <div fxLayout="row-reverse">
     <button mat-raised-button color="accent" (click)="dialogRef.close()">Add</button>
   </div>
 </div>
+
+<ng-template #spinner>
+  <mat-spinner *ngIf="isSearching && !errMsg" diameter="50"></mat-spinner>
+  <p *ngIf="errMsg">{{ errMsg }}</p>
+</ng-template>
