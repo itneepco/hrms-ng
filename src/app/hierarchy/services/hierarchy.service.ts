@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { EmployeeNode, TreeNode } from '../shared/employee-node';
 import { baseURL } from './../../shared/config/baseUrl';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
+import { Hierarchy } from './../shared/employee-node';
 
 @Injectable({
   providedIn: 'root'
@@ -29,19 +30,18 @@ export class HierarchyService {
       )
   }
 
-  addChildNode(node: TreeNode) {
-
+  addChildNode(hierarchyNode: Hierarchy) {
+    return this.http.post(this.hierarchyUrl + hierarchyNode.emp_code, hierarchyNode)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 
-  removeChildNode(node: TreeNode) {
-
+  removeChildNode(id: number) {
+    return this.http.delete(this.hierarchyUrl + id)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 
-  deleteEmployeeNode(empCode: string) {
-
-  }
-
-  updateEmployeeNode(empNode: EmployeeNode) {
-
-  }
 }

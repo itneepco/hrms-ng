@@ -10,4 +10,5 @@ import { TreeNode } from '../../shared/employee-node';
 })
 export class NodeInfoComponent {
   @Input('node') node: TreeNode
+  @Input('canEdit') canEdit: boolean 
 }

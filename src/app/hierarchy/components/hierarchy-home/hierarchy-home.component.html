@@ -17,7 +17,7 @@
         <div fxFlex="50">
           Employee Information:
           <mat-divider></mat-divider>
-          <app-node-info [node]="node"></app-node-info>
+          <app-node-info [node]="node" canEdit="true"></app-node-info>
         </div>
 
         <div fxFLex="50">
@@ -27,9 +27,9 @@
       </div>
     </mat-card>
 
-    <mat-card id="subordinates" *ngIf="node.children.length > 0">
+    <mat-card id="subordinates">
       <mat-card-header>
-        <h3>List of employees under immediately {{ node.first_name | titlecase }} {{node.last_name | titlecase }}</h3>
+        <h3>List of employees immediately under {{ node.first_name | titlecase }} {{node.last_name | titlecase }}</h3>
         <button mat-fab color="accent" (click)="addChild()" id="add-btn">
           <mat-icon>add</mat-icon>
         </button>
@@ -43,7 +43,9 @@
 
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef fxFlex="25"> Name </mat-header-cell>
-          <mat-cell *matCellDef="let subordinate" fxFlex="25"> {{subordinate.first_name}}&nbsp;{{subordinate.last_name}} </mat-cell>
+          <mat-cell *matCellDef="let subordinate" fxFlex="25"> 
+            {{subordinate.first_name | titlecase}} {{subordinate.last_name | titlecase}} 
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="designation">

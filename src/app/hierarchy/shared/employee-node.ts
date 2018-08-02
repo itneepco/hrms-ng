@@ -16,5 +16,5 @@ export interface EmployeeNode extends TreeNode {
 export interface Hierarchy {
   id: number
   emp_code: string
-  parent_code: string
+  parent_emp_code: string
 }

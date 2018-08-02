@@ -29,11 +29,13 @@
   <app-node-info [node]="node"></app-node-info>
   <mat-divider></mat-divider>
   <div fxLayout="row-reverse">
-    <button mat-raised-button color="accent" (click)="dialogRef.close()">Add</button>
+    <button mat-raised-button color="accent" (click)="addChild()">Add</button>
   </div>
 </div>
 
 <ng-template #spinner>
-  <mat-spinner *ngIf="isSearching && !errMsg" diameter="50"></mat-spinner>
-  <p *ngIf="errMsg">{{ errMsg }}</p>
+  <div fxLayoutAlign="center start">
+    <mat-spinner *ngIf="isSearching && !errMsg" diameter="50"></mat-spinner>
+    <p *ngIf="errMsg">{{ errMsg }}</p>
+  </div>
 </ng-template>
