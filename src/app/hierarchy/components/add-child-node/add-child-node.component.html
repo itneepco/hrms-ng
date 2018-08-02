@@ -1,6 +1,9 @@
 
 <div fxLayout="row" fxLayoutAlign="start center">
-  <div mat-dialog-title fxFlex id="heading">Add employee as child node</div>
+  <div mat-dialog-title fxFlex id="heading">
+    <span *ngIf="data.parent_emp_code">Add employee as child node</span>
+    <span *ngIf="data.emp_code">Change reporting officer</span>
+  </div>
   <button mat-icon-button (click)="dialogRef.close()">
     <mat-icon>close</mat-icon>
   </button>
@@ -28,8 +31,9 @@
 <div *ngIf="node; else spinner" fxLayout="column" fxLayoutAlign="start">
   <app-node-info [node]="node"></app-node-info>
   <mat-divider></mat-divider>
-  <div fxLayout="row-reverse">
-    <button mat-raised-button color="accent" (click)="addChild()">Add</button>
+  <div fxLayout="row-reverse" id="buttons">
+    <button mat-raised-button color="accent" (click)="addChild()" *ngIf="data.parent_emp_code">Add</button>
+    <button mat-raised-button color="accent" (click)="changeParent()" *ngIf="data.emp_code">Update</button>
   </div>
 </div>
 

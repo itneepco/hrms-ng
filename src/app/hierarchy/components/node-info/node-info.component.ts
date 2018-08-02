@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 import { TreeNode } from '../../shared/employee-node';
 
@@ -10,5 +10,10 @@ import { TreeNode } from '../../shared/employee-node';
 })
 export class NodeInfoComponent {
   @Input('node') node: TreeNode
-  @Input('canEdit') canEdit: boolean 
+  @Input('canEdit') canEdit: boolean
+  @Output('onEdit') onEdit = new EventEmitter
+  
+  onClick() {
+    this.onEdit.emit()
+  }
 }

@@ -32,6 +32,10 @@ export class HierarchyHomeComponent {
       )
   }
 
+  onEdit() {
+    this.openDialog({ emp_code: this.emp_code })
+  }
+
   removeChild(childNode: TreeNode) {
     this.hierarchyService.removeChildNode(childNode.id)
       .subscribe(() => {
@@ -41,10 +45,14 @@ export class HierarchyHomeComponent {
   }
 
   addChild() {
+    this.openDialog({ parent_emp_code: this.emp_code })
+  }
+
+  private openDialog(data) {
     let dialogRef = this.dialog.open(AddChildNodeComponent, {
       width: '550px',
       height: '400px',
-      data: { 'parent_code': this.emp_code }
+      data: data
     })
 
     dialogRef.afterClosed().subscribe((data) => {

@@ -18,7 +18,7 @@ export class AddChildNodeComponent {
 
   constructor(
     private hierarchyService: HierarchyService,
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddChildNodeComponent>) { }
 
   onSearch() {
@@ -38,9 +38,16 @@ export class AddChildNodeComponent {
   addChild() {
     let hierarchyNode = {} as Hierarchy
     hierarchyNode.emp_code = this.emp_code
-    hierarchyNode.parent_emp_code = this.data.parent_code
+    hierarchyNode.parent_emp_code = this.data.parent_emp_code
+    
+    this.hierarchyService.addChildNode(hierarchyNode)
+      .subscribe(() => this.dialogRef.close({ action: "add"}))
+  }
 
-    console.log(hierarchyNode)
+  changeParent() {
+    let hierarchyNode = {} as Hierarchy
+    hierarchyNode.emp_code = this.data.emp_code
+    hierarchyNode.parent_emp_code = this.emp_code
 
     this.hierarchyService.addChildNode(hierarchyNode)
       .subscribe(() => this.dialogRef.close({ action: "add"}))

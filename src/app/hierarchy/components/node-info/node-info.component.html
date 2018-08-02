@@ -9,7 +9,7 @@
     </p>
     <p matLine>{{node.designation}}</p>
     <p matLine *ngIf="canEdit">
-      <button mat-icon-button color="primary">
+      <button mat-icon-button color="primary" (click)="onClick()">
         <mat-icon>open_in_new</mat-icon>
       </button>
     </p>

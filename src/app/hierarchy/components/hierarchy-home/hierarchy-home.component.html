@@ -17,12 +17,12 @@
         <div fxFlex="50">
           Employee Information:
           <mat-divider></mat-divider>
-          <app-node-info [node]="node" canEdit="true"></app-node-info>
+          <app-node-info [node]="node"></app-node-info>
         </div>
 
-        <div fxFLex="50">
+        <div fxFLex="50" *ngIf="node.parent">
           Reporting To:
-          <app-node-info [node]="node.parent"></app-node-info>
+          <app-node-info [node]="node.parent" canEdit="true" (onEdit)="onEdit()"></app-node-info>
         </div>
       </div>
     </mat-card>
