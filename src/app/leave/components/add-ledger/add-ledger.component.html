@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Leave Ledger Information</h2>
+
+<form [formGroup]="ledgerForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content fxLayout="column">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Employee Code" formControlName="emp_code">
+        <mat-error *ngIf="emp_code.errors?.required">Employee Code is required</mat-error>
+        <mat-error *ngIf="emp_code.errors?.pattern">Employee Code should be 6 digit</mat-error>
+      </mat-form-field>
+      <span fxFlex></span>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Calendar Year" formControlName="cal_year">
+        <mat-error *ngIf="cal_year.errors?.required">Calenday year is required</mat-error>
+        <mat-error *ngIf="cal_year.errors?.pattern">Calendar year should be 4 digit</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <mat-select placeholder="Leave Type" formControlName="leave_type_id">
+          <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.id">
+            {{leaveType.ltype}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="leave_type_id.errors?.required">Leave type is required</mat-error>
+      </mat-form-field> 
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
+      <mat-form-field fxFlex>
+        <mat-select placeholder="Db/Cr Flag" formControlName="db_cr_flag">
+          <mat-option *ngFor="let flag of dc_flag" [value]="flag.value">
+            {{flag.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="db_cr_flag.errors?.required">Db/Cr flag is required</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="No of Days" formControlName="no_of_days">
+        <mat-error *ngIf="no_of_days.errors?.required">No of days is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field fxFlex>
+      <textarea matInput placeholder="Remarks" formControlName="remarks" rows="5">
+      </textarea>
+    </mat-form-field>
+  
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <!-- <button *ngIf="data" mat-raised-button color="warn" type="button" (click)="onDelete()">Delete</button> -->
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </mat-dialog-actions>
+</form>  

@@ -20,17 +20,19 @@ import { HierarchyHomeComponent } from './hierarchy/components/hierarchy-home/hi
 import { HierarchyTreeComponent } from './hierarchy/components/hierarchy-tree/hierarchy-tree.component';
 import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.component';
+import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
+import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
 import { LeaveListComponent } from './leave/components/leave-list/leave-list.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
+import { LedgerComponent } from './leave/components/ledger/ledger.component';
 import { baseURL } from './shared/config/baseUrl';
 import { ArchivedComponent } from './training/archived/archived.component';
 import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
-import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
 
 @NgModule({
   declarations: [
@@ -54,10 +56,13 @@ import { HolidayListComponent } from './leave/components/holiday-list/holiday-li
     HierarchyTreeComponent,
     AddChildNodeComponent,
     NodeInfoComponent,
-    HolidayListComponent
+    HolidayListComponent,
+    LedgerComponent,
+    AddLedgerComponent
   ],
   entryComponents: [
-    AddChildNodeComponent
+    AddChildNodeComponent,
+    AddLedgerComponent
   ],
   imports: [
     BrowserModule,

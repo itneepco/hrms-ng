@@ -46,16 +46,20 @@
   </form>
 </mat-card>
 
-<mat-card *ngIf="dataSource">
+<mat-card *ngIf="dataSource" style="padding-top: 8px">
   <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
+      <mat-cell *matCellDef="let holiday; let i = index;" fxFlex="10"> {{i+1}} </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef fxFlex="35"> Name </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.name}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="30"> Name </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="30"> {{holiday.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef fxFlex="35"> Date </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.day | date:'fullDate'}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="30"> Date </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="30"> {{holiday.day | date:'fullDate'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
@@ -64,7 +68,7 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.lt-md="20"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let holiday" fxFlex="15" fxFlex.lt-md="20">
         <button mat-icon-button (click)="onEdit(holiday)" color="primary">
           <mat-icon>edit</mat-icon>

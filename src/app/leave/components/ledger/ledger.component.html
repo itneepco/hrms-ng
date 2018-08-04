@@ -1,0 +1,67 @@
+<div class="main-container">
+  <mat-card class="search">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Please Enter Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
+        <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
+        <mat-icon>search</mat-icon>Search
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="dataSource">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
+        <mat-cell *matCellDef="let ledger; let i = index;" fxFlex="10"> {{i+1}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="emp_code">
+        <mat-header-cell *matHeaderCellDef fxFlex="20"> Employee Code </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="20"> {{ledger.emp_code}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="cal_year">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Year </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.cal_year}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="db_cr_flag">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Flag </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="10"> {{ledger.db_cr_flag}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="no_of_days">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> No of Days </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.no_of_days}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="leave_type_id">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.leaveType.ltype}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15">
+          <button mat-icon-button (click)="onEdit(ledger)" color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onRemove(ledger)" color="warn">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+</div>
+
+<button mat-fab class="fab-bottom-right" (click)="openDialog()">
+  <mat-icon>add</mat-icon>
+</button>

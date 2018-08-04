@@ -16,7 +16,7 @@ import { ProjectService } from './../../../shared/services/project.service';
 export class HolidayListComponent implements OnInit {
   holiday_types = ["CH", "RH"]
   projects: Project[]
-  displayedColumns = ["name", "date", "type", "actions"]
+  displayedColumns = ["position", "name", "date", "type", "actions"]
   dataSource: MatTableDataSource<Holiday>
   errMsg: string
   isLoading = true
@@ -97,13 +97,16 @@ export class HolidayListComponent implements OnInit {
   }
 
   onRemove(holiday: Holiday) {
-    this.holidayService.deleteHoliday(holiday.id)
-      .subscribe(() => {
-        let index = this.dataSource.data.indexOf(holiday)
-        let temp = this.dataSource.data
-        temp.splice(index, 1)
-        this.dataSource.data = temp
-      })
+    let retVal = confirm("Are you sure you want to delete?")
+    if(retVal == true) { 
+      this.holidayService.deleteHoliday(holiday.id)
+        .subscribe(() => {
+          let index = this.dataSource.data.indexOf(holiday)
+          let temp = this.dataSource.data
+          temp.splice(index, 1)
+          this.dataSource.data = temp
+        })
+    }
   }
 
   get name() {
