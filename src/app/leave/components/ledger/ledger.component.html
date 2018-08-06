@@ -5,11 +5,16 @@
         <input matInput placeholder="Please Enter Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
         <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint>
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
+      <button mat-raised-button color="primary" 
+          matTooltip="Search ledger based on employee code"
+          matTooltipPosition="right"
+          (click)="onSearch()" [disabled]="empCode.invalid">
         <mat-icon>search</mat-icon>Search
       </button>
     </div>
   </mat-card>
+
+  <p class="info">{{infoMsg}}</p>
 
   <mat-card *ngIf="dataSource">
     <mat-table [dataSource]="dataSource">
@@ -62,6 +67,9 @@
   <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
 </div>
 
-<button mat-fab class="fab-bottom-right" (click)="openDialog()">
+<button mat-fab class="fab-bottom-right" 
+    matTooltip="Add a new ledger record"
+    matTooltipPosition="left"
+    (click)="openDialog()">
   <mat-icon>add</mat-icon>
 </button>

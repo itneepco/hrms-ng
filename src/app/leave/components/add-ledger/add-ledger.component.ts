@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { LeaveType } from '../../shared/ledger';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
+import { LeaveLedger, LeaveType } from '../../shared/ledger';
 
 @Component({
   selector: 'app-add-ledger',
@@ -18,32 +18,47 @@ export class AddLedgerComponent implements OnInit {
     {name: "Debit", value: "D"}, 
     {name: "Credit", value: "C"}
   ]
+  ledger: LeaveLedger = {} as LeaveLedger
 
   constructor(private fb: FormBuilder,
     private leaveTypeService: LeaveTypeService, 
     private ledgerService: LedgerService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddLedgerComponent>) { }
 
   ngOnInit() {
     this.leaveTypeService.getLeaveTypes()
       .subscribe((leaveTypes: LeaveType[]) => this.leaveTypes = leaveTypes)
 
+    if(this.data && this.data.ledger) {
+      this.ledger = this.data.ledger
+    }
+    
     this.ledgerForm = this.fb.group({
-      emp_code: ["", [Validators.required, Validators.pattern('[0-9]{6}')]],
-      cal_year: ["", [Validators.required, Validators.pattern('[1-9][0-9]{3}')]],
-      db_cr_flag: ["", Validators.required],
-      no_of_days: ["", Validators.required],
-      leave_type_id: ["", Validators.required],
-      remarks: ""
+      emp_code: [this.ledger.emp_code, [Validators.required, Validators.pattern('[0-9]{6}')]],
+      cal_year: [this.ledger.cal_year, [Validators.required, Validators.pattern('[1-9][0-9]{3}')]],
+      db_cr_flag: [this.ledger.db_cr_flag, Validators.required],
+      no_of_days: [this.ledger.no_of_days, [Validators.required, Validators.pattern('[1-9][0-9]*')]],
+      leave_type_id: [this.ledger.leave_type ? this.ledger.leave_type.id : '', Validators.required],
+      remarks: this.ledger.remarks
     })
   }
 
   onSubmit() {
     if(this.ledgerForm.invalid) return
 
-    console.log(this.ledgerForm.value)
-    this.ledgerService.addLedger(this.ledgerForm.value)
-      .subscribe((val) => console.log(val))
+    if(this.ledger.id) {
+      this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
+        .subscribe((val) => {
+          this.dialogRef.close({ edit: val })
+        })
+    }
+    else {
+      this.ledgerService.addLedger(this.ledgerForm.value)
+        .subscribe((val) => {
+          this.dialogRef.close({ add: val })
+        })
+    }
   }
 
   get emp_code() {

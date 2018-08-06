@@ -39,6 +39,7 @@
       <mat-form-field fxFlex>
         <input matInput placeholder="No of Days" formControlName="no_of_days">
         <mat-error *ngIf="no_of_days.errors?.required">No of days is required</mat-error>
+        <mat-error *ngIf="no_of_days.errors?.pattern">It should be a positive number</mat-error>
       </mat-form-field>
     </div>
 
