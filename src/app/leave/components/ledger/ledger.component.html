@@ -44,7 +44,9 @@
 
       <ng-container matColumnDef="leave_type_id">
         <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.leaveType.ltype}} </mat-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15"> 
+          {{ledger.leaveType.ltype}} 
+        </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="actions">
@@ -70,6 +72,6 @@
 <button mat-fab class="fab-bottom-right" 
     matTooltip="Add a new ledger record"
     matTooltipPosition="left"
-    (click)="openDialog()">
+    (click)="onAdd()">
   <mat-icon>add</mat-icon>
 </button>

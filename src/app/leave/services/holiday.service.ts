@@ -36,6 +36,7 @@ export class HolidayService {
   }
 
   editHoliday(id: number, holiday: Holiday) {
+    console.log(holiday)
     return this.http.put(this.getUrl() + id, holiday)
       .pipe(
         catchError(err => this.handler.handleError(err))

@@ -7,6 +7,7 @@ import { HolidayService } from '../../services/holiday.service';
 import { Holiday } from '../../shared/holiday';
 import { Project } from './../../../shared/model/project.model';
 import { ProjectService } from './../../../shared/services/project.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-holiday-list',
@@ -25,6 +26,7 @@ export class HolidayListComponent implements OnInit {
 
   constructor(private holidayService: HolidayService,
     private projectService: ProjectService,
+    private snackbar: MatSnackBar,
     private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -63,14 +65,16 @@ export class HolidayListComponent implements OnInit {
     if(this._holiday.id) {
       this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(
         (holiday: Holiday) => {
-          console.log(holiday)
-
           let index = this.dataSource.data.indexOf(this._holiday)
           let temp = this.dataSource.data
-          temp.splice(index, 1, holiday)
+          temp.splice(index, 1)
+          temp.unshift(holiday)
           this.dataSource.data = temp
-
+          
           this._holiday = {} as Holiday
+          this.snackbar.open("Successfully updated the holiday record", "Dismiss", {
+            duration: 1600
+          })
         }
       )
     }
@@ -80,6 +84,9 @@ export class HolidayListComponent implements OnInit {
           let temp = this.dataSource.data
           temp.splice(0, 0, holiday)
           this.dataSource.data = temp
+          this.snackbar.open("Successfully created the holiday record", "Dismiss", {
+            duration: 1600
+          })
         }
       )
     }
@@ -106,6 +113,10 @@ export class HolidayListComponent implements OnInit {
           temp.splice(index, 1)
           this.dataSource.data = temp
         })
+      
+        this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
+        duration: 1600
+      })  
     }
   }
 

@@ -20,24 +20,7 @@ export class LedgerComponent {
 
   constructor(private dialog: MatDialog, 
     private snackbar: MatSnackBar,
-    private ledgerService: LedgerService) { }
-
-  openDialog() {
-    let dialogRef = this.dialog.open(AddLedgerComponent, {
-      width: '550px',
-      height: '450px',
-    })
-
-    dialogRef.afterClosed().subscribe(val => {
-      if(val && val.add) {
-        this.snackbar.open("Successfully created the ledger record", "Dismiss", {
-          duration: 1600
-        })
-        this.dataSource.data = []
-        this.dataSource.data.push(val.add)
-      }
-    })
-  }
+    private ledgerService: LedgerService) {}
 
   onSearch() {
     if(!this.emp_code) return 
@@ -45,10 +28,27 @@ export class LedgerComponent {
     this.isLoading = true    
     this.ledgerService.searchEmployee(this.emp_code)
       .subscribe((ledgers: LeaveLedger[]) => {
-        console.log(ledgers)
         this.dataSource = new MatTableDataSource<LeaveLedger>(ledgers)
         this.isLoading = false
       })
+  }
+  
+  onAdd() {
+    let dialogRef = this.dialog.open(AddLedgerComponent, {
+      width: '550px',
+      height: '450px',
+    })
+
+    dialogRef.afterClosed().subscribe(val => {
+      if(val && val.add) {
+        this.snackbar.open("Successfully created the leave ledger record", "Dismiss", {
+          duration: 1600
+        })
+        this.dataSource = new MatTableDataSource<LeaveLedger>()
+        this.dataSource.data.push(val.add)
+        this.emp_code = ''
+      }
+    })
   }
 
   onEdit(ledger: LeaveLedger) {
@@ -60,9 +60,15 @@ export class LedgerComponent {
 
     dialogRef.afterClosed().subscribe(val => {
       if(val && val.edit) {
-        this.snackbar.open("Successfully edited the ledger record", "Dismiss", {
+        this.snackbar.open("Successfully edited the leave ledger record", "Dismiss", {
           duration: 1600
         })
+
+        let index = this.dataSource.data.indexOf(ledger)
+        let temp = this.dataSource.data
+        temp.splice(index, 1)
+        temp.unshift(val.edit)
+        this.dataSource.data = temp
       }
     })
   }
@@ -76,7 +82,7 @@ export class LedgerComponent {
         let temp = this.dataSource.data
         temp.splice(index, 1)
         this.dataSource.data = temp
-        this.snackbar.open("Successfully deleted the ledger record", "Dismiss", {
+        this.snackbar.open("Successfully deleted the leave ledger record", "Dismiss", {
           duration: 1600
         })
       })

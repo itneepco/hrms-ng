@@ -34,12 +34,14 @@ export class AddLedgerComponent implements OnInit {
       this.ledger = this.data.ledger
     }
     
+    console.log(this.ledger)  
+
     this.ledgerForm = this.fb.group({
       emp_code: [this.ledger.emp_code, [Validators.required, Validators.pattern('[0-9]{6}')]],
       cal_year: [this.ledger.cal_year, [Validators.required, Validators.pattern('[1-9][0-9]{3}')]],
       db_cr_flag: [this.ledger.db_cr_flag, Validators.required],
       no_of_days: [this.ledger.no_of_days, [Validators.required, Validators.pattern('[1-9][0-9]*')]],
-      leave_type_id: [this.ledger.leave_type ? this.ledger.leave_type.id : '', Validators.required],
+      leave_type_id: [this.ledger.leaveType ? this.ledger.leaveType.id : '', Validators.required],
       remarks: this.ledger.remarks
     })
   }
@@ -50,12 +52,14 @@ export class AddLedgerComponent implements OnInit {
     if(this.ledger.id) {
       this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
         .subscribe((val) => {
+          console.log(val)
           this.dialogRef.close({ edit: val })
         })
     }
     else {
       this.ledgerService.addLedger(this.ledgerForm.value)
         .subscribe((val) => {
+          console.log(val)
           this.dialogRef.close({ add: val })
         })
     }
