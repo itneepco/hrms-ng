@@ -14,8 +14,9 @@ export class LedgerService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 
-  searchEmployee(empCode: string) {
-    return this.http.get(this.ledgerUrl + 'employee/' + empCode)
+  searchEmployee(empCode: string, pageIndex: number, pageSize: number) {
+    return this.http.get(this.ledgerUrl + 'employee/' +
+      empCode + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

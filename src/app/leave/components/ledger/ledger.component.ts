@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -17,6 +18,10 @@ export class LedgerComponent {
   displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type_id", "actions"]
   dataSource: MatTableDataSource<LeaveLedger>
   isLoading: boolean
+  // Pagination variables 
+  dataLength = 0
+  pageSize = 10
+  pageIndex = 0
 
   constructor(private dialog: MatDialog, 
     private snackbar: MatSnackBar,
@@ -26,9 +31,10 @@ export class LedgerComponent {
     if(!this.emp_code) return 
 
     this.isLoading = true    
-    this.ledgerService.searchEmployee(this.emp_code)
-      .subscribe((ledgers: LeaveLedger[]) => {
-        this.dataSource = new MatTableDataSource<LeaveLedger>(ledgers)
+    this.ledgerService.searchEmployee(this.emp_code, this.pageIndex, this.pageSize)
+      .subscribe((data) => {
+        this.dataLength = data['count']
+        this.dataSource = new MatTableDataSource<LeaveLedger>(data['rows'])
         this.isLoading = false
       })
   }
@@ -87,5 +93,11 @@ export class LedgerComponent {
         })
       })
     }
-  }
+  } 
+  
+  changePage(pageEvent: PageEvent) {
+    this.pageIndex = pageEvent.pageIndex
+    this.pageSize = pageEvent.pageSize
+    this.onSearch()
+  } 
 }

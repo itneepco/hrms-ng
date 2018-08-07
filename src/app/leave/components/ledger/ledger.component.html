@@ -6,8 +6,6 @@
         <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint>
       </mat-form-field>
       <button mat-raised-button color="primary" 
-          matTooltip="Search ledger based on employee code"
-          matTooltipPosition="right"
           (click)="onSearch()" [disabled]="empCode.invalid">
         <mat-icon>search</mat-icon>Search
       </button>
@@ -19,12 +17,15 @@
   <mat-card *ngIf="dataSource">
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-        <mat-cell *matCellDef="let ledger; let i = index;" fxFlex="10"> {{i+1}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+        <mat-cell *matCellDef="let ledger; let i=index" fxFlex="10"> 
+          {{ i + 1 + pageIndex*pageSize }} 
+        </mat-cell>
       </ng-container>
+
       <ng-container matColumnDef="emp_code">
-        <mat-header-cell *matHeaderCellDef fxFlex="20"> Employee Code </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="20"> {{ledger.emp_code}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.emp_code}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="cal_year">
@@ -50,8 +51,8 @@
       </ng-container>
   
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15">
+        <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="20">
           <button mat-icon-button (click)="onEdit(ledger)" color="primary">
             <mat-icon>edit</mat-icon>
           </button>
@@ -64,6 +65,13 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+      [length]="dataLength"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      showFirstLastButtons
+      (page)="changePage($event)">
+    </mat-paginator>
   </mat-card>
 
   <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

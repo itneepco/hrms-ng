@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs/operators';
 
@@ -7,7 +8,6 @@ import { HolidayService } from '../../services/holiday.service';
 import { Holiday } from '../../shared/holiday';
 import { Project } from './../../../shared/model/project.model';
 import { ProjectService } from './../../../shared/services/project.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-holiday-list',
