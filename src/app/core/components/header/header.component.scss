@@ -1,6 +1,11 @@
 mat-toolbar { 
   padding-right: 0px;
   padding-left: 14px; 
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  height: 64px !important;
+  z-index: 100;
 }
 
 .flex-spacer {

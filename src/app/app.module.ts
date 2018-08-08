@@ -4,6 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule } from 'angular-calendar';
 
 import { AppMaterialModule } from './app-material/app-material.module';
 import { AppRouterModule } from './app-router/app-router.module';
@@ -72,7 +73,8 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     AppMaterialModule,
     AppRouterModule,
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    CalendarModule.forRoot()
   ],
   providers: [
     MenuService,

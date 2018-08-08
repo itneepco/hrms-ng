@@ -1,4 +1,55 @@
-<mat-card>
-  <p>Leave List</p>
+<mat-card fxFlex="65">
+  <div fxLayout="row" fxLayoutAlign="space-between end" id="header">
+    <mat-button-toggle-group color="primary">
+      <mat-button-toggle 
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate">Previous
+      </mat-button-toggle>
+      
+      <mat-button-toggle
+        mwlCalendarToday
+        checked="true"
+        [(viewDate)]="viewDate">Today
+      </mat-button-toggle>
+      
+      <mat-button-toggle
+        class="btn btn-primary"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate">Next
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <div>
+      <h3 class="month">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</h3>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  
+  <div [ngSwitch]="view" id="calendar">
+    <p>
+      <span color="blue">Closed Holiday</span>
+      <span color="yellow">Restricted Holiday</span>
+    </p>
+    <mwl-calendar-month-view
+      *ngSwitchCase="'month'"
+      [viewDate]="viewDate"
+      [events]="events">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      [viewDate]="viewDate"
+      [events]="events">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="'day'"
+      [viewDate]="viewDate"
+      [events]="events">
+    </mwl-calendar-day-view>
+  </div>
 </mat-card>
 
+<mat-card fxFlex="35">
+
+</mat-card>

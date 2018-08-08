@@ -11,10 +11,6 @@ mat-sidenav {
   height: 100vh;
 }
 
-app-header {
-  z-index: 2;
-}
-
 mat-sidenav-container {
   z-index: 1;
 }

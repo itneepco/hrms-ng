@@ -5,8 +5,8 @@
     </mat-sidenav>
     
     <mat-sidenav-content fxLayout="column" id="main">
-      <app-header class="mat-elevation-z6" *ngIf="!isLoginPath()"></app-header>
-      <div fxFlex>
+      <app-header *ngIf="!isLoginPath()"></app-header>
+      <div fxFlex style="margin-top: 60px">
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

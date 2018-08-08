@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { baseURL } from '../../shared/config/baseUrl';
@@ -49,4 +49,37 @@ export class HolidayService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  getCalendarEvents() {
+    return this.http.get<Holiday[]>(this.getUrl())
+      .pipe(
+        map(holidays => {
+          return holidays.map(holiday => {
+            let calEvent = {
+              title: holiday.name,
+              start: new Date(holiday.day),
+              end: new Date(holiday.day),
+              color: holiday.type == "RH" ? colors.yellow : colors.blue
+            }
+            return calEvent
+          })
+        }),
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }
+
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  }
+};
