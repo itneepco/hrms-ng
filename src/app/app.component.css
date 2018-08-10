@@ -1,9 +1,9 @@
 mat-sidenav {
-  width: 256px;
+  width: 230px;
   background-color: #3c4252 !important;
 }
 
-#container {
+#wrapper {
   height: 100vh;
 }
 
@@ -17,4 +17,9 @@ mat-sidenav-container {
 
 app-footer {
   margin-top: 56px;
+}
+
+#page {
+  margin-top: 64px;
+  padding-bottom: 40px;
 }

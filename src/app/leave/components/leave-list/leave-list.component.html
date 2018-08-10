@@ -1,55 +1,71 @@
-<mat-card fxFlex="65">
-  <div fxLayout="row" fxLayoutAlign="space-between end" id="header">
-    <mat-button-toggle-group color="primary">
-      <mat-button-toggle 
-        mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate">Previous
-      </mat-button-toggle>
-      
-      <mat-button-toggle
-        mwlCalendarToday
-        checked="true"
-        [(viewDate)]="viewDate">Today
-      </mat-button-toggle>
-      
-      <mat-button-toggle
-        class="btn btn-primary"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate">Next
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-    <div>
-      <h3 class="month">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</h3>
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px">
+  <mat-card fxFlex="70">
+    <div fxLayout="row" fxLayoutAlign="space-between center" id="header">
+      <mat-button-toggle-group color="primary">
+        <mat-button-toggle mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">Previous
+        </mat-button-toggle>
+
+        <mat-button-toggle mwlCalendarToday checked="true" [(viewDate)]="viewDate">Today
+        </mat-button-toggle>
+
+        <mat-button-toggle class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">Next
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div>
+        <h3 class="month">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</h3>
+      </div>
     </div>
-  </div>
 
-  <mat-divider></mat-divider>
-  
-  <div [ngSwitch]="view" id="calendar">
-    <p>
-      <span color="blue">Closed Holiday</span>
-      <span color="yellow">Restricted Holiday</span>
-    </p>
-    <mwl-calendar-month-view
-      *ngSwitchCase="'month'"
-      [viewDate]="viewDate"
-      [events]="events">
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view
-      *ngSwitchCase="'week'"
-      [viewDate]="viewDate"
-      [events]="events">
-    </mwl-calendar-week-view>
-    <mwl-calendar-day-view
-      *ngSwitchCase="'day'"
-      [viewDate]="viewDate"
-      [events]="events">
-    </mwl-calendar-day-view>
-  </div>
-</mat-card>
+    <mat-divider></mat-divider>
 
-<mat-card fxFlex="35">
+    <div [ngSwitch]="view" id="calendar">
+      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" style="margin-bottom: 10px">
 
-</mat-card>
+        <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+          <div class="circle blue"></div>
+          <span class="title">Closed Holiday</span>
+        </div>
+        <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+          <div class="circle yellow"></div>
+          <span class="title">Restricted Holiday</span>
+        </div>
+      </div>
+      <mwl-calendar-month-view *ngSwitchCase="'month'" 
+        [viewDate]="viewDate" (dayClicked)="onDayClick($event)" 
+        [refresh]="refresh" [events]="events">
+      </mwl-calendar-month-view>
+    </div>
+  </mat-card>
+
+  <mat-card fxFlex="30">
+    <form [formGroup]="leaveForm" fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder="Forward to" formControlName="reason">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput placeholder="Reason" formControlName="reason"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput placeholder="Address during leave" formControlName="address"></textarea>
+      </mat-form-field>
+
+      <div id="leave-info" *ngIf="leaveDays.length > 0">
+        <div *ngFor="let leaveDay of leaveDays; let i=index">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="15">{{i+1}}.</div> 
+            <div fxFlex="20">{{leaveDay.type}}</div>
+            <div fxFlex="50">{{leaveDay.date | date:'mediumDate'}}</div>
+            <div fxFlex="15">
+              <button mat-icon-button color="warn" type="button" (click)="removeLeave(leaveDay)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      <button mat-raised-button color="primary">Save</button>
+    </form>
+  </mat-card>
+</div>

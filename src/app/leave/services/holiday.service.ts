@@ -59,7 +59,7 @@ export class HolidayService {
               title: holiday.name,
               start: new Date(holiday.day),
               end: new Date(holiday.day),
-              color: holiday.type == "RH" ? colors.yellow : colors.blue
+              color: holiday.type == "RH" ? this.colors.yellow : this.colors.blue
             }
             return calEvent
           })
@@ -67,19 +67,20 @@ export class HolidayService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  colors: any = {
+    red: {
+      primary: '#ad2121',
+      secondary: '#FAE3E3'
+    },
+    blue: {
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+    },
+    yellow: {
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+    }
+  };
 }
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3'
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF'
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA'
-  }
-};

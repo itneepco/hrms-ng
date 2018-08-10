@@ -1,12 +1,6 @@
-:host {
-  display: flex;
-  justify-content: center;
-}
-
 mat-card {
   width: 100%;
-  margin: 10px;
-  padding: 20px;
+  padding: 15px;
 }
 
 #header {
@@ -14,7 +8,11 @@ mat-card {
 }
 
 #calendar {
-  padding-top: 20px;
+  padding-top: 15px;
+}
+
+#leave-info {
+  margin-bottom: 20px;
 }
 
 h3.month {
@@ -22,14 +20,28 @@ h3.month {
   font-size: 20px;
 }
 
+h4.list-heading{
+  margin: 0px;
+}
+
+.circle {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+}
+
+.title {
+  font-size: 12px;
+}
+
 .red {
-  color: #ad2121;
+  background-color: #ad2121;
 }
 
 .yellow {
-  color: #e3bc08;
+  background-color: #e3bc08;
 }
 
 .blue {
-  color: #1e90ff;
+  background-color: #1e90ff;
 }
