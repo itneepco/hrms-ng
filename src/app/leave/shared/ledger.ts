@@ -1,7 +1,4 @@
-export interface LeaveType {
-  id: number
-  type: string
-}
+import { LeaveType } from './leave';
 
 export interface LeaveLedger {
   id: number

@@ -50,7 +50,9 @@
   <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-      <mat-cell *matCellDef="let holiday; let i = index;" fxFlex="10"> {{i+1}} </mat-cell>
+      <mat-cell *matCellDef="let holiday; let i = index;" fxFlex="10"> 
+        {{ i + 1 + pageIndex*pageSize }} 
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef fxFlex="30"> Name </mat-header-cell>
@@ -82,6 +84,14 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+    [length]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    showFirstLastButtons
+    (page)="changePage($event)">
+  </mat-paginator>
 </mat-card>
 
 <mat-card *ngIf="errMsg">

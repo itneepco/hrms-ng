@@ -42,4 +42,11 @@ export class LedgerService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  getLeaveStatus(empCode: string, year: string) {
+    return this.http.get(baseURL + "api/leave/status/" + empCode + '/' + year)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }

@@ -1,3 +1,4 @@
+import { PageEvent } from '@angular/material/paginator';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,6 +25,11 @@ export class HolidayListComponent implements OnInit {
   holidayForm: FormGroup
   _holiday: Holiday = {} as Holiday
 
+  // Pagination variables 
+  dataLength = 0
+  pageSize = 10
+  pageIndex = 0
+
   constructor(private holidayService: HolidayService,
     private projectService: ProjectService,
     private snackbar: MatSnackBar,
@@ -31,15 +37,20 @@ export class HolidayListComponent implements OnInit {
 
   ngOnInit() {
     this.initializeForm()
+    this.getHolidays()
+  }
+
+  getHolidays() {
     this.projectService.getProjects()
       .pipe(
         switchMap((projects: Project[]) => { 
           this.projects = projects
-          return this.holidayService.getHolidays()
+          return this.holidayService.getHolidays(this.pageIndex, this.pageSize)
         })
       )
-      .subscribe(holidays => {
-          this.dataSource = new MatTableDataSource<Holiday>(holidays)
+      .subscribe(data => {
+          this.dataLength = data['count']
+          this.dataSource = new MatTableDataSource<Holiday>(data['rows'])
           this.isLoading = false
         },
         errMsg => {
@@ -119,6 +130,12 @@ export class HolidayListComponent implements OnInit {
       })  
     }
   }
+
+  changePage(pageEvent: PageEvent) {
+    this.pageIndex = pageEvent.pageIndex
+    this.pageSize = pageEvent.pageSize
+    this.getHolidays()
+  } 
 
   get name() {
     return this.holidayForm.get('name')

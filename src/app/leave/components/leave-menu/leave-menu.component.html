@@ -1,15 +1,15 @@
 <mat-nav-list>
-  <a mat-list-item (click)="onSelect($event, 'CL')">
+  <a mat-list-item (click)="onSelect($event, 'CL')" *ngIf="data.leaveStatus.cl > 0">
     <span mat-line>Casual Leave</span>
     <span mat-line>Apply for casual leave</span>
   </a>
 
-  <a mat-list-item (click)="onSelect($event, 'RH')">
+  <a mat-list-item (click)="onSelect($event, 'RH')" *ngIf="data.isRH && data.leaveStatus.rh > 0">
     <span mat-line>Restricted Holiday</span>
     <span mat-line>Apply for restricted holiday</span>
   </a>
 
-  <a mat-list-item (click)="onSelect($event, 'EL')">
+  <a mat-list-item>
     <span mat-line>Earned Leave</span>
     <span mat-line>Apply for earned leave</span>
   </a>

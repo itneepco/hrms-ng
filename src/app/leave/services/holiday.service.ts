@@ -21,8 +21,8 @@ export class HolidayService {
     return baseURL + 'api/projects/' + this.auth.currentUser.project + '/holidays/'
   }
 
-  getHolidays(): Observable<Holiday[]> {
-    return this.http.get<Holiday[]>(this.getUrl())
+  getHolidays(pageIndex: number, pageSize: number): Observable<Holiday[]> {
+    return this.http.get<Holiday[]>(this.getUrl() + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
@@ -59,7 +59,8 @@ export class HolidayService {
               title: holiday.name,
               start: new Date(holiday.day),
               end: new Date(holiday.day),
-              color: holiday.type == "RH" ? this.colors.yellow : this.colors.blue
+              color: holiday.type == "RH" ? this.colors.yellow : this.colors.blue,
+              type: holiday.type
             }
             return calEvent
           })

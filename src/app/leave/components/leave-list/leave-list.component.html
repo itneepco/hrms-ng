@@ -20,15 +20,24 @@
     <mat-divider></mat-divider>
 
     <div [ngSwitch]="view" id="calendar">
-      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" style="margin-bottom: 10px">
-
-        <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
-          <div class="circle blue"></div>
-          <span class="title">Closed Holiday</span>
+      <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 10px">
+        <div fxLayout="row" fxLayoutGap="15px">
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <span class="title bold">Casual Leave: {{leaveStatus.cl}}</span>
+          </div>
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <span class="title bold">Restricted Holiday: {{leaveStatus.rh}}</span>
+          </div>
         </div>
-        <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
-          <div class="circle yellow"></div>
-          <span class="title">Restricted Holiday</span>
+        <div fxLayout="row" fxLayoutGap="15px">
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <div class="circle blue"></div>
+            <span class="title">Closed Holiday</span>
+          </div>
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <div class="circle yellow"></div>
+            <span class="title">Restricted Holiday</span>
+          </div>
         </div>
       </div>
       <mwl-calendar-month-view *ngSwitchCase="'month'" 
