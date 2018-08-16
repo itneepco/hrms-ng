@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { EmployeeNode, TreeNode } from '../shared/employee-node';
-import { baseURL } from './../../shared/config/baseUrl';
-import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { Hierarchy } from './../shared/employee-node';
+import { baseURL } from '../../shared/config/baseUrl';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { Hierarchy } from '../shared/employee-node';
 
 @Injectable({
   providedIn: 'root'
@@ -44,4 +44,10 @@ export class HierarchyService {
       )
   }
 
+  getParents(empCode: string) {
+    return this.http.get(this.hierarchyUrl + 'parents/' + empCode)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }

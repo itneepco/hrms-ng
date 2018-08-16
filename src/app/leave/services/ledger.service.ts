@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 
-import { baseURL } from './../../shared/config/baseUrl';
-import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { LeaveLedger } from './../shared/ledger';
+import { baseURL } from '../../shared/config/baseUrl';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { LeaveLedger } from '../shared/ledger';
 
 @Injectable({
   providedIn: 'root'

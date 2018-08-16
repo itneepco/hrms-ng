@@ -18,6 +18,7 @@ export class LedgerComponent {
   displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type_id", "actions"]
   dataSource: MatTableDataSource<LeaveLedger>
   isLoading: boolean
+  errMsg: string
   // Pagination variables 
   dataLength = 0
   pageSize = 10
@@ -35,6 +36,10 @@ export class LedgerComponent {
       .subscribe((data) => {
         this.dataLength = data['count']
         this.dataSource = new MatTableDataSource<LeaveLedger>(data['rows'])
+        this.isLoading = false
+      },
+      errMsg => {
+        this.errMsg = errMsg
         this.isLoading = false
       })
   }

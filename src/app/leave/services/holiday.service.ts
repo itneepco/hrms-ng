@@ -51,7 +51,7 @@ export class HolidayService {
   }
 
   getCalendarEvents() {
-    return this.http.get<Holiday[]>(this.getUrl())
+    return this.http.get<Holiday[]>(this.getUrl() + 'calendar')
       .pipe(
         map(holidays => {
           return holidays.map(holiday => {

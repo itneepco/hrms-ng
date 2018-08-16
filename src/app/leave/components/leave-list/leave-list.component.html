@@ -50,10 +50,17 @@
   <mat-card fxFlex="30">
     <form [formGroup]="leaveForm" fxLayout="column">
       <mat-form-field>
-        <input matInput placeholder="Forward to" formControlName="reason">
+        <mat-select placeholder="Forward to" formControlName="authoriser_emp_code">
+          <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
+            {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <textarea matInput placeholder="Reason" formControlName="reason"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Contact no" formControlName="contact">
       </mat-form-field>
       <mat-form-field>
         <textarea matInput placeholder="Address during leave" formControlName="address"></textarea>

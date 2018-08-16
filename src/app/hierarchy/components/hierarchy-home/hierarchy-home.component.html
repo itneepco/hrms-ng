@@ -74,7 +74,9 @@
   </ng-container>
 
   <ng-template #spinner>
-    <mat-spinner diameter="60" *ngIf="isSearching && !errMsg"></mat-spinner>
-    <p *ngIf="errMsg">{{errMsg}}</p>
+    <mat-spinner diameter="60" *ngIf="isSearching"></mat-spinner>
+    <mat-card *ngIf="errMsg">
+      <p class="errMsg">{{errMsg}}</p>
+    </mat-card>
   </ng-template>
 </div>

@@ -6,7 +6,7 @@
     
     <mat-sidenav-content fxLayout="column" id="wrapper">
       <app-header *ngIf="!isLoginPath()"></app-header>
-      <div fxFlex id="page">
+      <div fxFlex [class.page]="!isLoginPath()">
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

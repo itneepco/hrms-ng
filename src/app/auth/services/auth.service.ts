@@ -54,4 +54,21 @@ export class AuthService {
     localStorage.removeItem('token')
     this.router.navigate(['/login'])
   }
+
+  isItAdmin(): boolean {
+    return this.currentUser.role === 1
+  }
+
+  isHrSuperAdmin(): boolean {
+    return this.currentUser.role === 2
+  }
+
+  isHrSiteAdmin(): boolean {
+    return this.currentUser.role === 3
+  }
+
+  isAdmin(): boolean {
+    let role = this.currentUser.role
+    return role === 1 || role === 2 || role === 3
+  }
 }

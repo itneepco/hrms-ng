@@ -28,7 +28,10 @@ export class HierarchyHomeComponent {
           this.node = node
           this.isSearching = false
         },
-        errMsg => this.errMsg = errMsg
+        errMsg => {
+          this.errMsg = errMsg
+          this.isSearching = false 
+        }
       )
   }
 
