@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { LeaveService } from '../../services/leave.service';
 import { LeaveApplication } from '../../models/leave';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
@@ -34,6 +35,7 @@ export class ApplyLeaveComponent implements OnInit {
     private hierarchyService: HierarchyService,
     private ledgerService: LedgerService,
     private leaveService: LeaveService,
+    private router: Router,
     private bottomSheet: MatBottomSheet) { }
 
   ngOnInit() {
@@ -130,12 +132,11 @@ export class ApplyLeaveComponent implements OnInit {
     })
 
     let leavApplication: LeaveApplication = Object.assign(this.leaveForm.value, 
-      { leaveDays: leaves, emp_code: this.authService.currentUser.emp_code });
+      { leave_days: leaves, emp_code: this.authService.currentUser.emp_code });
     
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
-      if(result['status'] == 200) {
-        
-      }
+      console.log(result)
+      this.router.navigateByUrl('leave/leave-transaction')
     })
   }
 

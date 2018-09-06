@@ -19,6 +19,7 @@ export class LedgerComponent {
   dataSource: MatTableDataSource<LeaveLedger>
   isLoading: boolean
   errMsg: string
+  
   // Pagination variables 
   dataLength = 0
   pageSize = 10
