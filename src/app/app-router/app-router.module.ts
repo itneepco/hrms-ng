@@ -6,12 +6,12 @@ import { AuthGuard } from '../auth/services/auth-guard';
 import { LoginGuard } from '../auth/services/login-guard';
 import { HierarchyHomeComponent } from '../hierarchy/components/hierarchy-home/hierarchy-home.component';
 import { HierarchyComponent } from '../hierarchy/components/hierarchy/hierarchy.component';
-import { LeaveListComponent } from '../leave/components/leave-list/leave-list.component';
 import { LeaveTransactionComponent } from '../leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from '../leave/components/leave/leave.component';
 import { LedgerComponent } from '../leave/components/ledger/ledger.component';
 import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
+import { ApplyLeaveComponent } from './../leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './../leave/components/holiday-list/holiday-list.component';
 import { ArchivedComponent } from './../training/archived/archived.component';
 import { NewTrainingComponent } from './../training/new-training/new-training.component';
@@ -40,10 +40,10 @@ const routes: Routes = [
     component: LeaveComponent,
     children: [
       { path: 'leave-transaction', component: LeaveTransactionComponent },
-      { path: 'leave-list', component: LeaveListComponent },
+      { path: 'leave-apply', component: ApplyLeaveComponent },
       { path: 'leave-ledger', component: LedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
-      { path: '', redirectTo: 'leave-list', pathMatch: 'full' }
+      { path: '', redirectTo: 'leave-apply', pathMatch: 'full' }
     ]
   },
   {
@@ -59,8 +59,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'new', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: '/leave/leave-list', pathMatch: "full" },
-  { path: '**', redirectTo: '/leave/leave-list', pathMatch: "full" }
+  { path: '', redirectTo: '/leave-transaction', pathMatch: "full" },
+  { path: '**', redirectTo: '/leave-transaction', pathMatch: "full" }
 ]
 
 @NgModule({

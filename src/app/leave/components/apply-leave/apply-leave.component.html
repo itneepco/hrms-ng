@@ -48,22 +48,27 @@
   </mat-card>
 
   <mat-card fxFlex="30">
-    <form [formGroup]="leaveForm" fxLayout="column">
+    <form [formGroup]="leaveForm" fxLayout="column" (ngSubmit)="applyLeave()">
       <mat-form-field>
-        <mat-select placeholder="Forward to" formControlName="authoriser_emp_code">
+        <mat-select placeholder="Forward to" formControlName="officer_emp_code">
           <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
             {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="officer_emp_code.errors?.required">Forwarding officer is required</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <textarea matInput placeholder="Reason" formControlName="reason"></textarea>
+        <textarea matInput placeholder="Purpose" formControlName="purpose"></textarea>
+        <mat-error *ngIf="purpose.errors?.required">Purpose is required</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Contact no" formControlName="contact">
+        <input matInput placeholder="Contact no" formControlName="contact_no">
+        <mat-error *ngIf="contact_no.errors?.required">Mobile number is required</mat-error>
+        <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
       </mat-form-field>
       <mat-form-field>
         <textarea matInput placeholder="Address during leave" formControlName="address"></textarea>
+        <mat-error *ngIf="address.errors?.required">Address is required</mat-error>
       </mat-form-field>
 
       <div id="leave-info" *ngIf="leaveDays.length > 0">
@@ -81,7 +86,7 @@
           <mat-divider></mat-divider>
         </div>
       </div>
-      <button mat-raised-button color="primary">Save</button>
+      <button mat-raised-button color="primary" [disabled]="leaveForm.invalid || leaveDays.length < 1">Save</button>
     </form>
   </mat-card>
 </div>

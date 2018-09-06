@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs/operators';
 
 import { HolidayService } from '../../services/holiday.service';
-import { Holiday } from '../../shared/holiday';
+import { Holiday } from '../../models/holiday';
 import { Project } from './../../../shared/model/project.model';
 import { ProjectService } from './../../../shared/services/project.service';
 

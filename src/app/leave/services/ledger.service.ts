@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { LeaveLedger } from '../shared/ledger';
+import { LeaveLedger } from '../models/ledger';
 
 @Injectable({
   providedIn: 'root'

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -33,9 +34,12 @@ export class LoginComponent implements OnInit {
         let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/'
         this.router.navigateByUrl(returnUrl)
       })
-      .catch(error => {
+      .catch((error: HttpErrorResponse) => {
         console.log(error)
-        this.errorMsg = "Invalid employee code and password combination"
+        if(error.status == 401)
+          this.errorMsg = "Invalid employee code and password combination"
+        else   
+          this.errorMsg = "Internal server error!! Please contact IT administrator"
       })
   }
 

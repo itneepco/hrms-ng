@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/services/auth.service';
 import { baseURL } from '../../shared/config/baseUrl';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { Holiday } from '../shared/holiday';
+import { Holiday } from '../models/holiday';
 
 @Injectable({
   providedIn: 'root'

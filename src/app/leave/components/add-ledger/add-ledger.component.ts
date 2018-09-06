@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
-import { LeaveLedger } from '../../shared/ledger';
-import { LeaveType } from './../../shared/leave';
+import { LeaveLedger } from '../../models/ledger';
+import { LeaveType } from '../../models/leave';
 
 @Component({
   selector: 'app-add-ledger',

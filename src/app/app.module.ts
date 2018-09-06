@@ -22,8 +22,8 @@ import { HierarchyTreeComponent } from './hierarchy/components/hierarchy-tree/hi
 import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.component';
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
+import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
-import { LeaveListComponent } from './leave/components/leave-list/leave-list.component';
 import { LeaveMenuComponent } from './leave/components/leave-menu/leave-menu.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
@@ -42,7 +42,7 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     SidenavComponent,
     FooterComponent,
     LeaveTransactionComponent,
-    LeaveListComponent,
+    ApplyLeaveComponent,
     NewTrainingComponent,
     SubheaderComponent,
     LeaveComponent,

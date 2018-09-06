@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { LedgerService } from './../../services/ledger.service';
-import { LeaveLedger } from './../../shared/ledger';
+import { LeaveLedger } from '../../models/ledger';
 import { AddLedgerComponent } from './../add-ledger/add-ledger.component';
 
 @Component({
