@@ -1,17 +1,17 @@
-import { Router } from '@angular/router';
-import { LeaveService } from '../../services/leave.service';
-import { LeaveApplication } from '../../models/leave';
-import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
+import { LeaveAppForm } from './../../models/leave';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 
-import { LedgerService } from '../../services/ledger.service';
-import { LeaveStatus } from '../../models/leave';
 import { AuthService } from '../../../auth/services/auth.service';
+import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
+import { LeaveStatus } from '../../models/leave';
 import { HolidayService } from '../../services/holiday.service';
+import { LeaveService } from '../../services/leave.service';
+import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
 
 @Component({
@@ -131,7 +131,7 @@ export class ApplyLeaveComponent implements OnInit {
       }
     })
 
-    let leavApplication: LeaveApplication = Object.assign(this.leaveForm.value, 
+    let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
       { leave_days: leaves, emp_code: this.authService.currentUser.emp_code });
     
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 

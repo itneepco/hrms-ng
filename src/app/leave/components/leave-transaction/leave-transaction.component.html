@@ -33,11 +33,8 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let leave" fxFlex="15">
-        <button mat-icon-button (click)="onShow(leave)" color="warn">
+        <button mat-icon-button (click)="onShow(leave)" color="accent">
           <mat-icon>search</mat-icon>
-        </button>
-        <button mat-icon-button (click)="onEdit(leave)" color="primary">
-          <mat-icon>edit</mat-icon>
         </button>
       </mat-cell>
     </ng-container>

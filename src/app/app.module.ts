@@ -34,6 +34,7 @@ import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
+import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
 
 @NgModule({
   declarations: [
@@ -59,12 +60,14 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     HolidayListComponent,
     LedgerComponent,
     AddLedgerComponent,
-    LeaveMenuComponent
+    LeaveMenuComponent,
+    LeaveDetailComponent
   ],
   entryComponents: [
     AddChildNodeComponent,
     AddLedgerComponent,
-    LeaveMenuComponent
+    LeaveMenuComponent,
+    LeaveDetailComponent,
   ],
   imports: [
     BrowserModule,

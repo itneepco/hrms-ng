@@ -1,6 +1,6 @@
 export interface LeaveType {
-  id: number
-  type: string
+  id: number;
+  ltype: string;
 }
 
 export interface LeaveStatus {
@@ -9,18 +9,10 @@ export interface LeaveStatus {
 }
 
 export interface LeaveDay {
-  from_date: Date;
-  to_date: Date;
-  leave_type_id: number;
-}
-
-interface ApplicationFormat {
   id: number;
-  emp_code: string;
-  purpose: string;
-  address: string;
-  contact_no: string;
-  leaveDays: LeaveDay[];
+  leaveType: LeaveType;
+  from_date: string;
+  to_date: string;
 }
 
 export interface ApplicationHistory {
@@ -34,14 +26,34 @@ export interface ApplicationHistory {
     id: number,
     action_name: string
   },
-  updated_at: Date
+  updated_at: string
 }
 
-export interface LeaveApplication extends ApplicationFormat {
-  officer_emp_code: string;
+export interface LeaveApplication {
+  id: number;
+  emp_code: string;
+  purpose: string;
+  address: string;
+  contact_no: string;
+  leaveDays: LeaveDay[];
+  created_at: string;
 }
 
-export interface Leave extends ApplicationFormat {
+export interface Leave extends LeaveApplication {
   history: ApplicationHistory[]
+}
+
+export interface LeaveAppForm {
+  id: number;
+  emp_code: string;
+  purpose: string;
+  address: string;
+  contact_no: string;
+  officer_emp_code;
+  leaveDays: {
+    from_date: string;
+    to_date: string;
+    leave_type_id: number;
+  }[]
 }
 

@@ -1,0 +1,98 @@
+<div fxLayoutAlign="space-between" id="header">
+  <h3 mat-dialog-title>Leave Details</h3>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="end stretch" id="container">
+  <div fxFlex>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            General Info
+          </mat-panel-title>
+          <mat-panel-description>
+            Purpose, address and contact during leave
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+  
+        <div>
+          <div class="info"><span class="title">Purpose: </span>{{data.purpose}}</div>
+          <div class="info"><span class="title">Address: </span>{{data.address}}</div>
+          <div class="info"><span class="title">Contact: </span>{{data.contact_no}}</div>
+        </div> 
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Leave Info  
+          </mat-panel-title>
+          <mat-panel-description>
+            Details of leave types and no of days 
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        
+        <div *ngIf="leaveDaySource" style="padding-top: 8px" id="leaveDay">
+          <mat-table [dataSource]="leaveDaySource">
+            <ng-container matColumnDef="position">
+              <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl. No. </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay; let i = index;" fxFlex="15"> 
+                {{ i + 1 }} 
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="leave_type">
+              <mat-header-cell *matHeaderCellDef fxFlex="20"> Leave Type </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="20"> 
+                {{leaveDay.leaveType.ltype}} 
+              </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="from_date">
+              <mat-header-cell *matHeaderCellDef fxFlex="30"> From Date </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="30"> {{leaveDay.from_date | date:'mediumDate'}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="to_date">
+              <mat-header-cell *matHeaderCellDef fxFlex="35"> To Date </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="35"> 
+                {{leaveDay.to_date | date:'mediumDate'}} 
+              </mat-cell>
+            </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>  
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            History Info  
+          </mat-panel-title>
+          <mat-panel-description>
+            Details of leave approval history
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        
+        <mat-list>
+          <mat-list-item *ngFor="let hist_info of data.history; let i=index">
+            <h3 matLine> 
+              <span>{{i + 1}}.&nbsp;</span>
+              <span>{{hist_info.workflowAction.action_name}}</span>
+              <span>&nbsp;on&nbsp;</span>
+              <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
+            </h3>
+            <p matLine>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp; -- application is with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
+            </p>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </div>
+</div>

@@ -59,8 +59,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'new', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: '/leave-transaction', pathMatch: "full" },
-  { path: '**', redirectTo: '/leave-transaction', pathMatch: "full" }
+  { path: '', redirectTo: '/leave/leave-transaction', pathMatch: "full" },
+  { path: '**', redirectTo: '/leave/leave-transaction', pathMatch: "full" }
 ]
 
 @NgModule({

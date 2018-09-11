@@ -1,0 +1,22 @@
+#container {
+  min-height: 350px;
+  
+  #actions {
+    margin-top: 20px;
+  }
+  
+  .info {
+    margin-bottom: 8px;
+  }
+
+  .title {
+    margin-right: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  #leaveDay {
+    padding-bottom: 20px;
+  }
+}

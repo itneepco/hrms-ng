@@ -20,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatPaginatorModule,
     MatButtonToggleModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatExpansionModule
   ],
   exports: [
     MatDialogModule,
@@ -66,7 +68,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatPaginatorModule,
     MatButtonToggleModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatExpansionModule
   ]
 })
 export class AppMaterialModule { }

@@ -1,10 +1,13 @@
+import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { LeaveApplication } from '../../models/leave';
-import { Leave, ApplicationHistory } from './../../models/leave';
-import { LeaveService } from './../../services/leave.service';
+import { AuthService } from '../../../auth/services/auth.service';
+import { ApplicationHistory, Leave, LeaveApplication } from '../../models/leave';
+import { LeaveService } from '../../services/leave.service';
+import { leaves } from './../../models/leave.json';
 
 @Component({
   selector: 'app-leave-transaction',
@@ -24,36 +27,41 @@ export class LeaveTransactionComponent implements OnInit {
   pageSize = 10
   pageIndex = 0
 
-  constructor(private leaveService: LeaveService) {}
+  constructor(private leaveService: LeaveService, 
+    private dialog: MatDialog,
+    private auth: AuthService) {}
 
   ngOnInit() {
-    this.getLeaves()
+    // this.getLeaves()
+    this.dataSource = new MatTableDataSource(leaves)
   }  
   
   getLeaves() {
     this.isLoading = true
-    this.leaveService.getLeaves(this.pageIndex, this.pageSize).subscribe((leaves: Leave[]) => {
-      this.dataSource = new MatTableDataSource(leaves)
-      this.isLoading = false
-    },
-    errMsg => {
-      this.errMsg = errMsg
-      this.isLoading = false
-    }) 
+    let emp_code = this.auth.currentUser.emp_code
+    this.leaveService.getLeaves(emp_code, this.pageIndex, this.pageSize)
+      .subscribe((leaves: Leave[]) => {
+        this.dataSource = new MatTableDataSource(leaves)
+        this.isLoading = false
+      },
+      errMsg => {
+        this.errMsg = errMsg
+        this.isLoading = false
+      }
+    ) 
   }
   
-  onView(leaveApplication: LeaveApplication) {
-
+  onShow(leaveApplication: LeaveApplication) {
+    this.dialog.open(LeaveDetailComponent, {
+      height: '500px',
+      width: '700px',
+      data: leaveApplication
+    })
   }
-
-  onEdit(leaveApplication: LeaveApplication) {
-
-  } 
   
   changePage(pageEvent: PageEvent) {
     this.pageIndex = pageEvent.pageIndex
     this.pageSize = pageEvent.pageSize
-    this.getLeaves()
   }
   
   getLeaveStatus(history: ApplicationHistory[]) {
