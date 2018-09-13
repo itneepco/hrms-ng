@@ -17,6 +17,7 @@ export interface LeaveDay {
 
 export interface ApplicationHistory {
   id: number;
+  isCurrent: boolean;
   officer: {
     emp_code: string;
     first_name: string;

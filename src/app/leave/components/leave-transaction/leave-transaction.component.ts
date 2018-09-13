@@ -1,4 +1,3 @@
-import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -7,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ApplicationHistory, Leave, LeaveApplication } from '../../models/leave';
 import { LeaveService } from '../../services/leave.service';
-import { leaves } from './../../models/leave.json';
+import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
 
 @Component({
   selector: 'app-leave-transaction',
@@ -32,16 +31,17 @@ export class LeaveTransactionComponent implements OnInit {
     private auth: AuthService) {}
 
   ngOnInit() {
-    // this.getLeaves()
-    this.dataSource = new MatTableDataSource(leaves)
+    this.getLeaves()
   }  
   
   getLeaves() {
     this.isLoading = true
     let emp_code = this.auth.currentUser.emp_code
     this.leaveService.getLeaves(emp_code, this.pageIndex, this.pageSize)
-      .subscribe((leaves: Leave[]) => {
-        this.dataSource = new MatTableDataSource(leaves)
+      .subscribe(data => {
+        this.dataLength = data.count
+        this.dataSource = new MatTableDataSource<Leave>(data.rows)
+        // this.dataSource = new MatTableDataSource(leaves)
         this.isLoading = false
       },
       errMsg => {
@@ -62,15 +62,16 @@ export class LeaveTransactionComponent implements OnInit {
   changePage(pageEvent: PageEvent) {
     this.pageIndex = pageEvent.pageIndex
     this.pageSize = pageEvent.pageSize
+    this.getLeaves()
   }
   
   getLeaveStatus(history: ApplicationHistory[]) {
-    let lastItem = history[history.length-1]
-    
+    let lastItem = history.filter(el => el.isCurrent == true)[0]
+
     if(lastItem) {
       return lastItem.workflowAction.action_name
     }
-    return null;
+    return null
   }
 
   getOfficerName(history: ApplicationHistory[]) {
@@ -79,7 +80,7 @@ export class LeaveTransactionComponent implements OnInit {
     if(lastItem) {
       return lastItem.officer.first_name + " " + lastItem.officer.last_name 
     }
-    return null;
+    return null
   }
 
 }
