@@ -13,6 +13,7 @@ import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
 import { ApplyLeaveComponent } from './../leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './../leave/components/holiday-list/holiday-list.component';
+import { LeaveRequestComponent } from './../leave/components/leave-request/leave-request.component';
 import { ArchivedComponent } from './../training/archived/archived.component';
 import { NewTrainingComponent } from './../training/new-training/new-training.component';
 import { UpcomingComponent } from './../training/upcoming/upcoming.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
     children: [
       { path: 'leave-transaction', component: LeaveTransactionComponent },
       { path: 'leave-apply', component: ApplyLeaveComponent },
+      { path: 'leave-request', component: LeaveRequestComponent },
       { path: 'leave-ledger', component: LedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
       { path: '', redirectTo: 'leave-apply', pathMatch: 'full' }

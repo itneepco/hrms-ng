@@ -1,4 +1,4 @@
-[
+export const request = [
   {
       "id": 24,
       "emp_code": "006368",

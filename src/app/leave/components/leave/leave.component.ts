@@ -9,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class LeaveComponent  {
   nav: NavObject[] = [
     { name: 'Transactions', path: 'leave-transaction' },
-    { name: 'Apply Leave', path: 'leave-apply' },
+    { name: 'Leave Request', path: 'leave-request' },
+    { name: 'Holidays', path: 'holiday-list' },
     { name: 'Holidays', path: 'holiday-list' },
     { name: 'Ledger', path: 'leave-ledger' }
   ]

@@ -35,6 +35,7 @@ import { NewTrainingComponent } from './training/new-training/new-training.compo
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
 import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
+import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { LeaveDetailComponent } from './leave/components/leave-detail/leave-deta
     LedgerComponent,
     AddLedgerComponent,
     LeaveMenuComponent,
-    LeaveDetailComponent
+    LeaveDetailComponent,
+    LeaveRequestComponent
   ],
   entryComponents: [
     AddChildNodeComponent,
