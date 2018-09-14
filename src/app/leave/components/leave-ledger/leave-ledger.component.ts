@@ -4,16 +4,16 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { LedgerService } from './../../services/ledger.service';
 import { LeaveLedger } from '../../models/ledger';
-import { AddLedgerComponent } from './../add-ledger/add-ledger.component';
+import { LedgerService } from '../../services/ledger.service';
+import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
 
 @Component({
   selector: 'app-ledger',
-  templateUrl: './ledger.component.html',
-  styleUrls: ['./ledger.component.scss']
+  templateUrl: './leave-ledger.component.html',
+  styleUrls: ['./leave-ledger.component.scss']
 })
-export class LedgerComponent {
+export class LeaveLedgerComponent {
   emp_code: string
   displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type_id", "actions"]
   dataSource: MatTableDataSource<LeaveLedger>

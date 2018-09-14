@@ -24,18 +24,17 @@ import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.co
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
+import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
+import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledger.component';
 import { LeaveMenuComponent } from './leave/components/leave-menu/leave-menu.component';
+import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
-import { LeaveComponent } from './leave/components/leave/leave.component';
-import { LedgerComponent } from './leave/components/ledger/ledger.component';
 import { baseURL } from './shared/config/baseUrl';
 import { ArchivedComponent } from './training/archived/archived.component';
 import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
-import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
-import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,7 @@ import { LeaveRequestComponent } from './leave/components/leave-request/leave-re
     ApplyLeaveComponent,
     NewTrainingComponent,
     SubheaderComponent,
-    LeaveComponent,
+    LeaveLedgerComponent,
     TrainingComponent,
     ArchivedComponent,
     UpcomingComponent,
@@ -59,7 +58,6 @@ import { LeaveRequestComponent } from './leave/components/leave-request/leave-re
     AddChildNodeComponent,
     NodeInfoComponent,
     HolidayListComponent,
-    LedgerComponent,
     AddLedgerComponent,
     LeaveMenuComponent,
     LeaveDetailComponent,

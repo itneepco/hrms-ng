@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 
-import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { request } from './../models/request';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { request } from '../models/request';
 
 // import { catchError } from 'rxjs/operators';
 @Injectable({

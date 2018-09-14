@@ -8,7 +8,7 @@ import { HierarchyHomeComponent } from '../hierarchy/components/hierarchy-home/h
 import { HierarchyComponent } from '../hierarchy/components/hierarchy/hierarchy.component';
 import { LeaveTransactionComponent } from '../leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from '../leave/components/leave/leave.component';
-import { LedgerComponent } from '../leave/components/ledger/ledger.component';
+import { LeaveLedgerComponent } from '../leave/components/leave-ledger/leave-ledger.component';
 import { FeedbackComponent } from '../training/feedback/feedback.component';
 import { TrainingComponent } from '../training/training/training.component';
 import { ApplyLeaveComponent } from './../leave/components/apply-leave/apply-leave.component';
@@ -43,7 +43,7 @@ const routes: Routes = [
       { path: 'leave-transaction', component: LeaveTransactionComponent },
       { path: 'leave-apply', component: ApplyLeaveComponent },
       { path: 'leave-request', component: LeaveRequestComponent },
-      { path: 'leave-ledger', component: LedgerComponent },
+      { path: 'leave-ledger', component: LeaveLedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
       { path: '', redirectTo: 'leave-apply', pathMatch: 'full' }
     ]

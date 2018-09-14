@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LedgerComponent } from './ledger.component';
+import { LeaveLedgerComponent } from './leave-ledger.component';
 
 describe('LedgerComponent', () => {
-  let component: LedgerComponent;
-  let fixture: ComponentFixture<LedgerComponent>;
+  let component: LeaveLedgerComponent;
+  let fixture: ComponentFixture<LeaveLedgerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LedgerComponent ]
+      declarations: [ LeaveLedgerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LedgerComponent);
+    fixture = TestBed.createComponent(LeaveLedgerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
