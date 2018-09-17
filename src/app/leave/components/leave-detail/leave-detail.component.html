@@ -19,9 +19,15 @@
         </mat-expansion-panel-header>
   
         <div>
-          <div class="info"><span class="title">Purpose: </span>{{data.purpose}}</div>
-          <div class="info"><span class="title">Address: </span>{{data.address}}</div>
-          <div class="info"><span class="title">Contact: </span>{{data.contact_no}}</div>
+          <div class="info"><span class="title">Name: </span>
+            {{data.leave.first_name | titlecase}} 
+            {{data.leave.last_name | titlecase}}</div>
+          <div class="info"><span class="title">Purpose: </span>
+            {{data.leave.purpose}}</div>
+          <div class="info"><span class="title">Address: </span>
+            {{data.leave.address}}</div>
+          <div class="info"><span class="title">Contact: </span>
+            {{data.leave.contact_no}}</div>
         </div> 
       </mat-expansion-panel>
 
@@ -58,7 +64,7 @@
             <ng-container matColumnDef="to_date">
               <mat-header-cell *matHeaderCellDef fxFlex="35"> To Date </mat-header-cell>
               <mat-cell *matCellDef="let leaveDay" fxFlex="35"> 
-                {{leaveDay.to_date | date:'mediumDate'}} 
+                <span *ngIf="leaveDay.leaveType.ltype == 'EL'">{{leaveDay.to_date | date:'mediumDate'}}</span> 
               </mat-cell>
             </ng-container>
         
@@ -79,7 +85,7 @@
         </mat-expansion-panel-header>
         
         <mat-list>
-          <mat-list-item *ngFor="let hist_info of data.history; let i=index">
+          <mat-list-item *ngFor="let hist_info of data.leave.history; let i=index">
             <h3 matLine> 
               <span>{{i + 1}}.&nbsp;</span>
               <span>{{hist_info.workflowAction.action_name}}</span>
@@ -93,6 +99,30 @@
         </mat-list>
       </mat-expansion-panel>
 
+      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Actions 
+            </mat-panel-title>
+            <mat-panel-description>
+              Actions to be performed by officer
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          
+          <form [formGroup]="actionForm" fxLayout="column" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+              <mat-select placeholder="Select required action" formControlName="action_id">
+                <mat-option *ngFor="let action of actions" [value]="action.id">
+                  {{action.action_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <div fxLayoutAlign="end start">
+              <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
+            </div>  
+          </form>
+        </mat-expansion-panel>
     </mat-accordion>
   </div>
 </div>

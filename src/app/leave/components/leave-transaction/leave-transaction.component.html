@@ -1,59 +1,17 @@
-
-<p class="info">{{infoMsg}}</p>
-
-<mat-card *ngIf="dataSource">
-  <mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
-      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
-        {{ i + 1 + pageIndex*pageSize }} 
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="purpose">
-      <mat-header-cell *matHeaderCellDef fxFlex="30"> Purpose </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="30"> {{leave.purpose}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="applied_on">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Applied on </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{leave.created_at | date:'mediumDate'}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Status </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{getLeaveStatus(leave.history)}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="with">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> With Officer</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{getOfficerName(leave.history) | titlecase}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15">
-        <button mat-icon-button (click)="onShow(leave)" color="accent">
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  
-  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
-    [length]="dataLength"
+<div class="main-container2">
+  <p class="info">{{infoMsg}}</p>
+  <app-leave-table *ngIf="dataSource"
+    [dataSource]="dataSource"
+    [dataLength]="dataLength"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
-    showFirstLastButtons
-    (page)="changePage($event)">
-  </mat-paginator>
-</mat-card>
+    (pageChange)="changePage($event)"
+    isTransaction="true"
+  >
+  </app-leave-table>
 
-<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
-
-<mat-card *ngIf="errMsg">
-  <p class="errMsg">{{errMsg}}</p>
-</mat-card>
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+</div>

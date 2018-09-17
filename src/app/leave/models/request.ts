@@ -1,7 +1,10 @@
-export const request = [
+import { LeaveApplication } from './leave';
+export const request: LeaveApplication[] = [
   {
       "id": 24,
       "emp_code": "006368",
+      "first_name": "Nepuni",
+      "last_name": "Pfotte",
       "purpose": "test",
       "address": "test",
       "contact_no": "1234567890",

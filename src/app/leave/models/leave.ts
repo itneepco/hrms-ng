@@ -33,14 +33,13 @@ export interface ApplicationHistory {
 export interface LeaveApplication {
   id: number;
   emp_code: string;
+  first_name: string;
+  last_name: string;
   purpose: string;
   address: string;
   contact_no: string;
   leaveDays: LeaveDay[];
   created_at: string;
-}
-
-export interface Leave extends LeaveApplication {
   history: ApplicationHistory[]
 }
 

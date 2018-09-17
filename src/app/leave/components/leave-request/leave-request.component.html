@@ -1,3 +1,17 @@
-<p>
-  leave-request works!
-</p>
+<div class="main-container2">
+  <p class="info">{{infoMsg}}</p>
+  <app-leave-table *ngIf="dataSource"
+    [dataSource]="dataSource"
+    [dataLength]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    (pageChange)="changePage($event)"
+    isTransaction="false"
+  >
+  </app-leave-table>
+
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+</div>
