@@ -1,3 +1,5 @@
+import { WorkFlowAction } from './workflowAction';
+
 export interface LeaveType {
   id: number;
   ltype: string;
@@ -23,10 +25,7 @@ export interface ApplicationHistory {
     first_name: string;
     last_name: string;
   },
-  workflowAction: {
-    id: number,
-    action_name: string
-  },
+  workflowAction: WorkFlowAction,
   updated_at: string
 }
 

@@ -10,6 +10,7 @@ export class LeaveComponent  {
   nav: NavObject[] = [
     { name: 'Transactions', path: 'leave-transaction' },
     { name: 'Leave Request', path: 'leave-request' },
+    { name: 'Apply Leave', path: 'leave-apply' },
     { name: 'Holidays', path: 'holiday-list' },
     { name: 'Ledger', path: 'leave-ledger' }
   ]

@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from './../../auth/services/auth.service';
 import { baseURL } from './../../shared/config/baseUrl';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { Leave, LeaveAppForm } from './../models/leave';
+import { LeaveAppForm, LeaveApplication } from './../models/leave';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class LeaveService {
       )
   }
 
-  getLeaves(emp_code: string, pageIndex: number, pageSize: number): Observable<Leave[] | any> {
+  getLeaves(emp_code: string, pageIndex: number, pageSize: number): Observable<LeaveApplication[] | any> {
     return this.http.get(this.leaveUrl + 'employee/' + emp_code +  "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
