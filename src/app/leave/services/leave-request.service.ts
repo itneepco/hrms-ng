@@ -16,10 +16,11 @@ export class LeaveRequestService {
     private errorHandler: ErrorHandlerService) { }
 
   getLeaveRequests(empCode: string, pageIndex: number, pageSize: number): Observable<any> {
-    return this.http.get(this.url + empCode + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
-      .pipe(
-        catchError(this.errorHandler.handleError)
-      )
+    return this.http.get(this.url + `officer/${empCode}` + "?pageIndex=" + 
+      pageIndex + "&pageSize=" + pageSize)
+        .pipe(
+          catchError(this.errorHandler.handleError)
+        )
   }
 
   processLeave(process: LeaveProcess) {

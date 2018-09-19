@@ -15,11 +15,11 @@ export class LedgerService {
   constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 
   searchEmployee(empCode: string, pageIndex: number, pageSize: number) {
-    return this.http.get(this.ledgerUrl + 'employee/' +
-      empCode + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
-      .pipe(
-        catchError(err => this.handler.handleError(err))
-      )
+    return this.http.get(this.ledgerUrl + `employee/${empCode}` + "?pageIndex=" + 
+      pageIndex + "&pageSize=" + pageSize)
+        .pipe(
+          catchError(err => this.handler.handleError(err))
+        )
   }
 
   deleteLedger(id: number) {
@@ -44,7 +44,7 @@ export class LedgerService {
   }
 
   getLeaveStatus(empCode: string, year: string) {
-    return this.http.get(baseURL + "api/leave/status/" + empCode + '/' + year)
+    return this.http.get(baseURL + "api/leave/status/" + `${empCode}/${year}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
