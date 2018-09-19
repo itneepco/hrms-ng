@@ -2,13 +2,13 @@
   <mat-card-subtitle>Add new holiday for current year</mat-card-subtitle>
   <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
     <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
-      <mat-form-field fxFlex="30" fxFlex.md="25">
+      <mat-form-field fxFlex="40">
         <input matInput placeholder="Name" formControlName="name">
         <mat-error *ngIf="name.touched && name.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
-      <mat-form-field fxFlex="15">
+      <mat-form-field fxFlex="20">
         <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="day">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -16,7 +16,7 @@
           is required
         </mat-error>
       </mat-form-field>
-      <mat-form-field fxFlex="15">
+      <mat-form-field fxFlex="20">
         <mat-select placeholder="Type" formControlName="type">
           <mat-option *ngFor="let h_type of holiday_types" [value]="h_type">
             {{h_type}}
@@ -26,7 +26,7 @@
           is required
         </mat-error>
       </mat-form-field>
-      <mat-form-field fxFlex="20">
+      <!-- <mat-form-field fxFlex="20">
         <mat-select placeholder="Project" formControlName="project_id">
           <mat-option *ngFor="let project of projects" [value]="project.id">
             {{project.name}}
@@ -35,8 +35,8 @@
         <mat-error *ngIf="project_id.touched && project_id.errors?.required">
           is required
         </mat-error>
-      </mat-form-field>
-      <div fxFlex="10">
+      </mat-form-field> -->
+      <div fxFlex="20">
         <button mat-raised-button *ngIf="_holiday.id"
           color="accent" [disabled]="holidayForm.invalid">Update</button>
         <button mat-raised-button *ngIf="!_holiday.id"

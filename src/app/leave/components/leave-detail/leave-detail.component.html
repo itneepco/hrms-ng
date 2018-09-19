@@ -99,7 +99,7 @@
         </mat-list>
       </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="data.isTransaction !== true">
+      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="isTransaction !== 'true'">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Actions 

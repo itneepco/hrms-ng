@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
 @Component({
@@ -6,10 +6,14 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bott
   templateUrl: './leave-menu.component.html',
   styleUrls: ['./leave-menu.component.scss']
 })
-export class LeaveMenuComponent {
+export class LeaveMenuComponent implements OnInit {
 
   constructor(private bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {}
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
+
+  ngOnInit() {
+    
+  }  
 
   onSelect(event: MouseEvent, type: string): void {
     this.bottomSheetRef.dismiss({
@@ -18,6 +22,5 @@ export class LeaveMenuComponent {
     });
     event.preventDefault();
   }
-
 
 }

@@ -1,29 +1,25 @@
-import { AuthService } from './../../auth/services/auth.service';
-import { baseURL } from './../../shared/config/baseUrl';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { request } from '../models/request';
-import { catchError } from 'rxjs/operators';
 import { LeaveProcess } from '../models/workflowAction';
+import { baseURL } from './../../shared/config/baseUrl';
 
-// import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRequestService {
-  url = baseURL + "api/leave/requests/"
+  url = baseURL + "api/leave/request/"
   constructor(private http: HttpClient,
     private errorHandler: ErrorHandlerService) { }
 
-  getLeaveRequests(empCode: string, pageIndex: number, pageSize: number) {
-    // return this.http.get(this.url + empCode)
-    //   .pipe(
-    //     catchError(this.errorHandler.handleError)
-    //   )
-    return from([request]);
+  getLeaveRequests(empCode: string, pageIndex: number, pageSize: number): Observable<any> {
+    return this.http.get(this.url + empCode + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      )
   }
 
   processLeave(process: LeaveProcess) {
@@ -32,5 +28,4 @@ export class LeaveRequestService {
         catchError(this.errorHandler.handleError)
       )
   }
-
 }

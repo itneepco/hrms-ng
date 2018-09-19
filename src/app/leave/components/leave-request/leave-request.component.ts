@@ -33,9 +33,8 @@ export class LeaveRequestComponent implements OnInit {
     let emp_code = this.auth.currentUser.emp_code
     this.leaveRequest.getLeaveRequests(emp_code, this.pageIndex, this.pageSize)
       .subscribe(data => {
-        // this.dataLength = data.count
-        // this.dataSource = new MatTableDataSource<Leave>(data.rows)
-        this.dataSource = new MatTableDataSource<LeaveApplication>(data)
+        this.dataLength = data.count
+        this.dataSource = new MatTableDataSource<LeaveApplication>(data.rows)
         this.isLoading = false
       },
       errMsg => {

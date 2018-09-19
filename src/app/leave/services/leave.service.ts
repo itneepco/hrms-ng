@@ -25,7 +25,7 @@ export class LeaveService {
       )
   }
 
-  getLeaves(emp_code: string, pageIndex: number, pageSize: number): Observable<LeaveApplication[] | any> {
+  getLeaves(emp_code: string, pageIndex: number, pageSize: number): Observable<any> {
     return this.http.get(this.leaveUrl + 'employee/' + emp_code +  "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))

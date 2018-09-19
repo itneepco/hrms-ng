@@ -65,7 +65,7 @@ export class HolidayListComponent implements OnInit {
       name: [this._holiday.name, [Validators.required]],
       day: [this._holiday.day, [Validators.required]],
       type: [this._holiday.type, [Validators.required]],
-      project_id: [this._holiday.project_id, [Validators.required]]
+      // project_id: [this._holiday.project_id, [Validators.required]]
     })
   }
 

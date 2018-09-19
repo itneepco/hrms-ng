@@ -19,7 +19,8 @@ export class LeaveDetailComponent implements OnInit {
   leaveDaySource: MatTableDataSource<LeaveDay>
   step: number = 0
   actionForm: FormGroup
-  actions: WorkFlowAction[] = [{id:1, action_name:"Leave Approve"}, {id:2, action_name:"Leave Reject"}]
+  actions: WorkFlowAction[] = []
+  isTransaction = true;
 
   constructor(
     private auth: AuthService,
@@ -30,9 +31,12 @@ export class LeaveDetailComponent implements OnInit {
   ngOnInit() {
     this.leaveDaySource = new MatTableDataSource(this.data.leave.leaveDays)
     this.workflowService.getWorkflowActions()
-      .subscribe((actions: WorkFlowAction[]) => this.actions = actions);
+      .subscribe((actions: WorkFlowAction[]) => {
+        this.actions = actions.splice(1) 
+      });
       
     this.initForm()
+    this.isTransaction = this.data.isTransaction;
   }
 
   setStep(index: number) {
