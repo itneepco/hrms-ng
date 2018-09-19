@@ -1,10 +1,12 @@
+import { WorkFlowAction } from './../../models/workflowAction';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { AuthService } from './../../../auth/services/auth.service';
-import { LeaveDay } from './../../models/leave';
+import { AuthService } from '../../../auth/services/auth.service';
+import { LeaveDay } from '../../models/leave';
+import { LeaveWorkflowService } from '../../services/leave-workflow.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -17,15 +19,19 @@ export class LeaveDetailComponent implements OnInit {
   leaveDaySource: MatTableDataSource<LeaveDay>
   step: number = 0
   actionForm: FormGroup
-  actions = [{id:1, action_name:"Leave Approve"}, {id:2, action_name:"Leave Reject"}]
+  actions: WorkFlowAction[] = [{id:1, action_name:"Leave Approve"}, {id:2, action_name:"Leave Reject"}]
 
   constructor(
     private auth: AuthService,
     private fb: FormBuilder,
+    private workflowService: LeaveWorkflowService,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
     this.leaveDaySource = new MatTableDataSource(this.data.leave.leaveDays)
+    this.workflowService.getWorkflowActions()
+      .subscribe((actions: WorkFlowAction[]) => this.actions = actions);
+      
     this.initForm()
   }
 
