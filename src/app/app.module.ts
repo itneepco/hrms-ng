@@ -25,11 +25,6 @@ import { LeaveTransactionComponent } from './leave/components/leave-transaction/
 import { LeaveComponent } from './leave/components/leave/leave.component';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
-import { ArchivedComponent } from './training/archived/archived.component';
-import { FeedbackComponent } from './training/feedback/feedback.component';
-import { NewTrainingComponent } from './training/new-training/new-training.component';
-import { TrainingComponent } from './training/training/training.component';
-import { UpcomingComponent } from './training/upcoming/upcoming.component';
 
 @NgModule({
   declarations: [
@@ -39,12 +34,7 @@ import { UpcomingComponent } from './training/upcoming/upcoming.component';
     FooterComponent,
     LeaveTransactionComponent,
     ApplyLeaveComponent,
-    NewTrainingComponent,
     LeaveLedgerComponent,
-    TrainingComponent,
-    ArchivedComponent,
-    UpcomingComponent,
-    FeedbackComponent,
     LoginComponent,
     HolidayListComponent,
     AddLedgerComponent,

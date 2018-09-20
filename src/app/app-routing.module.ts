@@ -25,10 +25,6 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     component: HierarchyComponent,
     loadChildren: 'app/hierarchy/hierarchy.module#HierarchyModule'
-    // children: [
-    //   { path: 'home', component: HierarchyHomeComponent },
-    //   { path: '', redirectTo: 'home', pathMatch: 'full' }
-    // ]
   },
   {
     path: 'login',
@@ -46,21 +42,14 @@ const routes: Routes = [
       { path: 'leave-request', component: LeaveRequestComponent },
       { path: 'leave-ledger', component: LeaveLedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
-      { path: '', redirectTo: 'leave-apply', pathMatch: 'full' }
+      { path: '', redirectTo: 'leave-transaction', pathMatch: 'full' }
     ]
   },
   {
     path: 'training',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    component: TrainingComponent,
-    children: [
-      { path: 'new', component: NewTrainingComponent },
-      { path: 'archived', component: ArchivedComponent },
-      { path: 'upcoming', component: UpcomingComponent },
-      { path: 'feedback', component: FeedbackComponent },
-      { path: '', redirectTo: 'new', pathMatch: 'full' }
-    ]
+    loadChildren: 'app/training/training.module#TrainingModule'
   },
   { path: '', redirectTo: '/leave/leave-transaction', pathMatch: "full" },
   { path: '**', redirectTo: '/leave/leave-transaction', pathMatch: "full" }

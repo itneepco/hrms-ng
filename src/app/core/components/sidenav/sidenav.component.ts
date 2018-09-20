@@ -11,7 +11,7 @@ export class SidenavComponent {
   constructor(public menuService: MenuService) {}
 
   pages = [
-    // { name: "Training", icon: 'info', path: '/training' },
+    { name: "Training", icon: 'info', path: '/training' },
     { name: "Leave", icon: 'mood', path: '/leave' },
     { name: "Hierarchy", icon: 'device_hub', path: '/hierarchy' }
   ]
