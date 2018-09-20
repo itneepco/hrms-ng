@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { NavObject } from '../../../shared/model/nav-object';
-import { MenuService } from '../../services/menu.service';
+import { NavObject } from '../../model/nav-object';
+import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
   selector: 'app-subheader',

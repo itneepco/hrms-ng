@@ -46,8 +46,7 @@ export class LeaveDetailComponent implements OnInit {
   initForm() {
     this.actionForm = this.fb.group({
       action_id: ['', Validators.required],
-      leave_application_id: [this.data.leave.id, Validators.required],
-      officer_emp_code: [this.auth.currentUser.emp_code, Validators.required],
+      remarks: ['', Validators.required]
     })
   }
 

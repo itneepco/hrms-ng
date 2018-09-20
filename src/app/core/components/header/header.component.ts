@@ -11,7 +11,7 @@ import { AuthService } from './../../../auth/services/auth.service';
 export class HeaderComponent {
 
   constructor(private menuService: MenuService,
-    private auth: AuthService) {}
+    public auth: AuthService) {}
 
   toggleMenu() {
     this.menuService.menuToggle(true)

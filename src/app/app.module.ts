@@ -1,25 +1,18 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'angular-calendar';
 
-import { AppMaterialModule } from './app-material/app-material.module';
-import { AppRouterModule } from './app-router/app-router.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { JwtInterceptor } from './auth/services/jwt-interceptor';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
-import { SubheaderComponent } from './core/components/subheader/subheader.component';
 import { MenuService } from './core/services/menu.service';
 import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
-import { HierarchyHomeComponent } from './hierarchy/components/hierarchy-home/hierarchy-home.component';
-import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
-import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.component';
+import { HierarchyModule } from './hierarchy/hierarchy.module';
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
@@ -27,15 +20,16 @@ import { LeaveDetailComponent } from './leave/components/leave-detail/leave-deta
 import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledger.component';
 import { LeaveMenuComponent } from './leave/components/leave-menu/leave-menu.component';
 import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
+import { LeaveTableComponent } from './leave/components/leave-table/leave-table.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
+import { LeaveComponent } from './leave/components/leave/leave.component';
 import { baseURL } from './shared/config/baseUrl';
+import { SharedModule } from './shared/shared.module';
 import { ArchivedComponent } from './training/archived/archived.component';
 import { FeedbackComponent } from './training/feedback/feedback.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { TrainingComponent } from './training/training/training.component';
 import { UpcomingComponent } from './training/upcoming/upcoming.component';
-import { LeaveTableComponent } from './leave/components/leave-table/leave-table.component';
-import { LeaveComponent } from './leave/components/leave/leave.component';
 
 @NgModule({
   declarations: [
@@ -46,17 +40,12 @@ import { LeaveComponent } from './leave/components/leave/leave.component';
     LeaveTransactionComponent,
     ApplyLeaveComponent,
     NewTrainingComponent,
-    SubheaderComponent,
     LeaveLedgerComponent,
     TrainingComponent,
     ArchivedComponent,
     UpcomingComponent,
     FeedbackComponent,
     LoginComponent,
-    HierarchyComponent,
-    HierarchyHomeComponent,
-    AddChildNodeComponent,
-    NodeInfoComponent,
     HolidayListComponent,
     AddLedgerComponent,
     LeaveMenuComponent,
@@ -72,14 +61,10 @@ import { LeaveComponent } from './leave/components/leave/leave.component';
     LeaveDetailComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
-    AppMaterialModule,
-    AppRouterModule,
-    FlexLayoutModule,
-    HttpClientModule,
+    AppRoutingModule,
+    SharedModule,
+    HierarchyModule,
     CalendarModule.forRoot()
   ],
   providers: [
