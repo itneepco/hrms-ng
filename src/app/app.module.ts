@@ -18,7 +18,6 @@ import { SubheaderComponent } from './core/components/subheader/subheader.compon
 import { MenuService } from './core/services/menu.service';
 import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
 import { HierarchyHomeComponent } from './hierarchy/components/hierarchy-home/hierarchy-home.component';
-import { HierarchyTreeComponent } from './hierarchy/components/hierarchy-tree/hierarchy-tree.component';
 import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { NodeInfoComponent } from './hierarchy/components/node-info/node-info.component';
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
@@ -56,7 +55,6 @@ import { LeaveComponent } from './leave/components/leave/leave.component';
     LoginComponent,
     HierarchyComponent,
     HierarchyHomeComponent,
-    HierarchyTreeComponent,
     AddChildNodeComponent,
     NodeInfoComponent,
     HolidayListComponent,
