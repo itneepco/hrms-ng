@@ -8,7 +8,7 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
   providedIn: 'root'
 })
 export class LeaveTypeService {
-  leaveTypeUrl = baseURL + 'api/leave/type'
+  private leaveTypeUrl = baseURL + 'api/leave/type'
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 

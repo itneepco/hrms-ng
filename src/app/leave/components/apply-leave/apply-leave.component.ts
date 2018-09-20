@@ -1,4 +1,3 @@
-import { LeaveAppForm } from './../../models/leave';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -13,6 +12,7 @@ import { HolidayService } from '../../services/holiday.service';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
+import { LeaveAppForm } from './../../models/leave';
 
 @Component({
   selector: 'app-apply-leave',
@@ -26,7 +26,7 @@ export class ApplyLeaveComponent implements OnInit {
   leaveForm: FormGroup
   leaveDays = [];
   refresh: Subject<any> = new Subject()
-  leaveStatus: LeaveStatus = {} as LeaveStatus
+  leaveStatuses: LeaveStatus[] = []
   ctrlOfficers;
 
   constructor(private holidayService: HolidayService,
@@ -43,8 +43,8 @@ export class ApplyLeaveComponent implements OnInit {
       .subscribe(events => this.events = events)
 
     this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code, '2018')
-      .subscribe((status: LeaveStatus) => {
-        this.leaveStatus = status
+      .subscribe((status: LeaveStatus[]) => {
+        this.leaveStatuses = status
       })
 
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
@@ -57,7 +57,7 @@ export class ApplyLeaveComponent implements OnInit {
 
   onDayClick(event) {
     let events = event.day.events
-
+    // Check if the date is CL or RH or if the date has been applied for leave
     if (events.length > 0) {
       if (events.find(el => el.type == "CH")) return
       if (events.find(el => el.type == "RH") && events.length > 1) return
@@ -68,21 +68,20 @@ export class ApplyLeaveComponent implements OnInit {
       data: {
         date: event.day.date,
         isRH: events.find(el => el.type == "RH") ? true : false,
-        leaveStatus: this.leaveStatus
+        leaveStatuses: this.leaveStatuses
       }
     })
 
     bottomSheetRef.afterDismissed()
-      .subscribe((data) => {
+      .subscribe((data: { status: LeaveStatus, date: Date}) => {
         if (!data) return
 
-        //Substract 1 day from RH or CL
-        if (data.type == "RH") this.leaveStatus.rh -= 1
-        if (data.type == "CL") this.leaveStatus.cl -= 1
+        console.log(data)
+        data.status.balance -= 1;  
 
         // Create a calendar event
         let event = {
-          title: "Applied for " + data.type,
+          title: "Applied for " + data.status.leave_type,
           start: data.date,
           end: data.date,
           color: this.holidayService.colors.red,
@@ -103,18 +102,9 @@ export class ApplyLeaveComponent implements OnInit {
     })
   }
 
-  removeLeave(leaveDay) {
-    console.log(leaveDay)
-
-    if (leaveDay.type == "RH") {
-      this.leaveStatus.rh += 1
-    }
-
-    if (leaveDay.type == "CL") {
-      this.leaveStatus.cl += 1
-    }
-
-    this.leaveDays.splice(leaveDay.id, 1)
+  removeLeave(leaveDay, id: number) {
+    leaveDay.status.balance += 1
+    this.leaveDays.splice(id, 1)
     let index = this.events.indexOf(leaveDay.event)
     this.events.splice(index, 1)
     this.refresh.next()
@@ -126,8 +116,8 @@ export class ApplyLeaveComponent implements OnInit {
     let leaves = this.leaveDays.map(leaveDay => {
       return { 
         from_date: leaveDay.date, 
-        to_date: leaveDay.date, 
-        leave_type_id: leaveDay.type == "CL" ? 1 : 2 
+        to_date: leaveDay.date,
+        leave_type_id: leaveDay.leave_type_id 
       }
     })
 

@@ -6,8 +6,9 @@ export interface LeaveType {
 }
 
 export interface LeaveStatus {
-  cl: number
-  rh: number
+  balance: number;
+  leave_type: string;
+  leave_type_id: string;
 }
 
 export interface LeaveDay {

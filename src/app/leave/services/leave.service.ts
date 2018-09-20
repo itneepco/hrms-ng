@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { AuthService } from './../../auth/services/auth.service';
 import { baseURL } from './../../shared/config/baseUrl';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { LeaveAppForm, LeaveApplication } from './../models/leave';
+import { LeaveAppForm } from './../models/leave';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ export class LeaveService {
   leaveUrl = baseURL + "api/leave/apply/"
 
   constructor(private http: HttpClient, 
-    private auth: AuthService,
     private handler: ErrorHandlerService) { }
 
   applyLeave(leaveApplication: LeaveAppForm): Observable<any> {
