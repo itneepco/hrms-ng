@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LeaveLedger } from '../../models/ledger';
 import { LedgerService } from '../../services/ledger.service';
 import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
+import { LeaveTypeService } from '../../services/leave-type.service';
 
 @Component({
   selector: 'app-ledger',
@@ -15,7 +16,7 @@ import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
 })
 export class LeaveLedgerComponent {
   emp_code: string
-  displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type_id", "actions"]
+  displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type", "actions"]
   dataSource: MatTableDataSource<LeaveLedger>
   isLoading: boolean
   errMsg: string
@@ -27,6 +28,7 @@ export class LeaveLedgerComponent {
 
   constructor(private dialog: MatDialog, 
     private snackbar: MatSnackBar,
+    public leaveTypeService: LeaveTypeService,
     private ledgerService: LedgerService) {}
 
   onSearch() {

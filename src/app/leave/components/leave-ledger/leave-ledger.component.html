@@ -41,10 +41,10 @@
         <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.no_of_days}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="leave_type_id">
+      <ng-container matColumnDef="leave_type">
         <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
         <mat-cell *matCellDef="let ledger" fxFlex="15"> 
-          {{ledger.leaveType.ltype}} 
+          {{leaveTypeService.getLeaveType(ledger.leave_type)}} 
         </mat-cell>
       </ng-container>
   

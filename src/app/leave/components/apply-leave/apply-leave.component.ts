@@ -117,7 +117,7 @@ export class ApplyLeaveComponent implements OnInit {
       return { 
         from_date: leaveDay.date, 
         to_date: leaveDay.date,
-        leave_type_id: leaveDay.leave_type_id 
+        leave_type: leaveDay.leave_type
       }
     })
 

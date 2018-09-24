@@ -52,7 +52,7 @@
             <ng-container matColumnDef="leave_type">
               <mat-header-cell *matHeaderCellDef fxFlex="20"> Leave Type </mat-header-cell>
               <mat-cell *matCellDef="let leaveDay" fxFlex="20"> 
-                {{leaveDay.leaveType.ltype}} 
+                {{lTypeService.getLeaveType(leaveDay.leave_type)}} 
               </mat-cell>
             </ng-container>
         
@@ -64,7 +64,7 @@
             <ng-container matColumnDef="to_date">
               <mat-header-cell *matHeaderCellDef fxFlex="35"> To Date </mat-header-cell>
               <mat-cell *matCellDef="let leaveDay" fxFlex="35"> 
-                <span *ngIf="leaveDay.leaveType.ltype == 'EL'">{{leaveDay.to_date | date:'mediumDate'}}</span> 
+                <span *ngIf="leaveDay.leave_type == '03'">{{leaveDay.to_date | date:'mediumDate'}}</span> 
               </mat-cell>
             </ng-container>
         
@@ -88,7 +88,7 @@
           <mat-list-item *ngFor="let hist_info of data.leave.history; let i=index">
             <h3 matLine> 
               <span>{{i + 1}}.&nbsp;</span>
-              <span>{{hist_info.workflowAction.action_name}}</span>
+              <span>{{wActionService.getWorkflowAction(hist_info.workflow_action)}}</span>
               <span>&nbsp;on&nbsp;</span>
               <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
             </h3>
@@ -111,9 +111,9 @@
           
           <form [formGroup]="actionForm" fxLayout="column" (ngSubmit)="onSubmit()">
             <mat-form-field>
-              <mat-select placeholder="Select required action" formControlName="action_id">
-                <mat-option *ngFor="let action of actions" [value]="action.id">
-                  {{action.action_name}}
+              <mat-select placeholder="Select required action" formControlName="action">
+                <mat-option *ngFor="let action of actions" [value]="action.code">
+                  {{action.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

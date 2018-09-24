@@ -18,12 +18,12 @@
         <mat-error *ngIf="cal_year.errors?.pattern">Calendar year should be 4 digit</mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
-        <mat-select placeholder="Leave Type" formControlName="leave_type_id">
-          <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.id">
-            {{leaveType.ltype}}
+        <mat-select placeholder="Leave Type" formControlName="leave_type">
+          <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.code">
+            {{leaveType.name}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="leave_type_id.errors?.required">Leave type is required</mat-error>
+        <mat-error *ngIf="leave_type.errors?.required">Leave type is required</mat-error>
       </mat-form-field> 
     </div>
 

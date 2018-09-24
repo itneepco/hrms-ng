@@ -1,19 +1,17 @@
-import { WorkFlowAction } from './workflowAction';
-
 export interface LeaveType {
-  id: number;
-  ltype: string;
+  code: string;
+  name: string;
 }
 
 export interface LeaveStatus {
   balance: number;
   leave_type: string;
-  leave_type_id: string;
+  leave_code: string;
 }
 
 export interface LeaveDay {
   id: number;
-  leaveType: LeaveType;
+  leave_type: string;
   from_date: string;
   to_date: string;
 }
@@ -26,7 +24,7 @@ export interface ApplicationHistory {
     first_name: string;
     last_name: string;
   },
-  workflowAction: WorkFlowAction,
+  workflow_action: string,
   updated_at: string
 }
 

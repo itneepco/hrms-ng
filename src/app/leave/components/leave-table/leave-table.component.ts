@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { WorkflowActionService } from '../../services/workflow-action.service';
 import { ApplicationHistory, LeaveApplication } from './../../models/leave';
 import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
 
@@ -24,7 +25,9 @@ export class LeaveTableComponent implements OnInit {
   @Input('pageSize') pageSize
   @Input('pageIndex') pageIndex 
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+      public wActionService: WorkflowActionService,
+    ) { }
 
   ngOnInit() {
     if(this.isTransaction === true) {
@@ -33,7 +36,6 @@ export class LeaveTableComponent implements OnInit {
     } else {
       this.displayedColumns = ["position", "purpose", "applied_on", "status", "name", "actions"]
     }
-    console.log(this.isTransaction)
   }  
 
   onShow(leaveApplication: LeaveApplication) {
@@ -55,7 +57,7 @@ export class LeaveTableComponent implements OnInit {
     let lastItem = history.filter(el => el.isCurrent == true)[0]
 
     if(lastItem) {
-      return lastItem.workflowAction.action_name
+      return this.wActionService.getWorkflowAction(lastItem.workflow_action)
     }
     return null
   }

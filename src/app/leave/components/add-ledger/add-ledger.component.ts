@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveLedger } from '../../models/ledger';
 import { LeaveType } from '../../models/leave';
+import { LEAVE_TYPES } from '../../models/global-codes';
 
 @Component({
   selector: 'app-add-ledger',
@@ -22,14 +22,12 @@ export class AddLedgerComponent implements OnInit {
   ledger: LeaveLedger = {} as LeaveLedger
 
   constructor(private fb: FormBuilder,
-    private leaveTypeService: LeaveTypeService, 
     private ledgerService: LedgerService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddLedgerComponent>) { }
 
   ngOnInit() {
-    this.leaveTypeService.getLeaveTypes()
-      .subscribe((leaveTypes: LeaveType[]) => this.leaveTypes = leaveTypes)
+    this.leaveTypes = LEAVE_TYPES
 
     if(this.data && this.data.ledger) {
       this.ledger = this.data.ledger
@@ -42,7 +40,7 @@ export class AddLedgerComponent implements OnInit {
       cal_year: [this.ledger.cal_year, [Validators.required, Validators.pattern('[1-9][0-9]{3}')]],
       db_cr_flag: [this.ledger.db_cr_flag, Validators.required],
       no_of_days: [this.ledger.no_of_days, [Validators.required, Validators.pattern('[1-9][0-9]*')]],
-      leave_type_id: [this.ledger.leaveType ? this.ledger.leaveType.id : '', Validators.required],
+      leave_type: [this.ledger.leave_type ? this.ledger.leave_type : '', Validators.required],
       remarks: this.ledger.remarks
     })
   }
@@ -82,8 +80,8 @@ export class AddLedgerComponent implements OnInit {
     return this.ledgerForm.get('no_of_days')
   }
 
-  get leave_type_id() {
-    return this.ledgerForm.get('leave_type_id')
+  get leave_type() {
+    return this.ledgerForm.get('leave_type')
   }
 
   get remarks() {

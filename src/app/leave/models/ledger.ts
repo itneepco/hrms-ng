@@ -6,7 +6,7 @@ export interface LeaveLedger {
   cal_year: string
   db_cr_flag: string
   no_of_days: number
-  leaveType: LeaveType
+  leave_type: LeaveType
   remarks: string
 }
 

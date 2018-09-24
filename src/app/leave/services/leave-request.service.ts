@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { LeaveProcess } from '../models/workflowAction';
+import { LeaveProcess } from '../models/workflow-action';
 import { baseURL } from './../../shared/config/baseUrl';
 
 @Injectable({

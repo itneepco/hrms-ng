@@ -1,12 +1,12 @@
-import { WorkFlowAction } from './../../models/workflowAction';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { AuthService } from '../../../auth/services/auth.service';
+import { ACTION_TYPES } from '../../models/global-codes';
 import { LeaveDay } from '../../models/leave';
-import { LeaveWorkflowService } from '../../services/leave-workflow.service';
+import { LeaveTypeService } from '../../services/leave-type.service';
+import { WorkflowActionService } from '../../services/workflow-action.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -19,24 +19,20 @@ export class LeaveDetailComponent implements OnInit {
   leaveDaySource: MatTableDataSource<LeaveDay>
   step: number = 0
   actionForm: FormGroup
-  actions: WorkFlowAction[] = []
-  isTransaction = true;
+  actions = ACTION_TYPES
+  isTransaction;
 
   constructor(
-    private auth: AuthService,
+    public lTypeService: LeaveTypeService,
     private fb: FormBuilder,
-    private workflowService: LeaveWorkflowService,
+    public wActionService: WorkflowActionService,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
+    console.log(this.data.leave.leaveDays)
     this.leaveDaySource = new MatTableDataSource(this.data.leave.leaveDays)
-    this.workflowService.getWorkflowActions()
-      .subscribe((actions: WorkFlowAction[]) => {
-        this.actions = actions.splice(1) 
-      });
-      
     this.initForm()
-    this.isTransaction = this.data.isTransaction;
+    this.isTransaction = this.data.isTransaction === 'true';
   }
 
   setStep(index: number) {
@@ -45,7 +41,7 @@ export class LeaveDetailComponent implements OnInit {
 
   initForm() {
     this.actionForm = this.fb.group({
-      action_id: ['', Validators.required],
+      action: ['', Validators.required],
       remarks: ['', Validators.required]
     })
   }

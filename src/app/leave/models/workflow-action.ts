@@ -1,6 +1,6 @@
 export interface WorkFlowAction {
-  id: number;
-  action_name: string;
+  code: string;
+  name: string;
 }
 
 export interface LeaveProcess {
