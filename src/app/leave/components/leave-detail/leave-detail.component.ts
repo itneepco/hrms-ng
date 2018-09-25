@@ -1,14 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ACTION_TYPES, CL_CODE, RH_CODE } from '../../models/global-codes';
+import { ACTION_TYPES, CL_CODE, RH_CODE, LEAVE_RECOMMENDED } from '../../models/global-codes';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LeaveDetail } from '../../models/leave';
 import { AuthService } from '../../../auth/services/auth.service';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leave-detail',
@@ -26,20 +27,22 @@ export class LeaveDetailComponent implements OnInit {
   cl_code = CL_CODE
   rh_code = RH_CODE
   ctrlOfficers
+  leave_recommended = LEAVE_RECOMMENDED
 
   constructor(
     private authService: AuthService,
     private hierarchyService: HierarchyService,
     public lTypeService: LeaveTypeService,
     private fb: FormBuilder,
+    private router: Router,
     public wActionService: WorkflowActionService,
+    public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
-    console.log(this.data.leave.leaveDays)
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
     this.initForm()
-    this.isTransaction = this.data.isTransaction === 'true';
+    this.isTransaction = this.data.isTransaction;
 
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
       .subscribe(ctrlOfficers => {
@@ -53,15 +56,29 @@ export class LeaveDetailComponent implements OnInit {
 
   initForm() {
     this.actionForm = this.fb.group({
-      action: ['', Validators.required],
+      workflow_action: ['', Validators.required],
       remarks: '',
-      adressee_emp_code: ''
+      officer_emp_code: '',
+      leave_application_id: this.data.leave.id
     })
   }
 
   onSubmit() {
     if(this.actionForm.invalid) return
 
-    console.log(this.actionForm.value)
+    this.dialogRef.close()
+    this.wActionService.processLeave(this.actionForm.value)
+      .subscribe((result) =>  {
+        console.log(result)
+        this.router.navigateByUrl('leave/leave-request') 
+      })  
+  }
+
+  get officer_emp_code() {
+    return this.actionForm.get('officer_emp_code')
+  }
+
+  get workflow_action() {
+    return this.actionForm.get('workflow_action')
   }
 }

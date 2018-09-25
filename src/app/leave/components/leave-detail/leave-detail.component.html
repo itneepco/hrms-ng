@@ -95,7 +95,7 @@
               <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
             </h3>
             <p matLine>
-              <span>&nbsp;&nbsp;&nbsp;&nbsp; -- application is with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
+              <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- application is with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
             </p>
           </mat-list-item>
         </mat-list>
@@ -113,17 +113,17 @@
           
           <form [formGroup]="actionForm" fxLayout="column" (ngSubmit)="onSubmit()">
             <mat-form-field>
-              <mat-select placeholder="Select required action" formControlName="action">
+              <mat-select placeholder="Select required action" formControlName="workflow_action">
                 <mat-option *ngFor="let action of actions" [value]="action.code">
                   {{action.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             
-            <mat-form-field *ngIf="">
-              <mat-select placeholder="Forward to" formControlName="addressee_emp_code">
+            <mat-form-field *ngIf="workflow_action.value == leave_recommended">
+              <mat-select placeholder="Forward to" formControlName="officer_emp_code">
                 <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-                  {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}
+                  {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

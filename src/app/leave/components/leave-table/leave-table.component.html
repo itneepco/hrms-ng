@@ -28,15 +28,15 @@
     </ng-container>
 
     <ng-container matColumnDef="name" *ngIf="isTransaction !== true">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Employe Name</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15">
+      <mat-header-cell *matHeaderCellDef fxFlex="20"> Employe Name</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="20">
         {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="10">
         <button mat-icon-button (click)="onShow(leave)" color="accent">
           <mat-icon>search</mat-icon>
         </button>

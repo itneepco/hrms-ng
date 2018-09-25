@@ -17,7 +17,7 @@ export class LeaveTableComponent implements OnInit {
   displayedColumns: string[];
 
   @Input('dataSource') dataSource: MatTableDataSource<LeaveApplication>
-  @Input('isTransaction') isTransaction: boolean;
+  @Input('isTransaction') isTransaction;
 
   @Output() pageChange = new EventEmitter()
 
@@ -31,9 +31,9 @@ export class LeaveTableComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.isTransaction = this.isTransaction === 'true';
     if(this.isTransaction === true) {
       this.displayedColumns = ["position", "purpose", "applied_on", "status", "with", "actions"]
-      console.log("Im here")
     } else {
       this.displayedColumns = ["position", "purpose", "applied_on", "status", "name", "actions"]
     }

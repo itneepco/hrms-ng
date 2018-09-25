@@ -59,7 +59,7 @@
         <mat-form-field>
           <mat-select placeholder="Forward to" formControlName="officer_emp_code">
             <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-              {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}
+              {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="officer_emp_code.errors?.required">Forwarding officer is required</mat-error>

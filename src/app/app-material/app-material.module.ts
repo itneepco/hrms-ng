@@ -21,6 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatPaginatorModule,
     MatButtonToggleModule,
     MatBottomSheetModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
   exports: [
     MatDialogModule,
@@ -69,7 +71,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatPaginatorModule,
     MatButtonToggleModule,
     MatBottomSheetModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ]
 })
 export class AppMaterialModule { }
