@@ -78,14 +78,14 @@
           <mat-error *ngIf="address.errors?.required">Address is required</mat-error>
         </mat-form-field>
 
-        <div id="leave-info" *ngIf="leaveDays.length > 0">
-          <div *ngFor="let leaveDay of leaveDays; let i=index">
+        <div id="leave-info" *ngIf="leaveDetails.length > 0">
+          <div *ngFor="let leaveDetail of leaveDetails; let i=index">
             <div fxLayout="row" fxLayoutAlign="start center">
               <div fxFlex="15">{{i+1}}.</div> 
-              <div fxFlex="20">{{leaveDay.status.leave_type}}</div>
-              <div fxFlex="50">{{leaveDay.date | date:'mediumDate'}}</div>
+              <div fxFlex="20">{{leaveDetail.status.leave_type}}</div>
+              <div fxFlex="50">{{leaveDetail.date | date:'mediumDate'}}</div>
               <div fxFlex="15">
-                <button mat-icon-button color="warn" type="button" (click)="removeLeave(leaveDay, i)">
+                <button mat-icon-button color="warn" type="button" (click)="removeLeave(leaveDetail, i)">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
@@ -93,7 +93,7 @@
             <mat-divider></mat-divider>
           </div>
         </div>
-        <button mat-raised-button color="primary" [disabled]="leaveForm.invalid || leaveDays.length < 1">Save</button>
+        <button mat-raised-button color="primary" [disabled]="leaveForm.invalid || leaveDetails.length < 1">Apply Leave</button>
       </form>
     </mat-card>
   </div>

@@ -4,7 +4,7 @@ export interface WorkFlowAction {
 }
 
 export interface LeaveProcess {
-  action_id: number;
-  leave_application_id: number;
-  officer_emp_code: string;
+  workflow_action: string;
+  addressee_emp_code: string;
+  remarks: string;
 }

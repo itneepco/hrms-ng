@@ -2,9 +2,9 @@
   <ng-container *ngFor="let status of data.leaveStatuses">
     <ng-container *ngIf="status.balance > 0">
       <a mat-list-item (click)="onSelect($event, status)" 
-          *ngIf="(status.leave_type != 'RH') || (data.isRH && status.leave_type == 'RH')">
-        <span mat-line>{{status.leave_type}}</span>
-        <span mat-line>Apply for {{status.leave_type}}</span>
+          *ngIf="(status.leave_code != rh_code) || (data.isRH && status.leave_code == rh_code)">
+        <span mat-line>{{leaveTypeService.getLeaveType(status.leave_code)}}</span>
+        <span mat-line>Apply for {{leaveTypeService.getLeaveType(status.leave_code)}}</span>
       </a>
     </ng-container>
   </ng-container>

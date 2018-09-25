@@ -9,7 +9,7 @@ export interface LeaveStatus {
   leave_code: string;
 }
 
-export interface LeaveDay {
+export interface LeaveDetail {
   id: number;
   leave_type: string;
   from_date: string;
@@ -36,8 +36,14 @@ export interface LeaveApplication {
   purpose: string;
   address: string;
   contact_no: string;
-  leaveDays: LeaveDay[];
+  addressee: string;
+  status: string;
+  prefix_from: Date;
+  prefix_to: Date;
+  suffix_from: Date;
+  suffix_to: Date;
   created_at: string;
+  leaveDays: LeaveDetail[];
   history: ApplicationHistory[]
 }
 

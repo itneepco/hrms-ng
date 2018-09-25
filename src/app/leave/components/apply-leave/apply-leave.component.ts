@@ -13,6 +13,7 @@ import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
 import { LeaveAppForm } from './../../models/leave';
+import { LeaveTypeService } from '../../services/leave-type.service';
 
 @Component({
   selector: 'app-apply-leave',
@@ -24,7 +25,7 @@ export class ApplyLeaveComponent implements OnInit {
   viewDate: Date = new Date()
   events: CalendarEvent[] = []
   leaveForm: FormGroup
-  leaveDays = [];
+  leaveDetails = [];
   refresh: Subject<any> = new Subject()
   leaveStatuses: LeaveStatus[] = []
   ctrlOfficers;
@@ -36,6 +37,7 @@ export class ApplyLeaveComponent implements OnInit {
     private ledgerService: LedgerService,
     private leaveService: LeaveService,
     private router: Router,
+    private leaveTypeService: LeaveTypeService,
     private bottomSheet: MatBottomSheet) { }
 
   ngOnInit() {
@@ -81,14 +83,14 @@ export class ApplyLeaveComponent implements OnInit {
 
         // Create a calendar event
         let event = {
-          title: "Applied for " + data.status.leave_type,
+          title: "Applied for " + this.leaveTypeService.getLeaveType(data.status.leave_code),
           start: data.date,
           end: data.date,
           color: this.holidayService.colors.red,
         }
 
         this.events.push(event)
-        this.leaveDays.push(Object.assign({ event: event }, data))
+        this.leaveDetails.push(Object.assign({ event: event }, data))
         this.refresh.next()
       })
   }
@@ -102,28 +104,29 @@ export class ApplyLeaveComponent implements OnInit {
     })
   }
 
-  removeLeave(leaveDay, id: number) {
-    leaveDay.status.balance += 1
-    this.leaveDays.splice(id, 1)
-    let index = this.events.indexOf(leaveDay.event)
+  removeLeave(leaveDetail, id: number) {
+    leaveDetail.status.balance += 1
+    this.leaveDetails.splice(id, 1)
+    let index = this.events.indexOf(leaveDetail.event)
     this.events.splice(index, 1)
     this.refresh.next()
   }
 
   applyLeave() {
-    if (this.leaveForm.invalid || this.leaveDays.length < 1) return;
+    if (this.leaveForm.invalid || this.leaveDetails.length < 1) return;
 
-    let leaves = this.leaveDays.map(leaveDay => {
+    let leaves = this.leaveDetails.map(leaveDetail => {
       return { 
-        from_date: leaveDay.date, 
-        to_date: leaveDay.date,
-        leave_type: leaveDay.leave_type
+        from_date: leaveDetail.date, 
+        to_date: leaveDetail.date,
+        leave_type: leaveDetail.status.leave_code
       }
     })
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
-      { leave_days: leaves, emp_code: this.authService.currentUser.emp_code });
+      { leave_details: leaves, emp_code: this.authService.currentUser.emp_code });
     
+    console.log(leavApplication)
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
       console.log(result)
       this.router.navigateByUrl('leave/leave-transaction')

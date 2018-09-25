@@ -45,23 +45,9 @@ export class LedgerService {
   }
 
   getLeaveStatus(empCode: string, year: string): Observable<any> {
-    // return this.http.get(baseURL + "api/leave/status/" + `${empCode}/${year}`)
-    //   .pipe(
-    //     catchError(err => this.handler.handleError(err))
-    //   )
-    let status = [
-      {
-        balance: 2,
-        leave_type: "RH",
-        leave_type_id: 2
-      },
-      {
-        balance: 8,
-        leave_type: "CL",
-        leave_type_id: 1
-      }
-    ]
-
-    return of(status)
+    return this.http.get(baseURL + "api/leave/status/" + `${empCode}/${year}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 }

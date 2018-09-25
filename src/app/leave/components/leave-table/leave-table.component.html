@@ -19,12 +19,12 @@
 
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef fxFlex="15"> Status </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{getLeaveStatus(leave.history)}} </mat-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="15"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="with" *ngIf="isTransaction === true">
       <mat-header-cell *matHeaderCellDef fxFlex="15"> With Officer</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{getOfficerName(leave.history) | titlecase}} </mat-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="15"> {{leave.addressee}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name" *ngIf="isTransaction !== true">

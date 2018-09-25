@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ACTION_TYPES } from '../../models/global-codes';
-import { LeaveDay } from '../../models/leave';
+import { ACTION_TYPES, CL_CODE, RH_CODE } from '../../models/global-codes';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
+import { LeaveDetail } from '../../models/leave';
+import { AuthService } from '../../../auth/services/auth.service';
+import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -16,13 +18,18 @@ import { WorkflowActionService } from '../../services/workflow-action.service';
 export class LeaveDetailComponent implements OnInit {
   panelOpenState = false
   displayedColumns = ["position", "leave_type", "from_date", "to_date"]
-  leaveDaySource: MatTableDataSource<LeaveDay>
+  leaveDetailSource: MatTableDataSource<LeaveDetail>
   step: number = 0
   actionForm: FormGroup
   actions = ACTION_TYPES
   isTransaction;
+  cl_code = CL_CODE
+  rh_code = RH_CODE
+  ctrlOfficers
 
   constructor(
+    private authService: AuthService,
+    private hierarchyService: HierarchyService,
     public lTypeService: LeaveTypeService,
     private fb: FormBuilder,
     public wActionService: WorkflowActionService,
@@ -30,9 +37,14 @@ export class LeaveDetailComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data.leave.leaveDays)
-    this.leaveDaySource = new MatTableDataSource(this.data.leave.leaveDays)
+    this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
     this.initForm()
     this.isTransaction = this.data.isTransaction === 'true';
+
+    this.hierarchyService.getParents(this.authService.currentUser.emp_code)
+      .subscribe(ctrlOfficers => {
+        this.ctrlOfficers = ctrlOfficers
+      })
   }
 
   setStep(index: number) {
@@ -42,7 +54,8 @@ export class LeaveDetailComponent implements OnInit {
   initForm() {
     this.actionForm = this.fb.group({
       action: ['', Validators.required],
-      remarks: ['', Validators.required]
+      remarks: '',
+      adressee_emp_code: ''
     })
   }
 

@@ -41,17 +41,17 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         
-        <div *ngIf="leaveDaySource" style="padding-top: 8px" id="leaveDay">
-          <mat-table [dataSource]="leaveDaySource">
+        <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDay">
+          <mat-table [dataSource]="leaveDetailSource">
             <ng-container matColumnDef="position">
-              <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl. No. </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay; let i = index;" fxFlex="15"> 
+              <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay; let i = index;" fxFlex="10"> 
                 {{ i + 1 }} 
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="leave_type">
-              <mat-header-cell *matHeaderCellDef fxFlex="20"> Leave Type </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay" fxFlex="20"> 
+              <mat-header-cell *matHeaderCellDef fxFlex="30"> Leave Type </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="30"> 
                 {{lTypeService.getLeaveType(leaveDay.leave_type)}} 
               </mat-cell>
             </ng-container>
@@ -62,9 +62,11 @@
             </ng-container>
         
             <ng-container matColumnDef="to_date">
-              <mat-header-cell *matHeaderCellDef fxFlex="35"> To Date </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay" fxFlex="35"> 
-                <span *ngIf="leaveDay.leave_type == '03'">{{leaveDay.to_date | date:'mediumDate'}}</span> 
+              <mat-header-cell *matHeaderCellDef fxFlex="30"> To Date </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="30"> 
+                <span *ngIf="!(leaveDay.leave_type == cl_code || leaveDay.leave_type == rh_code)">
+                  {{leaveDay.to_date | date:'mediumDate'}}
+                </span> 
               </mat-cell>
             </ng-container>
         
@@ -118,6 +120,14 @@
               </mat-select>
             </mat-form-field>
             
+            <mat-form-field *ngIf="">
+              <mat-select placeholder="Forward to" formControlName="addressee_emp_code">
+                <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
+                  {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
             <mat-form-field>
               <input matInput placeholder="Remarks" formControlName="remarks">
             </mat-form-field>

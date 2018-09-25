@@ -4,8 +4,9 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { WorkflowActionService } from '../../services/workflow-action.service';
-import { ApplicationHistory, LeaveApplication } from './../../models/leave';
+import { LeaveApplication } from './../../models/leave';
 import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
+import { LeaveTypeService } from '../../services/leave-type.service';
 
 @Component({
   selector: 'app-leave-table',
@@ -51,23 +52,5 @@ export class LeaveTableComponent implements OnInit {
 
   changePage(pageEvent: PageEvent) {
     this.pageChange.emit(pageEvent)
-  }
-
-  getLeaveStatus(history: ApplicationHistory[]) {
-    let lastItem = history.filter(el => el.isCurrent == true)[0]
-
-    if(lastItem) {
-      return this.wActionService.getWorkflowAction(lastItem.workflow_action)
-    }
-    return null
-  }
-
-  getOfficerName(history: ApplicationHistory[]) {
-    let lastItem = history[history.length-1]
-    
-    if(lastItem) {
-      return lastItem.officer.first_name + " " + lastItem.officer.last_name 
-    }
-    return null
   }
 }

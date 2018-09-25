@@ -35,6 +35,7 @@ export class LeaveRequestComponent implements OnInit {
       .subscribe(data => {
         this.dataLength = data.count
         this.dataSource = new MatTableDataSource<LeaveApplication>(data.rows)
+        console.log(data.rows)
         this.isLoading = false
       },
       errMsg => {

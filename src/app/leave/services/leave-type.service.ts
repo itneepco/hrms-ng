@@ -10,10 +10,10 @@ export class LeaveTypeService {
   getLeaveType(code: string) {
     switch(code) {
       case CL_CODE: {
-        return "CL"
+        return "Casual Leave"
       }
       case RH_CODE: {
-        return "RH"
+        return "Restricted Holiday"
       }
     }
   }
