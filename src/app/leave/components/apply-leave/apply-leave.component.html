@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" id="container">
-  <mat-card fxFlex="70">
+  <mat-card fxFlex="50">
     <div fxLayout="row" fxLayoutAlign="space-between center" id="header">
       <mat-button-toggle-group color="primary">
         <mat-button-toggle mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">Previous
@@ -21,12 +21,6 @@
 
     <div [ngSwitch]="view" id="calendar">
       <div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 10px">
-        <!-- <div fxLayout="row" fxLayoutGap="15px">
-          <div fxLayout="row" fxLayoutGap="4px" 
-              fxLayoutAlign="start center" *ngFor="let status of leaveStatuses">
-            <span class="title bold">{{status.leave_type}}: {{status.balance}}</span>
-          </div>
-        </div> -->
         <div fxLayout="row" fxLayoutGap="15px">
           <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
             <div class="circle blue"></div>
@@ -38,21 +32,27 @@
           </div>
         </div>
       </div>
-      <mwl-calendar-month-view *ngSwitchCase="'month'"
-        [viewDate]="viewDate" (dayClicked)="onDayClick($event)" 
-        [refresh]="refresh" [events]="events">
+      
+      <mwl-calendar-month-view 
+        *ngSwitchCase="'month'"
+        [viewDate]="viewDate" 
+        (dayClicked)="onDayClick($event)" 
+        [refresh]="refresh" 
+        [events]="events">
       </mwl-calendar-month-view>
     </div>
   </mat-card>
 
-  <div fxFlex="30" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
-    <mat-card>
-      <mat-card-subtitle>Leave balance status</mat-card-subtitle>
-      <ng-container *ngFor="let status of leaveStatuses">
-        <span class="title">
-          {{status.leave_type}}: {{status.balance}}
-        </span>
-      </ng-container>
+  <div fxFlex="50" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
+    <mat-card class="leave-balance">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px">
+        <div class="title">Leave Balance:</div>
+        <div fxFlex fxLayoutGap="15px">
+          <span *ngFor="let status of leaveStatuses">
+            {{status.leave_type}}: {{status.balance}}
+          </span>
+        </div>
+      </div>
     </mat-card>
     <mat-card fxFlex>
       <form [formGroup]="leaveForm" fxLayout="column" (ngSubmit)="applyLeave()">
@@ -65,7 +65,7 @@
           <mat-error *ngIf="officer_emp_code.errors?.required">Forwarding officer is required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <textarea matInput placeholder="Purpose" formControlName="purpose"></textarea>
+          <textarea rows="1" matInput placeholder="Purpose" formControlName="purpose"></textarea>
           <mat-error *ngIf="purpose.errors?.required">Purpose is required</mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -74,19 +74,22 @@
           <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <textarea matInput placeholder="Address during leave" formControlName="address"></textarea>
+          <textarea rows="1" matInput placeholder="Address during leave" formControlName="address"></textarea>
           <mat-error *ngIf="address.errors?.required">Address is required</mat-error>
         </mat-form-field>
 
         <div id="leave-info" *ngIf="leaveDetails.length > 0">
           <div *ngFor="let leaveDetail of leaveDetails; let i=index">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div fxFlex="15">{{i+1}}.</div> 
+              <div fxFlex="10">{{i+1}}.</div> 
               <div fxFlex="20">{{leaveDetail.status.leave_type}}</div>
-              <div fxFlex="50">{{leaveDetail.date | date:'mediumDate'}}</div>
-              <div fxFlex="15">
-                <button mat-icon-button color="warn" type="button" (click)="removeLeave(leaveDetail, i)">
-                  <mat-icon>close</mat-icon>
+              <div fxFlex="30">{{leaveDetail.date | date:'mediumDate'}}</div>
+              <div fxFlex="30">
+                <mat-checkbox (change)="onToggle($event, i)">SL</mat-checkbox>
+              </div>
+              <div fxFlex="10">
+                <button mat-icon-button color="accent" type="button" (click)="removeLeave(leaveDetail, i)">
+                  <mat-icon>delete</mat-icon>
                 </button>
               </div>
             </div>

@@ -4,6 +4,8 @@ mat-toolbar {
   position: fixed;
   top: 0px;
   right: 0px;
+  background: #F5EEF8;
+  background-size: cover;
   height: 64px !important;
   z-index: 100;
 }
@@ -17,7 +19,7 @@ mat-toolbar {
   font-size: 14px !important;
   border-left: 1px solid rgba(0, 0, 0, 0.12);
   mat-icon {
-      color: rgba(0, 0, 0, 0.54) !important;
+    color: rgba(0, 0, 0, 0.54) !important;
   }
 }
 

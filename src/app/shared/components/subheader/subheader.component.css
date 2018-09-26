@@ -1,8 +1,8 @@
 mat-toolbar {
-	height: 120px;
+	height: 65px;
 	padding: 0px;
 	background: url('/assets/images/header-bg.png');
-	background-color: #039be5;
+	background-color: #582c4f;
 	background-size: cover;
 }
 

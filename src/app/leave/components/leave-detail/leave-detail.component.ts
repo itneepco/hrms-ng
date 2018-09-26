@@ -10,6 +10,7 @@ import { LeaveDetail } from '../../models/leave';
 import { AuthService } from '../../../auth/services/auth.service';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-leave-detail',
@@ -35,6 +36,7 @@ export class LeaveDetailComponent implements OnInit {
     public lTypeService: LeaveTypeService,
     private fb: FormBuilder,
     private router: Router,
+    private snackbar: MatSnackBar,
     public wActionService: WorkflowActionService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
@@ -66,11 +68,12 @@ export class LeaveDetailComponent implements OnInit {
   onSubmit() {
     if(this.actionForm.invalid) return
 
-    this.dialogRef.close()
     this.wActionService.processLeave(this.actionForm.value)
       .subscribe((result) =>  {
-        console.log(result)
-        this.router.navigateByUrl('leave/leave-request') 
+        this.dialogRef.close("processed")
+        this.snackbar.open("Successfully processed the leave request", "Dismiss", {
+          duration: 1600
+        }) 
       })  
   }
 

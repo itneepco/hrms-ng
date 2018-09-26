@@ -18,7 +18,7 @@ import { LeaveTypeService } from '../../services/leave-type.service';
 @Component({
   selector: 'app-apply-leave',
   templateUrl: './apply-leave.component.html',
-  styleUrls: ['./apply-leave.component.css']
+  styleUrls: ['./apply-leave.component.scss']
 })
 export class ApplyLeaveComponent implements OnInit {
   view: string = 'month'
@@ -90,7 +90,7 @@ export class ApplyLeaveComponent implements OnInit {
         }
 
         this.events.push(event)
-        this.leaveDetails.push(Object.assign({ event: event }, data))
+        this.leaveDetails.push(Object.assign({ event: event, station_leave: false }, data))
         this.refresh.next()
       })
   }
@@ -102,6 +102,12 @@ export class ApplyLeaveComponent implements OnInit {
       address: ['', Validators.required],
       contact_no: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
     })
+  }
+
+  onToggle(event, index) {
+    console.log(event, index)
+    this.leaveDetails[index].station_leave = event.checked
+    console.log(this.leaveDetails)
   }
 
   removeLeave(leaveDetail, id: number) {

@@ -95,7 +95,7 @@
               <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
             </h3>
             <p matLine>
-              <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- application is with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
+              <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- application with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
             </p>
           </mat-list-item>
         </mat-list>

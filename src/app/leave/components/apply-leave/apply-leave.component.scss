@@ -1,3 +1,18 @@
+mat-card {
+  padding: 14px;
+}
+
+.leave-balance {
+  background: rgb(88, 44, 79);
+  opacity: 0.8;   
+  color: #fff; 
+  font-size: 13px;
+  .title {
+    font-weight: 400;
+    font-size: 14px;
+  }
+}
+
 #container {
   padding: 0px 10px;
 }
@@ -17,7 +32,7 @@
 
 h3.month {
   margin: 0px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 h4.list-heading{

@@ -39,14 +39,20 @@ export class LeaveTableComponent implements OnInit {
     }
   }  
 
-  onShow(leaveApplication: LeaveApplication) {
-    this.dialog.open(LeaveDetailComponent, {
+  onShow(leaveApplication: LeaveApplication, index: number) {
+    let dialogRef = this.dialog.open(LeaveDetailComponent, {
       height: '550px',
       width: '700px',
       data: { 
         leave: leaveApplication,
         isTransaction: this.isTransaction
       }
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(!result) return
+      console.log("hello", index)
+      this.dataSource.data = this.dataSource.data.splice(index, 1)
     })
   }
 
