@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/components/login/login.component';
 import { AuthGuard } from './auth/services/auth-guard';
 import { LoginGuard } from './auth/services/login-guard';
-import { HierarchyHomeComponent } from './hierarchy/components/hierarchy-home/hierarchy-home.component';
 import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
@@ -12,11 +11,7 @@ import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledg
 import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
-import { ArchivedComponent } from './training/archived/archived.component';
-import { FeedbackComponent } from './training/feedback/feedback.component';
-import { NewTrainingComponent } from './training/new-training/new-training.component';
-import { TrainingComponent } from './training/training/training.component';
-import { UpcomingComponent } from './training/upcoming/upcoming.component';
+import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
 
 const routes: Routes = [
   {
@@ -40,6 +35,7 @@ const routes: Routes = [
       { path: 'leave-transaction', component: LeaveTransactionComponent },
       { path: 'leave-apply', component: ApplyLeaveComponent },
       { path: 'leave-request', component: LeaveRequestComponent },
+      { path: 'processed-request', component: ProcessedRequestComponent },
       { path: 'leave-ledger', component: LeaveLedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
       { path: '', redirectTo: 'leave-transaction', pathMatch: 'full' }

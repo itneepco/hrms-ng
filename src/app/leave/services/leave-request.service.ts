@@ -23,10 +23,18 @@ export class LeaveRequestService {
         )
   }
 
-  processLeave(process: LeaveProcess) {
-    return this.http.post(this.url, process)
+  getProcessedRequests(empCode: string, pageIndex: number, pageSize: number): Observable<any> {
+    return this.http.get(this.url + `officer/${empCode}/processed` + "?pageIndex=" + 
+      pageIndex + "&pageSize=" + pageSize)
+        .pipe(
+          catchError(this.errorHandler.handleError)
+        )
+  }
+
+  getPendingRequestCount(empCode: string) {
+    return this.http.get(this.url + `officer/${empCode}/count`)
       .pipe(
-        catchError(this.errorHandler.handleError)
+        catchError(err => this.errorHandler.handleError(err))
       )
   }
 }

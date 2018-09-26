@@ -105,9 +105,7 @@ export class ApplyLeaveComponent implements OnInit {
   }
 
   onToggle(event, index) {
-    console.log(event, index)
     this.leaveDetails[index].station_leave = event.checked
-    console.log(this.leaveDetails)
   }
 
   removeLeave(leaveDetail, id: number) {
@@ -125,7 +123,8 @@ export class ApplyLeaveComponent implements OnInit {
       return { 
         from_date: leaveDetail.date, 
         to_date: leaveDetail.date,
-        leave_type: leaveDetail.status.leave_code
+        leave_type: leaveDetail.status.leave_code,
+        station_leave: leaveDetail.station_leave
       }
     })
 

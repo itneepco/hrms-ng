@@ -7,7 +7,12 @@
 			[routerLink]="nav.path" 
 			routerLinkActive="link-active"	
 			mat-button class="link-btn">
-				{{ nav.name }}
+			<span *ngIf="nav.count && nav.count > 0" 
+				matBadge="{{nav.count}}" 
+				matBadgeOverlap="false" 
+				matBadgeColor="accent">{{ nav.name }}</span>
+
+			<span *ngIf="!nav.count" >{{ nav.name }}</span>
 		</button>
 	</div>
 </mat-toolbar>

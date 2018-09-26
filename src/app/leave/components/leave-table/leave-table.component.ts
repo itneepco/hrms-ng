@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { TRANSACTION_PAGE, LEAVE_REQUEST_PAGE, LEAVE_PROCESSED_PAGE } from '../../models/global-codes';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LeaveApplication } from './../../models/leave';
 import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
-import { LeaveTypeService } from '../../services/leave-type.service';
 
 @Component({
   selector: 'app-leave-table',
@@ -15,9 +15,10 @@ import { LeaveTypeService } from '../../services/leave-type.service';
 })
 export class LeaveTableComponent implements OnInit {
   displayedColumns: string[];
+  transactionPage = TRANSACTION_PAGE
 
   @Input('dataSource') dataSource: MatTableDataSource<LeaveApplication>
-  @Input('isTransaction') isTransaction;
+  @Input('pageNo') pageNo;
 
   @Output() pageChange = new EventEmitter()
 
@@ -31,8 +32,7 @@ export class LeaveTableComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.isTransaction = this.isTransaction === 'true';
-    if(this.isTransaction === true) {
+    if(this.pageNo === TRANSACTION_PAGE) {
       this.displayedColumns = ["position", "purpose", "applied_on", "status", "with", "actions"]
     } else {
       this.displayedColumns = ["position", "purpose", "applied_on", "status", "name", "actions"]
@@ -45,14 +45,18 @@ export class LeaveTableComponent implements OnInit {
       width: '700px',
       data: { 
         leave: leaveApplication,
-        isTransaction: this.isTransaction
+        pageNo: this.pageNo
       }
     })
 
     dialogRef.afterClosed().subscribe((result) => {
       if(!result) return
-      console.log("hello", index)
-      this.dataSource.data = this.dataSource.data.splice(index, 1)
+      
+      if(this.pageNo != TRANSACTION_PAGE) {
+        let temp = this.dataSource.data
+        temp.splice(index, 1)
+        this.dataSource.data = temp
+      }
     })
   }
 

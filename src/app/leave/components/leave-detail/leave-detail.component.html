@@ -44,26 +44,34 @@
         <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDay">
           <mat-table [dataSource]="leaveDetailSource">
             <ng-container matColumnDef="position">
-              <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay; let i = index;" fxFlex="10"> 
+              <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl. No. </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay; let i = index;" fxFlex="15"> 
                 {{ i + 1 }} 
               </mat-cell>
             </ng-container>
+
             <ng-container matColumnDef="leave_type">
               <mat-header-cell *matHeaderCellDef fxFlex="30"> Leave Type </mat-header-cell>
               <mat-cell *matCellDef="let leaveDay" fxFlex="30"> 
                 {{lTypeService.getLeaveType(leaveDay.leave_type)}} 
               </mat-cell>
             </ng-container>
+
+            <ng-container matColumnDef="station_leave">
+              <mat-header-cell *matHeaderCellDef fxFlex="15"> Station Leave </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="15"> 
+                {{ leaveDay.station_leave ? "YES": "NO" }} 
+              </mat-cell>
+            </ng-container>
         
             <ng-container matColumnDef="from_date">
-              <mat-header-cell *matHeaderCellDef fxFlex="30"> From Date </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay" fxFlex="30"> {{leaveDay.from_date | date:'mediumDate'}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef fxFlex="20"> From Date </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="20"> {{leaveDay.from_date | date:'mediumDate'}} </mat-cell>
             </ng-container>
         
             <ng-container matColumnDef="to_date">
-              <mat-header-cell *matHeaderCellDef fxFlex="30"> To Date </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDay" fxFlex="30"> 
+              <mat-header-cell *matHeaderCellDef fxFlex="20"> To Date </mat-header-cell>
+              <mat-cell *matCellDef="let leaveDay" fxFlex="20"> 
                 <span *ngIf="!(leaveDay.leave_type == cl_code || leaveDay.leave_type == rh_code)">
                   {{leaveDay.to_date | date:'mediumDate'}}
                 </span> 
@@ -95,13 +103,15 @@
               <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
             </h3>
             <p matLine>
-              <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- application with {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
+              <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- by {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
             </p>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="isTransaction !== true">
+      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
+        *ngIf="!((data.leave.status == leave_approved_code || data.leave.status == leave_callback_code) && 
+            (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage))">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Actions 
@@ -111,7 +121,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           
-          <form [formGroup]="actionForm" fxLayout="column" (ngSubmit)="onSubmit()">
+          <form [formGroup]="actionForm" 
+            fxLayout="column" 
+            (ngSubmit)="onSubmit()">
+            
             <mat-form-field>
               <mat-select placeholder="Select required action" formControlName="workflow_action">
                 <mat-option *ngFor="let action of actions" [value]="action.code">
@@ -120,8 +133,8 @@
               </mat-select>
             </mat-form-field>
             
-            <mat-form-field *ngIf="workflow_action.value == leave_recommended">
-              <mat-select placeholder="Forward to" formControlName="officer_emp_code">
+            <mat-form-field *ngIf="workflow_action.value == leave_recommended_code">
+              <mat-select placeholder="Forward to" formControlName="addressee_emp_code">
                 <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
                   {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
                 </mat-option>

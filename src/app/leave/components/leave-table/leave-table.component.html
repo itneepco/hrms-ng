@@ -22,12 +22,12 @@
       <mat-cell *matCellDef="let leave" fxFlex="15"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="with" *ngIf="isTransaction === true">
+    <ng-container matColumnDef="with" *ngIf="pageNo == transactionPage">
       <mat-header-cell *matHeaderCellDef fxFlex="15"> With Officer</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{leave.addressee}} </mat-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="15"> {{leave.addressee | titlecase}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="name" *ngIf="isTransaction !== true">
+    <ng-container matColumnDef="name" *ngIf="pageNo != transactionPage">
       <mat-header-cell *matHeaderCellDef fxFlex="20"> Employe Name</mat-header-cell>
       <mat-cell *matCellDef="let leave" fxFlex="20">
         {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}

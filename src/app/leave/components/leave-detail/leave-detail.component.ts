@@ -1,16 +1,26 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ACTION_TYPES, CL_CODE, RH_CODE, LEAVE_RECOMMENDED } from '../../models/global-codes';
-import { LeaveTypeService } from '../../services/leave-type.service';
-import { WorkflowActionService } from '../../services/workflow-action.service';
-import { LeaveDetail } from '../../models/leave';
 import { AuthService } from '../../../auth/services/auth.service';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  CALLBACK_ACTION_TYPES,
+  CL_CODE,
+  LEAVE_APPROVED,
+  LEAVE_PROCESSED_PAGE,
+  LEAVE_RECOMMENDED,
+  LEAVE_REQUEST_PAGE,
+  PROCESS_ACTION_TYPES,
+  RH_CODE,
+  TRANSACTION_PAGE,
+  LEAVE_CALLBACKED,
+} from '../../models/global-codes';
+import { LeaveDetail } from '../../models/leave';
+import { LeaveTypeService } from '../../services/leave-type.service';
+import { WorkflowActionService } from '../../services/workflow-action.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -19,23 +29,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LeaveDetailComponent implements OnInit {
   panelOpenState = false
-  displayedColumns = ["position", "leave_type", "from_date", "to_date"]
+  displayedColumns = ["position", "leave_type", "station_leave", "from_date", "to_date"]
   leaveDetailSource: MatTableDataSource<LeaveDetail>
   step: number = 0
   actionForm: FormGroup
-  actions = ACTION_TYPES
-  isTransaction;
+  actions = []
+  ctrlOfficers = []
+
+  //GLobal codes
   cl_code = CL_CODE
   rh_code = RH_CODE
-  ctrlOfficers
-  leave_recommended = LEAVE_RECOMMENDED
+  leave_recommended_code = LEAVE_RECOMMENDED
+  leave_approved_code = LEAVE_APPROVED
+  transactionPage = TRANSACTION_PAGE
+  leaveProcessedPage = LEAVE_PROCESSED_PAGE
+  leave_callback_code = LEAVE_CALLBACKED
 
   constructor(
     private authService: AuthService,
     private hierarchyService: HierarchyService,
     public lTypeService: LeaveTypeService,
     private fb: FormBuilder,
-    private router: Router,
     private snackbar: MatSnackBar,
     public wActionService: WorkflowActionService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
@@ -43,11 +57,18 @@ export class LeaveDetailComponent implements OnInit {
 
   ngOnInit() {
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
+    console.log(this.data)
     this.initForm()
-    this.isTransaction = this.data.isTransaction;
+
+    if(this.data.pageNo == LEAVE_REQUEST_PAGE) {
+      this.actions = PROCESS_ACTION_TYPES
+    }
+    else {
+      this.actions = CALLBACK_ACTION_TYPES
+    }
 
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
-      .subscribe(ctrlOfficers => {
+      .subscribe((ctrlOfficers: any[]) => {
         this.ctrlOfficers = ctrlOfficers
       })
   }
@@ -60,13 +81,14 @@ export class LeaveDetailComponent implements OnInit {
     this.actionForm = this.fb.group({
       workflow_action: ['', Validators.required],
       remarks: '',
-      officer_emp_code: '',
+      officer_emp_code: this.data.pageNo == this.transactionPage ? null : this.authService.currentUser.emp_code,
+      addressee_emp_code: '',
       leave_application_id: this.data.leave.id
     })
   }
 
   onSubmit() {
-    if(this.actionForm.invalid) return
+    if(this.actionForm.invalid) return 
 
     this.wActionService.processLeave(this.actionForm.value)
       .subscribe((result) =>  {
@@ -77,8 +99,8 @@ export class LeaveDetailComponent implements OnInit {
       })  
   }
 
-  get officer_emp_code() {
-    return this.actionForm.get('officer_emp_code')
+  get addressee_emp_code() {
+    return this.actionForm.get('addressee_emp_code')
   }
 
   get workflow_action() {

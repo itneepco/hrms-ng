@@ -3,6 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
+import { TRANSACTION_PAGE } from '../../models/global-codes';
 import { LeaveApplication } from '../../models/leave';
 import { LeaveService } from '../../services/leave.service';
 
@@ -13,10 +14,10 @@ import { LeaveService } from '../../services/leave.service';
 })
 export class LeaveTransactionComponent implements OnInit {
   emp_code: string
-  displayedColumns = ["position", "purpose", "applied_on", "status", "with", "actions"]
   dataSource: MatTableDataSource<LeaveApplication>
   isLoading: boolean
   errMsg: string
+  transactionPage = TRANSACTION_PAGE
 
   // Pagination variables 
   dataLength = 10
@@ -37,7 +38,7 @@ export class LeaveTransactionComponent implements OnInit {
       .subscribe(data => {
         this.dataLength = data.count
         this.dataSource = new MatTableDataSource<LeaveApplication>(data.rows)
-        console.log(data.rows)
+        // console.log(data.rows)
         this.isLoading = false
       },
       errMsg => {

@@ -3,20 +3,20 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
+import { LEAVE_PROCESSED_PAGE } from '../../models/global-codes';
 import { LeaveApplication } from '../../models/leave';
 import { LeaveRequestService } from '../../services/leave-request.service';
-import { LEAVE_REQUEST_PAGE } from '../../models/global-codes';
 
 @Component({
-  selector: 'app-leave-request',
-  templateUrl: './leave-request.component.html',
-  styleUrls: ['./leave-request.component.scss']
+  selector: 'app-processed-request',
+  templateUrl: './processed-request.component.html',
+  styleUrls: ['./processed-request.component.scss']
 })
-export class LeaveRequestComponent implements OnInit {
+export class ProcessedRequestComponent implements OnInit {
   dataSource: MatTableDataSource<LeaveApplication>
   isLoading: boolean
   errMsg: string
-  leaveRequestPage = LEAVE_REQUEST_PAGE
+  processedPage = LEAVE_PROCESSED_PAGE
 
   // Pagination variables 
   dataLength = 10
@@ -33,7 +33,7 @@ export class LeaveRequestComponent implements OnInit {
   getLeaves() {
     this.isLoading = true
     let emp_code = this.auth.currentUser.emp_code
-    this.leaveRequest.getLeaveRequests(emp_code, this.pageIndex, this.pageSize)
+    this.leaveRequest.getProcessedRequests(emp_code, this.pageIndex, this.pageSize)
       .subscribe(data => {
         this.dataLength = data.count
         this.dataSource = new MatTableDataSource<LeaveApplication>(data.rows)

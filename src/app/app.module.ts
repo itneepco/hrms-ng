@@ -25,6 +25,7 @@ import { LeaveTransactionComponent } from './leave/components/leave-transaction/
 import { LeaveComponent } from './leave/components/leave/leave.component';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
+import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SharedModule } from './shared/shared.module';
     LeaveRequestComponent,
     LeaveTableComponent,
     LeaveComponent,
+    ProcessedRequestComponent,
   ],
   entryComponents: [
     AddChildNodeComponent,

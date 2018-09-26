@@ -9,7 +9,7 @@ import {
   LEAVE_APPROVED,
   LEAVE_NOT_RECOMMENDED,
   LEAVE_RECOMMENDED,
-  LEAVE_REJECTED,
+  LEAVE_CALLBACKED
 } from '../models/global-codes';
 import { LeaveProcess } from '../models/workflow-action';
 
@@ -19,7 +19,7 @@ import { LeaveProcess } from '../models/workflow-action';
 export class WorkflowActionService {
   workflowUrl = baseURL + "api/leave/request/"
   
-  constructor(private http: HttpClient, 
+  constructor(private http: HttpClient,
     private handler: ErrorHandlerService) { }
 
   getWorkflowAction(code: string) {
@@ -36,8 +36,8 @@ export class WorkflowActionService {
       case LEAVE_NOT_RECOMMENDED: {
         return "Leave Not Recommended"
       }
-      case LEAVE_REJECTED: {
-        return "Leave Rejected"
+      case LEAVE_CALLBACKED: {
+        return "Leave Callbacked"
       }
     }
   }
