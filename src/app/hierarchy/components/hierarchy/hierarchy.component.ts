@@ -8,6 +8,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HierarchyComponent {
   nav: NavObject[] = [
-    { name: 'Home', path: 'home' }
+    { name: 'Hierarchy Home', path: 'home' }
   ]
 }

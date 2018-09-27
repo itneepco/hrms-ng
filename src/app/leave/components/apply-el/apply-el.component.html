@@ -35,13 +35,13 @@
   
         <div fxLayout="row" fxLayoutGap="20px">
           <mat-form-field fxFlex>
-            <input matInput [matDatepicker]="pref_from" placeholder="Prefix from date">
+            <input matInput [matDatepicker]="pref_from" placeholder="Prefix from date" formControlName="prefix_from">
             <mat-datepicker-toggle matSuffix [for]="pref_from"></mat-datepicker-toggle>
             <mat-datepicker #pref_from></mat-datepicker>
           </mat-form-field>
     
           <mat-form-field fxFlex>
-            <input matInput [matDatepicker]="pref_to" placeholder="Prefix to date">
+            <input matInput [matDatepicker]="pref_to" placeholder="Prefix to date" formControlName="prefix_to">
             <mat-datepicker-toggle matSuffix [for]="pref_to"></mat-datepicker-toggle>
             <mat-datepicker #pref_to></mat-datepicker>
           </mat-form-field>
@@ -49,13 +49,13 @@
   
         <div fxLayout="row" fxLayoutGap="20px">
           <mat-form-field fxFlex>
-            <input matInput [matDatepicker]="suff_from" placeholder="Suffix from date">
+            <input matInput [matDatepicker]="suff_from" placeholder="Suffix from date" formControlName="suffix_from">
             <mat-datepicker-toggle matSuffix [for]="suff_from"></mat-datepicker-toggle>
             <mat-datepicker #suff_from></mat-datepicker>
           </mat-form-field>
     
           <mat-form-field fxFlex>
-            <input matInput [matDatepicker]="suff_to" placeholder="Suffix to date">
+            <input matInput [matDatepicker]="suff_to" placeholder="Suffix to date" formControlName="suffix_to">
             <mat-datepicker-toggle matSuffix [for]="suff_to"></mat-datepicker-toggle>
             <mat-datepicker #suff_to></mat-datepicker>
           </mat-form-field>

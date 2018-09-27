@@ -38,10 +38,10 @@ export interface LeaveApplication {
   contact_no: string;
   addressee: string;
   status: string;
-  prefix_from: Date;
-  prefix_to: Date;
-  suffix_from: Date;
-  suffix_to: Date;
+  prefix_from?: string;
+  prefix_to?: string;
+  suffix_from?: string;
+  suffix_to?: string;
   created_at: string;
   leaveDays: LeaveDetail[];
   history: ApplicationHistory[]
@@ -54,10 +54,15 @@ export interface LeaveAppForm {
   address: string;
   contact_no: string;
   officer_emp_code;
+  prefix_from?: string;
+  prefix_to?: string;
+  suffix_from?: string;
+  suffix_to?: string;
   leaveDays: {
     from_date: string;
     to_date: string;
-    leave_type_id: number;
+    leave_type: string;
+    station_leave: boolean
   }[]
 }
 

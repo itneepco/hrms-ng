@@ -57,7 +57,7 @@ export class LeaveDetailComponent implements OnInit {
 
   ngOnInit() {
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
-    console.log(this.data)
+    // console.log(this.data)
     this.initForm()
 
     if(this.data.pageNo == LEAVE_REQUEST_PAGE) {

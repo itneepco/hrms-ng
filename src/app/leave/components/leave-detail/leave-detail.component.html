@@ -18,17 +18,42 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
   
-        <div>
-          <div class="info"><span class="title">Name: </span>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Emp Name: </span>
             {{data.leave.first_name | titlecase}} 
             {{data.leave.last_name | titlecase}}</div>
-          <div class="info"><span class="title">Purpose: </span>
-            {{data.leave.purpose}}</div>
-          <div class="info"><span class="title">Address: </span>
-            {{data.leave.address}}</div>
-          <div class="info"><span class="title">Contact: </span>
+          <div class="info" fxFlex>
+            <span class="title">Contact: </span>
             {{data.leave.contact_no}}</div>
-        </div> 
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Prefix from: </span>
+            {{data.leave.prefix_from | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">Prefix to: </span>
+            {{data.leave.prefix_to | date:'mediumDate'}}</div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Suffix from: </span>
+            {{data.leave.suffix_from | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">Suffix to: </span>
+            {{data.leave.suffix_to | date:'mediumDate'}}</div>
+        </div>
+
+        <div class="info" fxFlex>
+          <span class="title">Purpose: </span>
+          {{data.leave.purpose}}
+        </div>
+        <div class="info" fxFlex>
+          <span class="title">Address: </span>
+          {{data.leave.address}}
+        </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
@@ -110,46 +135,46 @@
       </mat-expansion-panel>
 
       <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
-        *ngIf="!((data.leave.status == leave_approved_code || data.leave.status == leave_callback_code) && 
-            (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage))">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Actions 
-            </mat-panel-title>
-            <mat-panel-description>
-              Actions to be performed by officer
-            </mat-panel-description>
-          </mat-expansion-panel-header>
+          *ngIf="!((data.leave.status == leave_approved_code || data.leave.status == leave_callback_code) && 
+          (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage))">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Actions 
+          </mat-panel-title>
+          <mat-panel-description>
+            Actions to be performed by officer
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        
+        <form [formGroup]="actionForm" 
+          fxLayout="column" 
+          (ngSubmit)="onSubmit()">
           
-          <form [formGroup]="actionForm" 
-            fxLayout="column" 
-            (ngSubmit)="onSubmit()">
-            
-            <mat-form-field>
-              <mat-select placeholder="Select required action" formControlName="workflow_action">
-                <mat-option *ngFor="let action of actions" [value]="action.code">
-                  {{action.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field *ngIf="workflow_action.value == leave_recommended_code">
-              <mat-select placeholder="Forward to" formControlName="addressee_emp_code">
-                <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-                  {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="Select required action" formControlName="workflow_action">
+              <mat-option *ngFor="let action of actions" [value]="action.code">
+                {{action.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field *ngIf="workflow_action.value == leave_recommended_code">
+            <mat-select placeholder="Forward to" formControlName="addressee_emp_code">
+              <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
+                {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field>
-              <input matInput placeholder="Remarks" formControlName="remarks">
-            </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Remarks" formControlName="remarks">
+          </mat-form-field>
 
-            <div fxLayoutAlign="end start">
-              <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
-            </div>  
-          </form>
-        </mat-expansion-panel>
+          <div fxLayoutAlign="end start">
+            <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
+          </div>  
+        </form>
+      </mat-expansion-panel>
     </mat-accordion>
   </div>
 </div>

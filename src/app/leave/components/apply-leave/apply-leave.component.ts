@@ -132,10 +132,10 @@ export class ApplyLeaveComponent implements OnInit {
       { leave_details: leaves, emp_code: this.authService.currentUser.emp_code });
     
     console.log(leavApplication)
-    // this.leaveService.applyLeave(leavApplication).subscribe(result => { 
-    //   console.log(result)
-    //   this.router.navigateByUrl('leave/leave-transaction')
-    // })
+    this.leaveService.applyLeave(leavApplication).subscribe(result => { 
+      console.log(result)
+      this.router.navigateByUrl('leave/leave-transaction')
+    })
   }
 
   get officer_emp_code() {

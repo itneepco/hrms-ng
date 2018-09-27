@@ -51,8 +51,8 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     loadChildren: 'app/training/training.module#TrainingModule'
   },
-  { path: '', redirectTo: '/leave/leave-transaction', pathMatch: "full" },
-  { path: '**', redirectTo: '/leave/leave-transaction', pathMatch: "full" }
+  { path: '', redirectTo: '/leave/leave-dashboard', pathMatch: "full" },
+  { path: '**', redirectTo: '/leave/leave-dashboard', pathMatch: "full" }
 ]
 
 @NgModule({

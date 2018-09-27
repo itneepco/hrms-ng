@@ -8,7 +8,7 @@
       <p id="error" *ngIf="errorMsg">{{errorMsg}}</p>
 
       <mat-form-field>
-        <input matInput type="text" placeholder="Employee Code" formControlName="emp_code">
+        <input matInput type="text" placeholder=" 6 Digit Employee Code" formControlName="emp_code">
         <mat-error *ngIf="emp_code.dirty && emp_code.errors?.required">
           Employee Code is required
         </mat-error>

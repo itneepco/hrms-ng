@@ -4,8 +4,8 @@ mat-toolbar {
   position: fixed;
   top: 0px;
   right: 0px;
-  background: #F5EEF8;
-  background-size: cover;
+  background-color: #F5EEF8 !important;
+  // background-color: #e0e0e0 !important;
   height: 64px !important;
   z-index: 100;
 }

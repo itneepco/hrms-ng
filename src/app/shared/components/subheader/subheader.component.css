@@ -4,6 +4,8 @@ mat-toolbar {
 	background: url('/assets/images/header-bg.png');
 	background-color: #582c4f;
 	background-size: cover;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
 }
 
 .header {
@@ -11,19 +13,12 @@ mat-toolbar {
 	padding-top: 15px;
 }
 
-.title {
-   font-size: 26px !important;
-   /* color: rgba(0, 0, 0, 0.54) !important; */
-   color: #fff !important;
-}
 
 .link-btn {
-	font-size: 12px;
-	text-transform: uppercase;
+	font-size: 13px;
+	text-transform: titlecase;
 	border-radius: 0px; 
 	color: gainsboro !important
-	/* color: rgba(255,255,255,0.7)!important */
-	/* color: rgba(0, 0, 0, 0.54) !important; */
 }
 
 .link-active {

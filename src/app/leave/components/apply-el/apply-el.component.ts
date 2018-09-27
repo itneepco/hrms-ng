@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AuthService } from '../../../auth/services/auth.service';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
-import { LedgerService } from '../../services/ledger.service';
-import { LeaveStatus, LeaveAppForm } from '../../models/leave';
 import { EL_CODE } from '../../models/global-codes';
+import { LeaveAppForm, LeaveStatus } from '../../models/leave';
+import { LeaveService } from '../../services/leave.service';
+import { LedgerService } from '../../services/ledger.service';
 
 @Component({
   selector: 'app-apply-el',
@@ -20,6 +23,8 @@ export class ApplyElComponent implements OnInit {
     private authService: AuthService,
     private hierarchyService: HierarchyService,
     private ledgerService: LedgerService,
+    private leaveService: LeaveService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -61,16 +66,21 @@ export class ApplyElComponent implements OnInit {
       leave_type: EL_CODE,
       station_leave: this.station_leave.value
     }]
-    var date1 = new Date("11/7/2010");
-    var date2 = new Date("12/8/2010");
-    var diffDays = date2.valueOf() - date1.valueOf();
 
-    alert(diffDays / (1000 * 60 * 60 * 24))
+    // var date1 = new Date("11/7/2010");
+    // var date2 = new Date("12/8/2010");
+    // var diffDays = date2.valueOf() - date1.valueOf();
+    // alert(diffDays / (1000 * 60 * 60 * 24))
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
       { leave_details: leave_detail, emp_code: this.authService.currentUser.emp_code });
 
-    console.log(leavApplication)  
+    console.log(leavApplication)
+    console.log(new Date().toLocaleDateString())
+    // this.leaveService.applyLeave(leavApplication).subscribe(result => { 
+    //   console.log(result)
+    //   this.router.navigateByUrl('leave/leave-transaction')
+    // })  
   }
 
 

@@ -1,41 +1,48 @@
 #side-header {
-  // background-color: #3c4252 !important; 
-  background: #F5EEF8;
-  // color: rgba(255,255,255,.87)!important;
+  background-color: #F5EEF8 !important;
+  // background-color: #e0e0e0 !important;
   text-transform: uppercase;
   font-size: 20px;
   padding-left: 24px;
   #brand-name {
     margin-left: 10px;
-    font-family: 'Sofia', cursive;
-    line-height: 28px;
-    font-size: 24px;
-    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 20px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #6b4662;
   }
   z-index: 100;
 }
 
+mat-divider {
+  background: #ebe6ea !important;
+}
+
 mat-list-item {
-  color: #fff !important;
-  font-size: 14px !important;
+  color: #6b4662 !important;
+  font-size: 15px !important;
+  font-weight: 400;
   mat-icon {
-      font-size: 18px !important;
-      display: flex;
-      align-items: center;
+    font-size: 20px !important;
+    display: flex;
+    align-items: center;
   }
 }
 
 .active {
-  background-color: #039be5;
+  background-color: #582c4f;
+  mat-icon { color: #B99650 !important };
+  color: #fff !important;
   &:hover, &:focus {
-      background-color: #039be5;
+    background-color: #582c4f;  
   }
 }
 
 .group-title {
-  font-size: 12px;
+  color: #6b4662 !important;
+  font-size: 13px;
   text-transform: uppercase;
-  color: rgba(221, 215, 215, 0.87)!important;
   height: 48px;
   display: flex;
   align-items: center;
