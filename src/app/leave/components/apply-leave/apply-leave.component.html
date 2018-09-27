@@ -1,5 +1,5 @@
-<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" id="container">
-  <mat-card fxFlex="50">
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" id="container">
+  <mat-card fxFlex="60">
     <div fxLayout="row" fxLayoutAlign="space-between center" id="header">
       <mat-button-toggle-group color="primary">
         <mat-button-toggle mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">Previous
@@ -43,7 +43,7 @@
     </div>
   </mat-card>
 
-  <div fxFlex="50" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
+  <div fxFlex="40" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
     <mat-card class="leave-balance">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px">
         <div class="title">Leave Balance:</div>
@@ -82,10 +82,10 @@
           <div *ngFor="let leaveDetail of leaveDetails; let i=index">
             <div fxLayout="row" fxLayoutAlign="start center">
               <div fxFlex="10">{{i+1}}.</div> 
-              <div fxFlex="20">{{leaveDetail.status.leave_type}}</div>
+              <div fxFlex="15">{{leaveDetail.status.leave_type}}</div>
               <div fxFlex="30">{{leaveDetail.date | date:'mediumDate'}}</div>
-              <div fxFlex="30">
-                <mat-checkbox (change)="onToggle($event, i)">SL</mat-checkbox>
+              <div fxFlex="35">
+                <mat-checkbox (change)="onToggle($event, i)">Station Leave</mat-checkbox>
               </div>
               <div fxFlex="10">
                 <button mat-icon-button color="accent" type="button" (click)="removeLeave(leaveDetail, i)">

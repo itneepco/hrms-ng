@@ -1,6 +1,38 @@
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
+$mat-deep-purple: (
+	50: #ebe6ea,
+	100: #cdc0ca,
+	200: #ac96a7,
+	300: #8a6b84,
+	400: #714c69,
+	500: #582c4f,
+	600: #502748,
+	700: #47213f,
+	800: #3d1b36,
+	900: #2d1026,
+	A100: #ff6cd9,
+	A200: #ff39cb,
+	A400: #ff06be,
+	A700: #eb00ae,
+	contrast: (
+		50: $dark-primary-text,
+		100: $dark-primary-text,
+		200: $dark-primary-text,
+		300: $dark-primary-text,
+		400: $dark-primary-text,
+		500: $light-primary-text,
+		600: $light-primary-text,
+		700: $light-primary-text,
+		800: $light-primary-text,
+		900: $light-primary-text,
+		A100: $dark-primary-text,
+		A200: $dark-primary-text,
+		A400: $dark-primary-text,
+		A700: $light-primary-text,
+	)
+);
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -9,7 +41,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
-$candy-app-primary: mat-palette($mat-light-blue);
+$candy-app-primary: mat-palette($mat-deep-purple);
 $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).

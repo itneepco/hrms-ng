@@ -38,9 +38,9 @@
       </mat-form-field> -->
       <div fxFlex="20">
         <button mat-raised-button *ngIf="_holiday.id"
-          color="accent" [disabled]="holidayForm.invalid">Update</button>
+          color="primary" [disabled]="holidayForm.invalid">Update</button>
         <button mat-raised-button *ngIf="!_holiday.id"
-          color="accent" [disabled]="holidayForm.invalid">Add</button>
+          color="primary" [disabled]="holidayForm.invalid">Add</button>
       </div>
     </div>
   </form>

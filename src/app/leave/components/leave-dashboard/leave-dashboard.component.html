@@ -1,0 +1,63 @@
+<div fxLayout="row" fxLayoutGap="20px" id="leave-dashboard">
+  <div fxFlex="60" fxLayout="column" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>folder</mat-icon>
+            <h3 matLine> Casual Leave </h3>
+            <p matLine>Balance: 10</p>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button routerLink="/leave/leave-apply">Apply Casual Leave</button>
+        </div>
+      </mat-card>
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>folder</mat-icon>
+            <h3 matLine>Restricted Holiday</h3>
+            <p matLine>Balance: 2</p>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button routerLink="/leave/leave-apply">Apply Restricted Holiday</button>
+        </div>
+      </mat-card>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>folder</mat-icon>
+            <h3 matLine>Earned Leave</h3>
+            <p matLine>Balance: 100</p>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button routerLink="/leave/leave-apply-el">Apply Earned Leave</button>
+        </div>
+      </mat-card>
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>folder</mat-icon>
+            <h3 matLine>Medical Leave</h3>
+            <p matLine>Balance: 200</p>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button routerLink="/leave/leave-apply-el">Apply Medical Leave</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div fxFlex="40" fxLayout="column">
+    <mat-card fxFlex>5</mat-card>
+  </div>
+</div>

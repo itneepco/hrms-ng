@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CL_CODE, RH_CODE } from '../models/global-codes';
+
+import { CL_CODE, EL_CODE, RH_CODE } from '../models/global-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class LeaveTypeService {
       }
       case RH_CODE: {
         return "Restricted Holiday"
+      }
+      case EL_CODE: {
+        return "Earned Leave"
       }
     }
   }

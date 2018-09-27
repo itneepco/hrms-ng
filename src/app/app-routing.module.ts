@@ -12,6 +12,8 @@ import { LeaveRequestComponent } from './leave/components/leave-request/leave-re
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
 import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
+import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
+import { ApplyElComponent } from './leave/components/apply-el/apply-el.component';
 
 const routes: Routes = [
   {
@@ -32,13 +34,15 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     component: LeaveComponent,
     children: [
+      { path: 'leave-dashboard', component: LeaveDashboardComponent },
       { path: 'leave-transaction', component: LeaveTransactionComponent },
       { path: 'leave-apply', component: ApplyLeaveComponent },
+      { path: 'leave-apply-el', component: ApplyElComponent },
       { path: 'leave-request', component: LeaveRequestComponent },
       { path: 'processed-request', component: ProcessedRequestComponent },
       { path: 'leave-ledger', component: LeaveLedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
-      { path: '', redirectTo: 'leave-transaction', pathMatch: 'full' }
+      { path: '', redirectTo: 'leave-dashboard', pathMatch: 'full' }
     ]
   },
   {

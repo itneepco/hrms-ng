@@ -9,7 +9,15 @@ import { AuthService } from '../../../auth/services/auth.service';
   styleUrls: ['./leave.component.css']
 })
 export class LeaveComponent implements OnInit {
-  navObj: NavObject[];
+  navObj: NavObject[] = [
+    { name: 'Overview', path: 'leave-dashboard' },
+    { name: 'Transactions', path: 'leave-transaction' },
+    { name: 'Pending Request', path: 'leave-request'},
+    { name: 'Processed Request', path: 'processed-request' },
+    { name: 'Holidays', path: 'holiday-list' },
+    { name: 'Ledger', path: 'leave-ledger' }
+  ];
+
   pendingRequest: number = 0;
 
   constructor(private leaveRequestService: LeaveRequestService,
@@ -19,14 +27,7 @@ export class LeaveComponent implements OnInit {
   ngOnInit() {
     this.leaveRequestService.getPendingRequestCount(this.authService.currentUser.emp_code)
       .subscribe((count: number) => {
-        this.navObj = [
-          { name: 'Apply Leave', path: 'leave-apply' },
-          { name: 'Transactions', path: 'leave-transaction' },
-          { name: 'Pending Request', path: 'leave-request', count: count },
-          { name: 'Processed Request', path: 'processed-request' },
-          { name: 'Holidays', path: 'holiday-list' },
-          { name: 'Ledger', path: 'leave-ledger' }
-        ]
+        this.navObj[2] =  { name: 'Pending Request', path: 'leave-request', count: count ? count : 0 }
       })
   }
 }

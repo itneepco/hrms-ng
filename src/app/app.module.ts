@@ -26,6 +26,8 @@ import { LeaveComponent } from './leave/components/leave/leave.component';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
 import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
+import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
+import { ApplyElComponent } from './leave/components/apply-el/apply-el.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { ProcessedRequestComponent } from './leave/components/processed-request/
     LeaveTableComponent,
     LeaveComponent,
     ProcessedRequestComponent,
+    LeaveDashboardComponent,
+    ApplyElComponent,
   ],
   entryComponents: [
     AddChildNodeComponent,
