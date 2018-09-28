@@ -14,6 +14,7 @@ export interface LeaveDetail {
   leave_type: string;
   from_date: string;
   to_date: string;
+  staion_leave: boolean;
 }
 
 export interface ApplicationHistory {
@@ -43,7 +44,7 @@ export interface LeaveApplication {
   suffix_from?: string;
   suffix_to?: string;
   created_at: string;
-  leaveDays: LeaveDetail[];
+  leaveDetails: LeaveDetail[];
   history: ApplicationHistory[]
 }
 

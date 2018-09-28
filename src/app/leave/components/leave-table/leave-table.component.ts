@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { TRANSACTION_PAGE, LEAVE_REQUEST_PAGE } from '../../models/global-codes';
+import { TRANSACTION_PAGE, LEAVE_REQUEST_PAGE, EL_CODE, CL_CODE, ML_CODE, RH_CODE } from '../../models/global-codes';
 import { PendingRequestService } from '../../services/pending-request.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LeaveApplication } from './../../models/leave';
@@ -36,9 +36,9 @@ export class LeaveTableComponent implements OnInit {
 
   ngOnInit() {
     if(this.pageNo === TRANSACTION_PAGE) {
-      this.displayedColumns = ["position", "purpose", "applied_on", "status", "with", "actions"]
+      this.displayedColumns = ["position", "type", "applied_on", "status", "with", "actions"]
     } else {
-      this.displayedColumns = ["position", "purpose", "applied_on", "status", "name", "actions"]
+      this.displayedColumns = ["position", "type", "applied_on", "status", "name", "actions"]
     }
   }  
 
@@ -70,5 +70,17 @@ export class LeaveTableComponent implements OnInit {
 
   changePage(pageEvent: PageEvent) {
     this.pageChange.emit(pageEvent)
+  }
+
+  getLeaveType(leaveApplication: LeaveApplication) {
+    let el_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == EL_CODE)
+    if(el_type) return "EL"
+
+    let ml_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == ML_CODE)
+    if(ml_type) return "ML/HL"
+
+    let cl_rh_type = leaveApplication.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
+    return "CL/RH"
   }
 }

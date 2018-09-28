@@ -72,7 +72,6 @@ export class RoleMapperComponent implements OnInit {
 
   onSubmit() {
     let roleMapperFormValue = <RoleMapper> this.roleMapperForm.value
-    console.log(this.roleMapperForm.value)
 
     if(this._roleMapper.id) {
       this.roleMapperService.editRoleMapper(this._roleMapper.id, roleMapperFormValue).subscribe(

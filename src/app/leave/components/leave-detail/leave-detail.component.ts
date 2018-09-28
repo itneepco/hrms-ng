@@ -4,25 +4,27 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import {
   CALLBACK_ACTION_TYPES,
   CL_CODE,
+  EL_CODE,
+  EL_ML_ACTION_TYPES,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
   LEAVE_PROCESSED_PAGE,
   LEAVE_RECOMMENDED,
   LEAVE_REQUEST_PAGE,
+  ML_CODE,
   PROCESS_ACTION_TYPES,
   RH_CODE,
   TRANSACTION_PAGE,
-  EL_CODE,
-  ML_CODE,
 } from '../../models/global-codes';
 import { LeaveDetail } from '../../models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
-import { HierarchyService } from '../../../admin/services/hierarchy.service';
+import { EL_ADMIN, MEDICAL_ADMIN } from '../../../admin/model/global-code';
 
 @Component({
   selector: 'app-leave-detail',
@@ -47,10 +49,6 @@ export class LeaveDetailComponent implements OnInit {
   leaveProcessedPage = LEAVE_PROCESSED_PAGE
   leave_callback_code = LEAVE_CALLBACKED
 
-  //Leave types
-  isEarnedLeave = false;
-  isMedicalLeave = false;
-
   constructor(
     private authService: AuthService,
     private hierarchyService: HierarchyService,
@@ -64,22 +62,7 @@ export class LeaveDetailComponent implements OnInit {
   ngOnInit() {
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
     this.initForm()
-    
-    let el_type = this.data.leave.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == EL_CODE)
-    this.isEarnedLeave = el_type ? true : false  
-
-    let ml_type = this.data.leave.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == ML_CODE)
-    this.isMedicalLeave = ml_type ? true : false  
-
-    if(this.data.pageNo == LEAVE_REQUEST_PAGE) {
-      this.actions = PROCESS_ACTION_TYPES
-    }
-    else {
-      this.actions = CALLBACK_ACTION_TYPES
-    }
-
+    this.actions = this.getActions()
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
       .subscribe((ctrlOfficers: any[]) => {
         this.ctrlOfficers = ctrlOfficers
@@ -95,15 +78,21 @@ export class LeaveDetailComponent implements OnInit {
       workflow_action: ['', Validators.required],
       remarks: '',
       officer_emp_code: this.data.pageNo == this.transactionPage ? null : this.authService.currentUser.emp_code,
-      addressee_emp_code: '',
+      addressee: '',
       leave_application_id: this.data.leave.id
     })
   }
 
   onSubmit() {
     if(this.actionForm.invalid) return 
+    let formValue = this.actionForm.value
 
-    this.wActionService.processLeave(this.actionForm.value)
+    if(this.workflow_action.value == LEAVE_RECOMMENDED) {
+      if(this.isEarnedLeave) formValue.addressee = EL_ADMIN
+      if(this.isMedicalLeave) formValue.addressee = MEDICAL_ADMIN 
+    }
+
+    this.wActionService.processLeave(formValue)
       .subscribe((result) =>  {
         this.dialogRef.close("processed")
         this.snackbar.open("Successfully processed the leave request", "Dismiss", {
@@ -112,11 +101,39 @@ export class LeaveDetailComponent implements OnInit {
       })  
   }
 
-  get addressee_emp_code() {
-    return this.actionForm.get('addressee_emp_code')
+  getActions() {
+    if(this.data.pageNo != LEAVE_REQUEST_PAGE) {
+      return CALLBACK_ACTION_TYPES
+    }
+    else {  
+      if(this.isEarnedLeave || this.isMedicalLeave) 
+        return EL_ML_ACTION_TYPES
+      
+      return this.actions = PROCESS_ACTION_TYPES
+    }
+  }
+
+  get addressee() {
+    return this.actionForm.get('addressee')
   }
 
   get workflow_action() {
     return this.actionForm.get('workflow_action')
+  }
+
+  get isEarnedLeave(): boolean {
+    let el_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == EL_CODE)
+    return el_type ? true : false  
+  }
+
+  get isMedicalLeave(): boolean {
+    let ml_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == ML_CODE)
+    return ml_type ? true : false  
+  }
+
+  getOfficerName(officer) {
+    return `${officer.first_name} ${officer.last_name}, ${officer.designation}`
   }
 }

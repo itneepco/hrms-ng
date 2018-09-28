@@ -1,8 +1,8 @@
-export const EL_ADMIN = '01';
-export const MEDICAL_ADMIN = '02'
-export const TIME_OFFICE_ADMIN = '03'
-export const VEHICLE_ADMIN = '04'
-export const TRAINING_ADMIN = '05'
+export const EL_ADMIN = 'RMAPEL';
+export const MEDICAL_ADMIN = 'RMAPML'
+export const TIME_OFFICE_ADMIN = 'RMAPTO'
+export const VEHICLE_ADMIN = 'RMAPVH'
+export const TRAINING_ADMIN = 'RMAPTR'
 
 export const EMPLOYEE_ROLES = [
   { name: "Earned Leave Admin", code: EL_ADMIN },

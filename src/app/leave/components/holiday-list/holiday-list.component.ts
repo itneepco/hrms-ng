@@ -71,7 +71,7 @@ export class HolidayListComponent implements OnInit {
 
   onSubmit() {
     let holidayFormValue = <Holiday> this.holidayForm.value
-    console.log(this.holidayForm.value)
+    // console.log(this.holidayForm.value)
 
     if(this._holiday.id) {
       this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(

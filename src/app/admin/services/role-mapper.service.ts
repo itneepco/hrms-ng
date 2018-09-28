@@ -17,7 +17,7 @@ export class RoleMapperService {
   }
 
   getUrl() {
-    return baseURL + 'api/rolemapper/'
+    return baseURL + 'api/rolemapper'
   }
 
   getRoleName(code: string) {
@@ -55,7 +55,6 @@ export class RoleMapperService {
   }
 
   editRoleMapper(id: number, roleMapper: RoleMapper) {
-    console.log(roleMapper)
     return this.http.put(this.getUrl() + id, roleMapper)
       .pipe(
         catchError(err => this.handler.handleError(err))
@@ -64,6 +63,13 @@ export class RoleMapperService {
 
   deleteRoleMapper(id: number) {
     return this.http.delete(this.getUrl() + id)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  getRoleMapper(role: string, project_code?: string) {
+    return this.http.get<RoleMapper>(`${this.getUrl()}/role/${role}?project_code=${project_code}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
