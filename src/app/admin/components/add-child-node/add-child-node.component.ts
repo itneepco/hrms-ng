@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { TreeNode } from '../../shared/employee-node';
+import { TreeNode } from '../../model/employee-node';
 import { HierarchyService } from './../../services/hierarchy.service';
-import { Hierarchy } from './../../shared/employee-node';
+import { Hierarchy } from './../../model/employee-node';
 
 @Component({
   selector: 'app-add-child-node',

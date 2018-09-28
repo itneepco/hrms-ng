@@ -1,3 +1,97 @@
-<p>
-  role-mapper works!
-</p>
+<mat-card>
+  <mat-card-subtitle>Add new role mapper</mat-card-subtitle>
+  <form [formGroup]="roleMapperForm" (ngSubmit)="onSubmit()">
+    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
+      <mat-form-field fxFlex="25">
+        <mat-select placeholder="Project" formControlName="project_code">
+          <mat-option *ngFor="let project of projects" [value]="project.code">
+            {{project.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="project_code.touched && project_code.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="25">
+        <mat-select placeholder="Role" formControlName="role">
+          <mat-option *ngFor="let emp_role of emp_roles" [value]="emp_role.code">
+            {{emp_role.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="role.touched && role.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="30">
+        <input matInput placeholder="Employee Code" formControlName="emp_code">
+        <mat-error *ngIf="emp_code.touched && emp_code.errors?.required">
+          is required
+        </mat-error>
+      </mat-form-field>
+      
+
+      <div fxFlex="20">
+        <button mat-raised-button *ngIf="_roleMapper.id"
+          color="primary" [disabled]="roleMapperForm.invalid">Update</button>
+        <button mat-raised-button *ngIf="!_roleMapper.id"
+          color="primary" [disabled]="roleMapperForm.invalid">Add</button>
+      </div>
+    </div>
+  </form>
+</mat-card>
+
+<mat-card *ngIf="dataSource" style="padding-top: 8px">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper; let i = index;" fxFlex="10"> 
+        {{ i + 1 + pageIndex*pageSize }} 
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="project_code">
+      <mat-header-cell *matHeaderCellDef fxFlex="25"> Project </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> {{roleMapper.project_code}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef fxFlex="25"> Role </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> {{roleMapperService.getRoleName(roleMapper.role)}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="emp_code">
+      <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.lt-md="10"> Employee </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25" fxFlex.lt-md="10"> {{roleMapper.emp_code}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.lt-md="20"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="15" fxFlex.lt-md="20">
+        <button mat-icon-button (click)="onEdit(roleMapper)" color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onRemove(roleMapper)" color="warn">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+    [length]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    showFirstLastButtons
+    (page)="changePage($event)">
+  </mat-paginator>
+</mat-card>
+
+<mat-card *ngIf="errMsg">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card>
+
+<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

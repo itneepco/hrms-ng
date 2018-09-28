@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { HierarchyService } from '../../services/hierarchy.service';
 import { AddChildNodeComponent } from '../add-child-node/add-child-node.component';
-import { EmployeeNode, TreeNode } from './../../shared/employee-node';
+import { EmployeeNode, TreeNode } from './../../model/employee-node';
 
 @Component({
   selector: 'app-hierarchy-home',

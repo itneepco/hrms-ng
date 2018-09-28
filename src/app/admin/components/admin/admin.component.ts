@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent {
   nav: NavObject[] = [
-    { name: 'Hierarchy', path: 'hierarchy' },
+    { name: 'Employee Hierarchy', path: 'hierarchy' },
     { name: 'Role Mapper', path: 'role-mapper' }
   ]
 }
