@@ -1,10 +1,10 @@
-import { HierarchyModule } from './hierarchy.module';
+import { AdminModule } from "./admin.module";
 
 describe('HierarchyModule', () => {
-  let hierarchyModule: HierarchyModule;
+  let hierarchyModule: AdminModule;
 
   beforeEach(() => {
-    hierarchyModule = new HierarchyModule();
+    hierarchyModule = new AdminModule();
   });
 
   it('should create an instance', () => {

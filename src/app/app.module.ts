@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'angular-calendar';
 
+import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/components/login/login.component';
@@ -11,8 +12,6 @@ import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 import { MenuService } from './core/services/menu.service';
-import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
-import { HierarchyModule } from './hierarchy/hierarchy.module';
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
 import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
@@ -51,7 +50,6 @@ import { SharedModule } from './shared/shared.module';
     ApplyLeaveComponent,
   ],
   entryComponents: [
-    AddChildNodeComponent,
     AddLedgerComponent,
     LeaveMenuComponent,
     LeaveDetailComponent,
@@ -60,7 +58,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     SharedModule,
-    HierarchyModule,
+    AdminModule,
     CalendarModule.forRoot()
   ],
   providers: [

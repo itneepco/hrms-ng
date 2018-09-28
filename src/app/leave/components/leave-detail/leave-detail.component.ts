@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
 import {
   CALLBACK_ACTION_TYPES,
   CL_CODE,
@@ -17,10 +16,13 @@ import {
   PROCESS_ACTION_TYPES,
   RH_CODE,
   TRANSACTION_PAGE,
+  EL_CODE,
+  ML_CODE,
 } from '../../models/global-codes';
 import { LeaveDetail } from '../../models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
+import { HierarchyService } from '../../../admin/services/hierarchy.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -45,6 +47,10 @@ export class LeaveDetailComponent implements OnInit {
   leaveProcessedPage = LEAVE_PROCESSED_PAGE
   leave_callback_code = LEAVE_CALLBACKED
 
+  //Leave types
+  isEarnedLeave = false;
+  isMedicalLeave = false;
+
   constructor(
     private authService: AuthService,
     private hierarchyService: HierarchyService,
@@ -57,8 +63,15 @@ export class LeaveDetailComponent implements OnInit {
 
   ngOnInit() {
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
-    // console.log(this.data)
     this.initForm()
+    
+    let el_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == EL_CODE)
+    this.isEarnedLeave = el_type ? true : false  
+
+    let ml_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == ML_CODE)
+    this.isMedicalLeave = ml_type ? true : false  
 
     if(this.data.pageNo == LEAVE_REQUEST_PAGE) {
       this.actions = PROCESS_ACTION_TYPES

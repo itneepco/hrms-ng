@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AdminComponent } from './admin/components/admin/admin.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { AuthGuard } from './auth/services/auth-guard';
 import { LoginGuard } from './auth/services/login-guard';
-import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
 import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
@@ -17,11 +17,11 @@ import { ProcessedRequestComponent } from './leave/components/processed-request/
 
 const routes: Routes = [
   {
-    path: 'hierarchy',
+    path: 'administrator',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    component: HierarchyComponent,
-    loadChildren: 'app/hierarchy/hierarchy.module#HierarchyModule'
+    component: AdminComponent,
+    loadChildren: 'app/admin/admin.module#AdminModule'
   },
   {
     path: 'login',

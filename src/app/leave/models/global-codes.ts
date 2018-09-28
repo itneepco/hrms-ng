@@ -22,6 +22,11 @@ export const PROCESS_ACTION_TYPES = [
   { code: LEAVE_NOT_RECOMMENDED, name: "Leave Not Recommended" },
 ]
 
+export const EL_ML_ACTION_TYPES = [
+  { code: LEAVE_RECOMMENDED, name: "Leave Recommended" },
+  { code: LEAVE_NOT_RECOMMENDED, name: "Leave Not Recommended" },
+]
+
 export const CALLBACK_ACTION_TYPES = [
   { code: LEAVE_CALLBACKED, name: "Callback Leave" },
 ]
