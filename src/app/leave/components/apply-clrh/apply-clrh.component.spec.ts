@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplyElComponent } from './apply-el.component';
+import { ApplyCLRHComponent } from './apply-clrh.component';
 
-describe('ApplyElComponent', () => {
-  let component: ApplyElComponent;
-  let fixture: ComponentFixture<ApplyElComponent>;
+describe('LeaveListComponent', () => {
+  let component: ApplyCLRHComponent;
+  let fixture: ComponentFixture<ApplyCLRHComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ApplyElComponent ]
+      declarations: [ ApplyCLRHComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplyElComponent);
+    fixture = TestBed.createComponent(ApplyCLRHComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

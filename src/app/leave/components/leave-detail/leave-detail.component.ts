@@ -10,13 +10,13 @@ import {
   CALLBACK_ACTION_TYPES,
   CL_CODE,
   LEAVE_APPROVED,
+  LEAVE_CALLBACKED,
   LEAVE_PROCESSED_PAGE,
   LEAVE_RECOMMENDED,
   LEAVE_REQUEST_PAGE,
   PROCESS_ACTION_TYPES,
   RH_CODE,
   TRANSACTION_PAGE,
-  LEAVE_CALLBACKED,
 } from '../../models/global-codes';
 import { LeaveDetail } from '../../models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';

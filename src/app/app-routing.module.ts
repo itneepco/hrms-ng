@@ -5,15 +5,15 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { AuthGuard } from './auth/services/auth-guard';
 import { LoginGuard } from './auth/services/login-guard';
 import { HierarchyComponent } from './hierarchy/components/hierarchy/hierarchy.component';
+import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
+import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
 import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledger.component';
 import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
 import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
-import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
-import { ApplyElComponent } from './leave/components/apply-el/apply-el.component';
 
 const routes: Routes = [
   {
@@ -34,15 +34,15 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     component: LeaveComponent,
     children: [
-      { path: 'leave-dashboard', component: LeaveDashboardComponent },
+      { path: 'dashboard', component: LeaveDashboardComponent },
       { path: 'leave-transaction', component: LeaveTransactionComponent },
-      { path: 'leave-apply', component: ApplyLeaveComponent },
-      { path: 'leave-apply-el', component: ApplyElComponent },
+      { path: 'leave-apply-clrh', component: ApplyCLRHComponent },
+      { path: 'leave-apply/:id', component: ApplyLeaveComponent },
       { path: 'leave-request', component: LeaveRequestComponent },
       { path: 'processed-request', component: ProcessedRequestComponent },
       { path: 'leave-ledger', component: LeaveLedgerComponent },
       { path: 'holiday-list', component: HolidayListComponent },
-      { path: '', redirectTo: 'leave-dashboard', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   {
@@ -51,8 +51,8 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     loadChildren: 'app/training/training.module#TrainingModule'
   },
-  { path: '', redirectTo: '/leave/leave-dashboard', pathMatch: "full" },
-  { path: '**', redirectTo: '/leave/leave-dashboard', pathMatch: "full" }
+  { path: '', redirectTo: '/leave/dashboard', pathMatch: "full" },
+  { path: '**', redirectTo: '/leave/dashboard', pathMatch: "full" }
 ]
 
 @NgModule({

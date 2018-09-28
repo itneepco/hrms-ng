@@ -53,4 +53,8 @@ export class ProcessedRequestComponent implements OnInit {
     this.pageSize = pageEvent.pageSize
     this.getLeaves()
   }
+
+  refreshPage() {
+    this.getLeaves()
+  }
 }

@@ -14,8 +14,10 @@ import { MenuService } from './core/services/menu.service';
 import { AddChildNodeComponent } from './hierarchy/components/add-child-node/add-child-node.component';
 import { HierarchyModule } from './hierarchy/hierarchy.module';
 import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
+import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
 import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
+import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
 import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
 import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledger.component';
 import { LeaveMenuComponent } from './leave/components/leave-menu/leave-menu.component';
@@ -23,11 +25,9 @@ import { LeaveRequestComponent } from './leave/components/leave-request/leave-re
 import { LeaveTableComponent } from './leave/components/leave-table/leave-table.component';
 import { LeaveTransactionComponent } from './leave/components/leave-transaction/leave-transaction.component';
 import { LeaveComponent } from './leave/components/leave/leave.component';
+import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
-import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
-import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
-import { ApplyElComponent } from './leave/components/apply-el/apply-el.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { ApplyElComponent } from './leave/components/apply-el/apply-el.component
     SidenavComponent,
     FooterComponent,
     LeaveTransactionComponent,
-    ApplyLeaveComponent,
+    ApplyCLRHComponent,
     LeaveLedgerComponent,
     LoginComponent,
     HolidayListComponent,
@@ -48,7 +48,7 @@ import { ApplyElComponent } from './leave/components/apply-el/apply-el.component
     LeaveComponent,
     ProcessedRequestComponent,
     LeaveDashboardComponent,
-    ApplyElComponent,
+    ApplyLeaveComponent,
   ],
   entryComponents: [
     AddChildNodeComponent,

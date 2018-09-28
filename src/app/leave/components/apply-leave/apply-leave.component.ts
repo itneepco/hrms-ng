@@ -1,98 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Router } from '@angular/router';
-import { CalendarEvent } from 'angular-calendar';
-import { Subject } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../../auth/services/auth.service';
 import { HierarchyService } from '../../../hierarchy/services/hierarchy.service';
-import { LeaveStatus } from '../../models/leave';
-import { HolidayService } from '../../services/holiday.service';
+import { EL_CODE, ML_CODE } from '../../models/global-codes';
+import { LeaveAppForm, LeaveStatus } from '../../models/leave';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
-import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
-import { LeaveAppForm } from './../../models/leave';
-import { LeaveTypeService } from '../../services/leave-type.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-apply-leave',
   templateUrl: './apply-leave.component.html',
   styleUrls: ['./apply-leave.component.scss']
 })
-export class ApplyLeaveComponent implements OnInit {
-  view: string = 'month'
-  viewDate: Date = new Date()
-  events: CalendarEvent[] = []
+export class ApplyLeaveComponent implements OnInit , OnDestroy {
   leaveForm: FormGroup
-  leaveDetails = [];
-  refresh: Subject<any> = new Subject()
   leaveStatuses: LeaveStatus[] = []
-  ctrlOfficers;
-
-  constructor(private holidayService: HolidayService,
-    private fb: FormBuilder,
+  ctrlOfficers = []
+  code: string
+  el_code = EL_CODE
+  ml_code = ML_CODE
+  subscription: Subscription
+  
+  constructor(private fb: FormBuilder,
     private authService: AuthService,
     private hierarchyService: HierarchyService,
     private ledgerService: LedgerService,
     private leaveService: LeaveService,
     private router: Router,
-    private leaveTypeService: LeaveTypeService,
-    private bottomSheet: MatBottomSheet) { }
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.holidayService.getCalendarEvents()
-      .subscribe(events => this.events = events)
-
     this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code, '2018')
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
-      })
+      })  
 
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
-      .subscribe(ctrlOfficers => {
+      .subscribe((ctrlOfficers: any[]) => {
         this.ctrlOfficers = ctrlOfficers
       })
+    
+    this.subscription = this.route.params.subscribe(params => {
+      this.code = params['id'];
+    });  
 
     this.initializeForm()
-  }
-
-  onDayClick(event) {
-    let events = event.day.events
-    // Check if the date is CL or RH or if the date has been applied for leave
-    if (events.length > 0) {
-      if (events.find(el => el.type == "CH")) return
-      if (events.find(el => el.type == "RH") && events.length > 1) return
-      if (events.filter(el => el.type != "CH" && el.type != "RH").length > 0) return
-    }
-
-    let bottomSheetRef = this.bottomSheet.open(LeaveMenuComponent, {
-      data: {
-        date: event.day.date,
-        isRH: events.find(el => el.type == "RH") ? true : false,
-        leaveStatuses: this.leaveStatuses
-      }
-    })
-
-    bottomSheetRef.afterDismissed()
-      .subscribe((data: { status: LeaveStatus, date: Date}) => {
-        if (!data) return
-
-        console.log(data)
-        data.status.balance -= 1;  
-
-        // Create a calendar event
-        let event = {
-          title: "Applied for " + this.leaveTypeService.getLeaveType(data.status.leave_code),
-          start: data.date,
-          end: data.date,
-          color: this.holidayService.colors.red,
-        }
-
-        this.events.push(event)
-        this.leaveDetails.push(Object.assign({ event: event, station_leave: false }, data))
-        this.refresh.next()
-      })
   }
 
   initializeForm() {
@@ -100,43 +56,42 @@ export class ApplyLeaveComponent implements OnInit {
       officer_emp_code: ['', Validators.required],
       purpose: ['', Validators.required],
       address: ['', Validators.required],
-      contact_no: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
+      contact_no: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
+      from_date: ['', Validators.required],
+      to_date: ['', Validators.required],
+      station_leave: false,
+      prefix_from: '',
+      prefix_to: '',
+      suffix_from: '',
+      suffix_to: ''
     })
-  }
-
-  onToggle(event, index) {
-    this.leaveDetails[index].station_leave = event.checked
-  }
-
-  removeLeave(leaveDetail, id: number) {
-    leaveDetail.status.balance += 1
-    this.leaveDetails.splice(id, 1)
-    let index = this.events.indexOf(leaveDetail.event)
-    this.events.splice(index, 1)
-    this.refresh.next()
   }
 
   applyLeave() {
-    if (this.leaveForm.invalid || this.leaveDetails.length < 1) return;
+    if(this.leaveForm.invalid) return
 
-    let leaves = this.leaveDetails.map(leaveDetail => {
-      return { 
-        from_date: leaveDetail.date, 
-        to_date: leaveDetail.date,
-        leave_type: leaveDetail.status.leave_code,
-        station_leave: leaveDetail.station_leave
-      }
-    })
+    let leave_detail = [{
+      from_date: this.from_date.value,
+      to_date: this.to_date.value,
+      leave_type: this.code == this.ml_code ? ML_CODE : EL_CODE,
+      station_leave: this.station_leave.value
+    }]
+
+    // var date1 = new Date("11/7/2010");
+    // var date2 = new Date("12/8/2010");
+    // var diffDays = date2.valueOf() - date1.valueOf();
+    // alert(diffDays / (1000 * 60 * 60 * 24))
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
-      { leave_details: leaves, emp_code: this.authService.currentUser.emp_code });
-    
+      { leave_details: leave_detail, emp_code: this.authService.currentUser.emp_code });
+
     console.log(leavApplication)
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
       console.log(result)
       this.router.navigateByUrl('leave/leave-transaction')
-    })
+    })  
   }
+
 
   get officer_emp_code() {
     return this.leaveForm.get('officer_emp_code')
@@ -152,5 +107,21 @@ export class ApplyLeaveComponent implements OnInit {
 
   get address() {
     return this.leaveForm.get('address')
+  }
+
+  get from_date() {
+    return this.leaveForm.get('from_date')
+  }
+
+  get to_date() {
+    return this.leaveForm.get('to_date')
+  }
+
+  get station_leave() {
+    return this.leaveForm.get('station_leave')
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }

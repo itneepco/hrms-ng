@@ -5,6 +5,7 @@
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
     (pageChange)="changePage($event)"
+    (onAction)="refreshPage()"
     [pageNo]="processedPage"
   >
   </app-leave-table>

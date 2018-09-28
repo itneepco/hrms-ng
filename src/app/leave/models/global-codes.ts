@@ -1,10 +1,13 @@
 export const CL_CODE = '01';
 export const RH_CODE = '02';
 export const EL_CODE = '03';
+export const ML_CODE = '04';
+
 export const LEAVE_TYPES = [
   { code: CL_CODE, name: "CL" },
   { code: RH_CODE, name: "RH" },
-  { code: EL_CODE, name: "EL" }
+  { code: EL_CODE, name: "EL" },
+  { code: ML_CODE, name: "ML" }
 ]
 
 export const LEAVE_APPLIED = '01'

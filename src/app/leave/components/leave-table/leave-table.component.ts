@@ -3,7 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { TRANSACTION_PAGE, LEAVE_REQUEST_PAGE, LEAVE_PROCESSED_PAGE } from '../../models/global-codes';
+import { TRANSACTION_PAGE, LEAVE_REQUEST_PAGE } from '../../models/global-codes';
+import { PendingRequestService } from '../../services/pending-request.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LeaveApplication } from './../../models/leave';
 import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';
@@ -19,7 +20,8 @@ export class LeaveTableComponent implements OnInit {
 
   @Input('dataSource') dataSource: MatTableDataSource<LeaveApplication>
   @Input('pageNo') pageNo;
-
+  
+  @Output() onAction = new EventEmitter()
   @Output() pageChange = new EventEmitter()
 
   // Pagination variables
@@ -29,6 +31,7 @@ export class LeaveTableComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
       public wActionService: WorkflowActionService,
+      private pendingReqService: PendingRequestService
     ) { }
 
   ngOnInit() {
@@ -52,10 +55,15 @@ export class LeaveTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if(!result) return
       
-      if(this.pageNo != TRANSACTION_PAGE) {
+      if(this.pageNo === LEAVE_REQUEST_PAGE) {
+        this.pendingReqService.changeState()
         let temp = this.dataSource.data
         temp.splice(index, 1)
         this.dataSource.data = temp
+      }
+      else {
+        this.pendingReqService.changeState()
+        this.onAction.emit()
       }
     })
   }

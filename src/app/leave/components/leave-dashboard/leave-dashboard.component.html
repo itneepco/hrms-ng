@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutGap="20px" id="leave-dashboard">
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" id="leave-dashboard">
   <div fxFlex="60" fxLayout="column" fxLayoutGap="20px">
     <div fxLayout="row" fxLayoutGap="20px">
       <mat-card fxFlex class="card-block">
@@ -7,12 +7,12 @@
             <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/a.svg">
             <h3 matLine> Casual Leave </h3>
-            <p matLine>Balance: 10</p>
+            <p matLine>Balance: {{cl_balance}}</p>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply">Apply Casual Leave</button>
+          <button mat-button routerLink="/leave/leave-apply-clrh">Apply Casual Leave</button>
         </div>
       </mat-card>
       <mat-card fxFlex class="card-block">
@@ -21,12 +21,12 @@
             <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/e.svg">
             <h3 matLine>Restricted Holiday</h3>
-            <p matLine>Balance: 2</p>
+            <p matLine>Balance: {{rh_balance}}</p>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply">Apply Restricted Holiday</button>
+          <button mat-button routerLink="/leave/leave-apply-clrh">Apply Restricted Holiday</button>
         </div>
       </mat-card>
     </div>
@@ -37,12 +37,12 @@
             <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/c.svg">
             <h3 matLine>Earned Leave</h3>
-            <p matLine>Balance: 100</p>
+            <p matLine>Balance: {{el_balance}}</p>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply-el">Apply Earned Leave</button>
+          <button mat-button [routerLink]="['/leave/leave-apply', el_code]">Apply Earned Leave</button>
         </div>
       </mat-card>
       <mat-card fxFlex class="card-block">
@@ -51,12 +51,12 @@
             <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/d.svg">
             <h3 matLine>Medical Leave</h3>
-            <p matLine>Balance: 200</p>
+            <p matLine>Balance: {{ml_balance}}</p>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply-el">Apply Medical Leave</button>
+          <button mat-button [routerLink]="['/leave/leave-apply', ml_code]">Apply Medical Leave</button>
         </div>
       </mat-card>
     </div>
