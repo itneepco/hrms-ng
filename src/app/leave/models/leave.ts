@@ -39,10 +39,10 @@ export interface LeaveApplication {
   contact_no: string;
   addressee: string;
   status: string;
-  prefix_from?: string;
-  prefix_to?: string;
-  suffix_from?: string;
-  suffix_to?: string;
+  prefix_from?: Date;
+  prefix_to?: Date;
+  suffix_from?: Date;
+  suffix_to?: Date;
   created_at: string;
   leaveDetails: LeaveDetail[];
   history: ApplicationHistory[]

@@ -31,6 +31,7 @@
             <mat-datepicker-toggle matSuffix [for]="leave_to"></mat-datepicker-toggle>
             <mat-datepicker #leave_to></mat-datepicker>
             <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
+            <mat-error *ngIf="from_date.valid && to_date.valid && leaveForm.errors?.fromToDate">To date should be greater or equal to From Date</mat-error>
           </mat-form-field>
         </div>
   

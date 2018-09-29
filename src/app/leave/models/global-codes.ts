@@ -27,6 +27,10 @@ export const EL_ML_ACTION_TYPES = [
   { code: LEAVE_NOT_RECOMMENDED, name: "Leave Not Recommended" },
 ]
 
+export const APPROVE_ACTION_TYPES = [
+  { code: LEAVE_APPROVED, name: "Leave Approved" },
+]
+
 export const CALLBACK_ACTION_TYPES = [
   { code: LEAVE_CALLBACKED, name: "Callback Leave" },
 ]

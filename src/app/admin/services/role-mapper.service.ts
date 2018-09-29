@@ -17,7 +17,7 @@ export class RoleMapperService {
   }
 
   getUrl() {
-    return baseURL + 'api/rolemapper'
+    return baseURL + 'api/rolemapper/'
   }
 
   getRoleName(code: string) {
@@ -69,7 +69,7 @@ export class RoleMapperService {
   }
 
   getRoleMapper(role: string, project_code?: string) {
-    return this.http.get<RoleMapper>(`${this.getUrl()}/role/${role}?project_code=${project_code}`)
+    return this.http.get<RoleMapper>(this.getUrl() + `role/${role}?project_code=${project_code}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

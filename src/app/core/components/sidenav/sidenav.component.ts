@@ -13,7 +13,7 @@ export class SidenavComponent {
   pages = [
     { name: "Training", icon: 'info', path: '/training' },
     { name: "Leave", icon: 'mood', path: '/leave' },
-    { name: "Administrator", icon: 'accessibility_new', path: '/administrator' }
+    { name: "HR Admin", icon: 'accessibility_new', path: '/administrator' }
   ]
 
   toggleMenu() {

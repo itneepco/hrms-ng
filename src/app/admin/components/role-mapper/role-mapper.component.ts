@@ -20,7 +20,7 @@ export class RoleMapperComponent implements OnInit {
   roleMapper_types = ["CH", "RH"]
   projects: Project[]
   emp_roles = EMPLOYEE_ROLES
-  displayedColumns = ["position", "project_code", "role", "emp_code", "actions"]
+  displayedColumns = ["position", "project_id", "role", "emp_code", "actions"]
   dataSource: MatTableDataSource<RoleMapper>
   errMsg: string
   isLoading = true
@@ -61,12 +61,12 @@ export class RoleMapperComponent implements OnInit {
         }
       )
   }
-
+  
   initializeForm() {
     this.roleMapperForm = this.fb.group({
-      project_code: [this._roleMapper.project_code, [Validators.required]],
+      project_id: [this._roleMapper.project_id, [Validators.required]],
       role: [this._roleMapper.role, [Validators.required]],
-      emp_code: [this._roleMapper.emp_code, [Validators.required]]
+      emp_code: [this._roleMapper.emp_code, [Validators.required, Validators.pattern('[0-9]{6}')]]
     })
   }
 
@@ -140,8 +140,8 @@ export class RoleMapperComponent implements OnInit {
   get emp_code() {
     return this.roleMapperForm.get('emp_code')
   }
-  get project_code() {
-    return this.roleMapperForm.get('project_code')
+  get project_id() {
+    return this.roleMapperForm.get('project_id')
   }
   get role() {
     return this.roleMapperForm.get('role')

@@ -20,6 +20,7 @@ import {
   PROCESS_ACTION_TYPES,
   RH_CODE,
   TRANSACTION_PAGE,
+  APPROVE_ACTION_TYPES,
 } from '../../models/global-codes';
 import { LeaveDetail } from '../../models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
@@ -102,12 +103,20 @@ export class LeaveDetailComponent implements OnInit {
   }
 
   getActions() {
+    //check if leave request page
     if(this.data.pageNo != LEAVE_REQUEST_PAGE) {
+      //Only callback acion option
       return CALLBACK_ACTION_TYPES
     }
     else {  
-      if(this.isEarnedLeave || this.isMedicalLeave) 
+      if(this.isEarnedLeave || this.isMedicalLeave) { 
+        //check if EL or ML has been already recommended
+        if(this.data.leave.status == LEAVE_RECOMMENDED) {
+          return APPROVE_ACTION_TYPES
+        }
+        //check if EL or ML has not been recommended yet
         return EL_ML_ACTION_TYPES
+      }
       
       return this.actions = PROCESS_ACTION_TYPES
     }

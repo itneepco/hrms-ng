@@ -9,6 +9,7 @@ import { EL_CODE, ML_CODE } from '../../models/global-codes';
 import { LeaveAppForm, LeaveStatus } from '../../models/leave';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
+import { DateValidator } from '../../validators/date-validator';
 
 @Component({
   selector: 'app-apply-leave',
@@ -64,6 +65,11 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
       prefix_to: '',
       suffix_from: '',
       suffix_to: ''
+    }, 
+    { validators: [
+      DateValidator.fromToDateValidator,
+      DateValidator.prefFromToValidator,
+      DateValidator.suffFromToValidator]
     })
   }
 
