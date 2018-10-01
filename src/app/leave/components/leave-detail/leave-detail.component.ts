@@ -16,7 +16,7 @@ import {
   LEAVE_PROCESSED_PAGE,
   LEAVE_RECOMMENDED,
   LEAVE_REQUEST_PAGE,
-  ML_CODE,
+  HPL_CODE,
   PROCESS_ACTION_TYPES,
   RH_CODE,
   TRANSACTION_PAGE,
@@ -138,7 +138,7 @@ export class LeaveDetailComponent implements OnInit {
 
   get isMedicalLeave(): boolean {
     let ml_type = this.data.leave.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == ML_CODE)
+      .find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
     return ml_type ? true : false  
   }
 

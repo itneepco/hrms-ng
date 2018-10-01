@@ -1,4 +1,4 @@
-<mat-nav-list>
+<!-- <mat-nav-list>
   <ng-container *ngFor="let status of data.leaveStatuses">
     <ng-container *ngIf="status.balance > 0">
       <a mat-list-item (click)="onSelect($event, status)" 
@@ -8,4 +8,27 @@
       </a>
     </ng-container>
   </ng-container>
+</mat-nav-list> -->
+
+<mat-nav-list>
+  <div *ngIf="cl_status && cl_status.balance >= 1">
+    <a mat-list-item (click)="onSelect($event, cl_status)">
+      <span mat-line>{{leaveTypeService.getLeaveType(cl_status.leave_code)}}</span>
+      <span mat-line>Apply for {{leaveTypeService.getLeaveType(cl_status.leave_code)}}</span>
+    </a>
+  </div>
+
+  <div *ngIf="data.isRH && rh_status && rh_status.balance >= 1">
+    <a mat-list-item (click)="onSelect($event, rh_status)">
+      <span mat-line>{{leaveTypeService.getLeaveType(rh_status.leave_code)}}</span>
+      <span mat-line>Apply for {{leaveTypeService.getLeaveType(rh_status.leave_code)}}</span>
+    </a>
+  </div>
+
+  <div *ngIf="cl_status && cl_status.balance > 0">
+    <a mat-list-item (click)="onSelect($event, cl_status, true)">
+      <span mat-line>{{ leaveTypeService.getLeaveType(hd_cl_code) }}</span>
+      <span mat-line>Apply for {{ leaveTypeService.getLeaveType(hd_cl_code) }}</span>
+    </a>
+  </div>
 </mat-nav-list>

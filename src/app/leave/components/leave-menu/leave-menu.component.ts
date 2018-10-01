@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
-import { LeaveStatus } from './../../models/leave';
+import { CL_CODE, HD_CL_CODE, RH_CODE } from '../../models/global-codes';
 import { LeaveTypeService } from '../../services/leave-type.service';
-import { RH_CODE } from '../../models/global-codes';
+import { LeaveStatus } from './../../models/leave';
 
 @Component({
   selector: 'app-leave-menu',
@@ -11,18 +11,41 @@ import { RH_CODE } from '../../models/global-codes';
   styleUrls: ['./leave-menu.component.scss']
 })
 export class LeaveMenuComponent {
-  rh_code = RH_CODE
+  hd_cl_code = HD_CL_CODE
   
   constructor(private bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
     public leaveTypeService: LeaveTypeService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { 
+      console.log(data)
+    }
 
-  onSelect(event: MouseEvent, status: LeaveStatus): void {
+  onSelect(event: MouseEvent, status: LeaveStatus, isHDCL?: boolean): void {
+    let newStatus = status
+    
+    //If it is Half Day Casual Leave
+    if(isHDCL) {
+      newStatus = {
+        leave_code: HD_CL_CODE,
+        leave_type: "HDCL",
+        balance: status.balance
+      }  
+    }
+
     this.bottomSheetRef.dismiss({
       date: this.data.date,
-      status: status
+      status: newStatus
     });
+
     event.preventDefault();
   }
+
+  get cl_status(): LeaveStatus {
+    return this.data.leaveStatuses.find(status => status.leave_code === CL_CODE)
+  }
+
+  get rh_status(): LeaveStatus {
+    return this.data.leaveStatuses.find(status => status.leave_code === RH_CODE)
+  }
+
 
 }

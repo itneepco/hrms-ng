@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { EL_CODE, ML_CODE } from '../../models/global-codes';
+import { EL_CODE, HPL_CODE } from '../../models/global-codes';
 import { LeaveAppForm, LeaveStatus } from '../../models/leave';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
@@ -22,7 +22,7 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
   ctrlOfficers = []
   code: string
   el_code = EL_CODE
-  ml_code = ML_CODE
+  hpl_code = HPL_CODE
   subscription: Subscription
   
   constructor(private fb: FormBuilder,
@@ -50,6 +50,7 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
     });  
 
     this.initializeForm()
+    this.leaveForm.valueChanges.subscribe(data => console.log(data))
   }
 
   initializeForm() {
@@ -66,7 +67,7 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
       suffix_from: '',
       suffix_to: ''
     }, 
-    { validators: [
+    { validator: [
       DateValidator.fromToDateValidator,
       DateValidator.prefFromToValidator,
       DateValidator.suffFromToValidator]
@@ -79,14 +80,9 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
     let leave_detail = [{
       from_date: this.from_date.value,
       to_date: this.to_date.value,
-      leave_type: this.code == this.ml_code ? ML_CODE : EL_CODE,
+      leave_type: this.code == this.hpl_code ? HPL_CODE : EL_CODE,
       station_leave: this.station_leave.value
     }]
-
-    // var date1 = new Date("11/7/2010");
-    // var date2 = new Date("12/8/2010");
-    // var diffDays = date2.valueOf() - date1.valueOf();
-    // alert(diffDays / (1000 * 60 * 60 * 24))
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
       { leave_details: leave_detail, emp_code: this.authService.currentUser.emp_code });

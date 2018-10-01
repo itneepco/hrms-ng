@@ -14,6 +14,7 @@ import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
 import { LeaveAppForm } from '../../models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
+import { HD_CL_CODE, CL_CODE } from '../../models/global-codes';
 
 @Component({
   selector: 'app-apply-leave',
@@ -77,9 +78,18 @@ export class ApplyCLRHComponent implements OnInit {
     bottomSheetRef.afterDismissed()
       .subscribe((data: { status: LeaveStatus, date: Date}) => {
         if (!data) return
-
         console.log(data)
-        data.status.balance -= 1;  
+
+        if(data.status.leave_code == HD_CL_CODE) {
+          //If half day CL reduce the total balance of CL by 0.5
+          let cl = this.leaveStatuses.find((status) => status.leave_code == CL_CODE)
+          if(cl) {
+            cl.balance -= 0.5
+          }
+        } 
+        else {
+          data.status.balance -= 1;  
+        }
 
         // Create a calendar event
         let event = {
@@ -109,7 +119,17 @@ export class ApplyCLRHComponent implements OnInit {
   }
 
   removeLeave(leaveDetail, id: number) {
-    leaveDetail.status.balance += 1
+    if(leaveDetail.status.leave_code == HD_CL_CODE) {
+      //If half day CL reduce the total balance of CL by 0.5
+      let cl = this.leaveStatuses.find((status) => status.leave_code == CL_CODE)
+      if(cl) {
+        cl.balance += 0.5
+      }
+    } 
+    else {
+      leaveDetail.status.balance += 1;  
+    }
+
     this.leaveDetails.splice(id, 1)
     let index = this.events.indexOf(leaveDetail.event)
     this.events.splice(index, 1)
