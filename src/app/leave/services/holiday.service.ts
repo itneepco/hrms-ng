@@ -18,7 +18,7 @@ export class HolidayService {
   }
 
   getUrl() {
-    return baseURL + 'api/projects/' + this.auth.currentUser.project + '/holidays/'
+    return baseURL + `api/projects/${this.auth.currentUser.project}/holidays/`
   }
 
   getHolidays(pageIndex: number, pageSize: number): Observable<Holiday[]> {
@@ -50,7 +50,7 @@ export class HolidayService {
   }
 
   getCalendarEvents() {
-    return this.http.get<Holiday[]>(this.getUrl() + 'calendar')
+    return this.http.get<Holiday[]>(baseURL + `api/projects/${this.auth.currentUser.project}/calendar`)
       .pipe(
         map(holidays => {
           return holidays.map(holiday => {

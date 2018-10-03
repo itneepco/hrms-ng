@@ -27,6 +27,7 @@ import { LeaveComponent } from './leave/components/leave/leave.component';
 import { ProcessedRequestComponent } from './leave/components/processed-request/processed-request.component';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
+import { StatementModule } from './statement/statement.module';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     SharedModule,
     AdminModule,
+    StatementModule,
     CalendarModule.forRoot()
   ],
   providers: [

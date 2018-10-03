@@ -1,0 +1,62 @@
+<mat-card id="search">
+  <form fxLayoutGap="20px" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-select placeholder="Month" formControlName="month">
+        <mat-option *ngFor="let month of months" [value]="month.value">
+          {{month.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="month.errors?.required">Month is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Year" formControlName="year">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="year.errors?.required">Year is required</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary">Search</button>
+  </form>
+</mat-card>
+
+<div fxLayout="row" fxLayoutGap="20px" *ngIf="salary">
+  <mat-card fxFlex>
+    <div>
+      <strong>Employee Code:</strong>
+      <span>{{salary.employee.emp_code}}</span>
+    </div>
+    <div>
+      <strong>Name:</strong>
+      <span>{{salary.employee.first_name | titlecase}} {{salary.employee.last_name | titlecase}}</span>
+    </div>
+    <div>
+      <strong>Designation:</strong>
+      <span>{{salary.employee.designation}}</span>
+    </div>
+    <div>
+      <strong>Project:</strong>
+      <span>{{salary.employee.project}}</span>
+    </div>
+  </mat-card>
+
+  <mat-card fxFlex>
+    <div *ngFor="let deduction of salary.deductions">
+      <strong>{{deduction.pay_code_desc}}:</strong>&nbsp;
+      <span>{{deduction.txn_amt}}</span>
+    </div>
+  </mat-card>
+  
+  <mat-card fxFlex>
+    <div *ngFor="let payment of salary.payments">
+      <strong>{{payment.pay_code_desc}}:</strong>&nbsp;
+      <span>{{payment.txn_amt}}</span>
+    </div>
+  </mat-card>
+</div>
+
+<mat-card *ngIf="errMsg">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card>
+
+<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

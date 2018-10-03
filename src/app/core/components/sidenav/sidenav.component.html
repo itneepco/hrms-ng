@@ -15,6 +15,15 @@
   </div>
   <mat-list-item
     (click)="menuService.menuToggle()"
+    routerLink="/statements"
+    routerLinkActive="active">
+    
+    <mat-icon matListIcon>file_copy</mat-icon>
+    <span class="page-name">Statement</span>
+  </mat-list-item>
+
+  <mat-list-item
+    (click)="menuService.menuToggle()"
     routerLink="/training"
     routerLinkActive="active">
     

@@ -16,7 +16,7 @@ export class LeaveMenuComponent {
   constructor(private bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
     public leaveTypeService: LeaveTypeService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { 
-      console.log(data)
+      // console.log(data)
     }
 
   onSelect(event: MouseEvent, status: LeaveStatus, isHDCL?: boolean): void {
