@@ -4,10 +4,10 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { LeaveLedger } from '../../models/ledger';
-import { LedgerService } from '../../services/ledger.service';
+import { LeaveLedger } from '../../../shared/models/ledger';
+import { LedgerService } from '../../../leave/services/ledger.service';
 import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
-import { LeaveTypeService } from '../../services/leave-type.service';
+import { LeaveTypeService } from '../../../leave/services/leave-type.service';
 
 @Component({
   selector: 'app-ledger',

@@ -5,11 +5,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs/operators';
 
-import { Project } from '../../../shared/model/project.model';
+import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
 import { RoleMapper } from '../../model/role-mapper';
 import { RoleMapperService } from '../../services/role-mapper.service';
-import { EMPLOYEE_ROLES } from '../../model/global-code';
+import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-roleMapper-list',

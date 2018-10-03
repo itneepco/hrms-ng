@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { LedgerService } from '../../services/ledger.service';
-import { LeaveLedger } from '../../models/ledger';
-import { LeaveType } from '../../models/leave';
-import { LEAVE_TYPES } from '../../models/global-codes';
+import { LedgerService } from '../../../leave/services/ledger.service';
+import { LeaveLedger } from '../../../shared/models/ledger';
+import { LeaveType } from '../../../shared/models/leave';
+import { LEAVE_TYPES } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-add-ledger',

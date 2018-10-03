@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LedgerService } from '../../services/ledger.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { LeaveStatus } from '../../models/leave';
-import { CL_CODE, RH_CODE, EL_CODE, HPL_CODE } from '../../models/global-codes';
+import { LeaveStatus } from '../../../shared/models/leave';
+import { CL_CODE, RH_CODE, EL_CODE, HPL_CODE } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-dashboard',

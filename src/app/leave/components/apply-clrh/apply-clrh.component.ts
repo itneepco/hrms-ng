@@ -6,15 +6,15 @@ import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { LeaveStatus } from '../../models/leave';
+import { LeaveStatus } from '../../../shared/models/leave';
 import { HolidayService } from '../../services/holiday.service';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
-import { LeaveAppForm } from '../../models/leave';
+import { LeaveAppForm } from '../../../shared/models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
-import { HD_CL_CODE, CL_CODE } from '../../models/global-codes';
+import { HD_CL_CODE, CL_CODE } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-apply-leave',

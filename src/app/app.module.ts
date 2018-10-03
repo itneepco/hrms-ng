@@ -12,13 +12,10 @@ import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 import { MenuService } from './core/services/menu.service';
-import { AddLedgerComponent } from './leave/components/add-ledger/add-ledger.component';
 import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './leave/components/apply-leave/apply-leave.component';
-import { HolidayListComponent } from './leave/components/holiday-list/holiday-list.component';
 import { LeaveDashboardComponent } from './leave/components/leave-dashboard/leave-dashboard.component';
 import { LeaveDetailComponent } from './leave/components/leave-detail/leave-detail.component';
-import { LeaveLedgerComponent } from './leave/components/leave-ledger/leave-ledger.component';
 import { LeaveMenuComponent } from './leave/components/leave-menu/leave-menu.component';
 import { LeaveRequestComponent } from './leave/components/leave-request/leave-request.component';
 import { LeaveTableComponent } from './leave/components/leave-table/leave-table.component';
@@ -37,10 +34,7 @@ import { StatementModule } from './statement/statement.module';
     FooterComponent,
     LeaveTransactionComponent,
     ApplyCLRHComponent,
-    LeaveLedgerComponent,
     LoginComponent,
-    HolidayListComponent,
-    AddLedgerComponent,
     LeaveMenuComponent,
     LeaveDetailComponent,
     LeaveRequestComponent,
@@ -51,7 +45,6 @@ import { StatementModule } from './statement/statement.module';
     ApplyLeaveComponent,
   ],
   entryComponents: [
-    AddLedgerComponent,
     LeaveMenuComponent,
     LeaveDetailComponent,
   ],

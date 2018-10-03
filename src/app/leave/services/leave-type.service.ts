@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { CL_CODE, EL_CODE, RH_CODE, HPL_CODE, HD_CL_CODE } from '../models/global-codes';
+import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from '../../shared/models/global-codes';
 
 @Injectable({
   providedIn: 'root'

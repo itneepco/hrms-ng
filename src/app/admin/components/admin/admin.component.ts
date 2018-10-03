@@ -1,4 +1,4 @@
-import { NavObject } from '../../../shared/model/nav-object';
+import { NavObject } from '../../../shared/models/nav-object';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 
@@ -11,7 +11,9 @@ export class AdminComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   nav: NavObject[] = [
-    { name: 'Employee Hierarchy', path: 'hierarchy' }
+    { name: 'Employee Hierarchy', path: 'hierarchy' },
+    { name: 'Holidays', path: 'holiday-list' },
+    { name: 'Ledger', path: 'leave-ledger' }
   ]
 
   ngOnInit() {

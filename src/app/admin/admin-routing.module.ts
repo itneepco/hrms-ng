@@ -5,6 +5,8 @@ import { AdminGuard } from '../auth/services/admin-guard';
 import { SuperAdminGuard } from '../auth/services/super-admin-guard';
 import { AdminComponent } from './components/admin/admin.component';
 import { HierarchyHomeComponent } from './components/hierarchy-home/hierarchy-home.component';
+import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
+import { LeaveLedgerComponent } from './components/leave-ledger/leave-ledger.component';
 import { RoleMapperComponent } from './components/role-mapper/role-mapper.component';
 
 const routes: Routes = [
@@ -15,6 +17,16 @@ const routes: Routes = [
       { 
         path: 'hierarchy', 
         component: HierarchyHomeComponent,
+        canActivate: [AdminGuard] 
+      },
+      { 
+        path: 'holiday-list', 
+        component: HolidayListComponent,
+        canActivate: [AdminGuard] 
+      },
+      { 
+        path: 'leave-ledger', 
+        component: LeaveLedgerComponent,
         canActivate: [AdminGuard] 
       },
       { 

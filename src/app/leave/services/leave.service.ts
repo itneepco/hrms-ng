@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 
 import { baseURL } from './../../shared/config/baseUrl';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { LeaveAppForm } from './../models/leave';
+import { LeaveAppForm } from '../../shared/models/leave';
 
 @Injectable({
   providedIn: 'root'

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
+import { EL_ADMIN, MEDICAL_ADMIN, TIME_OFFICE_ADMIN, TRAINING_ADMIN, VEHICLE_ADMIN } from '../../shared/models/global-codes';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { RoleMapper } from '../model/role-mapper';
-import { EL_ADMIN, TIME_OFFICE_ADMIN, MEDICAL_ADMIN, VEHICLE_ADMIN, TRAINING_ADMIN } from '../model/global-code';
 
 @Injectable({
   providedIn: 'root'

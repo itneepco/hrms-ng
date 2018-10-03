@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { EL_CODE, HPL_CODE } from '../../models/global-codes';
-import { LeaveAppForm, LeaveStatus } from '../../models/leave';
+import { EL_CODE, HPL_CODE } from '../../../shared/models/global-codes';
+import { LeaveAppForm, LeaveStatus } from '../../../shared/models/leave';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { DateValidator } from '../../validators/date-validator';

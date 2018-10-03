@@ -3,9 +3,9 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { LeaveApplication } from '../../models/leave';
+import { LeaveApplication } from '../../../shared/models/leave';
 import { LeaveRequestService } from '../../services/leave-request.service';
-import { LEAVE_REQUEST_PAGE } from '../../models/global-codes';
+import { LEAVE_REQUEST_PAGE } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-request',

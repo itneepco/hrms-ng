@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { NavObject } from '../../../shared/model/nav-object';
+import { NavObject } from '../../../shared/models/nav-object';
 import { LeaveRequestService } from '../../services/leave-request.service';
 import { PendingRequestService } from '../../services/pending-request.service';
 
@@ -32,11 +32,6 @@ export class LeaveComponent implements OnInit, OnDestroy {
     this.subscription = this.pendingReqService.pendingState.subscribe((data) => {
       this.getPendingReqStatus()
     })
-
-    if(this.authService.isAdmin()) {
-      this.navObj.push({ name: 'Holidays', path: 'holiday-list' })
-      this.navObj.push({ name: 'Ledger', path: 'leave-ledger' })
-    }
   }
 
   getPendingReqStatus() {

@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { LeaveLedger } from '../models/ledger';
+import { LeaveLedger } from '../../shared/models/ledger';
 import { Observable, of } from 'rxjs';
 
 @Injectable({

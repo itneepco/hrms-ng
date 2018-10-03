@@ -7,6 +7,9 @@ import { AdminComponent } from './components/admin/admin.component';
 import { HierarchyHomeComponent } from './components/hierarchy-home/hierarchy-home.component';
 import { NodeInfoComponent } from './components/node-info/node-info.component';
 import { RoleMapperComponent } from './components/role-mapper/role-mapper.component';
+import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
+import { LeaveLedgerComponent } from './components/leave-ledger/leave-ledger.component';
+import { AddLedgerComponent } from './components/add-ledger/add-ledger.component';
 
 @NgModule({
   imports: [
@@ -19,9 +22,13 @@ import { RoleMapperComponent } from './components/role-mapper/role-mapper.compon
     AddChildNodeComponent,
     NodeInfoComponent,
     RoleMapperComponent,
+    HolidayListComponent,
+    LeaveLedgerComponent,
+    AddLedgerComponent,
   ],
   entryComponents: [
-    AddChildNodeComponent
+    AddChildNodeComponent,
+    AddLedgerComponent,
   ]
 })
 export class AdminModule { }

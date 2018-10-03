@@ -21,11 +21,11 @@ import {
   RH_CODE,
   TRANSACTION_PAGE,
   APPROVE_ACTION_TYPES,
-} from '../../models/global-codes';
-import { LeaveDetail } from '../../models/leave';
+} from '../../../shared/models/global-codes';
+import { LeaveDetail } from '../../../shared/models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
-import { EL_ADMIN, MEDICAL_ADMIN } from '../../../admin/model/global-code';
+import { EL_ADMIN, MEDICAL_ADMIN } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-detail',

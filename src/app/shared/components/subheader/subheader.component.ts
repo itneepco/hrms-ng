@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { NavObject } from '../../model/nav-object';
+import { NavObject } from '../../models/nav-object';
 
 @Component({
   selector: 'app-subheader',
