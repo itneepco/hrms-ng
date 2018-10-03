@@ -8,7 +8,8 @@ export class DateValidator {
 
     if(to_date && from_date && to_date < from_date) { 
       console.log("To Date should be greater than from Date")
-      return { fromToDate: true }
+      // return { fromToDate: true }
+      control.get("to_date").setErrors({fromToDate: true})
     }
     
     return null;    
@@ -20,7 +21,8 @@ export class DateValidator {
 
     if(suffix_to && suffix_from && suffix_to < suffix_from) { 
       console.log("Suffix To Date should be greater than from Date")
-      return { suffFromTo: true }
+      // return { suffFromTo: true }
+      control.get("suffix_to").setErrors({suffFromTo: true})
     }
 
     return null;    
@@ -32,7 +34,8 @@ export class DateValidator {
 
     if(prefix_to && prefix_from && prefix_to < prefix_from) {
       console.log("Prefix To Date should be greater than from Date")
-      return { prefFromTo: true }
+      // return { prefFromTo: true }
+      control.get("prefix_to").setErrors({ prefFromTo: true })
     }
 
     return null;    

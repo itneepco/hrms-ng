@@ -1,10 +1,17 @@
 <mat-toolbar fxLayout="column" fxLayoutAlign="end start">
-	<div>
-		<button *ngFor="let nav of navObj" [routerLink]="nav.path" routerLinkActive="link-active" mat-button class="link-btn">
-			<span *ngIf="nav.count && nav.count > 0" matBadge="{{nav.count}}" matBadgeOverlap="false" matBadgeColor="accent">
-				{{nav.name }}</span>
-
+  <div>
+		<button *ngFor="let nav of navObj" 
+			[routerLink]="nav.path" 
+			routerLinkActive="link-active" 
+			mat-button class="link-btn">
+			
+			<span *ngIf="nav.count && nav.count > 0" 
+				matBadge="{{nav.count}}" 
+				matBadgeOverlap="false" 
+				matBadgeColor="accent">
+					{{nav.name }}
+			</span>
 			<span *ngIf="!nav.count">{{ nav.name }}</span>
 		</button>
-	</div>
+  </div>
 </mat-toolbar>

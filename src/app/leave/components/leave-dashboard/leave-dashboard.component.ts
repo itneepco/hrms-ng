@@ -19,7 +19,7 @@ export class LeaveDashboardComponent implements OnInit {
     ){ }
 
   ngOnInit() {
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code, '2018')
+    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
       }) 

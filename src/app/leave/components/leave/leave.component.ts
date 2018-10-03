@@ -17,8 +17,6 @@ export class LeaveComponent implements OnInit, OnDestroy {
     { name: 'Transactions', path: 'leave-transaction' },
     { name: 'Pending Request', path: 'leave-request'},
     { name: 'Processed Request', path: 'processed-request' },
-    { name: 'Holidays', path: 'holiday-list' },
-    { name: 'Ledger', path: 'leave-ledger' }
   ];
 
   pendingRequest: number = 0;
@@ -32,9 +30,13 @@ export class LeaveComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getPendingReqStatus()
     this.subscription = this.pendingReqService.pendingState.subscribe((data) => {
-      console.log(data)
       this.getPendingReqStatus()
     })
+
+    if(this.authService.isAdmin()) {
+      this.navObj.push({ name: 'Holidays', path: 'holiday-list' })
+      this.navObj.push({ name: 'Ledger', path: 'leave-ledger' })
+    }
   }
 
   getPendingReqStatus() {

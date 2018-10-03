@@ -45,7 +45,7 @@ export class ApplyCLRHComponent implements OnInit {
     this.holidayService.getCalendarEvents()
       .subscribe(events => this.events = events)
 
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code, '2018')
+    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
       })

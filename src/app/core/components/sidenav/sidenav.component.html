@@ -14,12 +14,30 @@
     <span>Navigation</span>
   </div>
   <mat-list-item
-    (click)="menuService.menuToggle(false)"
-    *ngFor="let page of pages"  
-    [routerLink]="page.path"
+    (click)="menuService.menuToggle()"
+    routerLink="/training"
     routerLinkActive="active">
     
-    <mat-icon matListIcon>{{ page.icon }}</mat-icon>
-    <span class="page-name">{{ page.name}}</span>
+    <mat-icon matListIcon>info</mat-icon>
+    <span class="page-name">Training</span>
+  </mat-list-item>
+
+  <mat-list-item
+    (click)="menuService.menuToggle()"
+    routerLink="/leave"
+    routerLinkActive="active">
+    
+    <mat-icon matListIcon>mood</mat-icon>
+    <span class="page-name">Leave</span>
+  </mat-list-item>
+
+  <mat-list-item
+    *ngIf="auth.isAdmin()"
+    (click)="menuService.menuToggle()"
+    routerLink="/administrator"
+    routerLinkActive="active">
+    
+    <mat-icon matListIcon>accessibility_new</mat-icon>
+    <span class="page-name">HR Admin</span>
   </mat-list-item>
 </mat-nav-list>

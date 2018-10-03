@@ -44,8 +44,8 @@ export class LedgerService {
       )
   }
 
-  getLeaveStatus(empCode: string, year: string): Observable<any> {
-    return this.http.get(baseURL + "api/leave/status/" + `${empCode}/${year}`)
+  getLeaveStatus(empCode: string): Observable<any> {
+    return this.http.get(baseURL + "api/leave/status/" + `${empCode}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

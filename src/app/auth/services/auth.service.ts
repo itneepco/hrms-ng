@@ -67,8 +67,11 @@ export class AuthService {
     return this.currentUser.role === 3
   }
 
+  isSuperAdmin(): boolean {
+    return this.isItAdmin() || this.isHrSuperAdmin()
+  }
+
   isAdmin(): boolean {
-    let role = this.currentUser.role
-    return role === 1 || role === 2 || role === 3
+    return  this.isSuperAdmin() || this.isHrSiteAdmin()
   }
 }

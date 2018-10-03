@@ -35,7 +35,7 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code, '2018')
+    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
       })  
@@ -50,7 +50,6 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
     });  
 
     this.initializeForm()
-    this.leaveForm.valueChanges.subscribe(data => console.log(data))
   }
 
   initializeForm() {
@@ -121,6 +120,22 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
 
   get station_leave() {
     return this.leaveForm.get('station_leave')
+  }
+
+  get prefix_from() {
+    return this.leaveForm.get('prefix_from')
+  }
+
+  get prefix_to() {
+    return this.leaveForm.get('prefix_to')
+  }
+
+  get suffix_from() {
+    return this.leaveForm.get('suffix_from')
+  }
+
+  get suffix_to() {
+    return this.leaveForm.get('suffix_to')
   }
 
   ngOnDestroy() {

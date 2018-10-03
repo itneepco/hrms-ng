@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from './admin/components/admin/admin.component';
 import { LoginComponent } from './auth/components/login/login.component';
+import { AdminGuard } from './auth/services/admin-guard';
 import { AuthGuard } from './auth/services/auth-guard';
 import { LoginGuard } from './auth/services/login-guard';
 import { ApplyCLRHComponent } from './leave/components/apply-clrh/apply-clrh.component';
@@ -18,7 +19,7 @@ import { ProcessedRequestComponent } from './leave/components/processed-request/
 const routes: Routes = [
   {
     path: 'administrator',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AdminGuard],
     canActivateChild: [AuthGuard],
     component: AdminComponent,
     loadChildren: 'app/admin/admin.module#AdminModule'
@@ -40,8 +41,16 @@ const routes: Routes = [
       { path: 'leave-apply/:id', component: ApplyLeaveComponent },
       { path: 'leave-request', component: LeaveRequestComponent },
       { path: 'processed-request', component: ProcessedRequestComponent },
-      { path: 'leave-ledger', component: LeaveLedgerComponent },
-      { path: 'holiday-list', component: HolidayListComponent },
+      { 
+        path: 'leave-ledger', 
+        component: LeaveLedgerComponent,
+        canActivate: [AdminGuard] 
+      },
+      { 
+        path: 'holiday-list', 
+        component: HolidayListComponent,
+        canActivate: [AdminGuard] 
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
