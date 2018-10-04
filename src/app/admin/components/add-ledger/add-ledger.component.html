@@ -4,11 +4,15 @@
   <mat-dialog-content fxLayout="column">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Employee Code" formControlName="emp_code">
+        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+            {{ item.first_name | titlecase }} {{ item.last_name | titlecase }}, {{item.designation}}
+          </mat-option>
+        </mat-autocomplete>
         <mat-error *ngIf="emp_code.errors?.required">Employee Code is required</mat-error>
         <mat-error *ngIf="emp_code.errors?.pattern">Employee Code should be 6 digit</mat-error>
       </mat-form-field>
-      <span fxFlex></span>
     </div>
 
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">

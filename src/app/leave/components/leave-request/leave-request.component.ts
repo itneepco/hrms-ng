@@ -4,8 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
 import { LeaveApplication } from '../../../shared/models/leave';
+import { LEAVE_REQUEST_PAGE } from '../../models/global.codes';
 import { LeaveRequestService } from '../../services/leave-request.service';
-import { LEAVE_REQUEST_PAGE } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-request',

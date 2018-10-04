@@ -23,7 +23,7 @@ export class HierarchyService {
   }
 
   searchEmployee(empCode: string): Observable<TreeNode | any> {
-    return this.http.get(baseURL + 'api/employees/hierarchy/' + empCode)
+    return this.http.get(baseURL + 'api/employees/' + empCode)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

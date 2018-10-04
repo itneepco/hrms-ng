@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,7 +50,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatBottomSheetModule,
     MatExpansionModule,
     MatBadgeModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatDialogModule,
@@ -75,7 +77,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatBottomSheetModule,
     MatExpansionModule,
     MatBadgeModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule
   ]
 })
 export class AppMaterialModule { }

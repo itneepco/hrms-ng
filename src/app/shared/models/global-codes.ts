@@ -36,12 +36,6 @@ export const CALLBACK_ACTION_TYPES = [
   { code: LEAVE_CALLBACKED, name: "Callback Leave" },
 ]
 
-
-export const TRANSACTION_PAGE = '01'
-export const LEAVE_REQUEST_PAGE = '02'
-export const LEAVE_PROCESSED_PAGE = '03'
-export const LEAVE_APPROVED_PAGE = '04'
-
 export const EL_ADMIN = 'RMAPEL';
 export const MEDICAL_ADMIN = 'RMAPML'
 export const TIME_OFFICE_ADMIN = 'RMAPTO'

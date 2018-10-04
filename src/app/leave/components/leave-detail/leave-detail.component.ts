@@ -7,25 +7,24 @@ import { MatTableDataSource } from '@angular/material/table';
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import {
+  APPROVE_ACTION_TYPES,
   CALLBACK_ACTION_TYPES,
   CL_CODE,
+  EL_ADMIN,
   EL_CODE,
   EL_ML_ACTION_TYPES,
+  HPL_CODE,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
-  LEAVE_PROCESSED_PAGE,
   LEAVE_RECOMMENDED,
-  LEAVE_REQUEST_PAGE,
-  HPL_CODE,
+  MEDICAL_ADMIN,
   PROCESS_ACTION_TYPES,
   RH_CODE,
-  TRANSACTION_PAGE,
-  APPROVE_ACTION_TYPES,
 } from '../../../shared/models/global-codes';
 import { LeaveDetail } from '../../../shared/models/leave';
+import { LEAVE_PROCESSED_PAGE, LEAVE_REQUEST_PAGE, TRANSACTION_PAGE } from '../../models/global.codes';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
-import { EL_ADMIN, MEDICAL_ADMIN } from '../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-detail',
