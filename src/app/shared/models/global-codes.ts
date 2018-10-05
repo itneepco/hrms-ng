@@ -11,31 +11,6 @@ export const LEAVE_TYPES = [
   { code: HPL_CODE, name: "HPL" }
 ]
 
-export const LEAVE_APPLIED = '01'
-export const LEAVE_APPROVED = '02'
-export const LEAVE_RECOMMENDED = '03'
-export const LEAVE_NOT_RECOMMENDED = '04'
-export const LEAVE_CALLBACKED = '05'
-
-export const PROCESS_ACTION_TYPES = [
-  { code: LEAVE_APPROVED, name: "Leave Approved" },
-  { code: LEAVE_RECOMMENDED, name: "Leave Recommended" },
-  { code: LEAVE_NOT_RECOMMENDED, name: "Leave Not Recommended" },
-]
-
-export const EL_ML_ACTION_TYPES = [
-  { code: LEAVE_RECOMMENDED, name: "Leave Recommended" },
-  { code: LEAVE_NOT_RECOMMENDED, name: "Leave Not Recommended" },
-]
-
-export const APPROVE_ACTION_TYPES = [
-  { code: LEAVE_APPROVED, name: "Leave Approved" },
-]
-
-export const CALLBACK_ACTION_TYPES = [
-  { code: LEAVE_CALLBACKED, name: "Callback Leave" },
-]
-
 export const EL_ADMIN = 'RMAPEL';
 export const MEDICAL_ADMIN = 'RMAPML'
 export const TIME_OFFICE_ADMIN = 'RMAPTO'

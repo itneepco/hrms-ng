@@ -24,7 +24,7 @@
 
     <ng-container matColumnDef="with" *ngIf="pageNo == transactionPage">
       <mat-header-cell *matHeaderCellDef fxFlex="25"> With Officer</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="25"> {{leave.addressee | uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="25"> {{leave.addressee}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name" *ngIf="pageNo != transactionPage">

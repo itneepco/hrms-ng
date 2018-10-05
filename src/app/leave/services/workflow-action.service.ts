@@ -9,7 +9,7 @@ import {
   LEAVE_CALLBACKED,
   LEAVE_NOT_RECOMMENDED,
   LEAVE_RECOMMENDED,
-} from '../../shared/models/global-codes';
+} from '../models/leave.codes';
 import { LeaveProcess } from '../../shared/models/workflow-action';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 
@@ -31,13 +31,13 @@ export class WorkflowActionService {
         return "Leave Approved"
       }
       case LEAVE_RECOMMENDED: {
-        return "Leave Recommended"
+        return "Recommended"
       }
       case LEAVE_NOT_RECOMMENDED: {
         return "Not Recommended"
       }
       case LEAVE_CALLBACKED: {
-        return "Leave Callbacked"
+        return "Callbacked"
       }
     }
   }

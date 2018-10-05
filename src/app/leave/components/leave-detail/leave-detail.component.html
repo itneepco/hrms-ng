@@ -66,6 +66,18 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         
+        <div *ngIf="data.leave.status == leave_applied || data.leave.status == leave_recommended_code || data.leave.status == leave_callback_code">
+          <div fxLayout="row" fxLayoutGap="15px">
+            <div class="title">Leave Balance:</div>
+            <div fxFlex fxLayoutGap="15px" fxLayout="row">
+              <span *ngFor="let status of leaveStatuses">
+                {{status.leave_type}}: {{status.balance}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+
         <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDetail">
           <mat-table [dataSource]="leaveDetailSource">
             <ng-container matColumnDef="position">
@@ -134,50 +146,55 @@
         </mat-list>
       </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
-          *ngIf="!((data.leave.status == leave_approved_code || data.leave.status == leave_callback_code) && 
-          (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage))">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Actions 
-          </mat-panel-title>
-          <mat-panel-description>
-            Actions to be performed by officer
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        
-        <form [formGroup]="actionForm" 
-          fxLayout="column" 
-          (ngSubmit)="onSubmit()">
-          
-          <mat-form-field>
-            <mat-select placeholder="Select required action" formControlName="workflow_action">
-              <mat-option *ngFor="let action of actions" [value]="action.code">
-                {{action.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          
-          <mat-form-field 
-            *ngIf="workflow_action.value == leave_recommended_code 
-              && !(isEarnedLeave || isMedicalLeave)">
-
-            <mat-select placeholder="Forward to" formControlName="addressee">
-              <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-                {{ getOfficerName(officer) | titlecase }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <input matInput placeholder="Remarks" formControlName="remarks">
-          </mat-form-field>
-
-          <div fxLayoutAlign="end start">
-            <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
-          </div>  
-        </form>
-      </mat-expansion-panel>
+      <!-- Dont show the expansion panel if leave status is calledback and the page is either transaction and leave process page-->
+      <div [hidden]="data.leave.status == leave_callback_code && (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage)">
+        <!-- Dont show the expansion panel if leave status is approved and the page is transaction page-->
+        <div [hidden]="data.leave.status == leave_approved_code && data.pageNo == transactionPage">
+          <!-- For other condition display the expansion panel-->
+          <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Actions 
+              </mat-panel-title>
+              <mat-panel-description>
+                Actions to be performed by officer
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <form [formGroup]="actionForm" 
+              fxLayout="column" 
+              (ngSubmit)="onSubmit()">
+              
+              <mat-form-field>
+                <mat-select placeholder="Select required action" formControlName="workflow_action">
+                  <mat-option *ngFor="let action of actions" [value]="action.code">
+                    {{action.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field 
+                *ngIf="workflow_action.value == leave_recommended_code 
+                  && !(isEarnedLeave || isMedicalLeave)">
+    
+                <mat-select placeholder="Forward to" formControlName="addressee">
+                  <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
+                    {{ getOfficerName(officer) | titlecase }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+    
+              <mat-form-field>
+                <input matInput placeholder="Remarks" formControlName="remarks">
+              </mat-form-field>
+    
+              <div fxLayoutAlign="end start">
+                <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
+              </div>  
+            </form>
+          </mat-expansion-panel>
+        </div>
+      </div>
     </mat-accordion>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from '../../../shared/models/global-codes';
 import { LeaveApplication } from '../../../shared/models/leave';
-import { LEAVE_REQUEST_PAGE, TRANSACTION_PAGE } from '../../models/global.codes';
+import { LEAVE_REQUEST_PAGE, TRANSACTION_PAGE } from '../../models/leave.codes';
 import { PendingRequestService } from '../../services/pending-request.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LeaveDetailComponent } from './../leave-detail/leave-detail.component';

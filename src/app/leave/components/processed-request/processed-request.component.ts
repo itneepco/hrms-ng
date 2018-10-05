@@ -3,7 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { LEAVE_PROCESSED_PAGE } from '../../models/global.codes';
+import { LEAVE_PROCESSED_PAGE } from '../../models/leave.codes';
 import { LeaveApplication } from '../../../shared/models/leave';
 import { LeaveRequestService } from '../../services/leave-request.service';
 
