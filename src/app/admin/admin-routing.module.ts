@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminGuard } from '../auth/services/admin-guard';
+import { AuthGuard } from '../auth/services/auth-guard';
 import { SuperAdminGuard } from '../auth/services/super-admin-guard';
 import { AdminComponent } from './components/admin/admin.component';
 import { HierarchyHomeComponent } from './components/hierarchy-home/hierarchy-home.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   { 
     path: '', 
     component: AdminComponent,
+    canActivateChild: [AuthGuard],
     children: [
       { 
         path: 'hierarchy', 

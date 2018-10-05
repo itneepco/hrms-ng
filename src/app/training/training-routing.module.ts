@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from '../auth/services/auth-guard';
 import { ArchivedComponent } from './archived/archived.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { NewTrainingComponent } from './new-training/new-training.component';
@@ -11,6 +12,7 @@ const routes: Routes = [
   { 
     path: '', 
     component: TrainingComponent,
+    canActivateChild: [AuthGuard],
     children: [
       { path: 'new', component: NewTrainingComponent },
       { path: 'archived', component: ArchivedComponent },
