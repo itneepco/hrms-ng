@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { switchMap, debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
+import { Employee } from '../../../shared/models/employee';
+import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
 import { Project } from '../../../shared/models/project.model';
+import { EmployeeService } from '../../../shared/services/employee.service';
 import { ProjectService } from '../../../shared/services/project.service';
 import { RoleMapper } from '../../model/role-mapper';
 import { RoleMapperService } from '../../services/role-mapper.service';
-import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
-import { Subscription } from 'rxjs';
-import { EmployeeService } from '../../../shared/services/employee.service';
-import { Employee } from '../../../shared/models/employee';
 
 @Component({
   selector: 'app-roleMapper-list',
@@ -38,7 +38,6 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
 
   //Subscriptions
   empCodeSubs: Subscription
-  searchEmpSubs: Subscription
 
   constructor(private roleMapperService: RoleMapperService,
     private projectService: ProjectService,
@@ -52,7 +51,7 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
 
     this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       if(data.length < 1) return
-      this.searchEmpSubs = this.employeeService.searchEmployee(data)
+      this.employeeService.searchEmployee(data)
         .subscribe(response => {
           console.log(response)
           this.searchResult = response
@@ -167,6 +166,5 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.empCodeSubs.unsubscribe()
-    this.searchEmpSubs.unsubscribe()
   }
 }

@@ -26,7 +26,6 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   ]
   ledger: LeaveLedger = {} as LeaveLedger
   empCodeSubs: Subscription
-  searchEmpSubs: Subscription
 
   constructor(private fb: FormBuilder,
     private ledgerService: LedgerService,
@@ -52,7 +51,7 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
 
     this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       if(data.length < 1) return
-      this.searchEmpSubs = this.employeeService.searchEmployee(data)
+      this.employeeService.searchEmployee(data)
         .subscribe(response => {
           console.log(response)
           this.searchResult = response
@@ -107,6 +106,5 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.empCodeSubs.unsubscribe()
-    this.searchEmpSubs.unsubscribe()
   }
 }

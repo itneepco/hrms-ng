@@ -9,6 +9,7 @@ import {
   LEAVE_CALLBACKED,
   LEAVE_NOT_RECOMMENDED,
   LEAVE_RECOMMENDED,
+  LEAVE_CANCELLED,
 } from '../models/leave.codes';
 import { LeaveProcess } from '../../shared/models/workflow-action';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
@@ -38,6 +39,9 @@ export class WorkflowActionService {
       }
       case LEAVE_CALLBACKED: {
         return "Callbacked"
+      }
+      case LEAVE_CANCELLED: {
+        return "Leave Cancelled"
       }
     }
   }
