@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, debounceTime } from 'rxjs/operators';
 
 import { Project } from '../../../shared/models/project.model';
 import { ProjectService } from '../../../shared/services/project.service';
 import { RoleMapper } from '../../model/role-mapper';
 import { RoleMapperService } from '../../services/role-mapper.service';
 import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
+import { Subscription } from 'rxjs';
+import { EmployeeService } from '../../../shared/services/employee.service';
+import { Employee } from '../../../shared/models/employee';
 
 @Component({
   selector: 'app-roleMapper-list',
   templateUrl: './role-mapper.component.html',
   styleUrls: ['./role-mapper.component.scss']
 })
-export class RoleMapperComponent implements OnInit {
+export class RoleMapperComponent implements OnInit, OnDestroy {
   roleMapper_types = ["CH", "RH"]
   projects: Project[]
   emp_roles = EMPLOYEE_ROLES
@@ -26,20 +29,35 @@ export class RoleMapperComponent implements OnInit {
   isLoading = true
   roleMapperForm: FormGroup
   _roleMapper: RoleMapper = {} as RoleMapper
+  searchResult: Employee[] = []
 
   // Pagination variables 
   dataLength = 0
   pageSize = 10
   pageIndex = 0
 
+  //Subscriptions
+  empCodeSubs: Subscription
+  searchEmpSubs: Subscription
+
   constructor(private roleMapperService: RoleMapperService,
     private projectService: ProjectService,
     private snackbar: MatSnackBar,
+    private employeeService: EmployeeService,
     private fb: FormBuilder) { }
 
   ngOnInit() {
     this.initializeForm()
     this.getRoleMappers()
+
+    this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+      if(data.length < 1) return
+      this.searchEmpSubs = this.employeeService.searchEmployee(data)
+        .subscribe(response => {
+          console.log(response)
+          this.searchResult = response
+        })
+    })
   }
 
   getRoleMappers() {
@@ -145,5 +163,10 @@ export class RoleMapperComponent implements OnInit {
   }
   get role() {
     return this.roleMapperForm.get('role')
+  }
+
+  ngOnDestroy() {
+    this.empCodeSubs.unsubscribe()
+    this.searchEmpSubs.unsubscribe()
   }
 }

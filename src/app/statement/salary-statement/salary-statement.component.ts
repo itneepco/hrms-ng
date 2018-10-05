@@ -73,6 +73,14 @@ export class SalaryStatementComponent implements OnInit {
     return [ date.getFullYear(), date.getFullYear()-1 ]
   }
 
+  getMonthYear(yymm: string) {
+    let year = yymm.substr(0,4)
+    let month = this.months.find(data => data.value == yymm.substr(4,2))
+
+    let yymm_str = `${month.name}, ${year}`
+    return yymm_str
+  }
+
   get year() {
     return this.searchForm.get('year')
   }

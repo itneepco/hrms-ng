@@ -34,7 +34,7 @@ export class WorkflowActionService {
         return "Leave Recommended"
       }
       case LEAVE_NOT_RECOMMENDED: {
-        return "Leave Not Recommended"
+        return "Not Recommended"
       }
       case LEAVE_CALLBACKED: {
         return "Leave Callbacked"

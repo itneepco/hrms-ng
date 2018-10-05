@@ -65,20 +65,20 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
     if(this.ledgerForm.invalid) return
     console.log(this.ledgerForm.value)
 
-    // if(this.ledger.id) {
-    //   this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
-    //     .subscribe((val) => {
-    //       console.log(val)
-    //       this.dialogRef.close({ edit: val })
-    //     })
-    // }
-    // else {
-    //   this.ledgerService.addLedger(this.ledgerForm.value)
-    //     .subscribe((val) => {
-    //       console.log(val)
-    //       this.dialogRef.close({ add: val })
-    //     })
-    // }
+    if(this.ledger.id) {
+      this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
+        .subscribe((val) => {
+          console.log(val)
+          this.dialogRef.close({ edit: val })
+        })
+    }
+    else {
+      this.ledgerService.addLedger(this.ledgerForm.value)
+        .subscribe((val) => {
+          console.log(val)
+          this.dialogRef.close({ add: val })
+        })
+    }
   }
 
   get emp_code() {

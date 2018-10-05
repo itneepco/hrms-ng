@@ -25,15 +25,15 @@
       </mat-form-field>
 
       <mat-form-field fxFlex="30">
-        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code">
-        <mat-error *ngIf="emp_code.touched && emp_code.errors?.required">
-          is required
-        </mat-error>
-        <mat-error *ngIf="emp_code.dirty && emp_code.errors?.pattern">
-          Employee code should be six digits
-        </mat-error>
+        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+            {{ item.first_name | titlecase }} {{ item.last_name | titlecase }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="emp_code.errors?.required">is required</mat-error>
+        <mat-error *ngIf="emp_code.errors?.pattern">Employee code should be six digits</mat-error>
       </mat-form-field>
-      
 
       <div fxFlex="20">
         <button mat-raised-button *ngIf="_roleMapper.id"
