@@ -171,6 +171,7 @@
                     {{action.name}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="workflow_action.errors?.required">Workflow action is required</mat-error>
               </mat-form-field>
               
               <mat-form-field 
@@ -182,6 +183,7 @@
                     {{ getOfficerName(officer) | titlecase }}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
               </mat-form-field>
     
               <mat-form-field>
@@ -189,7 +191,7 @@
               </mat-form-field>
     
               <div fxLayoutAlign="end start">
-                <button mat-raised-button color="primary" [disabled]="actionForm.invalid">Submit</button>
+                <button mat-raised-button color="primary">Submit</button>
               </div>  
             </form>
           </mat-expansion-panel>

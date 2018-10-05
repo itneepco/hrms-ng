@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,13 +19,14 @@ import { LEAVE_PROCESSED_PAGE, LEAVE_REQUEST_PAGE, TRANSACTION_PAGE, LEAVE_RECOM
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LedgerService } from '../../services/ledger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-leave-detail',
   templateUrl: './leave-detail.component.html',
   styleUrls: ['./leave-detail.component.scss']
 })
-export class LeaveDetailComponent implements OnInit {
+export class LeaveDetailComponent implements OnInit, OnDestroy {
   panelOpenState = false
   displayedColumns = ["position", "leave_type", "station_leave", "from_date", "to_date"]
   leaveDetailSource: MatTableDataSource<LeaveDetail>
@@ -33,7 +34,8 @@ export class LeaveDetailComponent implements OnInit {
   actionForm: FormGroup
   actions = []
   ctrlOfficers = []
-  leaveStatuses: LeaveStatus[] = [];
+  leaveStatuses: LeaveStatus[] = []
+  subscription: Subscription
 
   //GLobal codes
   cl_code = CL_CODE
@@ -63,14 +65,23 @@ export class LeaveDetailComponent implements OnInit {
     this.leaveDetailSource = new MatTableDataSource(this.data.leave.leaveDetails)
     this.initForm()
     this.actions = this.getActions()
+
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
       .subscribe((ctrlOfficers: any[]) => {
         this.ctrlOfficers = ctrlOfficers
       })
+    
     this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
-    .subscribe((status: LeaveStatus[]) => {
-      this.leaveStatuses = status
-    })   
+      .subscribe((status: LeaveStatus[]) => {
+        this.leaveStatuses = status
+      })
+    
+    this.subscription = this.workflow_action.valueChanges
+      .subscribe((data) => {
+        if(data == LEAVE_RECOMMENDED) {
+          this.addressee.setValidators(Validators.required)
+        }
+      })
   }
 
   setStep(index: number) {
@@ -158,5 +169,9 @@ export class LeaveDetailComponent implements OnInit {
 
   getOfficerName(officer) {
     return `${officer.first_name} ${officer.last_name}, ${officer.designation}`
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }
