@@ -10,7 +10,7 @@ export class StatementComponent implements OnInit {
 
   navObj: NavObject[] = [
     { name: 'Salary Statement', path: 'salary' },
-    { name: 'PF Statement', path: 'pf' },
+    // { name: 'PF Statement', path: 'pf' },
   ];
   
   constructor() { }

@@ -16,7 +16,7 @@
   
     <mat-card>
       <mat-card-title *ngIf="code == el_code">Apply Earned Leave</mat-card-title>
-      <mat-card-title *ngIf="code == hpl_code">Apply Medical Leave</mat-card-title>
+      <mat-card-title *ngIf="code == hpl_code">Apply Half Pay Leave</mat-card-title>
       <form [formGroup]="leaveForm" fxLayout="column" (ngSubmit)="applyLeave()">
         <div fxLayout="row" fxLayoutGap="20px">
           <mat-form-field fxFlex>

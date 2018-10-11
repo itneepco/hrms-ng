@@ -1,15 +1,15 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription, timer } from 'rxjs';
-import { debounce, debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { LedgerService } from '../../../leave/services/ledger.service';
+import { Employee } from '../../../shared/models/employee';
 import { LEAVE_TYPES } from '../../../shared/models/global-codes';
 import { LeaveType } from '../../../shared/models/leave';
 import { LeaveLedger } from '../../../shared/models/ledger';
 import { EmployeeService } from '../../../shared/services/employee.service';
-import { Employee } from '../../../shared/models/employee';
 
 @Component({
   selector: 'app-add-ledger',
@@ -53,7 +53,7 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
       if(data.length < 1) return
       this.employeeService.searchEmployee(data)
         .subscribe(response => {
-          console.log(response)
+          // console.log(response)
           this.searchResult = response
         })
     })

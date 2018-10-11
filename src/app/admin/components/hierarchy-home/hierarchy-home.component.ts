@@ -1,28 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { HierarchyService } from '../../services/hierarchy.service';
 import { AddChildNodeComponent } from '../add-child-node/add-child-node.component';
 import { EmployeeNode, TreeNode } from './../../model/employee-node';
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { EmployeeService } from '../../../shared/services/employee.service';
 
 @Component({
   selector: 'app-hierarchy-home',
   templateUrl: './hierarchy-home.component.html',
   styleUrls: ['./hierarchy-home.component.scss']
 })
-export class HierarchyHomeComponent {
+export class HierarchyHomeComponent implements OnInit, OnDestroy {
   node: EmployeeNode;
   isSearching = false;
-  emp_code: string;
+  emp_code: FormControl;
   errMsg: string;
   displayedColumns = ["emp_code", "name", "designation", "project", "actions"];
+  empCodeSubs: Subscription;
+  searchResult = [];
 
-  constructor(private hierarchyService: HierarchyService, private dialog: MatDialog) { }
+  constructor(private hierarchyService: HierarchyService,
+    private employeeService: EmployeeService, 
+    private dialog: MatDialog) { }
+  
+  ngOnInit() {
+    this.emp_code = new FormControl()
+
+    this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+      if(data.length < 1) return
+      this.employeeService.searchEmployee(data)
+        .subscribe(response => {
+          this.searchResult = response
+        })
+    })
+  }  
 
   onSearch() {
     if (!this.emp_code) return
     this.isSearching = true
-    this.hierarchyService.getEmployeeNode(this.emp_code)
+    this.hierarchyService.getEmployeeNode(this.emp_code.value)
       .subscribe(
         node => {
           this.node = node
@@ -35,20 +55,23 @@ export class HierarchyHomeComponent {
       )
   }
 
-  onEdit() {
-    this.openDialog({ emp_code: this.emp_code })
+  onChangeParent() {
+    this.openDialog({ emp_code: this.emp_code.value })
   }
 
   removeChild(childNode: TreeNode) {
-    this.hierarchyService.removeChildNode(childNode.id)
-      .subscribe(() => {
-        this.hierarchyService.getEmployeeNode(this.emp_code)
-          .subscribe(node => this.node = node)
-      })
+    let retVal = confirm("Are you sure you want to delete?")
+    if(retVal == true) {
+      this.hierarchyService.removeChildNode(childNode.id)
+        .subscribe(() => {
+          this.hierarchyService.getEmployeeNode(this.emp_code.value)
+            .subscribe(node => this.node = node)
+        })
+    }
   }
 
   addChild() {
-    this.openDialog({ parent_emp_code: this.emp_code })
+    this.openDialog({ parent_emp_code: this.emp_code.value })
   }
 
   private openDialog(data) {
@@ -60,8 +83,12 @@ export class HierarchyHomeComponent {
 
     dialogRef.afterClosed().subscribe((data) => {
       if(data && data.action == "add") {
-        this.hierarchyService.getEmployeeNode(this.emp_code).subscribe(node => this.node = node)
+        this.hierarchyService.getEmployeeNode(this.emp_code.value).subscribe(node => this.node = node)
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.empCodeSubs.unsubscribe()
   }
 }

@@ -1,25 +1,34 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import {
-  CL_CODE,
-  EL_ADMIN,
-  EL_CODE,
-  HPL_CODE,
-  MEDICAL_ADMIN,
-  RH_CODE,
-} from '../../../shared/models/global-codes';
+import { CL_CODE, EL_ADMIN, EL_CODE, HPL_CODE, MEDICAL_ADMIN, RH_CODE } from '../../../shared/models/global-codes';
 import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
-import { LEAVE_PROCESSED_PAGE, LEAVE_REQUEST_PAGE, TRANSACTION_PAGE, LEAVE_RECOMMENDED, LEAVE_APPROVED, LEAVE_CALLBACKED, CALLBACK_ACTION_TYPES, APPROVE_ACTION_TYPES, EL_ML_ACTION_TYPES, PROCESS_ACTION_TYPES, CANCEL_ACTION_TYPES, LEAVE_APPLIED, LEAVE_NOT_RECOMMENDED, LEAVE_CANCELLED } from '../../models/leave.codes';
+import {
+  APPROVE_ACTION_TYPES,
+  CALLBACK_ACTION_TYPES,
+  CANCEL_ACTION_TYPES,
+  EL_ML_ACTION_TYPES,
+  LEAVE_APPLIED,
+  LEAVE_APPROVED,
+  LEAVE_CALLBACKED,
+  LEAVE_CANCELLED,
+  LEAVE_NOT_RECOMMENDED,
+  LEAVE_PROCESSED_PAGE,
+  LEAVE_RECOMMENDED,
+  LEAVE_REQUEST_PAGE,
+  PROCESS_ACTION_TYPES,
+  TRANSACTION_PAGE,
+} from '../../models/leave.codes';
 import { LeaveTypeService } from '../../services/leave-type.service';
-import { WorkflowActionService } from '../../services/workflow-action.service';
 import { LedgerService } from '../../services/ledger.service';
-import { Subscription } from 'rxjs';
+import { WorkflowActionService } from '../../services/workflow-action.service';
+import { HD_CL_CODE } from './../../../shared/models/global-codes';
 
 @Component({
   selector: 'app-leave-detail',
@@ -39,6 +48,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
   //GLobal codes
   cl_code = CL_CODE
+  hdcl_code = HD_CL_CODE
   rh_code = RH_CODE
   leave_applied = LEAVE_APPLIED
   leave_recommended_code = LEAVE_RECOMMENDED
@@ -71,7 +81,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
         this.ctrlOfficers = ctrlOfficers
       })
     
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
+    this.ledgerService.getLeaveStatus(this.data.leave.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
       })

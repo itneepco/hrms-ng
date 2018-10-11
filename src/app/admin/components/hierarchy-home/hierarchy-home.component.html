@@ -2,10 +2,15 @@
   <mat-card class="search">
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Please Enter Employee Code" [(ngModel)]="emp_code" #empCode="ngModel" pattern="[0-9]{6}">
-        <mat-hint *ngIf="empCode.invalid">Employee Code should be 6 digit</mat-hint>
+        <input matInput placeholder="6 Digit Employee Code" [formControl]="emp_code" pattern="[0-9]{6}" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
+          <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+            {{ item.first_name | titlecase }} {{ item.last_name | titlecase }}, {{item.designation}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="empCode.invalid">
+      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="emp_code.invalid">
         <mat-icon>search</mat-icon>Search
       </button>
     </div>
@@ -20,9 +25,12 @@
           <app-node-info [node]="node"></app-node-info>
         </div>
 
-        <div fxFLex="50" *ngIf="node.parent">
+        <div fxFLex="50">
           Reporting To:
-          <app-node-info [node]="node.parent" canEdit="true" (onEdit)="onEdit()"></app-node-info>
+          <app-node-info [node]="node.parent" 
+            canEdit="true" 
+            (onEdit)="onChangeParent()">
+          </app-node-info>
         </div>
       </div>
     </mat-card>

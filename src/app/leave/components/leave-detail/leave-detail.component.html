@@ -109,7 +109,7 @@
             <ng-container matColumnDef="to_date">
               <mat-header-cell *matHeaderCellDef fxFlex="20"> To Date </mat-header-cell>
               <mat-cell *matCellDef="let leaveDetail" fxFlex="20"> 
-                <span *ngIf="!(leaveDetail.leave_type == cl_code || leaveDetail.leave_type == rh_code)">
+                <span *ngIf="!(leaveDetail.leave_type == cl_code || leaveDetail.leave_type == rh_code || leaveDetail.leave_type == hdcl_code)">
                   {{leaveDetail.to_date | date:'mediumDate'}}
                 </span> 
               </mat-cell>

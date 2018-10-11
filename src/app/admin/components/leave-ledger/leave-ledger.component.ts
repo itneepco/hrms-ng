@@ -1,26 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
-import { LeaveLedger } from '../../../shared/models/ledger';
-import { LedgerService } from '../../../leave/services/ledger.service';
-import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
 import { LeaveTypeService } from '../../../leave/services/leave-type.service';
+import { LedgerService } from '../../../leave/services/ledger.service';
+import { LeaveLedger } from '../../../shared/models/ledger';
+import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
+import { EmployeeService } from './../../../shared/services/employee.service';
 
 @Component({
   selector: 'app-ledger',
   templateUrl: './leave-ledger.component.html',
   styleUrls: ['./leave-ledger.component.scss']
 })
-export class LeaveLedgerComponent {
-  emp_code: string
+export class LeaveLedgerComponent implements OnInit, OnDestroy {
+  emp_code: FormControl
   displayedColumns = ["position", "emp_code", "cal_year", "db_cr_flag", "no_of_days", "leave_type", "actions"]
   dataSource: MatTableDataSource<LeaveLedger>
   isLoading: boolean
   errMsg: string
-  
+  empCodeSubs: Subscription
+  searchResult = []
+
   // Pagination variables 
   dataLength = 0
   pageSize = 10
@@ -28,14 +34,27 @@ export class LeaveLedgerComponent {
 
   constructor(private dialog: MatDialog, 
     private snackbar: MatSnackBar,
+    private employeeService: EmployeeService,
     public leaveTypeService: LeaveTypeService,
     private ledgerService: LedgerService) {}
+
+  ngOnInit() {
+    this.emp_code = new FormControl()
+
+    this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+      if(data.length < 1) return
+      this.employeeService.searchEmployee(data)
+        .subscribe(response => {
+          this.searchResult = response
+        })
+    })
+  }  
 
   onSearch() {
     if(!this.emp_code) return 
 
     this.isLoading = true    
-    this.ledgerService.searchEmployee(this.emp_code, this.pageIndex, this.pageSize)
+    this.ledgerService.searchEmployee(this.emp_code.value, this.pageIndex, this.pageSize)
       .subscribe((data) => {
         this.dataLength = data['count']
         this.dataSource = new MatTableDataSource<LeaveLedger>(data['rows'])
@@ -60,7 +79,7 @@ export class LeaveLedgerComponent {
         })
         this.dataSource = new MatTableDataSource<LeaveLedger>()
         this.dataSource.data.push(val.add)
-        this.emp_code = ''
+        this.emp_code.reset()
       }
     })
   }
@@ -108,4 +127,8 @@ export class LeaveLedgerComponent {
     this.pageSize = pageEvent.pageSize
     this.onSearch()
   } 
+
+  ngOnDestroy() {
+    this.empCodeSubs.unsubscribe()
+  }
 }

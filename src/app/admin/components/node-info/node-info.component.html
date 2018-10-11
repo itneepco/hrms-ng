@@ -1,17 +1,18 @@
 <mat-list id="node-info">
   <mat-list-item>
     <img matListAvatar src="assets/images/profile.jpg" id="profile-img">
-    <h3 matLine>{{node.first_name | titlecase }} {{node.last_name | titlecase }}</h3>
-    <p matLine>
+    <h3 matLine *ngIf="node">{{node.first_name | titlecase }} {{node.last_name | titlecase }}</h3>
+    <p matLine *ngIf="node">
       <span>{{node.emp_code}}</span>
       <span>,&nbsp;</span>
       <span>{{node.project}}</span>
     </p>
-    <p matLine>{{node.designation}}</p>
+    <p matLine *ngIf="node">{{node.designation}}</p>
     <p matLine *ngIf="canEdit">
       <button mat-icon-button color="primary" (click)="onClick()">
         <mat-icon>open_in_new</mat-icon>
       </button>
+      <span *ngIf="!node">Add Parent</span>
     </p>
   </mat-list-item>
 </mat-list>    
