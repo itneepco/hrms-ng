@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from '../auth/services/auth-guard';
+import { ApprovedLeavesComponent } from './approved-leaves/approved-leaves.component';
 import { SalaryStatementComponent } from './salary-statement/salary-statement.component';
 import { StatementComponent } from './statement/statement.component';
-import { AuthGuard } from '../auth/services/auth-guard';
 
 const routes: Routes = [
   { 
@@ -12,6 +13,7 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: 'salary', component: SalaryStatementComponent },
+      { path: 'approved-leaves', component: ApprovedLeavesComponent },
       { path: '', redirectTo: 'salary', pathMatch: 'full' }
     ] 
   },

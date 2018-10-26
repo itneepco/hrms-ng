@@ -27,69 +27,6 @@
   </form>
 </mat-card>
 
-<!-- <mat-card *ngIf="salary" id="salary-info">
-  <mat-toolbar color="primary" id="title">Payslip for the month of {{getMonthYear(salary.yymm)}}</mat-toolbar>
-  <div id="container">
-    <div fxLayout="row" fxLayoutGap="20px" id="info">
-      <div fxFlex="40">
-        <div fxLayout="row" class="cell">
-          <div fxFlex>
-            <strong>EMPLOYEE CODE:</strong>
-          </div>
-          <div fxFlex>{{salary.employee.emp_code}}</div>
-        </div>
-        <div fxLayout="row" class="cell">
-          <div fxFlex>
-            <strong>NAME:</strong>
-          </div>
-          <div fxFlex>
-            {{salary.employee.first_name | titlecase}} {{salary.employee.last_name | titlecase}}
-          </div>
-        </div>
-        <div fxLayout="row" class="cell">
-          <div fxFlex><strong>DESIGNATION:</strong></div>
-          <div fxFlex>{{salary.employee.designation}}</div>
-        </div>
-        <div fxLayout="row" class="cell">
-          <div fxFlex><strong>PROJECT:</strong></div>
-          <div fxFlex>{{salary.employee.project}}</div>
-        </div>
-      </div>
-      <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex="30">
-        <div *ngFor="let deduction of salary.deductions" fxLayout="row" class="cell">
-          <div fxFlex="70"><strong>{{deduction.pay_code_desc}}:</strong></div>
-          <div fxFlex="30">{{deduction.txn_amt}}</div>
-        </div>
-      </div>
-      <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex="30">
-        <div *ngFor="let payment of salary.payments" fxLayout="row" class="cell">
-          <div fxFlex="50"><strong>{{payment.pay_code_desc}}:</strong></div>
-          <div fxFlex="50">{{payment.txn_amt}}</div>
-        </div>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div fxLayout="row" fxLayoutGap="20px" id="summary">
-      <div fxFlex="40" fxLayout="row" class="summary-cell">
-        <div fxFlex="50"><strong>GROSS PAY:</strong></div>
-        <div fxFlex="50">{{salary.grossPay.txn_amt}}</div>
-      </div>
-      <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex="30" fxLayout="row" class="summary-cell">
-        <div fxFlex="70"><strong>GROSS DEDUCTION:</strong></div>
-        <div fxFlex="30">{{salary.grossDeduction.txn_amt}}</div>
-      </div>
-      <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex="30" fxLayout="row" class="summary-cell">
-        <div fxFlex="50"><strong>NET SALARY:</strong></div>
-        <div fxFlex="50">{{salary.netPay.txn_amt}}</div>
-      </div>
-    </div>
-  </div>
-</mat-card> -->
-
 <div *ngIf="salary" id="salary-info">
   <div id="payslip">
     <div id="title">Payslip</div>

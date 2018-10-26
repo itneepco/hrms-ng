@@ -13,6 +13,7 @@ import { LeaveModule } from './leave/leave.module';
 import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
 import { StatementModule } from './statement/statement.module';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { StatementModule } from './statement/statement.module';
     LeaveModule,
   ],
   providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     { provide: "BaseURL", useValue: baseURL },
     {
       provide: HTTP_INTERCEPTORS,

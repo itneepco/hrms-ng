@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 
 import { AuthService } from '../../../auth/services/auth.service';
 import { LeaveStatus } from '../../../shared/models/leave';
-import { HolidayService } from '../../services/holiday.service';
+import { HolidayService } from '../../../shared/services/holiday.service';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';

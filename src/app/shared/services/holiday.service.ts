@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AuthService } from '../../auth/services/auth.service';
-import { baseURL } from '../../shared/config/baseUrl';
-import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { Holiday } from '../../shared/models/holiday';
+import { baseURL } from '../config/baseUrl';
+import { ErrorHandlerService } from './error-handler.service';
+import { Holiday } from '../models/holiday';
 
 @Injectable({
   providedIn: 'root'

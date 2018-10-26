@@ -1,0 +1,25 @@
+<mat-card class="search">
+  <form fxLayout="row"
+    fxLayout.lt-sm="column" 
+    fxLayoutGap="20px" 
+    fxLayoutAlign="start center"
+    [formGroup]="searchForm" 
+    (ngSubmit)="onSubmit()">
+    
+    <mat-form-field fxFlex>
+      <input matInput [matDatepicker]="f_date" formControlName="from_date" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="f_date"></mat-datepicker-toggle>
+      <mat-datepicker #f_date></mat-datepicker>
+      <mat-error *ngIf="from_date.errors?.required">From date is required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field fxFlex>
+      <input matInput [matDatepicker]="t_date" formControlName="to_date" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="t_date"></mat-datepicker-toggle>
+      <mat-datepicker #t_date></mat-datepicker>
+      <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Search</button>
+  </form>
+</mat-card>
