@@ -84,6 +84,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     this.ledgerService.getLeaveStatus(this.data.leave.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
+        console.log(status)
       })
     
     this.subscription = this.workflow_action.valueChanges
@@ -175,6 +176,44 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     let ml_type = this.data.leave.leaveDetails
       .find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
     return ml_type ? true : false  
+  }
+
+  get isCasualLeave(): boolean {
+    let el_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == CL_CODE)
+    return el_type ? true : false  
+  }
+
+  get isRestrictedHoliday(): boolean {
+    let el_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == RH_CODE)
+    return el_type ? true : false  
+  }
+
+  get isHalfDayCl(): boolean {
+    let el_type = this.data.leave.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == HD_CL_CODE)
+    return el_type ? true : false  
+  }
+
+  checkBalance() {
+    if(this.isCasualLeave || this.isHalfDayCl || this.isRestrictedHoliday) {
+      let no_of_cl = this.data.leave.leaveDetails
+        .filter(leaveDetail => leaveDetail.leave_type == CL_CODE).length
+      let no_of_rh = this.data.leave.leaveDetails
+        .filter(leaveDetail => leaveDetail.leave_type == RH_CODE).length
+      let no_of_hdcl = this.data.leave.leaveDetails
+        .filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length
+    }
+
+    if(this.isEarnedLeave) {
+      let el = this.data.leave.leaveDetails[0]
+      // let no_of_el = el.from_date
+    }
+
+    if(this.isMedicalLeave) {
+
+    }
   }
 
   getOfficerName(officer) {

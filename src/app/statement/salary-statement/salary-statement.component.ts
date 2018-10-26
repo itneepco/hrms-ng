@@ -81,6 +81,13 @@ export class SalaryStatementComponent implements OnInit {
     return yymm_str
   }
 
+  getPayPeriod(yymm: string) {
+    let month = this.months.find(data => data.value == yymm.substr(4,2))
+    let index = this.months.findIndex(data => data.value == month.value)
+    let prev_month = this.months[index-1]
+    return `16 ${prev_month.name} - 15 ${month.name}`
+  }
+
   get year() {
     return this.searchForm.get('year')
   }

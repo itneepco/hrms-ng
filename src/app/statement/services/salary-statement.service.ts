@@ -10,7 +10,7 @@ import { baseURL } from '../../shared/config/baseUrl';
   providedIn: 'root'
 })
 export class SalaryStatementService {
-  url = baseURL + 'api/payImage'
+  url = baseURL + 'api/pay-image'
 
   constructor(private http: HttpClient,
     private handler: ErrorHandlerService
