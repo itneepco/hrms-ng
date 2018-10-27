@@ -1,7 +1,8 @@
+import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { LeaveStatementService } from './../services/leave-statement.service';
+import { LeaveStatementService } from '../../services/leave-statement.service';
 
 @Component({
   selector: 'app-approved-leaves',
@@ -12,14 +13,14 @@ export class ApprovedLeavesComponent implements OnInit {
   searchForm: FormGroup
   isLoading: boolean = false
   errMsg: string
-  leaves = []
+  dataSource: MatTableDataSource<any>
+  displayedColumns = ["position", "emp_code", "name", "actions"]
 
   constructor(private fb: FormBuilder,
     private leaveStatementService: LeaveStatementService) { }
 
   ngOnInit() {
     this.initForm()
-    this.fetchApprovedLeaves()
   }
 
   fetchApprovedLeaves() {
@@ -50,7 +51,7 @@ export class ApprovedLeavesComponent implements OnInit {
     this.leaveStatementService.getStatement(fd_format, td_format)
       .subscribe(data => {
         console.log(data) 
-        this.leaves = data
+        this.dataSource = new MatTableDataSource(data)
         this.isLoading = false
       }, errMsg => {
         this.errMsg = errMsg

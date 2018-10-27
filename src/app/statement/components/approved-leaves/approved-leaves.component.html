@@ -1,0 +1,65 @@
+<mat-card class="search">
+  <form fxLayout="row"
+    fxLayout.lt-sm="column" 
+    fxLayoutGap="20px" 
+    fxLayoutAlign="start center"
+    [formGroup]="searchForm" 
+    (ngSubmit)="onSubmit()">
+    
+    <mat-form-field fxFlex>
+      <input matInput [matDatepicker]="f_date" formControlName="from_date" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="f_date"></mat-datepicker-toggle>
+      <mat-datepicker #f_date></mat-datepicker>
+      <mat-error *ngIf="from_date.errors?.required">From date is required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field fxFlex>
+      <input matInput [matDatepicker]="t_date" formControlName="to_date" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="t_date"></mat-datepicker-toggle>
+      <mat-datepicker #t_date></mat-datepicker>
+      <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Search</button>
+  </form>
+</mat-card>
+
+<mat-card *ngIf="dataSource">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
+        {{ i + 1 + pageIndex*pageSize }} 
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="emp_code">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="15"> {{ leave.emp_code }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef fxFlex="25">Employee Name</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="25">
+        {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10">
+        <button mat-icon-button (click)="onShow(leave, i)" color="accent">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>
+
+<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+<mat-card *ngIf="errMsg" class="error-info">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card>

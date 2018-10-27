@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavObject } from '../../shared/models/nav-object';
+import { NavObject } from '../../../shared/models/nav-object';
 
 @Component({
   selector: 'app-statement',
@@ -11,11 +11,11 @@ export class StatementComponent implements OnInit {
   navObj: NavObject[] = [
     { name: 'Salary Statement', path: 'salary' },
     { name: 'Approved Leaves', path: 'approved-leaves' },
+    { name: 'PF Statement', path: 'pf' },
   ];
   
   constructor() { }
 
   ngOnInit() {
   }
-
 }

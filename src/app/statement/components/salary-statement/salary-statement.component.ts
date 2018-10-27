@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SalaryStatementService } from '../services/salary-statement.service';
-import { AuthService } from '../../auth/services/auth.service';
+import { SalaryStatementService } from '../../services/salary-statement.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
