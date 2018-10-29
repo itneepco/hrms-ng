@@ -41,7 +41,7 @@
   </mat-list-item>
 
   <mat-list-item
-    *ngIf="auth.isAdmin()"
+    *ngIf="auth.currentUser && auth.isAdmin()"
     (click)="menuService.menuToggle()"
     routerLink="/administrator"
     routerLinkActive="active">
