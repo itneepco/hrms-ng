@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { CL_CODE, EL_ADMIN, EL_CODE, HPL_CODE, MEDICAL_ADMIN, RH_CODE } from '../../../shared/models/global-codes';
+import { CL_CODE, EL_CODE, EL_HPL_ADMIN, HPL_CODE, RH_CODE } from '../../../shared/models/global-codes';
 import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
 import {
   APPROVE_ACTION_TYPES,
@@ -114,8 +114,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     let formValue = this.actionForm.value
 
     if(this.workflow_action.value == LEAVE_RECOMMENDED) {
-      if(this.isEarnedLeave) formValue.addressee = EL_ADMIN
-      if(this.isMedicalLeave) formValue.addressee = MEDICAL_ADMIN 
+      if(this.isEarnedLeave || this.isMedicalLeave) formValue.addressee = EL_HPL_ADMIN 
     }
 
     this.wActionService.processLeave(formValue)
