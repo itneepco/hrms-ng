@@ -1,9 +1,10 @@
-<div fxLayoutAlign="space-between" id="header">
-  <h3 mat-dialog-title>Leave Details</h3>
+<mat-toolbar color="primary" id="header">
+  <div fxFlex>Leave Details</div>
+  <div class="flex-spacer"></div>
   <button mat-icon-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
-</div>
+</mat-toolbar>
 
 <div fxLayout="column" fxLayoutAlign="end stretch" id="container">
   <div fxFlex>
@@ -66,18 +67,6 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         
-        <div *ngIf="data.leave.status == leave_applied || data.leave.status == leave_recommended_code || data.leave.status == leave_callback_code">
-          <div fxLayout="row" fxLayoutGap="15px">
-            <div class="title">Leave Balance:</div>
-            <div fxFlex fxLayoutGap="15px" fxLayout="row">
-              <span *ngFor="let status of leaveStatuses">
-                {{status.leave_type}}: {{status.balance}}
-              </span>
-            </div>
-          </div>
-        </div>
-        <mat-divider></mat-divider>
-
         <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDetail">
           <mat-table [dataSource]="leaveDetailSource">
             <ng-container matColumnDef="position">
@@ -119,6 +108,20 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
         </div>  
+
+        <div *ngIf="data.leave.status == leave_applied || 
+            data.leave.status == leave_recommended_code || 
+            data.leave.status == leave_callback_code">
+
+          <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="15px">
+            <div class="title">Leave Balance:</div>
+            <div fxLayoutGap="15px" fxLayout="row">
+              <span *ngFor="let status of leaveStatuses">
+                {{status.leave_type}}: {{status.balance}}
+              </span>
+            </div>
+          </div>
+        </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
@@ -133,13 +136,13 @@
         
         <mat-list>
           <mat-list-item *ngFor="let hist_info of data.leave.history; let i=index">
-            <h3 matLine> 
+            <h3 matLine class="info"> 
               <span>{{i + 1}}.&nbsp;</span>
               <span>{{wActionService.getWorkflowAction(hist_info.workflow_action)}}</span>
               <span>&nbsp;on&nbsp;</span>
               <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
             </h3>
-            <p matLine>
+            <p matLine class="officer">
               <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- by {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
             </p>
           </mat-list-item>
