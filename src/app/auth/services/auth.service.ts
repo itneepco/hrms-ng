@@ -1,3 +1,4 @@
+import { HR_LEAVE_SUPER_ADMIN } from './../../shared/models/global-codes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
 import { User } from '../../shared/models/user.model';
+import { EL_HPL_ADMIN } from '../../shared/models/global-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +75,15 @@ export class AuthService {
 
   isAdmin(): boolean {
     return  this.isSuperAdmin() || this.isHrSiteAdmin()
+  }
+
+  isElHplAdmin(): boolean {
+    let role = this.currentUser.roleMapper.find(mapper => mapper.role == EL_HPL_ADMIN)
+    return role ? true : false
+  }
+
+  isHrLeaveSuperAdmin(): boolean {
+    let role = this.currentUser.roleMapper.find(mapper => mapper.role == HR_LEAVE_SUPER_ADMIN)
+    return role ? true : false
   }
 }

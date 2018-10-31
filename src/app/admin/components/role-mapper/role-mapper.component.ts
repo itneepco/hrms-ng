@@ -11,7 +11,7 @@ import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
 import { Project } from '../../../shared/models/project.model';
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { ProjectService } from '../../../shared/services/project.service';
-import { RoleMapper } from '../../model/role-mapper';
+import { RoleMapper } from '../../../shared/models/role-mapper';
 import { RoleMapperService } from '../../services/role-mapper.service';
 
 @Component({

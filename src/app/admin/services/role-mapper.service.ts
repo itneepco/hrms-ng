@@ -12,7 +12,7 @@ import {
   VEHICLE_ADMIN,
 } from '../../shared/models/global-codes';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { RoleMapper } from '../model/role-mapper';
+import { RoleMapper } from '../../shared/models/role-mapper';
 import { FIN_REP_UPLOADER, HR_LEAVE_SUPER_ADMIN, HR_REP_UPLOADER } from './../../shared/models/global-codes';
 
 @Injectable({

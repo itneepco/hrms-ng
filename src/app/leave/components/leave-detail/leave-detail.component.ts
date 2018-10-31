@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { CL_CODE, EL_CODE, EL_HPL_ADMIN, HPL_CODE, RH_CODE } from '../../../shared/models/global-codes';
+import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE, EL_HPL_ADMIN } from '../../../shared/models/global-codes';
 import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
 import {
   APPROVE_ACTION_TYPES,
@@ -28,7 +28,8 @@ import {
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
-import { HD_CL_CODE } from './../../../shared/models/global-codes';
+import { HD_CL_CODE, HR_LEAVE_SUPER_ADMIN } from './../../../shared/models/global-codes';
+import { Addressee, CtrlOfficer } from './../../models/adressee';
 
 @Component({
   selector: 'app-leave-detail',
@@ -42,7 +43,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   step: number = 0
   actionForm: FormGroup
   actions = []
-  ctrlOfficers = []
+  l_app_addressees: Addressee[] = []
   leaveStatuses: LeaveStatus[] = []
   subscription: Subscription
 
@@ -68,6 +69,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     public wActionService: WorkflowActionService,
     private ledgerService: LedgerService,
+    private auth: AuthService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
@@ -77,8 +79,8 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     this.actions = this.getActions()
 
     this.hierarchyService.getParents(this.authService.currentUser.emp_code)
-      .subscribe((ctrlOfficers: any[]) => {
-        this.ctrlOfficers = ctrlOfficers
+      .subscribe((ctrlOfficers: CtrlOfficer[]) => {
+        this.setCtrlOfficers(ctrlOfficers)
       })
     
     this.ledgerService.getLeaveStatus(this.data.leave.emp_code)
@@ -113,10 +115,6 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     if(this.actionForm.invalid) return 
     let formValue = this.actionForm.value
 
-    if(this.workflow_action.value == LEAVE_RECOMMENDED) {
-      if(this.isEarnedLeave || this.isMedicalLeave) formValue.addressee = EL_HPL_ADMIN 
-    }
-
     this.wActionService.processLeave(formValue)
       .subscribe((result) =>  {
         this.dialogRef.close("processed")
@@ -129,9 +127,10 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   getActions() {
     //check if leave request page
     if(this.data.pageNo == LEAVE_REQUEST_PAGE) {
-      if(this.isEarnedLeave || this.isMedicalLeave) { 
-        //check if EL or ML has been already recommended
-        if(this.data.leave.status == LEAVE_RECOMMENDED) {
+      if(this.isEarnedLeave || this.isHalfPayLeave) { 
+        //check if EL or ML has been already recommended and forwarded to EL HPL Admin
+        if(this.data.leave.status == LEAVE_RECOMMENDED && 
+            (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())) {
           return APPROVE_ACTION_TYPES
         }
         //check if EL or ML has not been recommended yet
@@ -157,6 +156,24 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  setCtrlOfficers(ctrlOfficers: CtrlOfficer[]) {
+    ctrlOfficers.forEach(officer => {
+      this.l_app_addressees.push({
+        name: this.getOfficerName(officer),
+        code: officer.emp_code
+      })
+    })
+
+    if(this.isEarnedLeave || this.isHalfPayLeave) {
+      let el_hpl_site_admin = { name: "Project Leave Sanction Officer", code: EL_HPL_ADMIN }
+      let el_hpl_corporate_admin = { name: "Corporate Leave Sanction Officer", code: HR_LEAVE_SUPER_ADMIN }
+  
+      this.l_app_addressees.push(el_hpl_site_admin)
+      this.l_app_addressees.push(el_hpl_corporate_admin)
+    }
+  }
+
+
   get addressee() {
     return this.actionForm.get('addressee')
   }
@@ -171,7 +188,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     return el_type ? true : false  
   }
 
-  get isMedicalLeave(): boolean {
+  get isHalfPayLeave(): boolean {
     let ml_type = this.data.leave.leaveDetails
       .find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
     return ml_type ? true : false  
@@ -195,25 +212,21 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     return el_type ? true : false  
   }
 
-  checkBalance() {
-    if(this.isCasualLeave || this.isHalfDayCl || this.isRestrictedHoliday) {
-      let no_of_cl = this.data.leave.leaveDetails
-        .filter(leaveDetail => leaveDetail.leave_type == CL_CODE).length
-      let no_of_rh = this.data.leave.leaveDetails
-        .filter(leaveDetail => leaveDetail.leave_type == RH_CODE).length
-      let no_of_hdcl = this.data.leave.leaveDetails
-        .filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length
-    }
+  // checkBalance() {
+  //   if(this.isCasualLeave || this.isHalfDayCl || this.isRestrictedHoliday) {
+  //     let no_of_cl = this.data.leave.leaveDetails
+  //       .filter(leaveDetail => leaveDetail.leave_type == CL_CODE).length
+  //     let no_of_rh = this.data.leave.leaveDetails
+  //       .filter(leaveDetail => leaveDetail.leave_type == RH_CODE).length
+  //     let no_of_hdcl = this.data.leave.leaveDetails
+  //       .filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length
+  //   }
 
-    if(this.isEarnedLeave) {
-      let el = this.data.leave.leaveDetails[0]
-      // let no_of_el = el.from_date
-    }
-
-    if(this.isMedicalLeave) {
-
-    }
-  }
+  //   if(this.isEarnedLeave) {
+  //     let el = this.data.leave.leaveDetails[0]
+  //     // let no_of_el = el.from_date
+  //   }
+  // }
 
   getOfficerName(officer) {
     return `${officer.first_name} ${officer.last_name}, ${officer.designation}`

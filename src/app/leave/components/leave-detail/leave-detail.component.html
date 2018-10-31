@@ -146,8 +146,9 @@
         </mat-list>
       </mat-expansion-panel>
 
-      <!-- Dont show the expansion panel if leave status is calledback and the page is either transaction and leave process page-->
-      <div [hidden]="data.leave.status == leave_callback_code && (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage)">
+      <!-- Dont show the expansion panel if leave status is calledback or cancelled and the page is either transaction and leave process page-->
+      <div [hidden]="data.leave.status == leave_callback_code || data.leave.status == leave_cancelled 
+            && (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage)">
         <!-- Dont show the expansion panel if leave status is approved and the page is transaction page-->
         <div [hidden]="data.leave.status == leave_approved_code && data.pageNo == transactionPage">
           <!-- For other condition display the expansion panel-->
@@ -175,12 +176,11 @@
               </mat-form-field>
               
               <mat-form-field 
-                *ngIf="workflow_action.value == leave_recommended_code 
-                  && !(isEarnedLeave || isMedicalLeave)">
+                *ngIf="workflow_action.value == leave_recommended_code">
     
                 <mat-select placeholder="Forward to" formControlName="addressee">
-                  <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-                    {{ getOfficerName(officer) | titlecase }}
+                  <mat-option *ngFor="let l_app_addressee of l_app_addressees" [value]="l_app_addressee.code"> 
+                    {{ l_app_addressee.name | titlecase }}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>

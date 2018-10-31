@@ -28,5 +28,5 @@ export const EMPLOYEE_ROLES = [
   { name: "O&M Report Uploader", code: OM_REP_UPLOADER },
   { name: "HR Report Uploader", code: HR_REP_UPLOADER },
   { name: "Finance Report Uploader", code: FIN_REP_UPLOADER },
-  { name: "HR Super Admin", code: HR_LEAVE_SUPER_ADMIN }    
+  { name: "HR Leave Super Admin", code: HR_LEAVE_SUPER_ADMIN }    
 ]
