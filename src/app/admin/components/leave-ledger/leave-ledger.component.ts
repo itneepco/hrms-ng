@@ -42,7 +42,9 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
     this.emp_code = new FormControl()
 
     this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+      if(!data) return
       if(data.length < 1) return
+      
       this.employeeService.searchEmployee(data)
         .subscribe(response => {
           this.searchResult = response
