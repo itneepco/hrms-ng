@@ -14,9 +14,10 @@
     margin: 0px;
     font-size: 16px;
   }
+}
 
-  #add-btn {
-    margin-right: -10px;
-    margin-top: -10px;
-  }
+.fab-bottom-right {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
 }

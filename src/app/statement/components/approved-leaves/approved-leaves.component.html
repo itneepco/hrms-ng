@@ -1,96 +1,98 @@
-<mat-card class="search">
-  <form fxLayout="row"
-    fxLayout.lt-sm="column" 
-    fxLayoutGap="20px" 
-    fxLayoutAlign="start center"
-    [formGroup]="searchForm" 
-    (ngSubmit)="onSubmit()">
-    
-    <mat-form-field fxFlex>
-      <input matInput [matDatepicker]="f_date" formControlName="from_date" placeholder="Choose a date">
-      <mat-datepicker-toggle matSuffix [for]="f_date"></mat-datepicker-toggle>
-      <mat-datepicker #f_date></mat-datepicker>
-      <mat-error *ngIf="from_date.errors?.required">From date is required</mat-error>
-    </mat-form-field>
-    
-    <mat-form-field fxFlex>
-      <input matInput [matDatepicker]="t_date" formControlName="to_date" placeholder="Choose a date">
-      <mat-datepicker-toggle matSuffix [for]="t_date"></mat-datepicker-toggle>
-      <mat-datepicker #t_date></mat-datepicker>
-      <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary">Search</button>
-  </form>
-</mat-card>
-
-<mat-card *ngIf="dataSource" class="table">
-  <mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
-      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
-        {{ i + 1 }} 
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="leave_app_id">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Leave ID </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="10"> {{ leave.id }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="emp_code">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Employee Code </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="10"> {{ leave.emp_code }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef fxFlex="20">Employee Name</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="20">
-        {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="leave_type">
-      <mat-header-cell *matHeaderCellDef fxFlex="10">Leave Type</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="10">
-        {{ getLeaveType(leave) }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="from_date">
-      <mat-header-cell *matHeaderCellDef fxFlex="20">From Date</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="20">
-        <div fxLayout="column">
-          <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else content">
-            {{ leave.leaveDetails[0].from_date | date:'mediumDate' }}
+<div class="main-container">
+  <mat-card class="query-form">
+    <form fxLayout="row"
+      fxLayout.lt-sm="column" 
+      fxLayoutGap="20px" 
+      fxLayoutAlign="start center"
+      [formGroup]="searchForm" 
+      (ngSubmit)="onSubmit()">
+      
+      <mat-form-field fxFlex>
+        <input matInput [matDatepicker]="f_date" formControlName="from_date" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="f_date"></mat-datepicker-toggle>
+        <mat-datepicker #f_date></mat-datepicker>
+        <mat-error *ngIf="from_date.errors?.required">From date is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field fxFlex>
+        <input matInput [matDatepicker]="t_date" formControlName="to_date" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="t_date"></mat-datepicker-toggle>
+        <mat-datepicker #t_date></mat-datepicker>
+        <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary">Search</button>
+    </form>
+  </mat-card>
+  
+  <mat-card *ngIf="dataSource" class="table no-padding">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+        <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
+          {{ i + 1 }} 
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="leave_app_id">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Leave ID </mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="10"> {{ leave.id }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="emp_code">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="15"> {{ leave.emp_code }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef fxFlex="25">Employee Name</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="25">
+          {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="leave_type">
+        <mat-header-cell *matHeaderCellDef fxFlex="10">Leave Type</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="10">
+          {{ getLeaveType(leave) }}
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="from_date">
+        <mat-header-cell *matHeaderCellDef fxFlex="15">From Date</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="15">
+          <div fxLayout="column">
+            <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else content">
+              {{ leave.leaveDetails[0].from_date | date:'mediumDate' }}
+            </div>
+            <ng-template #content>
+              <ul *ngFor="let detail of leave.leaveDetails" class="from_date">
+                <li>{{detail.from_date | date:'mediumDate'}}</li>
+              </ul>
+            </ng-template>
           </div>
-          <ng-template #content>
-            <ul *ngFor="let detail of leave.leaveDetails" class="from_date">
-              <li>{{detail.from_date | date:'mediumDate'}}</li>
-            </ul>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="to_date">
+        <mat-header-cell *matHeaderCellDef fxFlex="15">To Date</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="15">
+          <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else other_content">
+            {{ leave.leaveDetails[0].to_date | date:'mediumDate' }}
+          </div>
+          <ng-template #other_content>
+            <span>-</span>
           </ng-template>
-        </div>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="to_date">
-      <mat-header-cell *matHeaderCellDef fxFlex="20">To Date</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="20">
-        <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else other_content">
-          {{ leave.leaveDetails[0].to_date | date:'mediumDate' }}
-        </div>
-        <ng-template #other_content>
-          <span>-</span>
-        </ng-template>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-</mat-card>
-
-<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
-<mat-card *ngIf="errMsg" class="error-info">
-  <p class="errMsg">{{errMsg}}</p>
-</mat-card>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+  
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+</div>

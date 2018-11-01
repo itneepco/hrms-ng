@@ -1,143 +1,144 @@
-
-<mat-card class="search">
-  <form fxLayout="row" 
-    fxLayoutGap="20px" 
-    fxLayoutAlign="start center"
-    [formGroup]="searchForm" 
-    (ngSubmit)="onSubmit()">
-    
-    <mat-form-field fxFlex>
-      <mat-select placeholder="Month" formControlName="month">
-        <mat-option *ngFor="let month of months" [value]="month.value">
-          {{month.name}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="month.errors?.required">Month is required</mat-error>
-    </mat-form-field>
-    
-    <mat-form-field fxFlex>
-      <mat-select placeholder="Year" formControlName="year">
-        <mat-option *ngFor="let year of years" [value]="year">
-          {{year}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="year.errors?.required">Year is required</mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="primary">Search</button>
-  </form>
-</mat-card>
-
-<div *ngIf="salary && !isLoading" id="salary-info">
-  <div id="payslip">
-    <div id="title">Payslip</div>
-    <div id="scope">
-      <div class="scope-entry">
-        <div class="title">PAY RUN</div>
-        <div class="value">{{getMonthYear(salary.yymm)}}</div>
-      </div>
-      <div class="scope-entry">
-        <div class="title">PAY PERIOD</div>
-        <div class="value">{{getPayPeriod(salary.yymm)}}</div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="left-panel">
-        <div id="employee">
-          <div id="name">
-            {{salary.employee.first_name | titlecase}} {{salary.employee.last_name | titlecase}}
-          </div>
+<div class="main-container">
+  <mat-card class="query-form">
+    <form fxLayout="row" 
+      fxLayoutGap="20px" 
+      fxLayoutAlign="start center"
+      [formGroup]="searchForm" 
+      (ngSubmit)="onSubmit()">
+      
+      <mat-form-field fxFlex>
+        <mat-select placeholder="Month" formControlName="month">
+          <mat-option *ngFor="let month of months" [value]="month.value">
+            {{month.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="month.errors?.required">Month is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field fxFlex>
+        <mat-select placeholder="Year" formControlName="year">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{year}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="year.errors?.required">Year is required</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary">Search</button>
+    </form>
+  </mat-card>
+  
+  <div *ngIf="salary && !isLoading" id="salary-info">
+    <div id="payslip">
+      <div id="title">Payslip</div>
+      <div id="scope">
+        <div class="scope-entry">
+          <div class="title">PAY RUN</div>
+          <div class="value">{{getMonthYear(salary.yymm)}}</div>
         </div>
-        <div class="details">
-          <div class="entry">
-            <div class="label">Employee ID</div>
-            <div class="value">{{salary.employee.emp_code }}</div>
-          </div>
-          <div class="entry">
-            <div class="label">Company Name</div>
-            <div class="value">NEEPCO LTD</div>
-          </div>
-          <div class="entry">
-            <div class="label">Designation</div>
-            <div class="value">{{salary.employee.designation}}</div>
-          </div>
-          <!-- <div class="entry">
-            <div class="label">Department</div>
-            <div class="value">1st String</div>
-          </div> -->
-          <div class="entry">
-            <div class="label">Project</div>
-            <div class="value">{{salary.employee.project}}</div>
-          </div>
-          <div class="entry">
-            <div class="label">Payroll Cycle</div>
-            <div class="value">Monthly</div>
-          </div>
-        </div>
-        <div class="gross">
-          <div class="title">Net Salary</div>
-          <div class="entry">
-            <div class="label"></div>
-            <div class="value" *ngIf="salary.netPay">{{salary.netPay.txn_amt | currency:'INR' }}</div>
-          </div>
+        <div class="scope-entry">
+          <div class="title">PAY PERIOD</div>
+          <div class="value">{{getPayPeriod(salary.yymm)}}</div>
         </div>
       </div>
-      <div class="right-panel">
-        <div class="details">
-          <div class="salary">
-            <div class="nti">
-              <div class="entry">
-                <div class="label">Payments</div>
-                <div class="detail"></div>
+      <div class="content">
+        <div class="left-panel">
+          <div id="employee">
+            <div id="name">
+              {{salary.employee.first_name | titlecase}} {{salary.employee.last_name | titlecase}}
+            </div>
+          </div>
+          <div class="details">
+            <div class="entry">
+              <div class="label">Employee ID</div>
+              <div class="value">{{salary.employee.emp_code }}</div>
+            </div>
+            <div class="entry">
+              <div class="label">Company Name</div>
+              <div class="value">NEEPCO LTD</div>
+            </div>
+            <div class="entry">
+              <div class="label">Designation</div>
+              <div class="value">{{salary.employee.designation}}</div>
+            </div>
+            <!-- <div class="entry">
+              <div class="label">Department</div>
+              <div class="value">1st String</div>
+            </div> -->
+            <div class="entry">
+              <div class="label">Project</div>
+              <div class="value">{{salary.employee.project}}</div>
+            </div>
+            <div class="entry">
+              <div class="label">Payroll Cycle</div>
+              <div class="value">Monthly</div>
+            </div>
+          </div>
+          <div class="gross">
+            <div class="title">Net Salary</div>
+            <div class="entry">
+              <div class="label"></div>
+              <div class="value" *ngIf="salary.netPay">{{salary.netPay.txn_amt | currency:'INR' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="right-panel">
+          <div class="details">
+            <div class="salary">
+              <div class="nti">
+                <div class="entry">
+                  <div class="label">Payments</div>
+                  <div class="detail"></div>
+                  <div class="rate"></div>
+                  <div class="amount"></div>
+                </div>
+              </div>
+              <div class="entry" *ngFor="let payment of salary.payments">
+                <div class="label"></div>
+                <div class="detail">{{payment.pay_code_desc}}</div>
                 <div class="rate"></div>
-                <div class="amount"></div>
+                <div class="amount">{{payment.txn_amt | currency:'INR'}}</div>
               </div>
             </div>
-            <div class="entry" *ngFor="let payment of salary.payments">
+            <hr class="line">
+            <div class="entry">
               <div class="label"></div>
-              <div class="detail">{{payment.pay_code_desc}}</div>
+              <div class="detail">GROSS INCOME</div>
               <div class="rate"></div>
-              <div class="amount">{{payment.txn_amt | currency:'INR'}}</div>
+              <div class="amount" *ngIf="salary.grossPay">{{salary.grossPay.txn_amt | currency:'INR' }}</div>
             </div>
-          </div>
-          <hr class="line">
-          <div class="entry">
-            <div class="label"></div>
-            <div class="detail">GROSS INCOME</div>
-            <div class="rate"></div>
-            <div class="amount" *ngIf="salary.grossPay">{{salary.grossPay.txn_amt | currency:'INR' }}</div>
-          </div>
-
-          <div class="deductions">
-            <div class="nti">
-              <div class="entry">
-                <div class="label">Deductions</div>
-                <div class="detail"></div>
+  
+            <div class="deductions">
+              <div class="nti">
+                <div class="entry">
+                  <div class="label">Deductions</div>
+                  <div class="detail"></div>
+                  <div class="rate"></div>
+                  <div class="amount"></div>
+                </div>
+              </div>
+              <div class="entry" *ngFor="let deduction of salary.deductions">
+                <div class="label"></div>
+                <div class="detail">{{deduction.pay_code_desc}}</div>
                 <div class="rate"></div>
-                <div class="amount"></div>
+                <div class="amount">{{deduction.txn_amt | currency:'INR'}}</div>
               </div>
             </div>
-            <div class="entry" *ngFor="let deduction of salary.deductions">
+            <hr class="line">
+            <div class="entry">
               <div class="label"></div>
-              <div class="detail">{{deduction.pay_code_desc}}</div>
+              <div class="detail">GROSS DEDUCTION</div>
               <div class="rate"></div>
-              <div class="amount">{{deduction.txn_amt | currency:'INR'}}</div>
+              <div class="amount" *ngIf="salary.grossDeduction">{{salary.grossDeduction.txn_amt | currency:'INR'}}</div>
             </div>
-          </div>
-          <hr class="line">
-          <div class="entry">
-            <div class="label"></div>
-            <div class="detail">GROSS DEDUCTION</div>
-            <div class="rate"></div>
-            <div class="amount" *ngIf="salary.grossDeduction">{{salary.grossDeduction.txn_amt | currency:'INR'}}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+  
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>  
 </div>
-
-<mat-card *ngIf="errMsg" class="error-info">
-  <p class="errMsg">{{errMsg}}</p>
-</mat-card>
-
-<mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

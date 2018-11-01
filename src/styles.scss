@@ -33,7 +33,7 @@ body {
     margin-bottom: 20px;
   }
 
-  mat-card.search {
+  mat-card.search, mat-card.query-form {
     padding-bottom: 16px;
     padding-top: 16px;
   }
@@ -50,23 +50,35 @@ body {
     mat-card {
       width: 85%;
     }
+    mat-card.table {
+      width: 90%;
+    }
     mat-card.search {
       width: 70%;
+    }
+    mat-card.query-form {
+      width: 80%
     }
   }
   
   @media only screen and (min-width: 1280px) and (max-width: 1919px) {
     margin: 20px 10px;
     mat-card {
-      width: 70%;
+      width: 75%;
+    }
+    mat-card.table {
+      width: 85%;
     }
     mat-card.search {
       width: 50%;
     }
+    mat-card.query-form {
+      width: 55%;
+    }
   }  
 }
 
-.main-container2 {
+.leave-container {
   display: flex;
   flex-direction: column;
   align-items: center;
