@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AdminModule } from './admin/admin.module';
@@ -31,7 +31,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     LeaveModule,
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     { provide: "BaseURL", useValue: baseURL },
     {
       provide: HTTP_INTERCEPTORS,

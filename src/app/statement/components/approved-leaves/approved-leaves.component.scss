@@ -10,7 +10,9 @@ mat-card {
 }
 
 mat-card.search {
-	width: 80%;
+  width: 80%;
+  padding-bottom: 14px;
+  padding-top: 14px;
 }
 
 @media only screen and (max-width: 649px) {
@@ -41,4 +43,26 @@ mat-card.search {
 	mat-card.search {
 		width: 55%;
 	}
+}
+
+mat-row {
+  min-height: 40px !important;
+  // border-bottom: 0px !important;
+  .mat-cell {
+    font-size: 13px !important;
+  }
+}
+
+mat-header-row {
+  min-height: 44px !important;
+}
+
+.table {
+  padding: 0px;
+}
+
+ul.from_date {
+  padding: 2px 0px;
+  margin: 0px;
+  list-style-type: none;
 }

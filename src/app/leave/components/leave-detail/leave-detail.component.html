@@ -113,7 +113,7 @@
             data.leave.status == leave_recommended_code || 
             data.leave.status == leave_callback_code">
 
-          <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="15px">
+          <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="15px" id="leave-info">
             <div class="title">Leave Balance:</div>
             <div fxLayoutGap="15px" fxLayout="row">
               <span *ngFor="let status of leaveStatuses">

@@ -6,7 +6,7 @@
     [formGroup]="searchForm" 
     (ngSubmit)="onSubmit()">
     
-    <mat-form-field>
+    <mat-form-field fxFlex>
       <mat-select placeholder="Month" formControlName="month">
         <mat-option *ngFor="let month of months" [value]="month.value">
           {{month.name}}
@@ -15,7 +15,7 @@
       <mat-error *ngIf="month.errors?.required">Month is required</mat-error>
     </mat-form-field>
     
-    <mat-form-field>
+    <mat-form-field fxFlex>
       <mat-select placeholder="Year" formControlName="year">
         <mat-option *ngFor="let year of years" [value]="year">
           {{year}}
@@ -27,7 +27,7 @@
   </form>
 </mat-card>
 
-<div *ngIf="salary" id="salary-info">
+<div *ngIf="salary && !isLoading" id="salary-info">
   <div id="payslip">
     <div id="title">Payslip</div>
     <div id="scope">

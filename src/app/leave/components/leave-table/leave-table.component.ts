@@ -83,6 +83,6 @@ export class LeaveTableComponent implements OnInit {
 
     let cl_rh_type = leaveApplication.leaveDetails
       .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
-    return "CL/RH"
+    if(cl_rh_type) return "CL/RH"
   }
 }
