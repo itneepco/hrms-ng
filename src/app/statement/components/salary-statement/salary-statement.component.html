@@ -60,10 +60,10 @@
             <div class="label">Designation</div>
             <div class="value">{{salary.employee.designation}}</div>
           </div>
-          <div class="entry">
+          <!-- <div class="entry">
             <div class="label">Department</div>
             <div class="value">1st String</div>
-          </div>
+          </div> -->
           <div class="entry">
             <div class="label">Project</div>
             <div class="value">{{salary.employee.project}}</div>
@@ -136,7 +136,7 @@
   </div>
 </div>
 
-<mat-card *ngIf="errMsg">
+<mat-card *ngIf="errMsg" class="error-info">
   <p class="errMsg">{{errMsg}}</p>
 </mat-card>
 

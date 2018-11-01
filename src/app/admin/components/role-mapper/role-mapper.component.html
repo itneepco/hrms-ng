@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="form">
   <mat-card-subtitle>Add new role mapper</mat-card-subtitle>
   <form [formGroup]="roleMapperForm" (ngSubmit)="onSubmit()">
     <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
@@ -64,15 +64,15 @@
     </ng-container>
 
     <ng-container matColumnDef="emp_code">
-      <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.lt-md="10"> Employee </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper" fxFlex="25" fxFlex.lt-md="10"> 
+      <mat-header-cell *matHeaderCellDef fxFlex="25"> Employee </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> 
         {{roleMapper.first_name | titlecase }} {{roleMapper.last_name | titlecase}} 
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.lt-md="20"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper" fxFlex="15" fxFlex.lt-md="20">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="15">
         <button mat-icon-button (click)="onEdit(roleMapper)" color="primary">
           <mat-icon>edit</mat-icon>
         </button>
