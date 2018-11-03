@@ -1,0 +1,38 @@
+<div class="header">
+  Joining Report for {{leaveType.getLeaveType(data.leaveDetails[0].leave_type)}} Application No. {{data.id}}
+</div>
+
+<form [formGroup]="joiningReportForm" fxLayout="column">
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-form-field fxFlex>
+      <input matInput [matDatepicker]="picker" formControlName="joining_date" placeholder="Joining Date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field fxFlex>
+      <mat-select placeholder="Session" formControlName="session">
+        <mat-option *ngFor="let session of sessions" [value]="session.code"> 
+          {{ session.name | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <mat-form-field>
+    <mat-select placeholder="Forward to" formControlName="addressee">
+      <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+        {{ ctrlOfficer.name | titlecase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea rows="5" matInput formControlName="comment" placeholder="Comments"></textarea>
+  </mat-form-field>
+
+  <div fxLayoutAlign="end center">
+    <button mat-raised-button (click)="dialogRef.close()">Cancel</button>&nbsp;
+    <button mat-raised-button color="primary">Submit</button>
+  </div>
+</form>

@@ -4,7 +4,6 @@
       <mat-card fxFlex class="card-block">
         <mat-list>
           <mat-list-item>
-            <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/a.svg">
             <h3 matLine> Casual Leave </h3>
             <p matLine>Balance: {{cl_balance}}</p>
@@ -12,13 +11,16 @@
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply-clrh">Apply Casual Leave</button>
+          <button mat-button 
+          [disabled]="cl_balance < 1"  
+            routerLink="/leave/leave-apply-clrh">
+              Apply Casual Leave
+          </button>
         </div>
       </mat-card>
       <mat-card fxFlex class="card-block">
         <mat-list>
           <mat-list-item>
-            <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/e.svg">
             <h3 matLine>Restricted Holiday</h3>
             <p matLine>Balance: {{rh_balance}}</p>
@@ -26,7 +28,11 @@
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button routerLink="/leave/leave-apply-clrh">Apply Restricted Holiday</button>
+          <button mat-button
+            [disabled]="rh_balance < 1"  
+            routerLink="/leave/leave-apply-clrh">
+              Apply Restricted Holiday
+          </button>
         </div>
       </mat-card>
     </div>
@@ -34,7 +40,6 @@
       <mat-card fxFlex class="card-block">
         <mat-list>
           <mat-list-item>
-            <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/c.svg">
             <h3 matLine>Earned Leave</h3>
             <p matLine>Balance: {{el_balance}}</p>
@@ -42,13 +47,16 @@
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button [routerLink]="['/leave/leave-apply', el_code]">Apply Earned Leave</button>
+          <button mat-button
+            [disabled]="el_balance < 1" 
+            [routerLink]="['/leave/leave-apply', el_code]">
+              Apply Earned Leave
+          </button>
         </div>
       </mat-card>
       <mat-card fxFlex class="card-block">
         <mat-list>
           <mat-list-item>
-            <!-- <mat-icon matListIcon>folder</mat-icon> -->
             <img matListAvatar src="assets/icons/d.svg">
             <h3 matLine>Half Pay Leave</h3>
             <p matLine>Balance: {{hpl_balance}}</p>
@@ -56,12 +64,28 @@
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button [routerLink]="['/leave/leave-apply', hpl_code]">Apply Half Pay Leave</button>
+          <button mat-button 
+            [disabled]="hpl_balance < 1" 
+            [routerLink]="['/leave/leave-apply', hpl_code]">
+              Apply Half Pay Leave
+          </button>
         </div>
       </mat-card>
     </div>
   </div>
   <div fxFlex="40" fxLayout="column">
-    <mat-card fxFlex></mat-card>
+    <mat-card fxFlex class="info-card">
+      <div *ngIf="pendingJoiningReports.length < 1">
+        <div class="alert-box notice"><span>notice: </span>You dont have any pending tasks.</div>
+      </div>
+
+      <div *ngFor="let pending of pendingJoiningReports">
+        <div class="alert-box warning">
+          <span class="label">notice: </span>
+          Please submit your {{leaveType.getLeaveType(pending.leaveDetails[0].leave_type)}} joining report 
+          <span class="link" (click)="openJoiningReport(pending)">here</span>.
+        </div>
+      </div>
+    </mat-card>
   </div>
 </div>

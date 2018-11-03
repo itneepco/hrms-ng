@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { LeaveStatementService } from '../../services/leave-statement.service';
 import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from './../../../shared/models/global-codes';
-import { LeaveApplication } from './../../../shared/models/leave';
+import { LeaveApplication } from '../../../shared/models/leave';
 
 @Component({
   selector: 'app-approved-leaves',

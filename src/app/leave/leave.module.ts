@@ -5,6 +5,7 @@ import { LoginComponent } from '../auth/components/login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { ApplyCLRHComponent } from './components/apply-clrh/apply-clrh.component';
 import { ApplyLeaveComponent } from './components/apply-leave/apply-leave.component';
+import { JoiningReportComponent } from './components/joining-report/joining-report.component';
 import { LeaveDashboardComponent } from './components/leave-dashboard/leave-dashboard.component';
 import { LeaveDetailComponent } from './components/leave-detail/leave-detail.component';
 import { LeaveMenuComponent } from './components/leave-menu/leave-menu.component';
@@ -33,10 +34,12 @@ import { LeaveRoutingModule } from './leave-routing.module';
     ProcessedRequestComponent,
     LeaveDashboardComponent,
     ApplyLeaveComponent,
+    JoiningReportComponent,
   ],
   entryComponents: [
     LeaveMenuComponent,
     LeaveDetailComponent,
+    JoiningReportComponent
   ]
 })
 export class LeaveModule { }

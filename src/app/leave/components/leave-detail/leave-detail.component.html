@@ -79,7 +79,7 @@
             <ng-container matColumnDef="leave_type">
               <mat-header-cell *matHeaderCellDef fxFlex="30"> Leave Type </mat-header-cell>
               <mat-cell *matCellDef="let leaveDetail" fxFlex="30"> 
-                {{lTypeService.getLeaveType(leaveDetail.leave_type)}} 
+                {{leaveType.getLeaveType(leaveDetail.leave_type)}} 
               </mat-cell>
             </ng-container>
 
@@ -182,8 +182,8 @@
                 *ngIf="workflow_action.value == leave_recommended_code">
     
                 <mat-select placeholder="Forward to" formControlName="addressee">
-                  <mat-option *ngFor="let l_app_addressee of l_app_addressees" [value]="l_app_addressee.code"> 
-                    {{ l_app_addressee.name | titlecase }}
+                  <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+                    {{ ctrlOfficer.name | titlecase }}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
