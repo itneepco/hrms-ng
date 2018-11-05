@@ -17,7 +17,7 @@
 
     <button mat-button class="user-profile" [matMenuTriggerFor]="appMenu">
       <mat-icon>account_circle</mat-icon>&nbsp;
-      <span class="name" *ngIf="auth.currentUser">{{ auth.currentUser.name }}</span>
+      <span class="name" *ngIf="auth.currentUser">{{ auth.currentUser.name | titlecase }}</span>
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
     <mat-menu #appMenu="matMenu" [overlapTrigger]="false">

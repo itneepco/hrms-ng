@@ -12,8 +12,9 @@ export interface JoiningReport {
 
 export interface LeaveJoiningReport {
   id: number
+  emp_code: string
   first_name: string
   last_name: string
   leaveDetails: LeaveDetail[]
-  joining_report: JoiningReport
+  joiningReport: JoiningReport
 }

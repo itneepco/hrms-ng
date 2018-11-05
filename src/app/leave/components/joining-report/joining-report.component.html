@@ -1,38 +1,159 @@
-<div class="header">
-  Joining Report for {{leaveType.getLeaveType(data.leaveDetails[0].leave_type)}} Application No. {{data.id}}
+<mat-toolbar color="primary" id="header">
+  <div fxFlex>Joining Report for {{leaveType.getLeaveType(data.leaveDetails[0].leave_type)}} Application No. {{data.id}}</div>
+  <div class="flex-spacer"></div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div id="container">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Leave Info</mat-panel-title>
+        <mat-panel-description> Details of leave types and no of days</mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div fxLayout="column" fxLayoutGap="3px">
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Employee Code: </span>
+            {{data.emp_code}}
+          </div>
+          <div class="info" fxFlex>
+            <span class="title">Emp Name: </span>
+            {{data.first_name | titlecase}} 
+            {{data.last_name | titlecase}}
+          </div>
+        </div>
+        
+        <div fxLayout="row" fxLayoutGap="20px" *ngIf="data.prefix_from">
+          <div class="info" fxFlex>
+            <span class="title">Prefix from: </span>
+            {{data.prefix_from | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">Prefix to: </span>
+            {{data.prefix_to | date:'mediumDate'}}</div>
+        </div>
+  
+        <div fxLayout="row" fxLayoutGap="20px" *ngIf="data.suffix_from">
+          <div class="info" fxFlex>
+            <span class="title">Suffix from: </span>
+            {{data.suffix_from | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">Suffix to: </span>
+            {{data.suffix_to | date:'mediumDate'}}</div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Joining Report</mat-panel-title>
+        <mat-panel-description>Joining report details</mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div *ngIf="isSubmitted() || isRecommended()">
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Joining Date: </span>
+            {{data.joiningReport.joining_date | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">Session: </span>
+            {{getSessionType(data.joiningReport.session)}}</div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Comments</span>
+            {{data.joiningReport.comment}}
+          </div>
+        </div>
+      </div>
+
+      <form *ngIf="isPending() || isCallbacked()"
+          [formGroup]="joiningReportForm" 
+          fxLayout="column" (ngSubmit)="onSubmit()">
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <mat-form-field fxFlex>
+            <input matInput [matDatepicker]="picker" formControlName="joining_date" placeholder="Joining Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="joining_date.errors?.required">Joining date is required</mat-error>
+          </mat-form-field>
+        
+          <mat-form-field fxFlex>
+            <mat-select placeholder="Session" formControlName="session">
+              <mat-option *ngFor="let session of sessions" [value]="session.code"> 
+                {{ session.name | titlecase }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="session.errors?.required">Session to is required</mat-error>
+          </mat-form-field>
+        </div>
+        
+        <mat-form-field>
+          <mat-select placeholder="Forward to" formControlName="addressee">
+            <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+              {{ ctrlOfficer.name | titlecase }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <textarea rows="5" matInput formControlName="comment" placeholder="Comments"></textarea>
+          <mat-error *ngIf="comment.errors?.required">Comment is required</mat-error>
+        </mat-form-field>
+      
+        <div fxLayoutAlign="end center">
+          <button mat-raised-button (click)="dialogRef.close()" type="button">Cancel</button>
+          <span class="space"></span>
+          <button mat-raised-button type="submit" color="primary">Submit</button>
+        </div>
+      </form>
+
+    </mat-expansion-panel>  
+
+    <mat-expansion-panel 
+        *ngIf="isSubmitted() || isRecommended()"
+        [expanded]="step === 2" (opened)="setStep(2)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Actions</mat-panel-title>
+        <mat-panel-description>Actions to be performed by officer</mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <form [formGroup]="joiningReportForm" 
+        fxLayout="column" 
+        (ngSubmit)="onSubmit()">
+        
+        <mat-form-field>
+          <mat-select placeholder="Select required action" formControlName="status">
+            <mat-option *ngFor="let action of actions" [value]="action.code">
+              {{action.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="status.errors?.required">Workflow action is required</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field 
+          *ngIf="status.value == jr_recommended">
+
+          <mat-select placeholder="Forward to" formControlName="addressee">
+            <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+              {{ ctrlOfficer.name | titlecase }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
+        </mat-form-field>
+
+        <div fxLayoutAlign="end center">
+          <button mat-raised-button (click)="dialogRef.close()" type="button">Cancel</button>
+          <span class="space"></span>
+          <button mat-raised-button type="submit" color="primary">Submit</button>
+        </div>
+      </form>  
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
-<form [formGroup]="joiningReportForm" fxLayout="column">
-  <div fxLayout="row" fxLayoutGap="20px">
-    <mat-form-field fxFlex>
-      <input matInput [matDatepicker]="picker" formControlName="joining_date" placeholder="Joining Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  
-    <mat-form-field fxFlex>
-      <mat-select placeholder="Session" formControlName="session">
-        <mat-option *ngFor="let session of sessions" [value]="session.code"> 
-          {{ session.name | titlecase }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  
-  <mat-form-field>
-    <mat-select placeholder="Forward to" formControlName="addressee">
-      <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
-        {{ ctrlOfficer.name | titlecase }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <textarea rows="5" matInput formControlName="comment" placeholder="Comments"></textarea>
-  </mat-form-field>
-
-  <div fxLayoutAlign="end center">
-    <button mat-raised-button (click)="dialogRef.close()">Cancel</button>&nbsp;
-    <button mat-raised-button color="primary">Submit</button>
-  </div>
-</form>

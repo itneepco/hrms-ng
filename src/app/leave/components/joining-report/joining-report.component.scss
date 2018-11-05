@@ -1,5 +1,32 @@
-.header {
-  font-size: 15px;
-  font-weight: 400;
-  margin-bottom: 20px;
+#header {
+  .flex-spacer {
+    flex: 1;
+  }
+  font-size: 14px;
+  height: 56px;
+  opacity: 0.8;
+}
+
+.space {
+  margin-left: 10px;
+}
+
+#container {
+  margin: 20px 25px;
+  min-height: 450px;
+
+  .info {
+    margin-bottom: 8px;
+  }
+
+  .title {
+    margin-right: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+mat-expansion-panel-header {
+  height: 48px !important;
 }

@@ -11,60 +11,52 @@
     <mat-accordion>
       <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            General Info
-          </mat-panel-title>
-          <mat-panel-description>
-            Purpose, address and contact during leave
-          </mat-panel-description>
+          <mat-panel-title>General Info</mat-panel-title>
+          <mat-panel-description>Purpose, address and contact during leave</mat-panel-description>
         </mat-expansion-panel-header>
   
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">Emp Name: </span>
-            {{data.leave.first_name | titlecase}} 
-            {{data.leave.last_name | titlecase}}</div>
+            {{leaveApp.first_name | titlecase}} 
+            {{leaveApp.last_name | titlecase}}</div>
           <div class="info" fxFlex>
             <span class="title">Contact: </span>
-            {{data.leave.contact_no}}</div>
+            {{leaveApp.contact_no}}</div>
         </div>
 
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">Prefix from: </span>
-            {{data.leave.prefix_from | date:'mediumDate'}}</div>
+            {{leaveApp.prefix_from | date:'mediumDate'}}</div>
           <div class="info" fxFlex>
             <span class="title">Prefix to: </span>
-            {{data.leave.prefix_to | date:'mediumDate'}}</div>
+            {{leaveApp.prefix_to | date:'mediumDate'}}</div>
         </div>
 
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">Suffix from: </span>
-            {{data.leave.suffix_from | date:'mediumDate'}}</div>
+            {{leaveApp.suffix_from | date:'mediumDate'}}</div>
           <div class="info" fxFlex>
             <span class="title">Suffix to: </span>
-            {{data.leave.suffix_to | date:'mediumDate'}}</div>
+            {{leaveApp.suffix_to | date:'mediumDate'}}</div>
         </div>
 
         <div class="info" fxFlex>
           <span class="title">Purpose: </span>
-          {{data.leave.purpose}}
+          {{leaveApp.purpose}}
         </div>
         <div class="info" fxFlex>
           <span class="title">Address: </span>
-          {{data.leave.address}}
+          {{leaveApp.address}}
         </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            Leave Info  
-          </mat-panel-title>
-          <mat-panel-description>
-            Details of leave types and no of days 
-          </mat-panel-description>
+          <mat-panel-title>Leave Info</mat-panel-title>
+          <mat-panel-description>Details of leave types and no of days</mat-panel-description>
         </mat-expansion-panel-header>
         
         <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDetail">
@@ -109,9 +101,9 @@
           </mat-table>
         </div>  
 
-        <div *ngIf="data.leave.status == leave_applied || 
-            data.leave.status == leave_recommended_code || 
-            data.leave.status == leave_callback_code">
+        <div *ngIf="leaveApp.status == leave_applied || 
+            leaveApp.status == leave_recommended_code || 
+            leaveApp.status == leave_callback_code">
 
           <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="15px" id="leave-info">
             <div class="title">Leave Balance:</div>
@@ -126,16 +118,12 @@
 
       <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            History Info  
-          </mat-panel-title>
-          <mat-panel-description>
-            Details of leave approval history
-          </mat-panel-description>
+          <mat-panel-title>History Info</mat-panel-title>
+          <mat-panel-description>Details of leave approval history</mat-panel-description>
         </mat-expansion-panel-header>
         
         <mat-list>
-          <mat-list-item *ngFor="let hist_info of data.leave.history; let i=index">
+          <mat-list-item *ngFor="let hist_info of leaveApp.history; let i=index">
             <h3 matLine class="info"> 
               <span>{{i + 1}}.&nbsp;</span>
               <span>{{wActionService.getWorkflowAction(hist_info.workflow_action)}}</span>
@@ -150,19 +138,15 @@
       </mat-expansion-panel>
 
       <!-- Dont show the expansion panel if leave status is calledback or cancelled and the page is either transaction and leave process page-->
-      <div [hidden]="data.leave.status == leave_callback_code || data.leave.status == leave_cancelled 
+      <div [hidden]="(leaveApp.status == leave_callback_code || leaveApp.status == leave_cancelled) 
             && (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage)">
         <!-- Dont show the expansion panel if leave status is approved and the page is transaction page-->
-        <div [hidden]="data.leave.status == leave_approved_code && data.pageNo == transactionPage">
+        <div [hidden]="leaveApp.status == leave_approved_code && data.pageNo == transactionPage">
           <!-- For other condition display the expansion panel-->
           <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
             <mat-expansion-panel-header>
-              <mat-panel-title>
-                Actions 
-              </mat-panel-title>
-              <mat-panel-description>
-                Actions to be performed by officer
-              </mat-panel-description>
+              <mat-panel-title>Actions</mat-panel-title>
+              <mat-panel-description>Actions to be performed by officer</mat-panel-description>
             </mat-expansion-panel-header>
             
             <form [formGroup]="actionForm" 

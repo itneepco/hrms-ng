@@ -5,9 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 
-import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { CL_CODE, RH_CODE } from '../../../shared/models/global-codes';
+import { CL_CODE, EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN, RH_CODE } from '../../../shared/models/global-codes';
 import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
 import {
   APPROVE_ACTION_TYPES,
@@ -25,13 +24,13 @@ import {
   PROCESS_ACTION_TYPES,
   TRANSACTION_PAGE,
 } from '../../models/leave.codes';
+import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { HD_CL_CODE } from './../../../shared/models/global-codes';
 import { LeaveApplication } from './../../../shared/models/leave';
 import { Addressee } from './../../models/adressee';
-import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -78,6 +77,9 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.leaveApp = this.data.leave
+    console.log(this.leaveApp)
+    console.log(this.data.pageNo)
+
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails)
     this.initForm()  
     this.actions = this.getActions()
@@ -85,13 +87,11 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     this.leaveCtrlOfficer.getLeaveCtrlOfficers(this.authService.currentUser.emp_code, this.leaveApp.leaveDetails)
       .subscribe((ctrlOfficers: Addressee[]) => {
         this.ctrlOfficers = ctrlOfficers
-        // console.log(ctrlOfficers)
       })
     
     this.ledgerService.getLeaveStatus(this.leaveApp.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
-        // console.log(status)
       })
     
     this.subscription = this.workflow_action.valueChanges
@@ -135,7 +135,8 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       if(this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) || 
           this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)) { 
         //check if EL or ML has been already recommended and forwarded to EL HPL Admin
-        if(this.leaveApp.status == LEAVE_RECOMMENDED && 
+        if((this.leaveApp.status == LEAVE_RECOMMENDED) &&
+            (this.leaveApp.addressee == EL_HPL_ADMIN || this.leaveApp.addressee == HR_LEAVE_SUPER_ADMIN) &&
             (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())) {
           return APPROVE_ACTION_TYPES
         }
@@ -146,8 +147,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       return PROCESS_ACTION_TYPES
     }
     else {  
-      //If leave is approved then controlling officer can cancel the leave application from 
-      //from leave processed page
+      //If leave is approved then controlling officer can cancel the leave application from from leave processed page
       if(this.leaveApp.status == LEAVE_APPROVED && this.data.pageNo == LEAVE_PROCESSED_PAGE) {
         return CANCEL_ACTION_TYPES
       } 

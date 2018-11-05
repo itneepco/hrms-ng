@@ -75,15 +75,35 @@
   </div>
   <div fxFlex="40" fxLayout="column">
     <mat-card fxFlex class="info-card">
-      <div *ngIf="pendingJoiningReports.length < 1">
-        <div class="alert-box notice"><span>notice: </span>You dont have any pending tasks.</div>
+      <div *ngIf="pendingJoiningReports.length < 1 && processPendingJRs.length < 1">
+        <div class="alert-box notice"><span class="label">notice: </span>You dont have any pending tasks.</div>
       </div>
 
       <div *ngFor="let pending of pendingJoiningReports">
-        <div class="alert-box warning">
+        <!-- If joining report is yet to be submitted or is callbacked -->
+        <div class="alert-box warning" *ngIf="pending.joiningReport.status == jr_pending || pending.joiningReport.status == jr_callbacked">
           <span class="label">notice: </span>
-          Please submit your {{leaveType.getLeaveType(pending.leaveDetails[0].leave_type)}} joining report 
-          <span class="link" (click)="openJoiningReport(pending)">here</span>.
+          To submit joining report for {{leaveType.getLeaveType(pending.leaveDetails[0].leave_type)}} 
+          <strong>Application No. {{pending.id}} </strong> 
+          <span class="link" (click)="openJoiningReport(pending)">click here</span>.
+        </div>
+
+        <!-- If joining report has been submitter or recommended -->
+        <div class="alert-box notice" *ngIf="(pending.joiningReport.status == jr_submitted || pending.joiningReport.status == jr_recommended)">
+          <span class="label">notice: </span>
+          <span>Your {{leaveType.getLeaveType(pending.leaveDetails[0].leave_type)}} </span>
+          <strong>Application No. {{pending.id}} </strong> 
+          <span>joining letter has been {{getJRStatus(pending.joiningReport.status)}} </span>
+          <span class="link" (click)="openJoiningReport(pending)">click here</span>.
+        </div>
+      </div>
+
+      <div *ngFor="let processPending of processPendingJRs">
+        <div class="alert-box success">
+          <span class="label">notice: </span>
+          Please proccess joining report for {{leaveType.getLeaveType(processPending.leaveDetails[0].leave_type)}} 
+          <strong>Application No. {{processPending.id}} </strong> 
+          <span class="link" (click)="openJoiningReport(processPending)">click here</span>.
         </div>
       </div>
     </mat-card>
