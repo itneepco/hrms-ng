@@ -11,11 +11,16 @@ import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
 import {
   APPROVE_ACTION_TYPES,
   CALLBACK_ACTION_TYPES,
-  CANCEL_ACTION_TYPES,
-  EL_ML_ACTION_TYPES,
+  EL_HPL_ACTION_TYPES,
   LEAVE_APPLIED,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
+  LEAVE_CANCEL_ACTION_TYPES,
+  LEAVE_CANCEL_EL_HPL_ACTION_TYPES,
+  LEAVE_CANCEL_INITIATION,
+  LEAVE_CANCEL_NOT_RECOMMENDED,
+  LEAVE_CANCEL_PROCESS_ACTION_TYPES,
+  LEAVE_CANCEL_RECOMMENDED,
   LEAVE_CANCELLED,
   LEAVE_NOT_RECOMMENDED,
   LEAVE_PROCESSED_PAGE,
@@ -31,6 +36,11 @@ import { WorkflowActionService } from '../../services/workflow-action.service';
 import { HD_CL_CODE } from './../../../shared/models/global-codes';
 import { LeaveApplication } from './../../../shared/models/leave';
 import { Addressee } from './../../models/adressee';
+import {
+  LEAVE_CANCEL_CALLBACK_ACTION_TYPES,
+  LEAVE_CANCEL_CALLBACKED,
+  LEAVE_CANCEL_INITIATION_ACTION_TYPES,
+} from './../../models/leave.codes';
 
 @Component({
   selector: 'app-leave-detail',
@@ -49,19 +59,26 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription
   leaveApp: LeaveApplication
 
-  //GLobal codes
+  //Leave type codes
   cl_code = CL_CODE
   hdcl_code = HD_CL_CODE
   rh_code = RH_CODE
+
+  //Leave workflow action status code
   leave_applied = LEAVE_APPLIED
   leave_recommended_code = LEAVE_RECOMMENDED
   leave_approved_code = LEAVE_APPROVED
   leave_callback_code = LEAVE_CALLBACKED
+
+  //Leave cancellation status code
   leave_cancelled = LEAVE_CANCELLED
+  leave_cancel_initiate = LEAVE_CANCEL_INITIATION
+  leave_cancel_recommended = LEAVE_CANCEL_RECOMMENDED
 
   //Page code
   transactionPage = TRANSACTION_PAGE
   leaveProcessedPage = LEAVE_PROCESSED_PAGE
+  leaveRequestPage = LEAVE_REQUEST_PAGE
 
   constructor(
     private authService: AuthService,
@@ -77,14 +94,17 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.leaveApp = this.data.leave
-    console.log(this.leaveApp)
-    console.log(this.data.pageNo)
-
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails)
     this.initForm()  
     this.actions = this.getActions()
 
-    this.leaveCtrlOfficer.getLeaveCtrlOfficers(this.authService.currentUser.emp_code, this.leaveApp.leaveDetails)
+    //Leave role mapper is not required on transaction page
+    let leaveRoleMapper = true 
+    if(this.data.pageNo == TRANSACTION_PAGE) {
+      leaveRoleMapper = false
+    }
+    //Fetch leave application forwarding authority
+    this.leaveCtrlOfficer.getLeaveCtrlOfficers(this.authService.currentUser.emp_code, this.leaveApp.leaveDetails, leaveRoleMapper)
       .subscribe((ctrlOfficers: Addressee[]) => {
         this.ctrlOfficers = ctrlOfficers
       })
@@ -96,7 +116,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     
     this.subscription = this.workflow_action.valueChanges
       .subscribe((data) => {
-        if(data == LEAVE_RECOMMENDED) {
+        if(data == LEAVE_RECOMMENDED || data == LEAVE_CANCEL_INITIATION || data == LEAVE_CANCEL_RECOMMENDED) {
           this.addressee.setValidators(Validators.required)
         }
       })
@@ -111,7 +131,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       workflow_action: ['', Validators.required],
       remarks: '',
       addressee: '',
-      officer_emp_code: this.data.pageNo == this.transactionPage ? null : this.authService.currentUser.emp_code,
+      officer_emp_code: this.authService.currentUser.emp_code,
       leave_application_id: this.leaveApp.id
     })
   }
@@ -129,36 +149,79 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       })  
   }
 
+  //Find the leave workflow action types
   getActions() {
+    let _status = this.leaveApp.status
+    let _addressee = this.leaveApp.addressee
+
     //check if leave request page
     if(this.data.pageNo == LEAVE_REQUEST_PAGE) {
-      if(this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) || 
-          this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)) { 
-        //check if EL or ML has been already recommended and forwarded to EL HPL Admin
-        if((this.leaveApp.status == LEAVE_RECOMMENDED) &&
-            (this.leaveApp.addressee == EL_HPL_ADMIN || this.leaveApp.addressee == HR_LEAVE_SUPER_ADMIN) &&
-            (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())) {
-          return APPROVE_ACTION_TYPES
+      if(_status == LEAVE_CANCEL_INITIATION || _status === LEAVE_CANCEL_RECOMMENDED || _status == LEAVE_CANCEL_CALLBACKED) {
+        if(this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) || this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)) { 
+          //check if cancellation of EL or HPL application has been already recommended and forwarded to EL HPL Admin
+          if(_status == LEAVE_CANCEL_RECOMMENDED && (_addressee == EL_HPL_ADMIN || _addressee == HR_LEAVE_SUPER_ADMIN) &&
+              (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())) {
+            return LEAVE_CANCEL_ACTION_TYPES
+          }
+          //if if cancellation of EL or HPL application has not been forwarded to EL HPL Admin yet
+          return LEAVE_CANCEL_EL_HPL_ACTION_TYPES
         }
-        //check if EL or ML has not been recommended yet
-        return EL_ML_ACTION_TYPES
-      }
-      
-      return PROCESS_ACTION_TYPES
-    }
-    else {  
-      //If leave is approved then controlling officer can cancel the leave application from from leave processed page
-      if(this.leaveApp.status == LEAVE_APPROVED && this.data.pageNo == LEAVE_PROCESSED_PAGE) {
-        return CANCEL_ACTION_TYPES
+        //For other types of leaves other than EL or HPL
+        return LEAVE_CANCEL_PROCESS_ACTION_TYPES
       } 
-      //if leave is applied, recommended or not recommended, the leave application can be callbacked
-      else if(this.leaveApp.status == LEAVE_APPLIED || this.leaveApp.status == LEAVE_RECOMMENDED || this.leaveApp.status == LEAVE_NOT_RECOMMENDED) {
-        return CALLBACK_ACTION_TYPES
+
+      if(_status == LEAVE_APPLIED || _status == LEAVE_RECOMMENDED || _status == LEAVE_CALLBACKED) {
+        //check if the leave is earned leave or half pay leave
+        if(this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) || this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)) { 
+          //check if EL or ML has been already recommended and forwarded to EL HPL Admin
+          if((_status == LEAVE_RECOMMENDED) && (_addressee == EL_HPL_ADMIN || _addressee == HR_LEAVE_SUPER_ADMIN) &&
+              (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())) {
+            return APPROVE_ACTION_TYPES
+          }
+          //if EL or ML has not been forwarded to EL HPL Admin yet
+          return EL_HPL_ACTION_TYPES
+        }
+        //if leave is not EL or HPL
+        return PROCESS_ACTION_TYPES
       }
       //else actions will be empty
-      else {
-        return []
+      return []
+    }
+
+    if(this.data.pageNo == TRANSACTION_PAGE) {
+      //if leave is applied, recommended, the leave application can be callbacked by applied user
+      if(_status == LEAVE_APPLIED || _status == LEAVE_RECOMMENDED) {
+        return CALLBACK_ACTION_TYPES
       }
+      //If leave is approved then the employee can initiate leave cancellation
+      if(_status == LEAVE_APPROVED) {
+        return LEAVE_CANCEL_INITIATION_ACTION_TYPES
+      }
+      //If leave is cancellation is initialixed then the employee can callback
+      if(_status == LEAVE_CANCEL_INITIATION) {
+        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES
+      }
+      if(_status == LEAVE_CANCEL_CALLBACKED) {
+        if(this.leaveApp.addressee.length < 1) {
+          return LEAVE_CANCEL_INITIATION_ACTION_TYPES
+        }  
+        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES
+      }
+      //else actions will be empty
+      return []
+    } 
+    
+    if(this.data.pageNo == LEAVE_PROCESSED_PAGE) {
+      //if leave is recommended or not recommended, the leave application can be callbacked by controlling user
+      if(_status == LEAVE_RECOMMENDED || _status == LEAVE_NOT_RECOMMENDED) {
+        return CALLBACK_ACTION_TYPES
+      }
+      //if leave cancellation is recommended or not recommended, the leave application can be callbacked by controlling user
+      if(_status == LEAVE_CANCEL_RECOMMENDED || _status == LEAVE_CANCEL_NOT_RECOMMENDED) {
+        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES
+      }
+      //else actions will be empty
+      return []
     }
   }
 

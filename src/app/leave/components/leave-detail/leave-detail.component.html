@@ -137,52 +137,49 @@
         </mat-list>
       </mat-expansion-panel>
 
-      <!-- Dont show the expansion panel if leave status is calledback or cancelled and the page is either transaction and leave process page-->
-      <div [hidden]="(leaveApp.status == leave_callback_code || leaveApp.status == leave_cancelled) 
-            && (data.pageNo == transactionPage || data.pageNo == leaveProcessedPage)">
-        <!-- Dont show the expansion panel if leave status is approved and the page is transaction page-->
-        <div [hidden]="leaveApp.status == leave_approved_code && data.pageNo == transactionPage">
-          <!-- For other condition display the expansion panel-->
-          <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
-            <mat-expansion-panel-header>
-              <mat-panel-title>Actions</mat-panel-title>
-              <mat-panel-description>Actions to be performed by officer</mat-panel-description>
-            </mat-expansion-panel-header>
+      <!-- Dont show if leave status is calledback/cancelled and the page is not leave request page-->
+      <div [hidden]="actions.length < 1">
+        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Actions</mat-panel-title>
+            <mat-panel-description>Actions to be performed by officer</mat-panel-description>
+          </mat-expansion-panel-header>
+          
+          <form [formGroup]="actionForm" 
+            fxLayout="column" 
+            (ngSubmit)="onSubmit()">
             
-            <form [formGroup]="actionForm" 
-              fxLayout="column" 
-              (ngSubmit)="onSubmit()">
-              
-              <mat-form-field>
-                <mat-select placeholder="Select required action" formControlName="workflow_action">
-                  <mat-option *ngFor="let action of actions" [value]="action.code">
-                    {{action.name}}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="workflow_action.errors?.required">Workflow action is required</mat-error>
-              </mat-form-field>
-              
-              <mat-form-field 
-                *ngIf="workflow_action.value == leave_recommended_code">
-    
-                <mat-select placeholder="Forward to" formControlName="addressee">
-                  <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
-                    {{ ctrlOfficer.name | titlecase }}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
-              </mat-form-field>
-    
-              <mat-form-field>
-                <input matInput placeholder="Remarks" formControlName="remarks">
-              </mat-form-field>
-    
-              <div fxLayoutAlign="end start">
-                <button mat-raised-button color="primary">Submit</button>
-              </div>  
-            </form>
-          </mat-expansion-panel>
-        </div>
+            <mat-form-field>
+              <mat-select placeholder="Select required action" formControlName="workflow_action">
+                <mat-option *ngFor="let action of actions" [value]="action.code">
+                  {{action.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="workflow_action.errors?.required">Workflow action is required</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field 
+              *ngIf="workflow_action.value == leave_recommended_code || 
+                workflow_action.value == leave_cancel_initiate || 
+                workflow_action.value == leave_cancel_recommended">
+  
+              <mat-select placeholder="Forward to" formControlName="addressee">
+                <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+                  {{ ctrlOfficer.name | titlecase }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
+            </mat-form-field>
+  
+            <mat-form-field>
+              <input matInput placeholder="Remarks" formControlName="remarks">
+            </mat-form-field>
+  
+            <div fxLayoutAlign="end start">
+              <button mat-raised-button color="primary">Submit</button>
+            </div>  
+          </form>
+        </mat-expansion-panel>
       </div>
     </mat-accordion>
   </div>

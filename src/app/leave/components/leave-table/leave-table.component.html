@@ -8,22 +8,22 @@
     </ng-container>
 
     <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="15"> {{getLeaveType(leave)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="14"> Leave Type </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="14"> {{getLeaveType(leave)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="applied_on">
-      <mat-header-cell *matHeaderCellDef fxFlex="20"> Applied on </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="20"> {{leave.created_at | date:'mediumDate'}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="18"> Applied on </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="18"> {{leave.created_at | date:'mediumDate'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef fxFlex="20"> Status </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="20"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="23"> Status </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="23"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="with" *ngIf="pageNo == transactionPage">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> With Officer</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="25">Application With</mat-header-cell>
       <mat-cell *matCellDef="let leave" fxFlex="25"> {{leave.addressee}} </mat-cell>
     </ng-container>
 
