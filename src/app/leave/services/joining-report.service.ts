@@ -1,5 +1,5 @@
 import { JR_PENDING, JR_SUBMITTED, JR_RECOMMENDED, JR_ACCEPTED } from './../models/leave.codes';
-import { JoiningReport } from './../models/joining-report';
+import { JoiningReport } from '../../shared/models/joining-report';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

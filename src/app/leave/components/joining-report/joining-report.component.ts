@@ -9,7 +9,7 @@ import { Addressee } from '../../models/adressee';
 import { JR_CALLBACK_ACTION_TYPES, JR_CALLBACKED, JR_PENDING } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 import { EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN } from './../../../shared/models/global-codes';
-import { JoiningReport, LeaveJoiningReport } from './../../models/joining-report';
+import { JoiningReport, LeaveJoiningReport } from '../../../shared/models/joining-report';
 import {
   JR_ACCEPT_ACTION_TYPES,
   JR_ACCEPTED,

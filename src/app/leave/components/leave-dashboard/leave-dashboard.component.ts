@@ -6,7 +6,7 @@ import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from '../../../shared/models/glob
 import { LeaveStatus } from '../../../shared/models/leave';
 import { LeaveTypeService } from '../../services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
-import { LeaveJoiningReport } from './../../models/joining-report';
+import { LeaveJoiningReport } from '../../../shared/models/joining-report';
 import { JR_CALLBACKED, JR_PENDING, JR_RECOMMENDED, JR_SUBMITTED } from './../../models/leave.codes';
 import { JoiningReportService } from './../../services/joining-report.service';
 import { JoiningReportComponent } from './../joining-report/joining-report.component';

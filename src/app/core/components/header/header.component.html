@@ -5,15 +5,16 @@
 
     <div class="flex-spacer"></div>
 
-    <button mat-button class="user-profile notification" [matMenuTriggerFor]="notification">
+    <!-- <button mat-button class="user-profile notification" [matMenuTriggerFor]="notification">
       <mat-icon>notifications</mat-icon>
     </button>
+
     <mat-menu #notification [overlapTrigger]="false">
       <button mat-menu-item>Notification 1</button>
       <button mat-menu-item>Notification 2</button>
       <button mat-menu-item>Notification 3</button>
       <button mat-menu-item>Notification 4</button>
-    </mat-menu>
+    </mat-menu> -->
 
     <button mat-button class="user-profile" [matMenuTriggerFor]="appMenu">
       <mat-icon>account_circle</mat-icon>&nbsp;
@@ -24,8 +25,8 @@
       <button mat-menu-item>
         <mat-icon>face</mat-icon>Profile
       </button>
-      <button mat-menu-item>
-        <mat-icon>settings</mat-icon>Settings
+      <button mat-menu-item (click)="changePassword()">
+        <mat-icon>settings</mat-icon>Change Password
       </button>
       <button mat-menu-item (click)="onLogout()">
         <mat-icon>exit_to_app</mat-icon>Logout

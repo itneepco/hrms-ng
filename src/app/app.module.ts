@@ -14,6 +14,7 @@ import { baseURL } from './shared/config/baseUrl';
 import { SharedModule } from './shared/shared.module';
 import { StatementModule } from './statement/statement.module';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { ChangePasswordComponent } from './auth/components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     HeaderComponent,
     SidenavComponent,
     FooterComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -29,6 +31,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     AdminModule,
     StatementModule,
     LeaveModule,
+  ],
+  entryComponents: [
+    ChangePasswordComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB'},

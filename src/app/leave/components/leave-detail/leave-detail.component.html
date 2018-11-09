@@ -137,9 +137,39 @@
         </mat-list>
       </mat-expansion-panel>
 
+      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
+          *ngIf="leaveApp.joiningReport && leaveApp.joiningReport.status != jr_pending">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Joining Letter</mat-panel-title>
+          <mat-panel-description>Joining date, session and joining application</mat-panel-description>
+        </mat-expansion-panel-header>
+  
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Joining Date: </span>
+            {{ leaveApp.joiningReport.joining_date | date:'mediumDate' }}
+          </div>
+          <div class="info" fxFlex>
+            <span class="title">Session: </span>
+            {{ leaveApp.joiningReport.session }}
+          </div>
+          <div class="info" fxFlex>
+            <span class="title">Status: </span>
+            {{ getJRStatus(leaveApp.joiningReport.status) }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Prefix from: </span>
+            {{ leaveApp.joiningReport.comment }}
+          </div>
+        </div>
+      </mat-expansion-panel>
+
       <!-- Dont show if leave status is calledback/cancelled and the page is not leave request page-->
       <div [hidden]="actions.length < 1">
-        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+        <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
           <mat-expansion-panel-header>
             <mat-panel-title>Actions</mat-panel-title>
             <mat-panel-description>Actions to be performed by officer</mat-panel-description>

@@ -1,4 +1,4 @@
-import { LeaveDetail } from './../../shared/models/leave';
+import { LeaveDetail } from './leave';
 
 export interface JoiningReport {
   id: number

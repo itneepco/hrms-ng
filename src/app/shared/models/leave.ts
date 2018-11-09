@@ -1,3 +1,5 @@
+import { JoiningReport } from './joining-report';
+
 export interface LeaveType {
   code: string;
   name: string;
@@ -44,6 +46,7 @@ export interface LeaveApplication {
   suffix_from?: Date;
   suffix_to?: Date;
   created_at: string;
+  joiningReport: JoiningReport;
   leaveDetails: LeaveDetail[];
   history: ApplicationHistory[]
 }

@@ -2,8 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 import { CL_CODE, HD_CL_CODE, RH_CODE } from '../../../shared/models/global-codes';
-import { LeaveTypeService } from '../../services/leave-type.service';
 import { LeaveStatus } from '../../../shared/models/leave';
+import { LeaveTypeService } from '../../services/leave-type.service';
 
 @Component({
   selector: 'app-leave-menu',
@@ -15,9 +15,7 @@ export class LeaveMenuComponent {
   
   constructor(private bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
     public leaveTypeService: LeaveTypeService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { 
-      // console.log(data)
-    }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {}
 
   onSelect(event: MouseEvent, status: LeaveStatus, isHDCL?: boolean): void {
     let newStatus = status
@@ -46,6 +44,4 @@ export class LeaveMenuComponent {
   get rh_status(): LeaveStatus {
     return this.data.leaveStatuses.find(status => status.leave_code === RH_CODE)
   }
-
-
 }

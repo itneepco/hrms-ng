@@ -1,19 +1,21 @@
-import { HR_LEAVE_SUPER_ADMIN } from './../../shared/models/global-codes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
-import { baseURL } from '../../shared/config/baseUrl';
-import { User } from '../../shared/models/user.model';
 import { EL_HPL_ADMIN } from '../../shared/models/global-codes';
+import { User } from '../../shared/models/user.model';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { baseURL } from './../../shared/config/baseUrl';
+import { HR_LEAVE_SUPER_ADMIN } from './../../shared/models/global-codes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   constructor(private http: HttpClient, 
+    private handler: ErrorHandlerService,
     private router: Router) {}
 
   login(emp_code: string, password: string) {
@@ -26,6 +28,14 @@ export class AuthService {
           return res;
         })
       ).toPromise()
+  }
+
+  changePassword(data) {
+    console.log(data)
+    return this.http.put(baseURL + 'auth/change-password', data)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
   }
 
   getToken(): string {

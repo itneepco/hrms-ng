@@ -1,3 +1,4 @@
+import { JoiningReport } from './../../../shared/models/joining-report';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +13,7 @@ import {
   APPROVE_ACTION_TYPES,
   CALLBACK_ACTION_TYPES,
   EL_HPL_ACTION_TYPES,
+  JR_ACCEPTED,
   LEAVE_APPLIED,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
@@ -28,6 +30,7 @@ import {
   LEAVE_REQUEST_PAGE,
   PROCESS_ACTION_TYPES,
   TRANSACTION_PAGE,
+  JR_PENDING,
 } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 import { LeaveTypeService } from '../../services/leave-type.service';
@@ -41,6 +44,7 @@ import {
   LEAVE_CANCEL_CALLBACKED,
   LEAVE_CANCEL_INITIATION_ACTION_TYPES,
 } from './../../models/leave.codes';
+import { JoiningReportService } from './../../services/joining-report.service';
 
 @Component({
   selector: 'app-leave-detail',
@@ -63,6 +67,8 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   cl_code = CL_CODE
   hdcl_code = HD_CL_CODE
   rh_code = RH_CODE
+  jr_accepted = JR_ACCEPTED
+  jr_pending = JR_PENDING
 
   //Leave workflow action status code
   leave_applied = LEAVE_APPLIED
@@ -89,11 +95,14 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     public wActionService: WorkflowActionService,
     private ledgerService: LedgerService,
     private auth: AuthService,
+    private joiningService: JoiningReportService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
     this.leaveApp = this.data.leave
+    console.log(this.leaveApp)
+
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails)
     this.initForm()  
     this.actions = this.getActions()
@@ -189,12 +198,13 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     }
 
     if(this.data.pageNo == TRANSACTION_PAGE) {
+      let joiningReport = this.leaveApp.joiningReport
       //if leave is applied, recommended, the leave application can be callbacked by applied user
       if(_status == LEAVE_APPLIED || _status == LEAVE_RECOMMENDED) {
         return CALLBACK_ACTION_TYPES
       }
-      //If leave is approved then the employee can initiate leave cancellation
-      if(_status == LEAVE_APPROVED) {
+      //If leave is approved then the employee can initiate leave cancellation and joining report is accepted
+      if(_status == LEAVE_APPROVED && joiningReport && joiningReport.status == JR_ACCEPTED) {
         return LEAVE_CANCEL_INITIATION_ACTION_TYPES
       }
       //If leave is cancellation is initialixed then the employee can callback
@@ -248,6 +258,10 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   //     // let no_of_el = el.from_date
   //   }
   // }
+
+  getJRStatus(status: string) {
+    return this.joiningService.getJRStatus(status)
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe()
