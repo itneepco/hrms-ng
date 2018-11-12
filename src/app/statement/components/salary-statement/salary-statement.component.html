@@ -23,10 +23,13 @@
         </mat-select>
         <mat-error *ngIf="year.errors?.required">Year is required</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary">Search</button>
+      <button mat-raised-button color="primary">
+        <mat-icon>search</mat-icon>
+        Search
+      </button>
     </form>
   </mat-card>
-  
+
   <div *ngIf="salary && !isLoading" id="salary-info">
     <div id="payslip">
       <div id="title">Payslip</div>
@@ -142,3 +145,12 @@
   
   <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>  
 </div>
+
+<button mat-fab 
+  class="fab-bottom-right"
+  matTooltip="Print Salary Slip"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="captureScreen()">
+    <mat-icon>print</mat-icon>
+</button>

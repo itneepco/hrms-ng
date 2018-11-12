@@ -18,7 +18,7 @@ export class ChangePasswordComponent implements OnInit {
   constructor(private fb: FormBuilder, 
     private auth: AuthService,
     private snackbar: MatSnackBar,
-    private dialogRef: MatDialogRef<ChangePasswordComponent>) { }
+    public dialogRef: MatDialogRef<ChangePasswordComponent>) { }
 
   ngOnInit() {
     this.passwdChangeForm = this.fb.group({

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
-import { SalaryStatementService } from '../../services/salary-statement.service';
-import { AuthService } from '../../../auth/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
+
+import { AuthService } from '../../../auth/services/auth.service';
+import { SalaryStatementService } from '../../services/salary-statement.service';
 
 @Component({
   selector: 'app-salary-statement',
@@ -67,6 +69,23 @@ export class SalaryStatementComponent implements OnInit {
     let yymm = this.year.value + this.month.value
     this.fetchSalary(yymm)
   }
+
+  captureScreen() {  
+    var data = document.getElementById('salary-info');  
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.save(`${this.salary.yymm}.pdf`); // Generated PDF   
+    });  
+  } 
 
   getLast2Years() {
     let date = new Date()
