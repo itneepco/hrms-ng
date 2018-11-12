@@ -4,6 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 import { PasswordValidators } from '../../validators/password.validator';
 import { AuthService } from './../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-change-password',
@@ -15,6 +17,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(private fb: FormBuilder, 
     private auth: AuthService,
+    private snackbar: MatSnackBar,
     private dialogRef: MatDialogRef<ChangePasswordComponent>) { }
 
   ngOnInit() {
@@ -31,8 +34,21 @@ export class ChangePasswordComponent implements OnInit {
 
   changePassword() {
     if(this.passwdChangeForm.invalid) return
-
-    this.auth.changePassword(this.passwdChangeForm.value).subscribe(data => console.log(data))
+    
+    this.auth.changePassword(this.passwdChangeForm.value)
+      .subscribe(data => {
+        console.log(data) 
+        this.snackbar.open("Successfully changed the password", "Dismiss", {
+          duration: 2000
+        })
+        this.dialogRef.close()
+      }, (error: HttpErrorResponse) => {
+        console.log(error)
+        if(error.status == 422) {
+          this.old_password.setErrors({ invalidPwd: "Please enter your valid current password" });
+        }
+      }
+    )
   }
 
   get old_password() {

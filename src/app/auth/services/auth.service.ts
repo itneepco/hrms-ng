@@ -31,7 +31,6 @@ export class AuthService {
   }
 
   changePassword(data) {
-    console.log(data)
     return this.http.put(baseURL + 'auth/change-password', data)
       .pipe(
         catchError(err => this.handler.handleError(err))

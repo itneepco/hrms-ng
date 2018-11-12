@@ -125,7 +125,7 @@ export class HolidayListComponent implements OnInit {
           this.dataSource.data = temp
         })
       
-        this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
+      this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
         duration: 1600
       })  
     }
