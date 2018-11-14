@@ -1,4 +1,3 @@
-import { JoiningReport } from './../../../shared/models/joining-report';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,13 +6,21 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { CL_CODE, EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN, RH_CODE } from '../../../shared/models/global-codes';
+import {
+  CL_CODE,
+  EL_CODE,
+  EL_HPL_ADMIN,
+  HPL_CODE,
+  HR_LEAVE_SUPER_ADMIN,
+  RH_CODE,
+} from '../../../shared/models/global-codes';
 import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
 import {
   APPROVE_ACTION_TYPES,
   CALLBACK_ACTION_TYPES,
   EL_HPL_ACTION_TYPES,
   JR_ACCEPTED,
+  JR_PENDING,
   LEAVE_APPLIED,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
@@ -30,7 +37,6 @@ import {
   LEAVE_REQUEST_PAGE,
   PROCESS_ACTION_TYPES,
   TRANSACTION_PAGE,
-  JR_PENDING,
 } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 import { LeaveTypeService } from '../../services/leave-type.service';
@@ -101,8 +107,6 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.leaveApp = this.data.leave
-    console.log(this.leaveApp)
-
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails)
     this.initForm()  
     this.actions = this.getActions()
@@ -146,9 +150,15 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if(this.actionForm.invalid) return 
-    let formValue = this.actionForm.value
+    if(this.actionForm.invalid) return
 
+    let action = this.workflow_action.value
+    if((action == LEAVE_RECOMMENDED || action == LEAVE_APPROVED) && !this.checkBalance()) {
+      this.workflow_action.setErrors({ balance: true })
+      return
+    }
+
+    let formValue = this.actionForm.value
     this.wActionService.processLeave(formValue)
       .subscribe((result) =>  {
         this.dialogRef.close("processed")
@@ -243,21 +253,56 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     return this.actionForm.get('workflow_action')
   }
 
-  // checkBalance() {
-  //   if(this.isCasualLeave || this.isHalfDayCl || this.isRestrictedHoliday) {
-  //     let no_of_cl = this.leaveApp.leaveDetails
-  //       .filter(leaveDetail => leaveDetail.leave_type == CL_CODE).length
-  //     let no_of_rh = this.leaveApp.leaveDetails
-  //       .filter(leaveDetail => leaveDetail.leave_type == RH_CODE).length
-  //     let no_of_hdcl = this.leaveApp.leaveDetails
-  //       .filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length
-  //   }
+  checkBalance(): boolean {
+    let leaveDetails = this.leaveApp.leaveDetails
+    if(this.leaveType.isCasualLeave(this.leaveApp.leaveDetails) || 
+        this.leaveType.isHalfDayCl(this.leaveApp.leaveDetails) || 
+        this.leaveType.isRestrictedHoliday(this.leaveApp.leaveDetails)) {
 
-  //   if(this.isEarnedLeave) {
-  //     let el = this.leaveApp.leaveDetails[0]
-  //     // let no_of_el = el.from_date
-  //   }
-  // }
+      let no_of_cl = this.leaveType.noOfCasualLeave(leaveDetails) + this.leaveType.noOfHalfDayCL(leaveDetails)
+      let no_of_rh = this.leaveType.noOfRestrictedHoliday(leaveDetails)
+      
+      return no_of_cl <= this.cl_balance && no_of_rh <= this.rh_balance
+    }
+
+    if(this.leaveType.isEarnedLeave(leaveDetails)) {
+      return this.leaveType.noOfEarnedLeave(leaveDetails) <= this.el_balance
+    }
+
+    if(this.leaveType.isHalfPayLeave(leaveDetails)) {
+      this.leaveType.noOfHalfPayLeave(leaveDetails) <= this.hpl_balance
+    }
+
+    return false;
+  }
+
+  get cl_balance() {
+    let leave = this.leaveStatuses.find(status => status.leave_code == CL_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
+
+  get rh_balance() {
+    let leave = this.leaveStatuses.find(status => status.leave_code == RH_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
+
+  get el_balance() {
+    let leave = this.leaveStatuses.find(status => status.leave_code == EL_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
+
+  get hpl_balance() {
+    let leave = this.leaveStatuses.find(status => status.leave_code == HPL_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
 
   getJRStatus(status: string) {
     return this.joiningService.getJRStatus(status)

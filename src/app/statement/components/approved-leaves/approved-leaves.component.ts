@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
+import { LeaveApplication } from '../../../shared/models/leave';
 import { LeaveStatementService } from '../../services/leave-statement.service';
 import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from './../../../shared/models/global-codes';
-import { LeaveApplication } from '../../../shared/models/leave';
 
 @Component({
   selector: 'app-approved-leaves',
@@ -72,6 +74,26 @@ export class ApprovedLeavesComponent implements OnInit {
     if(this.searchForm.invalid) return
     this.fetchApprovedLeaves()
   }
+
+  captureScreen() {  
+    let date = new Date()
+    let ddmmyyyy = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear() 
+    var data = document.getElementById('approved-leaves');  
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      
+      pdf.save(`${ddmmyyyy}.pdf`); // Generated PDF   
+    });  
+  } 
 
   get from_date() {
     return this.searchForm.get('from_date')

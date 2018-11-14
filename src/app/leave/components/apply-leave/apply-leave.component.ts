@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -67,9 +67,11 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
       suffix_to: ''
     }, 
     { validator: [
-      DateValidator.fromToDateValidator,
-      DateValidator.prefFromToValidator,
-      DateValidator.suffFromToValidator]
+        DateValidator.fromToDateValidator,
+        DateValidator.prefFromToValidator,
+        DateValidator.suffFromToValidator,
+        EL_CODE ? this.checkElBalance.bind(this) : this.checkHPLBalance.bind(this)
+      ]
     })
   }
 
@@ -79,14 +81,14 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
     let leave_detail = [{
       from_date: this.from_date.value,
       to_date: this.to_date.value,
-      leave_type: this.code == this.hpl_code ? HPL_CODE : EL_CODE,
+      leave_type: this.code == HPL_CODE ? HPL_CODE : EL_CODE,
       station_leave: this.station_leave.value
     }]
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
       { leave_details: leave_detail, emp_code: this.authService.currentUser.emp_code });
 
-    console.log(leavApplication)
+    // console.log(leavApplication)
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
       console.log(result)
       this.router.navigateByUrl('leave/leave-transaction')
@@ -137,6 +139,46 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
   get suffix_to() {
     return this.leaveForm.get('suffix_to')
   }
+
+  get el_balance(): number {
+    let leave = this.leaveStatuses.find(status => status.leave_code == EL_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
+
+  get hpl_balance(): number {
+    let leave = this.leaveStatuses.find(status => status.leave_code == HPL_CODE)
+    if(!leave) return 0
+
+    return leave.balance
+  }
+
+  checkElBalance(control: AbstractControl): ValidationErrors | null {
+    let from_date = new Date(control.get('from_date').value)
+    let to_date = new Date(control.get("to_date").value)
+    
+    let no_of_el = ((to_date.valueOf() - from_date.valueOf()) / (60*60*24*1000)) + 1
+    if(no_of_el > this.el_balance) {
+      console.log("Insufficient Earned Leave Balance", no_of_el, this.el_balance)
+      control.get("to_date").setErrors({ elBalance: true })
+    }
+
+    return null;    
+  }  
+
+  checkHPLBalance(control: AbstractControl): ValidationErrors | null {
+    let from_date = new Date(control.get('from_date').value)
+    let to_date = new Date(control.get("to_date").value)
+    
+    let no_of_el = ((to_date.valueOf() - from_date.valueOf()) / (60*60*24*1000)) + 1
+    if(no_of_el > this.hpl_balance) {
+      console.log("Insufficient Half Pay Leave Balance")
+      control.get("to_date").setErrors({ hplBalance: true })
+    }
+
+    return null;    
+  }  
 
   ngOnDestroy() {
     this.subscription.unsubscribe()

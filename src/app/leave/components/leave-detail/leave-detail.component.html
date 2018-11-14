@@ -186,6 +186,9 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="workflow_action.errors?.required">Workflow action is required</mat-error>
+              <mat-error *ngIf="workflow_action.errors?.balance">
+                Cannot process as the concerned employee doest not have sufficient leave balance. Please check leave info
+              </mat-error>
             </mat-form-field>
             
             <mat-form-field 

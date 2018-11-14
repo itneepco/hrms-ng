@@ -1,19 +1,24 @@
-import { LEAVE_CANCEL_INITIATION, LEAVE_CANCEL_NOT_RECOMMENDED, LEAVE_CANCEL_RECOMMENDED, LEAVE_CANCEL_CALLBACKED } from './../models/leave.codes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
+import { LeaveProcess } from '../../shared/models/workflow-action';
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import {
   LEAVE_APPLIED,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
+  LEAVE_CANCELLED,
   LEAVE_NOT_RECOMMENDED,
   LEAVE_RECOMMENDED,
-  LEAVE_CANCELLED,
 } from '../models/leave.codes';
-import { LeaveProcess } from '../../shared/models/workflow-action';
-import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import {
+  LEAVE_CANCEL_CALLBACKED,
+  LEAVE_CANCEL_INITIATION,
+  LEAVE_CANCEL_NOT_RECOMMENDED,
+  LEAVE_CANCEL_RECOMMENDED,
+} from './../models/leave.codes';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +65,6 @@ export class WorkflowActionService {
   }
 
   processLeave(leaveProcess: LeaveProcess) {
-    console.log(leaveProcess)
     return this.http.post(this.workflowUrl + leaveProcess.leave_application_id + '/actions', leaveProcess)
       .pipe(
         catchError(err => this.handler.handleError(err))

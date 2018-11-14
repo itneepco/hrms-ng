@@ -32,6 +32,8 @@
             <mat-datepicker #leave_to></mat-datepicker>
             <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
             <mat-error *ngIf="to_date.errors?.fromToDate">To date should be greater than from date</mat-error>
+            <mat-error *ngIf="to_date.errors?.elBalance">Insufficient earned leave balance</mat-error>
+            <mat-error *ngIf="to_date.errors?.hplBalance">Insufficient half pay leave balance</mat-error>
           </mat-form-field>
         </div>
   

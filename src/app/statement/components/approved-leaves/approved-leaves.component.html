@@ -27,7 +27,8 @@
     </form>
   </mat-card>
   
-  <mat-card *ngIf="dataSource" class="table no-padding">
+  <mat-card *ngIf="dataSource" class="table no-padding" id="approved-leaves">
+      <mat-card-title>List of leaves taken in the period between {{from_date.value | date:'mediumDate'}} and {{to_date.value | date:'mediumDate'}}</mat-card-title>
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
@@ -98,3 +99,13 @@
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>
 </div>
+
+<button mat-fab 
+  *ngIf="dataSource"
+  class="fab-bottom-right"
+  matTooltip="Print Approved Leaves"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="captureScreen()">
+    <mat-icon>print</mat-icon>
+</button>
