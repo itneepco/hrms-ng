@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, map } from 'rxjs/operators';
 
-import { EL_HPL_ADMIN } from '../../shared/models/global-codes';
+import { EL_HPL_ADMIN, JWT_TOKEN_NAME } from '../../shared/models/global-codes';
 import { User } from '../../shared/models/user.model';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { baseURL } from './../../shared/config/baseUrl';
@@ -38,11 +38,11 @@ export class AuthService {
   }
 
   getToken(): string {
-    return localStorage.getItem("token");
+    return localStorage.getItem(JWT_TOKEN_NAME);
   }
 
   setToken(token: string): void {
-    localStorage.setItem("token", token);
+    localStorage.setItem(JWT_TOKEN_NAME, token);
   }
 
   isTokenExpired(): boolean {
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token')
+    localStorage.removeItem(JWT_TOKEN_NAME)
     this.router.navigate(['/login'])
   }
 

@@ -9,6 +9,7 @@ import { HierarchyHomeComponent } from './components/hierarchy-home/hierarchy-ho
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 import { LeaveLedgerComponent } from './components/leave-ledger/leave-ledger.component';
 import { RoleMapperComponent } from './components/role-mapper/role-mapper.component';
+import { LeaveCreditComponent } from './components/leave-credit/leave-credit.component';
 
 const routes: Routes = [
   { 
@@ -34,6 +35,11 @@ const routes: Routes = [
       { 
         path: 'role-mapper', 
         component: RoleMapperComponent,
+        canActivate: [SuperAdminGuard] 
+      },
+      { 
+        path: 'leave-credit', 
+        component: LeaveCreditComponent,
         canActivate: [SuperAdminGuard] 
       },
       { path: '', redirectTo: 'hierarchy', pathMatch: 'full' }

@@ -1,3 +1,5 @@
+export const JWT_TOKEN_NAME = 'token'
+
 export const CL_CODE = '01';
 export const RH_CODE = '02';
 export const EL_CODE = '03';

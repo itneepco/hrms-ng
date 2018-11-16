@@ -26,7 +26,16 @@
             {{data.last_name | titlecase}}
           </div>
         </div>
-        
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">From Date: </span>
+            {{data.leaveDetails[0].from_date | date:'mediumDate'}}</div>
+          <div class="info" fxFlex>
+            <span class="title">To Date: </span>
+            {{data.leaveDetails[0].to_date | date:'mediumDate'}}</div>
+        </div>
+
         <div fxLayout="row" fxLayoutGap="20px" *ngIf="data.prefix_from">
           <div class="info" fxFlex>
             <span class="title">Prefix from: </span>

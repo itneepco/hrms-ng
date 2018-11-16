@@ -10,6 +10,7 @@ import { RoleMapperComponent } from './components/role-mapper/role-mapper.compon
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 import { LeaveLedgerComponent } from './components/leave-ledger/leave-ledger.component';
 import { AddLedgerComponent } from './components/add-ledger/add-ledger.component';
+import { LeaveCreditComponent } from './components/leave-credit/leave-credit.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { AddLedgerComponent } from './components/add-ledger/add-ledger.component
     HolidayListComponent,
     LeaveLedgerComponent,
     AddLedgerComponent,
+    LeaveCreditComponent,
   ],
   entryComponents: [
     AddChildNodeComponent,

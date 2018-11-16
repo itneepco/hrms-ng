@@ -52,7 +52,7 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
     this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       if(!data) return
       if(data.length < 1) return
-
+      // console.log(data)
       this.employeeService.searchEmployee(data)
         .subscribe(response => {
           // console.log(response)

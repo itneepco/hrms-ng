@@ -11,13 +11,14 @@ export class AdminComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   nav: NavObject[] = [
-    { name: 'Employee Hierarchy', path: 'hierarchy' },
+    { name: 'Organogram', path: 'hierarchy' },
     { name: 'Holidays', path: 'holiday-list' },
-    { name: 'Ledger', path: 'leave-ledger' }
+    { name: 'Leave Ledger', path: 'leave-ledger' },
   ]
 
   ngOnInit() {
     if(this.auth.isSuperAdmin()) {
+      this.nav.push({ name: 'Leave Credit', path: 'leave-credit' })
       this.nav.push({ name: 'Role Mapper', path: 'role-mapper' })
     }
   }
