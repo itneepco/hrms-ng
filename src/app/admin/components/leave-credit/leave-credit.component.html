@@ -1,6 +1,18 @@
+<h3 class="warning">Please execute this processes only in the 1st week of January or 1st week for of July(only for EL and HPL)</h3>
 <ul>
-  <li>Annual Restricterd Holiday Credit</li>
-  <li>Annual Casual Leave Credit</li>
-  <li>Half Yearly Earned Leave Credit</li>
-  <li>Half Yearly Halp Pay Leave Credit</li>
+  <li>
+    <button mat-button (click)="leaveYearEndProcessing()">Leave Year End Processing for Previous Year</button>
+  </li>
+  <li>
+    <button mat-button (click)="creditAnnualRestrictedHoliday()">Annual Restricterd Holiday Credit</button>
+  </li>
+  <li>
+    <button mat-button (click)="creditAnnualCasualLeave()">Annual Casual Leave Credit</button>
+  </li>
+  <li>
+    <button mat-button (click)="creditHalfYearlyEarnedLeave()">Half Yearly Earned Leave Credit</button>
+  </li>
+  <li>
+    <button mat-button (click)="creditHalfYearlyHalfPayLeave()">Half Yearly Half Pay Leave Credit</button>
+  </li>
 </ul>
