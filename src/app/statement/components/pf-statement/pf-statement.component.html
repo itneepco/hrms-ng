@@ -1,115 +1,162 @@
-<div id="content" #content>  
-  <mat-card>  
-    <div class="alert alert-info">  
-        <strong>Html To PDF Conversion - Angular 6</strong>  
-    </div>  
-    <div>  
-      <input type="button" value="CAPTURE" (click)="captureScreen()"/>  
-    </div>  
+<div id="contentToConvert" *ngIf="pfReport">
+  <mat-card id="general-info" fxLayout="row" fxLayoutGap="25px">
+    <div fxFlex="65">
+      <P class="info">EMPLOYEE INFORMATION</P>
+      <table>
+        <thead class="row">
+          <th class="label">EMPLOYEE NAME</th>
+          <th class="label">MEMBERSHIP NO</th>
+          <th class="label">UN NO.</th>
+          <th class="label">DATE OF BIRTH</th>
+          <th class="label">DATE OF JOINING</th>
+        </thead>
+        <tr class="row">
+          <td class="value">{{pfReport.memberData.firstName}} {{pfReport.memberData.lastName}}</td>	
+          <td class="value">{{pfReport.memberData.pfNo}}</td>	
+          <td class="value">{{pfReport.memberData.un}}</td>	
+          <td class="value">{{pfReport.memberData.dob}}</td>	
+          <td class="value">{{pfReport.memberData.doj}}</td>	
+        </tr>
+      </table>
+    </div>
+  
+    <div fxFlex="35">
+      <p class="info">NOMINEE INFORMATION</p>
+      <table>
+        <thead>
+          <th>Sl No.</th>
+          <th>NOMINEE NAME</th>
+          <th>NOMINEE SHARE</th>
+        </thead>  
+        <tr *ngFor="let nominee of pfReport.memberData.nominees; let i=index" class="row">
+          <td>{{i+1}}.</td>
+          <td>{{nominee.name}},</td>
+          <td>{{nominee.share}}</td>
+        </tr>
+      </table>
+    </div>
+  </mat-card>
+  
+  <mat-card style="margin-top: 20px;" id="detail-info">  
+    <div class="heading">
+      <p>
+        {{pfReport.memberData.firstName | uppercase }} {{pfReport.memberData.lastName | uppercase}}'S 
+        PF STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
+      </p>
+      <p>FINANCIAL YEAR {{pfReport.finYear}}</p>
+    </div>
+    <div>
+      <table>  
+        <thead>  
+          <th>MONTH</th>  
+          <th>APR</th>  
+          <th>MAY</th> 
+          <th>JUN</th>  
+          <th>JUL</th>  
+          <th>AUG</th> 
+          <th>SEP</th>  
+          <th>OCT</th>  
+          <th>NOV</th>  
+          <th>DEC</th> 
+          <th>JAN</th>  
+          <th>FEB</th> 
+          <th>MAR</th>   
+          <th>TOTAL</th>   
+        </thead>  
+        <tr>
+          <td>MEM. CONT</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.empCont}}</td>
+          <td>{{getTotalEmpCont()}}</td>
+        </tr>
+        <tr>
+          <td>VPF</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.volCont}}</td>
+          <td>{{getTotalVpfCont()}}</td>
+        </tr>
+        <tr>
+          <td>EMP. WITHDRAWAL</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.empWithdrawal}}</td>
+          <td>{{getTotalEmpWithdrawal()}}</td>
+        </tr>
+        <tr>
+          <td>COMP. WITHDRAWAL</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.emplWithdrawal}}</td>
+          <td>{{getTotalEmplWithdrawal()}}</td>
+        </tr>
+        <tr>
+          <td>COMP. CONT</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.emplCont}}</td>
+          <td>{{getTotalEmplCont()}}</td>
+        </tr>
+        <tr>
+          <td>RPFC PENSION</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.pensionAmt}}</td>
+          <td>{{getTotalPensionAmt()}}</td>
+        </tr>
+      </table> 
+    </div> 
+  
+    <table style="margin-top: 20px">
+      <thead>
+        <th>OPENING BALANCE</th>
+        <th>CPF</th>
+        <th>VPF</th>
+        <th>AMOUNT WITHDRAWN</th>
+        <th>AMOUNT REFUND</th>
+        <th>INTEREST NON TAXABLE</th>
+        <th>INTEREST TAXABLE</th>
+        <th>CLOSING BALANCE</th>
+      </thead>
+      <tr>
+        <td>{{pfReport.summaryData.openingBalEmp}}</td>	
+        <td>{{pfReport.summaryData.cpfEmp}}</td>	
+        <td>{{pfReport.summaryData.vpf}}</td>	
+        <td>{{pfReport.summaryData.amtWithdrawnEmp}}</td>	
+        <td>{{pfReport.summaryData.amtRefundEmp}}</td>	
+        <td>{{pfReport.summaryData.intNonTaxableEmp}}</td>	
+        <td>{{pfReport.summaryData.intTaxableEmp}}</td>	
+        <td>{{pfReport.summaryData.closinBalEmp}}</td>	
+      </tr>
+      <tr>
+        <td>{{pfReport.summaryData.openingBalEmpl}}</td>	
+        <td>{{pfReport.summaryData.cpfEmpl}}</td>	
+        <td>0</td>
+        <td>{{pfReport.summaryData.amtWithdrawnEmpl}}</td>	
+        <td>{{pfReport.summaryData.amtRefundEmpl}}</td>	    
+        <td>{{pfReport.summaryData.intNonTaxableEmpl}}</td>	  
+        <td>{{pfReport.summaryData.intTaxableEmpl}}</td>	
+        <td>{{pfReport.summaryData.closingBalEmpl}}</td>	
+      </tr>
+      <tr>
+        <td class="right" colspan="7">TOTAL</td>
+        <td>{{pfReport.summaryData.totalPf}}</td>	
+      </tr>
+    </table>
+  
+    <div fxLayout="row" fxLayoutAlign="start end" id="notes">
+      <div fxFlex="70">
+        <p>NOTES</p>
+        <ol>  
+          <li>Contribution shown above are deductions from your pay for March 2018 to February 2019.</li>	
+          <li>This is a provisional statement subject to audit of accounts for the year.</li>	
+          <li>Discrepancies, if any, may please be intimated to PF Department by 15th of May. 2019.</li>
+        </ol>  
+        <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
+      </div>
+      <div fxFlex="30">
+        <div class="center">SECRETARY</div>
+        <p class="center">FOR NEEPCO LTD. EPF TRUST</p>
+      </div>
+    </div>
   </mat-card>  
-</div>  
-<div >  
-  <mat-card>  
-    <table id="contentToConvert">  
-        <tr>  
-          <th>Column1</th>  
-          <th>Column2</th>  
-          <th>Column3</th> 
-          <th>Column1</th>  
-          <th>Column2</th>  
-          <th>Column3</th> 
-          <th>Column1</th>  
-          <th>Column2</th>  
-          <th>Column3</th> 
-          <th>Column1</th>  
-          <th>Column2</th>  
-          <th>Column3</th>  
-        </tr>  
-        <tr>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-          <td>Row 1</td>  
-        </tr>  
-        <tr>  
-          <td>Row 2</td>  
-          <td>Row 2</td>  
-          <td>Row 2</td>
-          <td>Row 2</td>  
-          <td>Row 2</td>  
-          <td>Row 2</td>
-          <td>Row 2</td>  
-          <td>Row 2</td>  
-          <td>Row 2</td>
-          <td>Row 2</td>  
-          <td>Row 2</td>  
-          <td>Row 2</td>  
-        </tr>  
-        <tr>  
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td> 
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td> 
-          <td>Row 3</td>  
-          <td>Row 3</td>  
-          <td>Row 3</td> 
-        </tr>  
-        <tr>  
-          <td>Row 4</td>  
-          <td>Row 4</td>  
-          <td>Row 4</td> 
-          <td>Row 4</td>  
-          <td>Row 4</td>  
-          <td>Row 4</td> 
-          <td>Row 4</td>  
-          <td>Row 4</td>  
-          <td>Row 4</td> 
-          <td>Row 4</td>  
-          <td>Row 4</td>  
-          <td>Row 4</td>  
-        </tr>  
-        <tr>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-          <td>Row 5</td>  
-        </tr>  
-        <tr>  
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td> 
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td> 
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td>  
-          <td>Row 6</td> 
-        </tr>  
-      </table>  
-        
-  </mat-card>  
-</div>  
+</div>
+
+<button mat-fab 
+  *ngIf="pfReport"
+  class="fab-bottom-right"
+  matTooltip="Print Approved Leaves"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="captureScreen()">
+    <mat-icon>print</mat-icon>
+</button>

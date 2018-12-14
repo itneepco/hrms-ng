@@ -213,8 +213,10 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       if(_status == LEAVE_APPLIED || _status == LEAVE_RECOMMENDED) {
         return CALLBACK_ACTION_TYPES
       }
-      //If leave is approved then the employee can initiate leave cancellation and joining report is accepted
-      if(_status == LEAVE_APPROVED && joiningReport && joiningReport.status == JR_ACCEPTED) {
+      //If leave is approved then the employee can initiate leave cancellation and joining report is not accepted
+      if(_status == LEAVE_APPROVED) {
+        if(joiningReport && joiningReport.status == JR_ACCEPTED) return []
+        
         return LEAVE_CANCEL_INITIATION_ACTION_TYPES
       }
       //If leave is cancellation is initialixed then the employee can callback
