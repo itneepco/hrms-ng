@@ -12,6 +12,7 @@ export class StatementComponent implements OnInit {
     { name: 'Salary Statement', path: 'salary' },
     { name: 'Approved Leaves', path: 'approved-leaves' },
     { name: 'PF Statement', path: 'pf' },
+    { name: 'Pension Statement', path: 'pension' },
   ];
   
   constructor() { }

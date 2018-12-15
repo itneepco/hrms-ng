@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
-import { AuthService } from './../../../auth/services/auth.service';
-import { MonthlyData } from './../../models/monthly-data';
-import { PfReportService } from './../../services/pf-report.service';
+import { AuthService } from '../../../auth/services/auth.service';
+import { MonthlyData } from '../../models/monthly-data';
+import { PensionReportService } from './../../services/pension-report.service';
 
 @Component({
-  selector: 'app-pf-statement',
-  templateUrl: './pf-statement.component.html',
-  styleUrls: ['./pf-statement.component.scss']
+  selector: 'app-pension-statement',
+  templateUrl: './pension-statement.component.html',
+  styleUrls: ['./pension-statement.component.scss']
 })
-export class PfStatementComponent implements OnInit {
-  pfReport;
+export class PensionStatementComponent implements OnInit {
+  pension;
   finYears: string[];
   selectedFinYear: string;
 
-  constructor(private pfReportService: PfReportService, private auth: AuthService) { }
+  constructor(private pensionService: PensionReportService, private auth: AuthService) { }
 
   ngOnInit() {
     this.selectedFinYear = this.getCurrFinYear()
@@ -25,7 +25,7 @@ export class PfStatementComponent implements OnInit {
   }
 
   fetchPfReport() {
-    this.pfReportService.getStatement(this.auth.currentUser.emp_code, this.selectedFinYear)
+    this.pensionService.getStatement(this.auth.currentUser.emp_code, this.selectedFinYear)
       .subscribe(data => {
         console.log(data)
         let length = data.monthlyData.length
@@ -34,8 +34,12 @@ export class PfStatementComponent implements OnInit {
             data.monthlyData.push(new MonthlyData())
           }
         }
-        this.pfReport = data
+        this.pension = data
       })
+  }
+
+  getCurrentYear() {
+    return (new Date()).getFullYear()
   }
 
   onSelectionChange() {
@@ -44,7 +48,7 @@ export class PfStatementComponent implements OnInit {
 
   getTotalVpfCont(): number {
     let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
+    this.pension['monthlyData'].forEach(data => {
       total += data.volCont
     })
     return total;
@@ -52,7 +56,7 @@ export class PfStatementComponent implements OnInit {
 
   getTotalEmpCont(): number {
     let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
+    this.pension['monthlyData'].forEach(data => {
       total += data.empCont
     })
     return total;
@@ -60,34 +64,30 @@ export class PfStatementComponent implements OnInit {
 
   getTotalEmplCont(): number {
     let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
+    this.pension['monthlyData'].forEach(data => {
       total += data.emplCont
     })
     return total;
   }
 
-  getTotalPensionAmt(): number {
+  getTotalEmpArrear(): number {
     let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
-      total += data.pensionAmt
+    this.pension['monthlyData'].forEach(data => {
+      total += data.empArrear
     })
     return total;
   }
 
-  getTotalEmpWithdrawal(): number {
+  getTotalEmplArrear(): number {
     let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
-      total += data.empWithdrawal
+    this.pension['monthlyData'].forEach(data => {
+      total += data.emplArrear
     })
     return total;
   }
 
-  getTotalEmplWithdrawal(): number {
-    let total = 0;
-    this.pfReport['monthlyData'].forEach(data => {
-      total += data.emplWithdrawal
-    })
-    return total;
+  getTotalPension() {
+    return this.pension.summaryData.empClosingBal + this.pension.summaryData.emplClosingBal
   }
 
   captureScreen() {  
@@ -106,7 +106,7 @@ export class PfStatementComponent implements OnInit {
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;  
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-      pdf.save(`PF${ddmmyyyy}.pdf`); // Generated PDF   
+      pdf.save(`NEDCSS${ddmmyyyy}.pdf`); // Generated PDF   
     });  
   }  
 
@@ -129,4 +129,5 @@ export class PfStatementComponent implements OnInit {
     }
     return curr_fin_year;
   }
+
 }

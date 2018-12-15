@@ -21,6 +21,7 @@ export class PensionReportService {
     let url = `${this.url}/${empCode}`
     url = url + `?finYear=${finYear}`
     
+    console.log(url)
     // return this.http.get<any>(url)
     //   .pipe(
     //     catchError(err => this.handler.handleError(err))

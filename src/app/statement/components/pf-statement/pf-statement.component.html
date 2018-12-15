@@ -30,7 +30,7 @@
         </thead>  
         <tr *ngFor="let nominee of pfReport.memberData.nominees; let i=index" class="row">
           <td>{{i+1}}.</td>
-          <td>{{nominee.name}},</td>
+          <td>{{nominee.name}}</td>
           <td>{{nominee.share}}</td>
         </tr>
       </table>
@@ -38,12 +38,28 @@
   </mat-card>
   
   <mat-card style="margin-top: 20px;" id="detail-info">  
-    <div class="heading">
-      <p>
-        {{pfReport.memberData.firstName | uppercase }} {{pfReport.memberData.lastName | uppercase}}'S 
-        PF STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
-      </p>
-      <p>FINANCIAL YEAR {{pfReport.finYear}}</p>
+    <div fxLayout="row" fxLayoutAlign="start center" class="heading">
+      <div fxFlex="20">
+        <mat-form-field>
+          <mat-select placeholder="Financial Year" [(value)]="selectedFinYear" (selectionChange)="onSelectionChange()">
+            <mat-option *ngFor="let finYear of finYears" [value]="finYear">
+              {{finYear}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <div fxFlex="60">
+        <p>
+          {{pfReport.memberData.firstName | uppercase }} {{pfReport.memberData.lastName | uppercase}}'S 
+          PF STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
+        </p>
+        <p>FINANCIAL YEAR {{pfReport.finYear}}</p>
+      </div>
+      
+      <div fxFlex="20">
+        <p>INTEREST RATE :: {{pfReport.intRate}}%</p>
+      </div>
     </div>
     <div>
       <table>  
@@ -137,9 +153,15 @@
       <div fxFlex="70">
         <p>NOTES</p>
         <ol>  
-          <li>Contribution shown above are deductions from your pay for March 2018 to February 2019.</li>	
+          <li>
+            Contribution shown above are deductions from your pay for March 
+            {{selectedFinYear.split('-')[0]}} to February {{selectedFinYear.split('-')[1]}}.
+          </li>	
           <li>This is a provisional statement subject to audit of accounts for the year.</li>	
-          <li>Discrepancies, if any, may please be intimated to PF Department by 15th of May. 2019.</li>
+          <li>
+            Discrepancies, if any, may please be intimated to PF Department by 15th of May. 
+            {{selectedFinYear.split('-')[1]}}.
+          </li>
         </ol>  
         <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
       </div>

@@ -6,6 +6,7 @@ import { StatementRoutingModule } from './statement-routing.module';
 import { StatementComponent } from './components/statement/statement.component';
 import { ApprovedLeavesComponent } from './components/approved-leaves/approved-leaves.component';
 import { PfStatementComponent } from './components/pf-statement/pf-statement.component';
+import { PensionStatementComponent } from './components/pension-statement/pension-statement.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { PfStatementComponent } from './components/pf-statement/pf-statement.com
     StatementComponent, 
     SalaryStatementComponent, 
     ApprovedLeavesComponent, 
-    PfStatementComponent
+    PfStatementComponent, PensionStatementComponent
   ]
 })
 export class StatementModule { }
