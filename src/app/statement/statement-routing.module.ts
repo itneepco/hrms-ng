@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AdminGuard } from '../auth/services/admin-guard';
 import { AuthGuard } from '../auth/services/auth-guard';
 import { ApprovedLeavesComponent } from './components/approved-leaves/approved-leaves.component';
 import { PensionStatementComponent } from './components/pension-statement/pension-statement.component';
@@ -15,7 +16,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: 'salary', component: SalaryStatementComponent },
-      { path: 'approved-leaves', component: ApprovedLeavesComponent },
+      { 
+        path: 'approved-leaves', 
+        component: ApprovedLeavesComponent,
+        canActivate: [AdminGuard]  
+      },
       { path: 'pf', component: PfStatementComponent },
       { path: 'pension', component: PensionStatementComponent },
       { path: '', redirectTo: 'salary', pathMatch: 'full' }

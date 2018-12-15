@@ -37,7 +37,9 @@ export class LoginComponent implements OnInit {
       .catch((error: HttpErrorResponse) => {
         console.log(error)
         if(error.status == 401)
-          this.errorMsg = "Invalid employee code and password combination"
+          this.errorMsg = "Please enter your valid password to login. Contact HR to reset your password"
+        else if(error.status == 404)
+          this.errorMsg = "No account exist for this employee code!! Please contact your HR for opening account"
         else   
           this.errorMsg = "Internal server error!! Please contact IT administrator"
       })
