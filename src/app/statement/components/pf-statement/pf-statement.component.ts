@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
 import { AuthService } from './../../../auth/services/auth.service';
-import { MonthlyData } from './../../models/monthly-data';
+import { PfMonthlyData } from './../../models/monthly-data';
 import { PfReportService } from './../../services/pf-report.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class PfStatementComponent implements OnInit {
         let length = data.monthlyData.length
         if(length < 12) {
           for(var i=length; i<12; i++) {
-            data.monthlyData.push(new MonthlyData())
+            data.monthlyData.push(new PfMonthlyData())
           }
         }
         this.pfReport = data
@@ -97,15 +97,15 @@ export class PfStatementComponent implements OnInit {
 
     html2canvas(data).then(canvas => {  
       // Few necessary setting options  
-      var imgWidth = 208;   
+      var imgWidth = 205;   
       var pageHeight = 295;    
       var imgHeight = canvas.height * imgWidth / canvas.width;  
       var heightLeft = imgHeight;  
   
       const contentDataURL = canvas.toDataURL('image/png')  
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      var position = 18;  
+      pdf.addImage(contentDataURL, 'PNG', 2, position, imgWidth, imgHeight)  
       pdf.save(`PF${ddmmyyyy}.pdf`); // Generated PDF   
     });  
   }  

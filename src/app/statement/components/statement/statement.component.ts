@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavObject } from '../../../shared/models/nav-object';
+
 import { AuthService } from '../../../auth/services/auth.service';
+import { NavObject } from '../../../shared/models/nav-object';
 
 @Component({
   selector: 'app-statement',
@@ -10,9 +11,9 @@ import { AuthService } from '../../../auth/services/auth.service';
 export class StatementComponent implements OnInit {
 
   navObj: NavObject[] = [
-    { name: 'Salary Statement', path: 'salary' },
     { name: 'PF Statement', path: 'pf' },
     { name: 'Pension Statement', path: 'pension' },
+    { name: 'Salary Statement', path: 'salary' },
   ];
   
   constructor(private auth: AuthService) {}

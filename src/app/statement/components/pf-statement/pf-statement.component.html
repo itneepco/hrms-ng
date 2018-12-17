@@ -82,32 +82,32 @@
         <tr>
           <td>MEM. CONT</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.empCont}}</td>
-          <td>{{getTotalEmpCont()}}</td>
+          <td>{{getTotalEmpCont() | currency:'INR'}}</td>
         </tr>
         <tr>
           <td>VPF</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.volCont}}</td>
-          <td>{{getTotalVpfCont()}}</td>
+          <td>{{getTotalVpfCont() | currency:'INR'}}</td>
         </tr>
         <tr>
           <td>EMP. WITHDRAWAL</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.empWithdrawal}}</td>
-          <td>{{getTotalEmpWithdrawal()}}</td>
+          <td>{{getTotalEmpWithdrawal() | currency:'INR'}}</td>
         </tr>
         <tr>
           <td>COMP. WITHDRAWAL</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.emplWithdrawal}}</td>
-          <td>{{getTotalEmplWithdrawal()}}</td>
+          <td>{{getTotalEmplWithdrawal() | currency:'INR'}}</td>
         </tr>
         <tr>
           <td>COMP. CONT</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.emplCont}}</td>
-          <td>{{getTotalEmplCont()}}</td>
+          <td>{{getTotalEmplCont() | currency:'INR'}}</td>
         </tr>
         <tr>
           <td>RPFC PENSION</td>
           <td *ngFor="let month of pfReport.monthlyData">{{month.pensionAmt}}</td>
-          <td>{{getTotalPensionAmt()}}</td>
+          <td>{{getTotalPensionAmt() | currency:'INR'}}</td>
         </tr>
       </table> 
     </div> 
@@ -124,28 +124,28 @@
         <th>CLOSING BALANCE</th>
       </thead>
       <tr>
-        <td>{{pfReport.summaryData.openingBalEmp}}</td>	
-        <td>{{pfReport.summaryData.cpfEmp}}</td>	
-        <td>{{pfReport.summaryData.vpf}}</td>	
-        <td>{{pfReport.summaryData.amtWithdrawnEmp}}</td>	
-        <td>{{pfReport.summaryData.amtRefundEmp}}</td>	
-        <td>{{pfReport.summaryData.intNonTaxableEmp}}</td>	
-        <td>{{pfReport.summaryData.intTaxableEmp}}</td>	
-        <td>{{pfReport.summaryData.closinBalEmp}}</td>	
+        <td>{{pfReport.summaryData.openingBalEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.cpfEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.vpf | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.amtWithdrawnEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.amtRefundEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.intNonTaxableEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.intTaxableEmp | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.closinBalEmp | currency:'INR'}}</td>	
       </tr>
       <tr>
-        <td>{{pfReport.summaryData.openingBalEmpl}}</td>	
-        <td>{{pfReport.summaryData.cpfEmpl}}</td>	
-        <td>0</td>
-        <td>{{pfReport.summaryData.amtWithdrawnEmpl}}</td>	
-        <td>{{pfReport.summaryData.amtRefundEmpl}}</td>	    
-        <td>{{pfReport.summaryData.intNonTaxableEmpl}}</td>	  
-        <td>{{pfReport.summaryData.intTaxableEmpl}}</td>	
-        <td>{{pfReport.summaryData.closingBalEmpl}}</td>	
+        <td>{{pfReport.summaryData.openingBalEmpl | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.cpfEmpl | currency:'INR'}}</td>	
+        <td>0.00</td>
+        <td>{{pfReport.summaryData.amtWithdrawnEmpl | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.amtRefundEmpl | currency:'INR'}}</td>	    
+        <td>{{pfReport.summaryData.intNonTaxableEmpl | currency:'INR'}}</td>	  
+        <td>{{pfReport.summaryData.intTaxableEmpl | currency:'INR'}}</td>	
+        <td>{{pfReport.summaryData.closingBalEmpl | currency:'INR'}}</td>	
       </tr>
       <tr>
         <td class="right" colspan="7">TOTAL</td>
-        <td>{{pfReport.summaryData.totalPf}}</td>	
+        <td>{{pfReport.summaryData.totalPf | currency:'INR'}}</td>	
       </tr>
     </table>
   

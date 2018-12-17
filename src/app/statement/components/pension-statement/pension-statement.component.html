@@ -84,27 +84,27 @@
           <tr>
             <td>MEM. CONT</td>
             <td *ngFor="let month of pension.monthlyData">{{month.empCont}}</td>
-            <td>{{getTotalEmpCont()}}</td>
+            <td>{{getTotalEmpCont() | currency:'INR'}}</td>
           </tr>
           <tr>
             <td>VOL. CONT</td>
             <td *ngFor="let month of pension.monthlyData">{{month.volCont}}</td>
-            <td>{{getTotalVpfCont()}}</td>
+            <td>{{getTotalVpfCont() | currency:'INR'}}</td>
           </tr>
           <tr>
             <td>MEM. ARREAR</td>
             <td *ngFor="let month of pension.monthlyData">{{month.empArrear}}</td>
-            <td>{{getTotalEmpArrear()}}</td>
+            <td>{{getTotalEmpArrear() | currency:'INR'}}</td>
           </tr>
           <tr>
             <td>COMP. CONT</td>
             <td *ngFor="let month of pension.monthlyData">{{month.emplCont}}</td>
-            <td>{{getTotalEmplCont()}}</td>
+            <td>{{getTotalEmplCont() | currency:'INR'}}</td>
           </tr>
           <tr>
             <td>COMP. ARREAR</td>
             <td *ngFor="let month of pension.monthlyData">{{month.emplArrear}}</td>
-            <td>{{getTotalEmplArrear()}}</td>
+            <td>{{getTotalEmplArrear() | currency:'INR'}}</td>
           </tr>
         </table> 
       </div> 
@@ -119,40 +119,42 @@
           <th>CLOSING BALANCE</th>
         </thead>
         <tr>
-          <td>{{pension.summaryData.openingBalEmp}}</td>	
-          <td>{{pension.summaryData.voluntaryCont}}</td>	
-          <td>{{pension.summaryData.empYearlyCont}}</td>	
-          <td>{{pension.summaryData.intEmp}}</td>	
-          <td>{{pension.summaryData.empTotalCont}}</td>	
-          <td>{{pension.summaryData.empClosingBal}}</td>
+          <td>{{pension.summaryData.openingBalEmp | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.voluntaryCont | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.empYearlyCont | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.intEmp | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.empTotalCont | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.empClosingBal | currency:'INR'}}</td>
         </tr>
         <tr>
-          <td>{{pension.summaryData.openingBalEmpl}}</td>	
-          <td>0</td>
-          <td>{{pension.summaryData.emplYearlyCont}}</td>	
-          <td>{{pension.summaryData.intEmpl}}</td>	    
-          <td>{{pension.summaryData.emplTotalCont}}</td>	  
-          <td>{{pension.summaryData.emplClosingBal}}</td>
+          <td>{{pension.summaryData.openingBalEmpl | currency:'INR'}}</td>	
+          <td>0.00</td>
+          <td>{{pension.summaryData.emplYearlyCont | currency:'INR'}}</td>	
+          <td>{{pension.summaryData.intEmpl | currency:'INR'}}</td>	    
+          <td>{{pension.summaryData.emplTotalCont | currency:'INR'}}</td>	  
+          <td>{{pension.summaryData.emplClosingBal | currency:'INR'}}</td>
         </tr>
         <tr>
           <td class="right" colspan="5">TOTAL</td>
-          <td>{{getTotalPension()}}</td>	
+          <td>{{getTotalPension() | currency:'INR'}}</td>	
         </tr>
       </table>
     
       <div fxLayout="row" fxLayoutAlign="start end" id="notes">
-        <div fxFlex="70">
+        <div fxFlex>
           <p>NOTES</p>
           <ol>  
-            <li>Contribution shown above are deductions from your pay for March 2018 to February 2019.</li>	
+            <li>
+              Contribution shown above are deductions from your pay for March 
+              {{selectedFinYear.split('-')[0]}} to February {{selectedFinYear.split('-')[1]}}.
+            </li>	
             <li>This is a provisional statement subject to audit of accounts for the year.</li>	
-            <li>Discrepancies, if any, may please be intimated to PF Department by 15th of May. 2019.</li>
+            <li>
+              Discrepancies, if any, may please be intimated to NEDCSS Trust. by 15th of May. 
+              {{selectedFinYear.split('-')[1]}}.
+            </li>
           </ol>  
           <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
-        </div>
-        <div fxFlex="30">
-          <div class="center">SECRETARY</div>
-          <p class="center">FOR NEEPCO LTD. EPF TRUST</p>
         </div>
       </div>
     </mat-card>  

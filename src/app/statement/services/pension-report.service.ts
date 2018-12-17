@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { pfPensionURL } from './../../shared/config/baseUrl';
-import { pensionReport } from './pension-stub';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,11 @@ export class PensionReportService {
     url = url + `?finYear=${finYear}`
     
     console.log(url)
-    // return this.http.get<any>(url)
-    //   .pipe(
-    //     catchError(err => this.handler.handleError(err))
-    //   )
+    return this.http.get<any>(url)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
    
-    return from(pensionReport)
+    // return from(pensionReport)
   }
 }
