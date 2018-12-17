@@ -182,3 +182,11 @@
   (click)="captureScreen()">
     <mat-icon>print</mat-icon>
 </button>
+
+<mat-card *ngIf="errMsg">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card>
+
+<div *ngIf="isLoading" fxLayoutAlign="center center">
+  <mat-spinner diameter="60"></mat-spinner>
+</div>

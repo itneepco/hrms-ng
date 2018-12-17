@@ -15,7 +15,9 @@ export class PensionStatementComponent implements OnInit {
   pension;
   finYears: string[];
   selectedFinYear: string;
-
+  errMsg: string
+  isLoading = true
+  
   constructor(private pensionService: PensionReportService, private auth: AuthService) { }
 
   ngOnInit() {
@@ -35,6 +37,11 @@ export class PensionStatementComponent implements OnInit {
           }
         }
         this.pension = data
+        this.isLoading = false
+      }, 
+      errMsg => {
+        this.errMsg = errMsg
+        this.isLoading = false
       })
   }
 

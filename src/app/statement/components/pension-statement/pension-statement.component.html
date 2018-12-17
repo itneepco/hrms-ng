@@ -1,171 +1,141 @@
 <div id="contentToConvert" *ngIf="pension">
-    <!-- <mat-card id="general-info" fxLayout="row" fxLayoutGap="25px">
-      <div fxFlex="65">
-        <P class="info">EMPLOYEE INFORMATION</P>
-        <table>
-          <thead class="row">
-            <th class="label">EMPLOYEE NAME</th>
-            <th class="label">MEMBERSHIP NO</th>
-            <th class="label">UN NO.</th>
-            <th class="label">DATE OF BIRTH</th>
-            <th class="label">DATE OF JOINING</th>
-          </thead>
-          <tr class="row">
-            <td class="value">{{pension.memberData.firstName}} {{pension.memberData.lastName}}</td>	
-            <td class="value">{{pension.memberData.pfNo}}</td>	
-            <td class="value">{{pension.memberData.un}}</td>	
-            <td class="value">{{pension.memberData.dob}}</td>	
-            <td class="value">{{pension.memberData.doj}}</td>	
-          </tr>
-        </table>
+  <mat-card style="margin-top: 20px;" id="detail-info">  
+    <div fxLayout="row" fxLayoutAlign="start center" class="heading">
+      <div fxFlex="20">
+        <mat-form-field>
+          <mat-select placeholder="Financial Year" [(value)]="selectedFinYear" (selectionChange)="onSelectionChange()">
+            <mat-option *ngFor="let finYear of finYears" [value]="finYear">
+              {{finYear}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-    
-      <div fxFlex="35">
-        <p class="info">NOMINEE INFORMATION</p>
-        <table>
-          <thead>
-            <th>Sl No.</th>
-            <th>NOMINEE NAME</th>
-            <th>NOMINEE SHARE</th>
-          </thead>  
-          <tr *ngFor="let nominee of pension.memberData.nominees; let i=index" class="row">
-            <td>{{i+1}}.</td>
-            <td>{{nominee.name}}</td>
-            <td>{{nominee.share}}</td>
-          </tr>
-        </table>
+      
+      <div fxFlex="60">
+        <p>
+          {{pension.member.firstName | uppercase }} {{pension.member.lastName | uppercase}}'S 
+          PENSION STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
+        </p>
+        <p>FINANCIAL YEAR {{pension.finYear}}</p>
       </div>
-    </mat-card> -->
-    
-    <mat-card style="margin-top: 20px;" id="detail-info">  
-      <div fxLayout="row" fxLayoutAlign="start center" class="heading">
-        <div fxFlex="20">
-          <mat-form-field>
-            <mat-select placeholder="Financial Year" [(value)]="selectedFinYear" (selectionChange)="onSelectionChange()">
-              <mat-option *ngFor="let finYear of finYears" [value]="finYear">
-                {{finYear}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        
-        <div fxFlex="60">
-          <p>
-            {{pension.member.firstName | uppercase }} {{pension.member.lastName | uppercase}}'S 
-            PENSION STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
-          </p>
-          <p>FINANCIAL YEAR {{pension.finYear}}</p>
-        </div>
-        
-        <div fxFlex="20" id="misc-info">
-          <p>EMP CODE :: {{pension.member.empNum}}</p>
-          <p>POLICY NO. :: {{pension.member.policyNo}}</p>
-          <p>LIC NO. :: {{pension.member.licId}}</p>
-        </div>
+      
+      <div fxFlex="20" id="misc-info">
+        <p>EMP CODE :: {{pension.member.empNum}}</p>
+        <p>POLICY NO. :: {{pension.member.policyNo}}</p>
+        <p>LIC NO. :: {{pension.member.licId}}</p>
       </div>
-      <div>
-        <table>  
-          <thead>  
-            <th>MONTH</th>  
-            <th>APR</th>  
-            <th>MAY</th> 
-            <th>JUN</th>  
-            <th>JUL</th>  
-            <th>AUG</th> 
-            <th>SEP</th>  
-            <th>OCT</th>  
-            <th>NOV</th>  
-            <th>DEC</th> 
-            <th>JAN</th>  
-            <th>FEB</th> 
-            <th>MAR</th>   
-            <th>TOTAL</th>   
-          </thead>  
-          <tr>
-            <td>MEM. CONT</td>
-            <td *ngFor="let month of pension.monthlyData">{{month.empCont}}</td>
-            <td>{{getTotalEmpCont() | currency:'INR'}}</td>
-          </tr>
-          <tr>
-            <td>VOL. CONT</td>
-            <td *ngFor="let month of pension.monthlyData">{{month.volCont}}</td>
-            <td>{{getTotalVpfCont() | currency:'INR'}}</td>
-          </tr>
-          <tr>
-            <td>MEM. ARREAR</td>
-            <td *ngFor="let month of pension.monthlyData">{{month.empArrear}}</td>
-            <td>{{getTotalEmpArrear() | currency:'INR'}}</td>
-          </tr>
-          <tr>
-            <td>COMP. CONT</td>
-            <td *ngFor="let month of pension.monthlyData">{{month.emplCont}}</td>
-            <td>{{getTotalEmplCont() | currency:'INR'}}</td>
-          </tr>
-          <tr>
-            <td>COMP. ARREAR</td>
-            <td *ngFor="let month of pension.monthlyData">{{month.emplArrear}}</td>
-            <td>{{getTotalEmplArrear() | currency:'INR'}}</td>
-          </tr>
-        </table> 
-      </div> 
-    
-      <table style="margin-top: 20px">
-        <thead>
-          <th>OPENING BALANCE</th>
-          <th>VOL. CONTRIBUTION</th>
-          <th>YEAR CONTRIBUTION</th>
-          <th>INTEREST AMT</th>
-          <th>TOTAL CONTRUBUTION</th>
-          <th>CLOSING BALANCE</th>
-        </thead>
+    </div>
+    <div>
+      <table>  
+        <thead>  
+          <th>MONTH</th>  
+          <th>APR</th>  
+          <th>MAY</th> 
+          <th>JUN</th>  
+          <th>JUL</th>  
+          <th>AUG</th> 
+          <th>SEP</th>  
+          <th>OCT</th>  
+          <th>NOV</th>  
+          <th>DEC</th> 
+          <th>JAN</th>  
+          <th>FEB</th> 
+          <th>MAR</th>   
+          <th>TOTAL</th>   
+        </thead>  
         <tr>
-          <td>{{pension.summaryData.openingBalEmp | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.voluntaryCont | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.empYearlyCont | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.intEmp | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.empTotalCont | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.empClosingBal | currency:'INR'}}</td>
+          <td>MEM. CONT</td>
+          <td *ngFor="let month of pension.monthlyData">{{month.empCont}}</td>
+          <td>{{getTotalEmpCont() | currency:'INR'}}</td>
         </tr>
         <tr>
-          <td>{{pension.summaryData.openingBalEmpl | currency:'INR'}}</td>	
-          <td>0.00</td>
-          <td>{{pension.summaryData.emplYearlyCont | currency:'INR'}}</td>	
-          <td>{{pension.summaryData.intEmpl | currency:'INR'}}</td>	    
-          <td>{{pension.summaryData.emplTotalCont | currency:'INR'}}</td>	  
-          <td>{{pension.summaryData.emplClosingBal | currency:'INR'}}</td>
+          <td>VOL. CONT</td>
+          <td *ngFor="let month of pension.monthlyData">{{month.volCont}}</td>
+          <td>{{getTotalVpfCont() | currency:'INR'}}</td>
         </tr>
         <tr>
-          <td class="right" colspan="5">TOTAL</td>
-          <td>{{getTotalPension() | currency:'INR'}}</td>	
+          <td>MEM. ARREAR</td>
+          <td *ngFor="let month of pension.monthlyData">{{month.empArrear}}</td>
+          <td>{{getTotalEmpArrear() | currency:'INR'}}</td>
         </tr>
-      </table>
-    
-      <div fxLayout="row" fxLayoutAlign="start end" id="notes">
-        <div fxFlex>
-          <p>NOTES</p>
-          <ol>  
-            <li>
-              Contribution shown above are deductions from your pay for March 
-              {{selectedFinYear.split('-')[0]}} to February {{selectedFinYear.split('-')[1]}}.
-            </li>	
-            <li>This is a provisional statement subject to audit of accounts for the year.</li>	
-            <li>
-              Discrepancies, if any, may please be intimated to NEDCSS Trust. by 15th of May. 
-              {{selectedFinYear.split('-')[1]}}.
-            </li>
-          </ol>  
-          <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
-        </div>
-      </div>
-    </mat-card>  
-  </div>
+        <tr>
+          <td>COMP. CONT</td>
+          <td *ngFor="let month of pension.monthlyData">{{month.emplCont}}</td>
+          <td>{{getTotalEmplCont() | currency:'INR'}}</td>
+        </tr>
+        <tr>
+          <td>COMP. ARREAR</td>
+          <td *ngFor="let month of pension.monthlyData">{{month.emplArrear}}</td>
+          <td>{{getTotalEmplArrear() | currency:'INR'}}</td>
+        </tr>
+      </table> 
+    </div> 
   
-  <button mat-fab 
-    *ngIf="pension"
-    class="fab-bottom-right"
-    matTooltip="Print Approved Leaves"
-    matTooltipPosition="left"
-    color="accent" 
-    (click)="captureScreen()">
-      <mat-icon>print</mat-icon>
-  </button>
+    <table style="margin-top: 20px">
+      <thead>
+        <th>OPENING BALANCE</th>
+        <th>VOL. CONTRIBUTION</th>
+        <th>YEAR CONTRIBUTION</th>
+        <th>INTEREST AMT</th>
+        <th>TOTAL CONTRUBUTION</th>
+        <th>CLOSING BALANCE</th>
+      </thead>
+      <tr>
+        <td>{{pension.summaryData.openingBalEmp | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.voluntaryCont | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.empYearlyCont | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.intEmp | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.empTotalCont | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.empClosingBal | currency:'INR'}}</td>
+      </tr>
+      <tr>
+        <td>{{pension.summaryData.openingBalEmpl | currency:'INR'}}</td>	
+        <td>0.00</td>
+        <td>{{pension.summaryData.emplYearlyCont | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.intEmpl | currency:'INR'}}</td>	    
+        <td>{{pension.summaryData.emplTotalCont | currency:'INR'}}</td>	  
+        <td>{{pension.summaryData.emplClosingBal | currency:'INR'}}</td>
+      </tr>
+      <tr>
+        <td class="right" colspan="5">TOTAL</td>
+        <td>{{getTotalPension() | currency:'INR'}}</td>	
+      </tr>
+    </table>
+  
+    <div fxLayout="row" fxLayoutAlign="start end" id="notes">
+      <div fxFlex>
+        <p>NOTES</p>
+        <ol>  
+          <li>
+            Contribution shown above are deductions from your pay for March 
+            {{selectedFinYear.split('-')[0]}} to February {{selectedFinYear.split('-')[1]}}.
+          </li>	
+          <li>This is a provisional statement subject to audit of accounts for the year.</li>	
+          <li>
+            Discrepancies, if any, may please be intimated to NEDCSS Trust. by 15th of May. 
+            {{selectedFinYear.split('-')[1]}}.
+          </li>
+        </ol>  
+        <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
+      </div>
+    </div>
+  </mat-card>  
+</div>
+  
+<button mat-fab 
+  *ngIf="pension"
+  class="fab-bottom-right"
+  matTooltip="Print Approved Leaves"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="captureScreen()">
+    <mat-icon>print</mat-icon>
+</button>
+
+<mat-card *ngIf="errMsg">
+  <p class="errMsg">{{errMsg}}</p>
+</mat-card>
+
+<div *ngIf="isLoading" fxLayoutAlign="center center">
+  <mat-spinner diameter="60"></mat-spinner>
+</div>

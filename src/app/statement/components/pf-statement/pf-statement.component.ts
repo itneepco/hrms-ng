@@ -15,6 +15,8 @@ export class PfStatementComponent implements OnInit {
   pfReport;
   finYears: string[];
   selectedFinYear: string;
+  errMsg: string
+  isLoading = true
 
   constructor(private pfReportService: PfReportService, private auth: AuthService) { }
 
@@ -35,6 +37,11 @@ export class PfStatementComponent implements OnInit {
           }
         }
         this.pfReport = data
+        this.isLoading = false
+      }, 
+      errMsg => {
+        this.errMsg = errMsg
+        this.isLoading = false
       })
   }
 
