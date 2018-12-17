@@ -73,31 +73,34 @@
   
     <table style="margin-top: 20px">
       <thead>
+        <th>CONTRIBUTION</th>
         <th>OPENING BALANCE</th>
         <th>VOL. CONTRIBUTION</th>
         <th>YEAR CONTRIBUTION</th>
-        <th>INTEREST AMT</th>
-        <th>TOTAL CONTRUBUTION</th>
+        <th>YEAR INTEREST</th>
+        <th>YEAR ARREAR</th>
         <th>CLOSING BALANCE</th>
       </thead>
       <tr>
+        <td>MEM.</td>
         <td>{{pension.summaryData.openingBalEmp | currency:'INR'}}</td>	
         <td>{{pension.summaryData.voluntaryCont | currency:'INR'}}</td>	
         <td>{{pension.summaryData.empYearlyCont | currency:'INR'}}</td>	
         <td>{{pension.summaryData.intEmp | currency:'INR'}}</td>	
-        <td>{{pension.summaryData.empTotalCont | currency:'INR'}}</td>	
+        <td>{{pension.summaryData.empTotalArrear | currency:'INR'}}</td>	
         <td>{{pension.summaryData.empClosingBal | currency:'INR'}}</td>
       </tr>
       <tr>
+        <td>COMP.</td>
         <td>{{pension.summaryData.openingBalEmpl | currency:'INR'}}</td>	
-        <td>0.00</td>
+        <td>{{0.00 | currency:'INR'}}</td>
         <td>{{pension.summaryData.emplYearlyCont | currency:'INR'}}</td>	
         <td>{{pension.summaryData.intEmpl | currency:'INR'}}</td>	    
-        <td>{{pension.summaryData.emplTotalCont | currency:'INR'}}</td>	  
+        <td>{{pension.summaryData.emplTotalArrear | currency:'INR'}}</td>	  
         <td>{{pension.summaryData.emplClosingBal | currency:'INR'}}</td>
       </tr>
       <tr>
-        <td class="right" colspan="5">TOTAL</td>
+        <td class="right" colspan="6">TOTAL</td>
         <td>{{getTotalPension() | currency:'INR'}}</td>	
       </tr>
     </table>
@@ -125,7 +128,7 @@
 <button mat-fab 
   *ngIf="pension"
   class="fab-bottom-right"
-  matTooltip="Print Approved Leaves"
+  matTooltip="Print Pension Report"
   matTooltipPosition="left"
   color="accent" 
   (click)="captureScreen()">

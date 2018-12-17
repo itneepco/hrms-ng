@@ -23,7 +23,7 @@ const routes: Routes = [
       },
       { path: 'pf', component: PfStatementComponent },
       { path: 'pension', component: PensionStatementComponent },
-      { path: '', redirectTo: 'salary', pathMatch: 'full' }
+      { path: '', redirectTo: 'pf', pathMatch: 'full' }
     ] 
   },
 ];

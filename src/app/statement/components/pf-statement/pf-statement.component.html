@@ -114,6 +114,7 @@
   
     <table style="margin-top: 20px">
       <thead>
+        <th>CONTRIBUTION</th>
         <th>OPENING BALANCE</th>
         <th>CPF</th>
         <th>VPF</th>
@@ -124,6 +125,7 @@
         <th>CLOSING BALANCE</th>
       </thead>
       <tr>
+        <td>MEM.</td>
         <td>{{pfReport.summaryData.openingBalEmp | currency:'INR'}}</td>	
         <td>{{pfReport.summaryData.cpfEmp | currency:'INR'}}</td>	
         <td>{{pfReport.summaryData.vpf | currency:'INR'}}</td>	
@@ -134,9 +136,10 @@
         <td>{{pfReport.summaryData.closinBalEmp | currency:'INR'}}</td>	
       </tr>
       <tr>
+        <td>COMP.</td>
         <td>{{pfReport.summaryData.openingBalEmpl | currency:'INR'}}</td>	
         <td>{{pfReport.summaryData.cpfEmpl | currency:'INR'}}</td>	
-        <td>0.00</td>
+        <td>{{0.00 | currency:'INR'}}</td>
         <td>{{pfReport.summaryData.amtWithdrawnEmpl | currency:'INR'}}</td>	
         <td>{{pfReport.summaryData.amtRefundEmpl | currency:'INR'}}</td>	    
         <td>{{pfReport.summaryData.intNonTaxableEmpl | currency:'INR'}}</td>	  
@@ -144,7 +147,7 @@
         <td>{{pfReport.summaryData.closingBalEmpl | currency:'INR'}}</td>	
       </tr>
       <tr>
-        <td class="right" colspan="7">TOTAL</td>
+        <td class="right" colspan="8">TOTAL</td>
         <td>{{pfReport.summaryData.totalPf | currency:'INR'}}</td>	
       </tr>
     </table>
@@ -176,7 +179,7 @@
 <button mat-fab 
   *ngIf="pfReport"
   class="fab-bottom-right"
-  matTooltip="Print Approved Leaves"
+  matTooltip="Print PF Report"
   matTooltipPosition="left"
   color="accent" 
   (click)="captureScreen()">
