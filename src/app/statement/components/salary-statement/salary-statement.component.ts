@@ -94,17 +94,17 @@ export class SalaryStatementComponent implements OnInit {
 
   getMonthYear(yymm: string) {
     let year = yymm.substr(0,4)
-    let month = this.months.find(data => data.value == yymm.substr(4,2))
-
-    let yymm_str = `${month.name}, ${year}`
+    let mnth = this.months.find(data => data.value == yymm.substr(4,2))
+    let yymm_str = `${mnth.name}, ${year}`
     return yymm_str
   }
 
   getPayPeriod(yymm: string) {
-    let month = this.months.find(data => data.value == yymm.substr(4,2))
-    let index = this.months.findIndex(data => data.value == month.value)
-    let prev_month = this.months[index-1]
-    return `16 ${prev_month.name} - 15 ${month.name}`
+    let curr_month = this.months.find(data => data.value == yymm.substr(4,2))
+    let curr_index = this.months.findIndex(data => data.value == curr_month.value)
+    let prev_index = curr_index === 0 ? 11 : curr_index - 1
+    let prev_month = this.months[prev_index]
+    return `16 ${prev_month.name} - 15 ${curr_month.name}`
   }
 
   get year() {
