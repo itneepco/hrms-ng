@@ -77,6 +77,9 @@
           <textarea rows="1" matInput placeholder="Address during leave" formControlName="address"></textarea>
           <mat-error *ngIf="address.errors?.required">Address is required</mat-error>
         </mat-form-field>
+        <mat-form-field>
+          <textarea rows="1" matInput placeholder="Remarks (if any prefix, suffix, holidays etc)" formControlName="remarks"></textarea>
+        </mat-form-field>
 
         <div id="leave-info" *ngIf="leaveDetails.length > 0">
           <div *ngFor="let leaveDetail of leaveDetails; let i=index">

@@ -64,7 +64,8 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
       prefix_from: '',
       prefix_to: '',
       suffix_from: '',
-      suffix_to: ''
+      suffix_to: '',
+      remarks: ''
     }, 
     { validator: [
         DateValidator.fromToDateValidator,

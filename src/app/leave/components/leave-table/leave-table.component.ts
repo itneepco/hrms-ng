@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from '../../../shared/models/global-codes';
+import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE, HD_CL_CODE } from '../../../shared/models/global-codes';
 import { LeaveApplication } from '../../../shared/models/leave';
 import { LEAVE_REQUEST_PAGE, TRANSACTION_PAGE } from '../../models/leave.codes';
 import { PendingRequestService } from '../../services/pending-request.service';
@@ -82,7 +82,8 @@ export class LeaveTableComponent implements OnInit {
     if (hpl_type) return "ML/HPL"
 
     let cl_rh_type = leaveApplication.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
+      .find(leaveDetail => leaveDetail.leave_type == CL_CODE 
+        || leaveDetail.leave_type == RH_CODE || leaveDetail.leave_type == HD_CL_CODE)
     if(cl_rh_type) return "CL/RH"
   }
 }

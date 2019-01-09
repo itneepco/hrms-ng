@@ -110,7 +110,8 @@ export class ApplyCLRHComponent implements OnInit {
       officer_emp_code: ['', Validators.required],
       purpose: ['', Validators.required],
       address: ['', Validators.required],
-      contact_no: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
+      contact_no: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
+      remarks: ''
     })
   }
 

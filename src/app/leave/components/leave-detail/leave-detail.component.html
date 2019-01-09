@@ -25,7 +25,7 @@
             {{leaveApp.contact_no}}</div>
         </div>
 
-        <div fxLayout="row" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutGap="20px" *ngIf="leaveApp.prefix_from">
           <div class="info" fxFlex>
             <span class="title">Prefix from: </span>
             {{leaveApp.prefix_from | date:'mediumDate'}}</div>
@@ -34,7 +34,7 @@
             {{leaveApp.prefix_to | date:'mediumDate'}}</div>
         </div>
 
-        <div fxLayout="row" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutGap="20px" *ngIf="leaveApp.suffix_from">
           <div class="info" fxFlex>
             <span class="title">Suffix from: </span>
             {{leaveApp.suffix_from | date:'mediumDate'}}</div>
@@ -50,6 +50,10 @@
         <div class="info" fxFlex>
           <span class="title">Address: </span>
           {{leaveApp.address}}
+        </div>
+        <div class="info" fxFlex>
+          <span class="title">Remarks: </span>
+          {{leaveApp.remarks}}
         </div>
       </mat-expansion-panel>
 
