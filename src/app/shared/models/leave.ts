@@ -41,6 +41,7 @@ export interface LeaveApplication {
   contact_no: string;
   addressee: string;
   status: string;
+  remarks: string;
   prefix_from?: Date;
   prefix_to?: Date;
   suffix_from?: Date;
