@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, map } from 'rxjs/operators';
 
-import { EL_HPL_ADMIN, JWT_TOKEN_NAME } from '../../shared/models/global-codes';
+import { EL_HPL_ADMIN, JWT_TOKEN_NAME, TIME_OFFICE_ADMIN } from '../../shared/models/global-codes';
 import { User } from '../../shared/models/user.model';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { baseURL } from './../../shared/config/baseUrl';
@@ -93,6 +93,11 @@ export class AuthService {
 
   isHrLeaveSuperAdmin(): boolean {
     let role = this.currentUser.roleMapper.find(mapper => mapper.role == HR_LEAVE_SUPER_ADMIN)
+    return role ? true : false
+  }
+
+  isTimeOfficeAdmin(): boolean {
+    let role = this.currentUser.roleMapper.find(mapper => mapper.role == TIME_OFFICE_ADMIN)
     return role ? true : false
   }
 }

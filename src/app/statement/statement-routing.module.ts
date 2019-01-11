@@ -8,6 +8,7 @@ import { PensionStatementComponent } from './components/pension-statement/pensio
 import { PfStatementComponent } from './components/pf-statement/pf-statement.component';
 import { SalaryStatementComponent } from './components/salary-statement/salary-statement.component';
 import { StatementComponent } from './components/statement/statement.component';
+import { TimeOfficeGuard } from '../auth/services/time-office-guard';
 
 const routes: Routes = [
   { 
@@ -19,7 +20,7 @@ const routes: Routes = [
       { 
         path: 'approved-leaves', 
         component: ApprovedLeavesComponent,
-        canActivate: [AdminGuard]  
+        canActivate: [TimeOfficeGuard]  
       },
       { path: 'pf', component: PfStatementComponent },
       { path: 'pension', component: PensionStatementComponent },

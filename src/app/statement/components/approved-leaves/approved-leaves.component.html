@@ -43,13 +43,13 @@
       </ng-container>
   
       <ng-container matColumnDef="emp_code">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
-        <mat-cell *matCellDef="let leave" fxFlex="15"> {{ leave.emp_code }} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="13"> Employee Code </mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="13"> {{ leave.emp_code }} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef fxFlex="25">Employee Name</mat-header-cell>
-        <mat-cell *matCellDef="let leave" fxFlex="25">
+        <mat-header-cell *matHeaderCellDef fxFlex="23">Employee Name</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="23">
           {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
         </mat-cell>
       </ng-container>
@@ -62,15 +62,19 @@
       </ng-container>
   
       <ng-container matColumnDef="from_date">
-        <mat-header-cell *matHeaderCellDef fxFlex="15">From Date</mat-header-cell>
-        <mat-cell *matCellDef="let leave" fxFlex="15">
+        <mat-header-cell *matHeaderCellDef fxFlex="20">From Date</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="20">
           <div fxLayout="column">
             <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else content">
-              {{ leave.leaveDetails[0].from_date | date:'mediumDate' }}
+              <span>{{ leave.leaveDetails[0].from_date | date:'mediumDate' }}</span>
             </div>
             <ng-template #content>
               <ul *ngFor="let detail of leave.leaveDetails" class="from_date">
-                <li>{{detail.from_date | date:'mediumDate'}}</li>
+                <li>
+                  <span>{{detail.from_date | date:'mediumDate'}}</span>
+                  <span>&nbsp;->&nbsp;</span>
+                  <span>({{getSpecificLeaveType(detail)}})</span>
+                </li>
               </ul>
             </ng-template>
           </div>
@@ -78,8 +82,8 @@
       </ng-container>
   
       <ng-container matColumnDef="to_date">
-        <mat-header-cell *matHeaderCellDef fxFlex="15">To Date</mat-header-cell>
-        <mat-cell *matCellDef="let leave" fxFlex="15">
+        <mat-header-cell *matHeaderCellDef fxFlex="14">To Date</mat-header-cell>
+        <mat-cell *matCellDef="let leave" fxFlex="14">
           <div *ngIf="isEarnedLeave(leave) || isHalfPayLeave(leave); else other_content">
             {{ leave.leaveDetails[0].to_date | date:'mediumDate' }}
           </div>

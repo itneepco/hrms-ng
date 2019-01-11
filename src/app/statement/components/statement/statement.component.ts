@@ -19,7 +19,7 @@ export class StatementComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    if(this.auth.isAdmin()) {
+    if(this.auth.isAdmin() || this.auth.isTimeOfficeAdmin()) {
       this.navObj.push({ name: 'Approved Leaves', path: 'approved-leaves' })
     }
   }

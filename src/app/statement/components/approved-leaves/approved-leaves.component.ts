@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
-import { LeaveApplication } from '../../../shared/models/leave';
+import { LeaveApplication, LeaveDetail } from '../../../shared/models/leave';
 import { LeaveStatementService } from '../../services/leave-statement.service';
 import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from './../../../shared/models/global-codes';
 
@@ -80,18 +80,32 @@ export class ApprovedLeavesComponent implements OnInit {
     let ddmmyyyy = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear() 
     var data = document.getElementById('approved-leaves');  
     html2canvas(data).then(canvas => {  
-      // Few necessary setting options  
-      var imgWidth = 208;   
-      var pageHeight = 295;    
-      var imgHeight = canvas.height * imgWidth / canvas.width;  
-      var heightLeft = imgHeight;  
-  
-      const contentDataURL = canvas.toDataURL('image/png')  
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      var imgData = canvas.toDataURL('image/png');
+
+      /*
+      Here are the numbers (paper width and height) that I found to work. 
+      It still creates a little overlap part between the pages, but good enough for me.
+      if you can find an official number from jsPDF, use them.
+      */
+      var imgWidth = 210; 
+      var pageHeight = 295;  
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
+
+      var doc = new jspdf('p', 'mm');
+      var position = 0;
+
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
       
-      pdf.save(`${ddmmyyyy}.pdf`); // Generated PDF   
+      doc.save(`${ddmmyyyy}.pdf`); // Generated PDF   
     });  
   } 
 
@@ -113,6 +127,18 @@ export class ApprovedLeavesComponent implements OnInit {
     let cl_rh_type = leaveApplication.leaveDetails
       .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
     if(cl_rh_type) return "CL/RH"
+  }
+
+  getSpecificLeaveType(leaveDetail: LeaveDetail) {
+    if(leaveDetail.leave_type == CL_CODE) {
+      return "CL"
+    }
+    if(leaveDetail.leave_type == RH_CODE) {
+      return "RH"
+    }
+    if(leaveDetail.leave_type == HD_CL_CODE) {
+      return "HD CL"
+    }
   }
 
   isEarnedLeave(application: LeaveApplication): boolean {
