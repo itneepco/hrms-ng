@@ -62,6 +62,11 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if(this.searchResult.length < 1) {
+      this.emp_code.setErrors({"invalidEmpCode": true})
+      return
+    }
+
     if(this.ledgerForm.invalid) return
     console.log(this.ledgerForm.value)
 

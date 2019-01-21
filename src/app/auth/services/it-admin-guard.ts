@@ -6,11 +6,11 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SuperAdminGuard implements CanActivate, CanActivateChild {
+export class ItAdminGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private auth: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.auth.isHrSuperAdmin() || this.auth.isItAdmin()) return true
+    if(this.auth.isItAdmin()) return true
   
     this.router.navigate(['/']);
     return false;

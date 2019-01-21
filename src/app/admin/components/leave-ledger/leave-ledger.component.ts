@@ -48,12 +48,20 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
       this.employeeService.searchEmployee(data)
         .subscribe(response => {
           this.searchResult = response
+          console.log(this.searchResult)
         })
     })
   }  
 
   onSearch() {
+    this.errMsg = null
+
     if(!this.emp_code) return 
+
+    if(this.searchResult.length < 1) {
+      this.errMsg = "No such employee code exists in this office / project. Please try again!!"
+      return
+    }
 
     this.isLoading = true    
     this.ledgerService.searchEmployee(this.emp_code.value, this.pageIndex, this.pageSize)

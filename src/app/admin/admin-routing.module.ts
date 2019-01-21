@@ -3,13 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AdminGuard } from '../auth/services/admin-guard';
 import { AuthGuard } from '../auth/services/auth-guard';
+import { ItAdminGuard } from '../auth/services/it-admin-guard';
 import { SuperAdminGuard } from '../auth/services/super-admin-guard';
 import { AdminComponent } from './components/admin/admin.component';
 import { HierarchyHomeComponent } from './components/hierarchy-home/hierarchy-home.component';
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
+import { LeaveCreditComponent } from './components/leave-credit/leave-credit.component';
 import { LeaveLedgerComponent } from './components/leave-ledger/leave-ledger.component';
 import { RoleMapperComponent } from './components/role-mapper/role-mapper.component';
-import { LeaveCreditComponent } from './components/leave-credit/leave-credit.component';
 
 const routes: Routes = [
   { 
@@ -40,7 +41,7 @@ const routes: Routes = [
       { 
         path: 'leave-credit', 
         component: LeaveCreditComponent,
-        canActivate: [SuperAdminGuard] 
+        canActivate: [ItAdminGuard] 
       },
       { path: '', redirectTo: 'hierarchy', pathMatch: 'full' }
     ] 

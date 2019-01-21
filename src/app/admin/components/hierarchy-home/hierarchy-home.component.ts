@@ -42,7 +42,15 @@ export class HierarchyHomeComponent implements OnInit, OnDestroy {
   }  
 
   onSearch() {
+    this.errMsg = null
+    
     if (!this.emp_code) return
+
+    if(this.searchResult.length < 1) {
+      this.errMsg = "No such employee code exists in this office / project. Please try again!!"
+      return
+    }
+    
     this.isSearching = true
     this.hierarchyService.getEmployeeNode(this.emp_code.value)
       .subscribe(

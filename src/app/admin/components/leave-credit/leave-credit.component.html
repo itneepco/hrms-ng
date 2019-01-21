@@ -1,5 +1,5 @@
 <h3 class="warning">Please execute this processes only in the 1st week of January or 1st week for of July(only for EL and HPL)</h3>
-<ul>
+<ul *ngIf="!isLoading">
   <li>
     <button mat-button (click)="leaveYearEndProcessing()">Leave Year End Processing for Previous Year</button>
   </li>
@@ -16,3 +16,7 @@
     <button mat-button (click)="creditHalfYearlyHalfPayLeave()">Half Yearly Half Pay Leave Credit</button>
   </li>
 </ul>
+
+<div fxLayoutAlign="center center">
+  <mat-spinner diameter="70" *ngIf="isLoading"></mat-spinner>
+</div>

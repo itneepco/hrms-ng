@@ -11,6 +11,7 @@
           </mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="emp_code.errors?.required">Employee Code is required</mat-error>
+        <mat-error *ngIf="emp_code.errors?.invalidEmpCode">This employee code does not exist in this office / project</mat-error>
         <mat-error *ngIf="emp_code.errors?.pattern">Employee Code should be 6 digit</mat-error>
       </mat-form-field>
     </div>

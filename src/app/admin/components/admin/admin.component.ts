@@ -18,8 +18,10 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     if(this.auth.isSuperAdmin()) {
-      this.nav.push({ name: 'Leave Credit', path: 'leave-credit' })
       this.nav.push({ name: 'Role Mapper', path: 'role-mapper' })
+    }
+    if(this.auth.isItAdmin()) {
+      this.nav.push({ name: 'Leave Credit', path: 'leave-credit' })
     }
   }
 }
