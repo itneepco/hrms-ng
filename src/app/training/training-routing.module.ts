@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/services/auth-guard';
-import { ArchivedComponent } from './archived/archived.component';
-import { FeedbackComponent } from './feedback/feedback.component';
-import { NewTrainingComponent } from './new-training/new-training.component';
-import { TrainingComponent } from './training/training.component';
-import { UpcomingComponent } from './upcoming/upcoming.component';
+import { ArchivedComponent } from './components/archived/archived.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { NewTrainingComponent } from './components/new-training/new-training.component';
+import { TrainingComponent } from './components/training/training.component';
+import { UpcomingComponent } from './components/upcoming/upcoming.component';
 
 const routes: Routes = [
   { 
