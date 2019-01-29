@@ -18,7 +18,7 @@ import {
   JR_SUBMITTED,
 } from './../../models/leave.codes';
 import { JoiningReportService } from './../../services/joining-report.service';
-import { LeaveTypeService } from './../../services/leave-type.service';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 
 @Component({
   selector: 'app-joining-report',

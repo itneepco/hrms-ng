@@ -1,0 +1,72 @@
+<mat-card *ngIf="dataSource" class="table no-padding" id="approved-leaves">
+  <mat-card-title>All Leaves taken during the period from {{from_date | date:'mediumDate' }} to {{ to_date | date:'mediumDate' }}</mat-card-title>
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
+        {{ i + 1 }} 
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="leave_app_id">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Leave ID </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="10"> {{ leave.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="emp_code">
+      <mat-header-cell *matHeaderCellDef fxFlex="13"> Employee Code </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="13"> {{ leave.emp_code }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef fxFlex="23">Employee Name</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="23">
+        {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="leave_type">
+      <mat-header-cell *matHeaderCellDef fxFlex="10">Leave Type</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="10">
+        {{ leaveType.getLeaveTypeShort(leave) }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="from_date">
+      <mat-header-cell *matHeaderCellDef fxFlex="20">From Date</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="20">
+        <div fxLayout="column">
+          <div *ngIf="leaveType.isEarnedLeave(leave.leaveDetails) || 
+              leaveType.isHalfPayLeave(leave.leaveDetails); else content">
+            <span>{{ leave.leaveDetails[0].from_date | date:'mediumDate' }}</span>
+          </div>
+          <ng-template #content>
+            <ul *ngFor="let detail of leave.leaveDetails" class="from_date">
+              <li>
+                <span>{{detail.from_date | date:'mediumDate'}}</span>
+                <span>&nbsp;->&nbsp;</span>
+                <span>({{leaveType.getSpecificLeaveType(detail)}})</span>
+              </li>
+            </ul>
+          </ng-template>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="to_date">
+      <mat-header-cell *matHeaderCellDef fxFlex="14">To Date</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="14">
+        <div *ngIf="leaveType.isEarnedLeave(leave.leaveDetails) || 
+            leaveType.isHalfPayLeave(leave.leaveDetails); else other_content">
+          {{ leave.leaveDetails[0].to_date | date:'mediumDate' }}
+        </div>
+        <ng-template #other_content>
+          <span>-</span>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>

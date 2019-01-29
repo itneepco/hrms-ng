@@ -7,7 +7,7 @@ import { EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN } from '../../shared/models/global-c
 import { LeaveDetail } from '../../shared/models/leave';
 import { CtrlOfficer } from '../models/adressee';
 import { Addressee } from './../models/adressee';
-import { LeaveTypeService } from './leave-type.service';
+import { LeaveTypeService } from '../../shared/services/leave-type.service';
 
 @Injectable({
   providedIn: 'root'

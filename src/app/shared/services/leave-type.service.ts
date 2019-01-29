@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from '../../shared/models/global-codes';
-import { LeaveDetail } from './../../shared/models/leave';
+import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from '../models/global-codes';
+import { LeaveDetail, LeaveApplication } from '../models/leave';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,30 @@ export class LeaveTypeService {
       case HD_CL_CODE: {
         return "Half Day CL"
       }
+    }
+  }
+
+  getLeaveTypeShort(leaveApplication: LeaveApplication) {
+    let el_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == EL_CODE)
+    if (el_type) return "EL"
+
+    let hpl_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
+    if (hpl_type) return "ML/HPL"
+
+    let cl_rh_type = leaveApplication.leaveDetails
+      .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
+    if(cl_rh_type) return "CL/RH"
+  }
+
+  getSpecificLeaveType(leaveDetail: LeaveDetail) {
+    if(leaveDetail.leave_type == CL_CODE) {
+      return "CL"
+    }
+    if(leaveDetail.leave_type == RH_CODE) {
+      return "RH"
+    }
+    if(leaveDetail.leave_type == HD_CL_CODE) {
+      return "HD CL"
     }
   }
 

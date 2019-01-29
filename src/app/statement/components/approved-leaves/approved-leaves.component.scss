@@ -1,29 +1,6 @@
-mat-row {
-  min-height: 40px !important;
-  // border-bottom: 0px !important;
-  .mat-cell {
-    font-size: 14px !important;
-  }
-}
-
-mat-header-row {
-  font-size: 14px !important;
-  min-height: 44px !important;
-}
-
-ul.from_date {
-  padding: 2px 0px;
-  margin: 0px;
-  list-style-type: none;
-}
-
 .fab-bottom-right {
   position: fixed;
   right: 25px;
   bottom: 25px;
-}
-
-mat-card-title {
-  font-size: 16px !important;
-  font-weight: 500;
+  z-index: 999;
 }

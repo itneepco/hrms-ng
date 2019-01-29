@@ -7,6 +7,8 @@ import { StatementComponent } from './components/statement/statement.component';
 import { ApprovedLeavesComponent } from './components/approved-leaves/approved-leaves.component';
 import { PfStatementComponent } from './components/pf-statement/pf-statement.component';
 import { PensionStatementComponent } from './components/pension-statement/pension-statement.component';
+import { ManageAttendanceComponent } from './components/manage-attendance/manage-attendance.component';
+import { LeaveListComponent } from './components/leave-list/leave-list.component';
 
 @NgModule({
   imports: [
@@ -17,7 +19,7 @@ import { PensionStatementComponent } from './components/pension-statement/pensio
     StatementComponent, 
     SalaryStatementComponent, 
     ApprovedLeavesComponent, 
-    PfStatementComponent, PensionStatementComponent
+    PfStatementComponent, PensionStatementComponent, ManageAttendanceComponent, LeaveListComponent
   ]
 })
 export class StatementModule { }

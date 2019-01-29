@@ -25,4 +25,11 @@ export class LeaveStatementService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  markTimeOfficeCompleted(data: number[]) {
+    return this.http.post(`${this.getUrl()}/update-timeoffice`, data)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }

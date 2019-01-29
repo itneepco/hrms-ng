@@ -39,7 +39,7 @@ import {
   TRANSACTION_PAGE,
 } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
-import { LeaveTypeService } from '../../services/leave-type.service';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { HD_CL_CODE } from './../../../shared/models/global-codes';

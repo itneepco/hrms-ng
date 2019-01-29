@@ -12,7 +12,7 @@ import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
 import { LeaveAppForm } from '../../../shared/models/leave';
-import { LeaveTypeService } from '../../services/leave-type.service';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { HD_CL_CODE, CL_CODE } from '../../../shared/models/global-codes';
 
