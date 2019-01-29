@@ -19,4 +19,11 @@ export class EmployeeService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  searchEmployeeByName(empName: string): Observable<Employee | any> {
+    return this.http.get(baseURL + 'api/employees/search?name=' + empName)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }

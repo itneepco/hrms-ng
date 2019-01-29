@@ -74,6 +74,10 @@ export class AddChildNodeComponent implements OnInit, OnDestroy {
     this.hierarchyService.addChildNode(newNode)
       .subscribe(() => this.dialogRef.close({ action: "add"}))
   }
+  
+  getFullName(item) {
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}` 
+  }
 
   ngOnDestroy() {
     this.empCodeSubs.unsubscribe()

@@ -86,6 +86,10 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
     }
   }
 
+  getFullName(item) {
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}` 
+  }
+
   get emp_code() {
     return this.ledgerForm.get('emp_code')
   }

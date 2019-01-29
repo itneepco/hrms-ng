@@ -20,7 +20,7 @@
       <input matInput placeholder="6 Digit Employee Code" [formControl]="emp_code" pattern="[0-9]{6}" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
         <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
-          {{ item.first_name | titlecase }} {{ item.last_name | titlecase }}, {{item.designation}}
+          {{ getFullName(item) | titlecase }}
         </mat-option>
       </mat-autocomplete>
       <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>

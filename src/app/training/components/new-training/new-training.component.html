@@ -127,7 +127,12 @@
         <ng-template matStepLabel>Add Participants for the training programme</ng-template>
         <div fxLayout="row" fxLayoutGap="30px" fxLayoutGap.lt-sm="20px">
           <mat-form-field fxFlex="70">
-            <input matInput placeholder="Search employee by name">
+            <input matInput placeholder="Search employee by name" [formControl]="first_name" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
+              <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+                {{ getFullName(item) | titlecase }}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
           <div fxFlex="30">
             <button mat-raised-button color="accent">Add</button>

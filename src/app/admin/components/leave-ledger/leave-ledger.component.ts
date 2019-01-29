@@ -138,6 +138,10 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
     this.onSearch()
   } 
 
+  getFullName(item) {
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}` 
+  }
+
   ngOnDestroy() {
     this.empCodeSubs.unsubscribe()
   }
