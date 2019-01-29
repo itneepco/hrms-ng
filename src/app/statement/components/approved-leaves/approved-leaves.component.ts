@@ -4,9 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
-import { LeaveApplication, LeaveDetail } from '../../../shared/models/leave';
 import { LeaveStatementService } from '../../services/leave-statement.service';
-import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from './../../../shared/models/global-codes';
+import { LeaveTypeService } from './../../../shared/services/leave-type.service';
 
 @Component({
   selector: 'app-approved-leaves',
@@ -18,9 +17,10 @@ export class ApprovedLeavesComponent implements OnInit {
   isLoading: boolean = false
   errMsg: string
   dataSource: MatTableDataSource<any>
-  displayedColumns = ["position", "leave_app_id", "emp_code", "name", "leave_type", "from_date", "to_date"]
+  filteredDataSource: MatTableDataSource<any>
 
   constructor(private fb: FormBuilder,
+    public leaveType: LeaveTypeService,
     private leaveStatementService: LeaveStatementService) { }
 
   ngOnInit() {
@@ -54,8 +54,10 @@ export class ApprovedLeavesComponent implements OnInit {
     
     this.leaveStatementService.getStatement(fd_format, td_format)
       .subscribe(data => {
-        console.log(data) 
+        // console.log(data) 
         this.dataSource = new MatTableDataSource(data)
+        this.filteredDataSource = new MatTableDataSource(data.filter(leave => leave.time_office_status == false))
+        
         this.isLoading = false
       }, errMsg => {
         this.errMsg = errMsg
@@ -81,12 +83,6 @@ export class ApprovedLeavesComponent implements OnInit {
     var data = document.getElementById('approved-leaves');  
     html2canvas(data).then(canvas => {  
       var imgData = canvas.toDataURL('image/png');
-
-      /*
-      Here are the numbers (paper width and height) that I found to work. 
-      It still creates a little overlap part between the pages, but good enough for me.
-      if you can find an official number from jsPDF, use them.
-      */
       var imgWidth = 210; 
       var pageHeight = 295;  
       var imgHeight = canvas.height * imgWidth / canvas.width;
@@ -115,59 +111,5 @@ export class ApprovedLeavesComponent implements OnInit {
 
   get to_date() {
     return this.searchForm.get('to_date')
-  }
-
-  getLeaveType(leaveApplication: LeaveApplication) {
-    let el_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == EL_CODE)
-    if (el_type) return "EL"
-
-    let hpl_type = leaveApplication.leaveDetails.find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
-    if (hpl_type) return "ML/HPL"
-
-    let cl_rh_type = leaveApplication.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == CL_CODE || leaveDetail.leave_type == RH_CODE)
-    if(cl_rh_type) return "CL/RH"
-  }
-
-  getSpecificLeaveType(leaveDetail: LeaveDetail) {
-    if(leaveDetail.leave_type == CL_CODE) {
-      return "CL"
-    }
-    if(leaveDetail.leave_type == RH_CODE) {
-      return "RH"
-    }
-    if(leaveDetail.leave_type == HD_CL_CODE) {
-      return "HD CL"
-    }
-  }
-
-  isEarnedLeave(application: LeaveApplication): boolean {
-    let el_type = application.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == EL_CODE)
-    return el_type ? true : false  
-  }
-
-  isHalfPayLeave(application: LeaveApplication): boolean {
-    let ml_type = application.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
-    return ml_type ? true : false  
-  }
-
-  isCasualLeave(application: LeaveApplication): boolean {
-    let el_type = application.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == CL_CODE)
-    return el_type ? true : false  
-  }
-
-  isRestrictedHoliday(application: LeaveApplication): boolean {
-    let el_type = application.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == RH_CODE)
-    return el_type ? true : false  
-  }
-
-  isHalfDayCl(application: LeaveApplication): boolean {
-    let el_type = application.leaveDetails
-      .find(leaveDetail => leaveDetail.leave_type == HD_CL_CODE)
-    return el_type ? true : false  
   }
 }

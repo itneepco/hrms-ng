@@ -1,3 +1,4 @@
+import { ManageAttendanceComponent } from './components/manage-attendance/manage-attendance.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 

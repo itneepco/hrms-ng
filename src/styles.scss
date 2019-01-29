@@ -33,6 +33,10 @@ body {
     margin-bottom: 20px;
   }
 
+  mat-tab-group {
+    width: 90%;
+  }
+
   mat-card.search, mat-card.query-form {
     padding-bottom: 16px;
     padding-top: 16px;
@@ -43,6 +47,7 @@ body {
     mat-card {
       width: 90%;
     }
+
   }
   
   @media only screen and (min-width: 960px) and (max-width: 1279px) {

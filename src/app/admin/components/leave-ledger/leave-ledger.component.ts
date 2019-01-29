@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { LeaveTypeService } from '../../../leave/services/leave-type.service';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LedgerService } from '../../../leave/services/ledger.service';
 import { LeaveLedger } from '../../../shared/models/ledger';
 import { AddLedgerComponent } from '../add-ledger/add-ledger.component';
