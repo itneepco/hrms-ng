@@ -1,5 +1,6 @@
+import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, Input } from '@angular/core';
+
 import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 
 @Component({
