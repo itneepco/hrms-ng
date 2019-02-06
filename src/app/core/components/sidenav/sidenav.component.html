@@ -41,6 +41,15 @@
   </mat-list-item>
 
   <mat-list-item
+    (click)="menuService.menuToggle(false)"
+    routerLink="/report"
+    routerLinkActive="active">
+    
+    <mat-icon matListIcon>cloud_download</mat-icon>
+    <span class="page-name">Reports</span>
+  </mat-list-item>
+
+  <mat-list-item
     *ngIf="auth.currentUser && auth.isAdmin()"
     (click)="menuService.menuToggle()"
     routerLink="/administrator"
