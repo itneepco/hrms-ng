@@ -30,14 +30,17 @@ export interface TrainingInfo {
 export interface Participant {
   id: number
   training_info_id: number
+  name: string
   emp_code: string
+  designation: string
+  project: string
 }
 
 //Required for in-house training
 export interface InHouseTainingTopic {
   id: number
   training_info_id: number
-  topic: string
+  topic_name: string
   faculty_name: string
   rating: number
 }

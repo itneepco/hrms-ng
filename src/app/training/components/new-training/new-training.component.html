@@ -3,181 +3,203 @@
     <mat-horizontal-stepper linear='true' #stepper>
       <!-- [stepControl]="trainingInfo" -->
       <mat-step>
-        <form [formGroup]="trainingInfo">
+        <form [formGroup]="trngInfoForm">
           <ng-template matStepLabel>Training general information</ng-template>
-          <div fxLayout="column">
-            <mat-form-field>
-              <input matInput placeholder="Training Programme Title" formControlName="course_title" required>
-            </mat-form-field>
-            
-            <mat-form-field>
-              <input matInput placeholder="Training Programmed Objective" formControlName="objective" required>
-            </mat-form-field>
-            
-            <div fxLayout="row" fxLayoutGap="20px">
-              <mat-form-field fxFlex>
-                <input matInput [matDatepicker]="from" placeholder="Training From Date" formControlName="from_date">
-                <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
-                <mat-datepicker #from></mat-datepicker>
+          <div fxLayout="column" fxLayoutAlign="space-between stretch">
+            <div fxLayout="column" class="content">
+              <mat-form-field>
+                <input matInput placeholder="Training Programme Title" formControlName="course_title" required>
               </mat-form-field>
-        
-              <mat-form-field fxFlex>
-                <input matInput [matDatepicker]="to" placeholder="Training To Date" formControlName="to_date">
-                <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
-                <mat-datepicker #to></mat-datepicker>
+              
+              <mat-form-field>
+                <input matInput placeholder="Training Programmed Objective" formControlName="objective" required>
+              </mat-form-field>
+              
+              <div fxLayout="row" fxLayoutGap="20px">
+                <mat-form-field fxFlex>
+                  <input matInput [matDatepicker]="from" placeholder="Training From Date" formControlName="from_date">
+                  <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+                  <mat-datepicker #from></mat-datepicker>
+                </mat-form-field>
+          
+                <mat-form-field fxFlex>
+                  <input matInput [matDatepicker]="to" placeholder="Training To Date" formControlName="to_date">
+                  <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+                  <mat-datepicker #to></mat-datepicker>
+                </mat-form-field>
+              </div>
+  
+              <mat-form-field>
+                <input matInput placeholder="Training Venue" formControlName="venue" required>
+              </mat-form-field>
+              
+              <mat-radio-group formControlName="training_type">
+                <mat-radio-button *ngFor="let trn_type of training_types" [value]="trn_type.code">
+                  <span class="margin-right">{{trn_type.name}}</span>
+                </mat-radio-button>
+              </mat-radio-group>
+              
+              <mat-form-field *ngIf="training_type.value == external_trn">
+                <input matInput placeholder="Training Institute Name" formControlName="training_institute_id" required>
               </mat-form-field>
             </div>
-
-            <mat-form-field>
-              <input matInput placeholder="Training Venue" formControlName="venue" required>
-            </mat-form-field>
-            
-            <mat-radio-group formControlName="training_type">
-              <mat-radio-button *ngFor="let trn_type of training_types" [value]="trn_type.code">
-                <span class="margin-right">{{trn_type.name}}</span>
-              </mat-radio-button>
-            </mat-radio-group>
-            
-            <mat-form-field *ngIf="training_type.value == external_trn">
-              <input matInput placeholder="Training Institute Name" formControlName="training_institute_id" required>
-            </mat-form-field>
-          </div>
-
-          <div class="buttons">
-            <button mat-button matStepperNext>Next</button>
+  
+            <div class="buttons">
+              <button mat-raised-button color="primary" matStepperNext>Next</button>
+            </div>
           </div>
         </form>
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Upload Training Order</ng-template>
-        <form>
-          <div fxLayout="row" fxLayoutGap="30px" fxLayoutGap.lt-sm="20px">
-            <mat-form-field fxFlex="70">
-              <input matInput placeholder="Training Programme Title">
-            </mat-form-field>
-            <div fxFlex="30">
-              <button mat-raised-button color="accent">Upload</button>
+        <ng-template matStepLabel>Upload Training Order</ng-template>    
+        <div fxLayout="column" fxLayoutAlign="space-between stretch">
+          <div fxFlex class="content">
+            <input type="file" (change)="selectFile($event)">
+            <div id="upload_progress">
+              <span>Upload progress status</span>
+              <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+            </div>
+            <div id="upload-btn">
+              <button mat-raised-button color="accent" (click)="uploadFile()" 
+                [disabled]="!selectedFile">Upload</button>
             </div>
           </div>
-        </form>
-        <div class="buttons">
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          
+          <div class="buttons">
+            <button mat-raised-button color="primary" matStepperNext>Next</button>
+            <button mat-raised-button matStepperPrevious>Prev</button>
+          </div>
         </div>
       </mat-step>
       
-      <!-- [stepControl]="inHouseTrainingTopic" -->
       <mat-step *ngIf="training_type.value == inhouse_trn">
-        <form [formGroup]="inHouseTrainingTopic">
-          <ng-template matStepLabel>Topics for inhouse training</ng-template>
-          <div fxLayout="column">
-            <div fxLayout="row" fxLayoutGap="20px">
-              <mat-form-field fxFlex>
-                <input matInput placeholder="Session Topic" formControlName="topic" required>
-              </mat-form-field>
-              <mat-form-field fxFlex>
-                <input matInput placeholder="Faculty Name" formControlName="faculty_name" required>
-              </mat-form-field>
-              <div>
-                <button mat-raised-button color="accent">Add</button>
+        <ng-template matStepLabel>Topics for inhouse training</ng-template>    
+        <div fxLayout="column" fxLayoutAlign="space-between stretch">
+          <div fxFlex class="content">
+            <form [formGroup]="trngTopicForm" (ngSubmit)="addTopic()">
+              <div fxLayout="column">
+                <div fxLayout="row" fxLayoutGap="20px">
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Session Topic" formControlName="topic_name">
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Faculty Name" formControlName="faculty_name">
+                  </mat-form-field>
+                  <div>
+                    <button mat-raised-button color="accent" type="submit">Add</button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </form>
+            
+            <mat-table [dataSource]="topics">
+              <ng-container matColumnDef="sl">
+                <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl No </mat-header-cell>
+                <mat-cell *matCellDef="let topic; let i=index" fxFlex="15"> 
+                  {{ i + 1 }} 
+                </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="topic">
+                <mat-header-cell *matHeaderCellDef fxFlex="30"> Topic Name </mat-header-cell>
+                <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.topic_name}} </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="faculty">
+                <mat-header-cell *matHeaderCellDef fxFlex="30"> Faculty Name </mat-header-cell>
+                <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.faculty_name}} </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let topic; let i=index" fxFlex="15">
+                  <button mat-icon-button color="accent" (click)="removeTopic(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+          
+              <mat-header-row *matHeaderRowDef="topicColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: topicColumns;"></mat-row>
+            </mat-table>
           </div>
-        </form>
-        
-        <mat-table [dataSource]="topicDataSource">
-          <ng-container matColumnDef="sl">
-            <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl No </mat-header-cell>
-            <mat-cell *matCellDef="let employee; let i=index" fxFlex="15"> 
-              {{ i + 1 }} 
-            </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="topic">
-            <mat-header-cell *matHeaderCellDef fxFlex="30"> Topic Name </mat-header-cell>
-            <mat-cell *matCellDef="let employee" fxFlex="30">  </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="faculty">
-            <mat-header-cell *matHeaderCellDef fxFlex="30"> Faculty Name </mat-header-cell>
-            <mat-cell *matCellDef="let employee" fxFlex="30">  </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let employee; let i=index" fxFlex="15">
-              <button mat-icon-button color="accent">
-                <mat-icon>search</mat-icon>
-              </button>
-            </mat-cell>
-          </ng-container>
-      
-          <mat-header-row *matHeaderRowDef="topicColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: topicColumns;"></mat-row>
-        </mat-table>
-
-        <div class="buttons">
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+  
+          <div class="buttons">
+            <button mat-raised-button color="primary" matStepperNext>Save</button>
+            <button mat-raised-button matStepperPrevious>Prev</button>
+          </div>
         </div>
       </mat-step>
       
       <mat-step>
         <ng-template matStepLabel>Add Participants for the training programme</ng-template>
-        <div fxLayout="row" fxLayoutGap="30px" fxLayoutGap.lt-sm="20px">
-          <mat-form-field fxFlex="70">
-            <input matInput placeholder="Search employee by name" [formControl]="first_name" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
-              <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
-                {{ getFullName(item) | titlecase }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <div fxFlex="30">
-            <button mat-raised-button color="accent">Add</button>
+        <div fxLayout="column" fxLayoutAlign="space-between stretch">
+          <div class="content">
+            <div fxLayout="row" fxLayoutGap="30px" fxLayoutGap.lt-sm="20px">
+              <mat-form-field fxFlex="70">
+                <input matInput placeholder="Search employee by name" 
+                  [formControl]="full_name" [matAutocomplete]="auto">
+                
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let item of searchResult" (onSelectionChange)="addParticipant($event)"
+                      [value]="getFullName(item) | titlecase">
+                    {{ getFullName(item) | titlecase }}, {{ getOtherInfo(item) }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              
+              <div fxFlex="30">
+                <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+              </div>
+            </div>
+    
+            <mat-table [dataSource]="participants" *ngIf="participants.data.length > 0">
+              <ng-container matColumnDef="sl">
+                <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+                <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
+                  {{ i + 1 }} 
+                </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="emp_code">
+                <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="15"> {{participant.emp_code}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef fxFlex="25"> Full Name </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.name}} </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="designation">
+                <mat-header-cell *matHeaderCellDef fxFlex="25"> Designation </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.designation}} </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="project">
+                <mat-header-cell *matHeaderCellDef fxFlex="20"> Project </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="20"> {{participant.project}} </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let employee; let i=index" fxFlex="10">
+                  <button mat-icon-button color="accent" (click)="removeParticipant(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+          
+              <mat-header-row *matHeaderRowDef="participantColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: participantColumns;"></mat-row>
+            </mat-table>
           </div>
-        </div>
-
-        <mat-table [dataSource]="participantDataSource">
-          <ng-container matColumnDef="sl">
-            <mat-header-cell *matHeaderCellDef fxFlex="12"> Sl No </mat-header-cell>
-            <mat-cell *matCellDef="let employee; let i=index" fxFlex="12"> 
-              {{ i + 1 }} 
-            </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef fxFlex="28"> Full Name </mat-header-cell>
-            <mat-cell *matCellDef="let employee" fxFlex="28">  </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="designation">
-            <mat-header-cell *matHeaderCellDef fxFlex="25"> Designation </mat-header-cell>
-            <mat-cell *matCellDef="let employee" fxFlex="25">  </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="project">
-            <mat-header-cell *matHeaderCellDef fxFlex="25"> Project </mat-header-cell>
-            <mat-cell *matCellDef="let employee" fxFlex="25">  </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let employee; let i=index" fxFlex="10">
-              <button mat-icon-button color="accent">
-                <mat-icon>search</mat-icon>
-              </button>
-            </mat-cell>
-          </ng-container>
-      
-          <mat-header-row *matHeaderRowDef="participantColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: participantColumns;"></mat-row>
-        </mat-table>
-
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
+  
+          <div class="buttons">
+            <button mat-raised-button color="primary" [disabled]="participants.data.length < 1">Save</button>
+            <button mat-raised-button matStepperPrevious>Prev</button>
+          </div>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

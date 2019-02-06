@@ -1,13 +1,13 @@
-import { PageEvent } from '@angular/material/paginator';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs/operators';
 
-import { HolidayService } from '../../../shared/services/holiday.service';
 import { Holiday } from '../../../shared/models/holiday';
 import { Project } from '../../../shared/models/project.model';
+import { HolidayService } from '../../../shared/services/holiday.service';
 import { ProjectService } from '../../../shared/services/project.service';
 
 @Component({

@@ -9,4 +9,24 @@
 
 .buttons {
   margin-top: 25px;
+  display: flex;
+  flex-direction: row-reverse
+}
+
+.content {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.buttons > button {
+  margin-right: 12px;
+}
+
+#upload-btn {
+  margin-top: 10px;
+}
+
+#upload_progress {
+  margin-top: 10px;
 }
