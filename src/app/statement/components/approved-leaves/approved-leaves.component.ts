@@ -41,7 +41,7 @@ export class ApprovedLeavesComponent implements OnInit {
     let to_date = new Date(this.to_date.value)
     let mm_to = (to_date.getMonth()+1).toString() 
     if((to_date.getMonth()+1) < 10) { 
-      mm_to = '0' + mm_from
+      mm_to = '0' + mm_to
     }
 
     //Format from_date in yyyy-mm-dd format
@@ -54,7 +54,7 @@ export class ApprovedLeavesComponent implements OnInit {
     
     this.leaveStatementService.getStatement(fd_format, td_format)
       .subscribe(data => {
-        // console.log(data) 
+        console.log(data) 
         this.dataSource = new MatTableDataSource(data)
         this.filteredDataSource = new MatTableDataSource(data.filter(leave => leave.time_office_status == false))
         
