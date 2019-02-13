@@ -27,4 +27,6 @@ export class TrainingService {
       catchError(err => this.handler.handleError(err))
     )
   }
+
+  
 }

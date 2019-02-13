@@ -40,7 +40,11 @@
               </mat-radio-group>
               
               <mat-form-field *ngIf="training_type.value == external_trn">
-                <input matInput placeholder="Training Institute Name" formControlName="training_institute_id" required>
+                <mat-select placeholder="Training Institutes">
+                  <mat-option *ngFor="let trg_institute of trg_institutes" [value]="food.id">
+                    {{trg_institute.name}}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
   

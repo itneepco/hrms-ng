@@ -1,3 +1,4 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,9 +8,9 @@ import { debounceTime } from 'rxjs/operators';
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { InHouseTainingTopic, Participant } from '../../models/training';
 import { IN_HOUSE_TRAINING } from '../../models/training-global-codes';
-import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
 import { TrainingService } from '../../services/training.service';
-import { HttpEventType, HttpEvent } from '@angular/common/http';
+import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
+import { TrainingInstituteService } from './../../services/training-institute.service';
 
 @Component({
   selector: 'app-new-training',
@@ -42,8 +43,12 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   selectedFile: File = null;
   progressValue = 0;
 
+  //Training Institutes
+  trg_institutes = []
+
   constructor(private _formBuilder: FormBuilder, 
     private trainingService: TrainingService,
+    private trgInstituteService: TrainingInstituteService,
     private employeeService: EmployeeService) {}
 
   ngOnInit() {
@@ -58,6 +63,12 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
           this.searchResult = response
         })
     })
+
+    this.trgInstituteService.getTrainingInstitutes()
+      .subscribe(data => {
+        this.trg_institutes = data
+        console.log(data)
+      })
   }
 
   initializeForm() {
