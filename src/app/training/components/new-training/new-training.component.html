@@ -1,18 +1,19 @@
 <div class="main-container">
   <mat-card id="content">
     <mat-horizontal-stepper linear='true' #stepper>
-      <!-- [stepControl]="trainingInfo" -->
-      <mat-step>
-        <form [formGroup]="trngInfoForm">
+      <mat-step [stepControl]="trngInfoForm">
+        <form [formGroup]="trngInfoForm" (ngSubmit)="saveTrainingInfo(stepper)">
           <ng-template matStepLabel>Training general information</ng-template>
           <div fxLayout="column" fxLayoutAlign="space-between stretch">
             <div fxLayout="column" class="content">
               <mat-form-field>
-                <input matInput placeholder="Training Programme Title" formControlName="course_title" required>
+                <input matInput placeholder="Training Programme Title" formControlName="course_title">
+                <mat-error *ngIf="course_title.errors?.required">Course title is required</mat-error>
               </mat-form-field>
               
               <mat-form-field>
-                <input matInput placeholder="Training Programmed Objective" formControlName="objective" required>
+                <input matInput placeholder="Training Programmed Objective" formControlName="objective">
+                <mat-error *ngIf="objective.errors?.required">Training objective is required</mat-error>
               </mat-form-field>
               
               <div fxLayout="row" fxLayoutGap="20px">
@@ -20,28 +21,31 @@
                   <input matInput [matDatepicker]="from" placeholder="Training From Date" formControlName="from_date">
                   <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
                   <mat-datepicker #from></mat-datepicker>
+                  <mat-error *ngIf="from_date.errors?.required">From date is required</mat-error>
                 </mat-form-field>
           
                 <mat-form-field fxFlex>
                   <input matInput [matDatepicker]="to" placeholder="Training To Date" formControlName="to_date">
                   <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
                   <mat-datepicker #to></mat-datepicker>
+                  <mat-error *ngIf="to_date.errors?.required">To date is required</mat-error>
                 </mat-form-field>
               </div>
   
               <mat-form-field>
-                <input matInput placeholder="Training Venue" formControlName="venue" required>
+                <input matInput placeholder="Training Venue" formControlName="venue">
+                <mat-error *ngIf="venue.errors?.required">Training venue is required</mat-error>
               </mat-form-field>
               
               <mat-radio-group formControlName="training_type">
-                <mat-radio-button *ngFor="let trn_type of training_types" [value]="trn_type.code">
+                <mat-radio-button *ngFor="let trn_type of trainingTypes" [value]="trn_type.code">
                   <span class="margin-right">{{trn_type.name}}</span>
                 </mat-radio-button>
               </mat-radio-group>
               
-              <mat-form-field *ngIf="training_type.value == external_trn">
+              <mat-form-field *ngIf="training_type.value == externalTrn">
                 <mat-select placeholder="Training Institutes">
-                  <mat-option *ngFor="let trg_institute of trg_institutes" [value]="food.id">
+                  <mat-option *ngFor="let trg_institute of trgInstitutes" [value]="trg_institute.id">
                     {{trg_institute.name}}
                   </mat-option>
                 </mat-select>
@@ -49,7 +53,8 @@
             </div>
   
             <div class="buttons">
-              <button mat-raised-button color="primary" matStepperNext>Next</button>
+              <button mat-raised-button type="submit" color="primary" [disabled]="saving">Save</button>
+              <button mat-raised-button type="button" (click)="clearTrainingInfo()">Clear</button>
             </div>
           </div>
         </form>
@@ -77,7 +82,7 @@
         </div>
       </mat-step>
       
-      <mat-step *ngIf="training_type.value == inhouse_trn">
+      <mat-step *ngIf="training_type.value == inhouseTrn">
         <ng-template matStepLabel>Topics for inhouse training</ng-template>    
         <div fxLayout="column" fxLayoutAlign="space-between stretch">
           <div fxFlex class="content">

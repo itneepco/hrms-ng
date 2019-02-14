@@ -23,6 +23,8 @@ export interface TrainingInfo {
   objective: string
   training_type: string //Whether training is in-house or external
   training_institute_id?: number // Required only for external training
+  status: string // Training status
+  training_order_name: string // Training order name
   created_at: string //Timestamp
   updated_at: string //Timestamp
 }

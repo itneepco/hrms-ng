@@ -1,15 +1,16 @@
-import { HttpEventType } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
-import { InHouseTainingTopic, Participant } from '../../models/training';
-import { IN_HOUSE_TRAINING } from '../../models/training-global-codes';
+import { InHouseTainingTopic, Participant, TrainingInfo } from '../../models/training';
+import { IN_HOUSE_TRAINING, TRAINING_TYPES } from '../../models/training-global-codes';
 import { TrainingService } from '../../services/training.service';
 import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
+import { DataService } from './../../services/data.service';
 import { TrainingInstituteService } from './../../services/training-institute.service';
 
 @Component({
@@ -32,26 +33,34 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   topics = new MatTableDataSource<InHouseTainingTopic>([])
 
   //training types
-  inhouse_trn = IN_HOUSE_TRAINING
-  external_trn = EXTERNAL_TRAINING
-  training_types = [
-    {name: "In-House Training", code: IN_HOUSE_TRAINING}, 
-    {name: "External Training", code: EXTERNAL_TRAINING}
-  ]
+  inhouseTrn = IN_HOUSE_TRAINING
+  externalTrn = EXTERNAL_TRAINING
+  trainingTypes = TRAINING_TYPES
 
   //training order file upload
   selectedFile: File = null;
   progressValue = 0;
 
   //Training Institutes
-  trg_institutes = []
+  trgInstitutes = [];
+
+  //Saving form flag
+  saving = false;
+
+  //Training Info
+  trainingInfo: TrainingInfo = null
 
   constructor(private _formBuilder: FormBuilder, 
     private trainingService: TrainingService,
     private trgInstituteService: TrainingInstituteService,
+    private dataService: DataService,
     private employeeService: EmployeeService) {}
 
   ngOnInit() {
+    // Initialize trainining info from the dataService (for edit only)
+    this.trainingInfo = this.dataService.trainingData
+    this.dataService.trainingData = null
+
     this.initializeForm()
 
     this.fullNameSubs = this.full_name.valueChanges.pipe(debounceTime(500)).subscribe(name => {
@@ -65,21 +74,18 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     })
 
     this.trgInstituteService.getTrainingInstitutes()
-      .subscribe(data => {
-        this.trg_institutes = data
-        console.log(data)
-      })
+      .subscribe(data => this.trgInstitutes = data)
   }
 
   initializeForm() {
     this.trngInfoForm = this._formBuilder.group({
-      course_title: ['', Validators.required],
-      from_date: ['', Validators.required],
-      to_date: ['', Validators.required],
-      venue: ['', Validators.required],
-      objective: ['', Validators.required],
-      training_type: ['', Validators.required],
-      training_institute_id: [''],
+      course_title: [this.trainingInfo ? this.trainingInfo.course_title : '', Validators.required],
+      from_date: [this.trainingInfo ? this.trainingInfo.from_date : '', Validators.required],
+      to_date: [this.trainingInfo ? this.trainingInfo.to_date : '', Validators.required],
+      venue: [this.trainingInfo ? this.trainingInfo.venue : '', Validators.required],
+      objective: [this.trainingInfo ? this.trainingInfo.objective : '', Validators.required],
+      training_type: [this.trainingInfo ? this.trainingInfo.training_type : '', Validators.required],
+      training_institute_id: [this.trainingInfo ? this.trainingInfo.training_institute_id : ''],
     });
 
     this.trngTopicForm = this._formBuilder.group({
@@ -92,30 +98,35 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0]
   }
 
-  uploadFile() {
-    if(!this.selectedFile) return
+  // uploadFile() {
+  //   if(!this.selectedFile) return
 
-    let data = {
-      code: '1',
-      day: (new Date('2019-02-06')).toDateString(),
-      report: this.selectedFile
-    }
+  //   let data = {
+  //     code: '1',
+  //     day: (new Date('2019-02-06')).toDateString(),
+  //     report: this.selectedFile
+  //   }
 
-    this.trainingService.upload(data)
-      .subscribe(event => {
-        if(event.type == HttpEventType.UploadProgress) {
-          this.progressValue = Math.round((event.loaded / event.total) * 100)
-        } 
-        else if(event.type == HttpEventType.Response) {
-          console.log(event.body)
-        }
-      }, error => {
-        console.log(error)
-      })
-  }
+  //   this.trainingService.upload(data)
+  //     .subscribe(event => {
+  //       if(event.type == HttpEventType.UploadProgress) {
+  //         this.progressValue = Math.round((event.loaded / event.total) * 100)
+  //       } 
+  //       else if(event.type == HttpEventType.Response) {
+  //         console.log(event.body)
+  //       }
+  //     }, error => {
+  //       console.log(error)
+  //     })
+  // }
 
   clear() {
     this.full_name.reset()
+  }
+
+  clearTrainingInfo() {
+    this.trainingInfo = null
+    this.trngInfoForm.reset()
   }
 
   removeParticipant(index: number) {
@@ -160,8 +171,62 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.topics.data = temp
   }
 
+
+  saveTrainingInfo(stepper: MatStepper) {
+    if(this.trngInfoForm.invalid) return
+    
+    this.saving = true
+    if(this.trainingInfo) {
+      this.trainingService.editTrainingInfo(this.trainingInfo.id, this.trngInfoForm.value)
+        .subscribe((info: TrainingInfo) => {
+          console.log(info)
+          this.saving = false
+          stepper.next()
+        })
+    }
+    else {
+      this.trainingService.addTrainingInfo(this.trngInfoForm.value)
+        .subscribe((info: TrainingInfo) => {
+          console.log(info)
+          this.trainingInfo = info
+          this.saving = false
+          stepper.next()
+        })
+    }
+  }
+
+  //getters for training info form
+  get course_title() {
+    return this.trngInfoForm.get('course_title')
+  }
+
+  get from_date() {
+    return this.trngInfoForm.get('from_date')
+  }
+
+  get to_date() {
+    return this.trngInfoForm.get('to_date')
+  }
+
+  get venue() {
+    return this.trngInfoForm.get('venue')
+  }
+
+  get objective() {
+    return this.trngInfoForm.get('objective')
+  }
+
   get training_type() {
     return this.trngInfoForm.get('training_type')
+  }
+
+  //In house training topic
+  get faculty_name() {
+    return this.trngTopicForm.get('faculty_name')
+  }
+
+  get topic_name() {
+    return this.trngTopicForm.get('topic_name')
   }
 
   getFullName(item) {
@@ -170,14 +235,6 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
 
   getOtherInfo(item) {
     return `${item.designation}, ${item.project}` 
-  }
-
-  get faculty_name() {
-    return this.trngTopicForm.get('faculty_name')
-  }
-
-  get topic_name() {
-    return this.trngTopicForm.get('topic_name')
   }
 
   ngOnDestroy() {

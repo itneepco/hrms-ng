@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'archived', component: ArchivedComponent },
       { path: 'upcoming', component: UpcomingComponent },
       { path: 'feedback', component: FeedbackComponent },
-      { path: '', redirectTo: 'new', pathMatch: 'full' }
+      { path: '', redirectTo: 'upcoming', pathMatch: 'full' }
     ] 
   },
 ];
