@@ -38,22 +38,28 @@
               </mat-form-field>
               
               <mat-radio-group formControlName="training_type">
-                <mat-radio-button *ngFor="let trn_type of trainingTypes" [value]="trn_type.code">
+                <mat-radio-button *ngFor="let trn_type of trainingTypes" [value]="trn_type.code" (change)="onTrainingTypeChange($event)">
                   <span class="margin-right">{{trn_type.name}}</span>
                 </mat-radio-button>
               </mat-radio-group>
               
               <mat-form-field *ngIf="training_type.value == externalTrn">
-                <mat-select placeholder="Training Institutes">
+                <mat-select placeholder="Training Institutes" formControlName="training_institute_id">
                   <mat-option *ngFor="let trg_institute of trgInstitutes" [value]="trg_institute.id">
                     {{trg_institute.name}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="training_institute_id.errors?.required">Training institute is required</mat-error>
               </mat-form-field>
             </div>
   
             <div class="buttons">
-              <button mat-raised-button type="submit" color="primary" [disabled]="saving">Save</button>
+              <ng-container *ngIf="_trainingInfo && !isEdited; else saveButton">
+                <button mat-raised-button type="button" color="primary" matStepperNext>Next</button>
+              </ng-container>
+              <ng-template #saveButton>
+                <button mat-raised-button type="submit" color="primary" [disabled]="saving">Save</button>
+              </ng-template>
               <button mat-raised-button type="button" (click)="clearTrainingInfo()">Clear</button>
             </div>
           </div>
@@ -86,17 +92,20 @@
         <ng-template matStepLabel>Topics for inhouse training</ng-template>    
         <div fxLayout="column" fxLayoutAlign="space-between stretch">
           <div fxFlex class="content">
-            <form [formGroup]="trngTopicForm" (ngSubmit)="addTopic()">
+            <form [formGroup]="trngTopicForm" (ngSubmit)="saveTrainingTopic()">
               <div fxLayout="column">
                 <div fxLayout="row" fxLayoutGap="20px">
                   <mat-form-field fxFlex>
                     <input matInput placeholder="Session Topic" formControlName="topic_name">
+                    <mat-error *ngIf="topic_name.errors?.required">Session topic is required</mat-error>
                   </mat-form-field>
                   <mat-form-field fxFlex>
                     <input matInput placeholder="Faculty Name" formControlName="faculty_name">
+                    <mat-error *ngIf="faculty_name.errors?.required">Faculty name is required</mat-error>
                   </mat-form-field>
                   <div>
-                    <button mat-raised-button color="accent" type="submit">Add</button>
+                    <button mat-raised-button color="accent" type="submit" *ngIf="!_trainingTopic">Add</button>
+                    <button mat-raised-button color="accent" type="submit" *ngIf="_trainingTopic">Update</button>
                   </div>
                 </div>
               </div>
@@ -123,7 +132,10 @@
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let topic; let i=index" fxFlex="15">
-                  <button mat-icon-button color="accent" (click)="removeTopic(i)">
+                  <button mat-icon-button (click)="editTrainingTopic(topic)" color="primary">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" (click)="removeTrainingTopic(topic)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </mat-cell>
@@ -135,7 +147,7 @@
           </div>
   
           <div class="buttons">
-            <button mat-raised-button color="primary" matStepperNext>Save</button>
+            <button mat-raised-button color="primary" matStepperNext>Next</button>
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>
         </div>
@@ -151,7 +163,7 @@
                   [formControl]="full_name" [matAutocomplete]="auto">
                 
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let item of searchResult" (onSelectionChange)="addParticipant($event)"
+                  <mat-option *ngFor="let item of empSearchResult" (onSelectionChange)="addParticipant($event)"
                       [value]="getFullName(item) | titlecase">
                     {{ getFullName(item) | titlecase }}, {{ getOtherInfo(item) }}
                   </mat-option>

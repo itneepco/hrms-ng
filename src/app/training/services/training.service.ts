@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { TrainingInfo } from '../models/training';
+import { TrainingForm, TrainingInfo } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
 import { baseURL } from './../../shared/config/baseUrl';
 import { EXTERNAL_TRAINING } from './../models/training-global-codes';
@@ -39,14 +39,14 @@ export class TrainingService {
       )
   }
 
-  addTrainingInfo(trainingInfo: TrainingInfo) {
+  addTrainingInfo(trainingInfo: TrainingForm) {
     return this.http.post(this.training_url, trainingInfo)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  editTrainingInfo(id: number, trainingInfo: TrainingInfo) {
+  editTrainingInfo(id: number, trainingInfo: TrainingForm) {
     return this.http.put(`${this.training_url}/${id}`, trainingInfo)
       .pipe(
         catchError(err => this.handler.handleError(err))

@@ -1,5 +1,4 @@
-
-export interface TrainingDetail {
+export interface TrainingInfo {
   id: number
   course_title: string
   from_date: Date
@@ -7,14 +6,16 @@ export interface TrainingDetail {
   venue: string
   objective: string
   training_type: string
-  
   training_institute?: TrainingInstitute  //Required only for external training
-  inhouse_training_topic?: InHouseTainingTopic[]  //Required only for in-house training
+  status: string // Training status
+  training_order_name: string // Training order name
+  training_topics?: InHouseTainingTopic[]  //Required only for in-house training
   participants: Participant[]
   training_feedback: TrainingFeedback[]
 }
 
-export interface TrainingInfo {
+//model for training Form
+export interface TrainingForm {
   id: number
   course_title: string
   from_date: Date
@@ -25,8 +26,6 @@ export interface TrainingInfo {
   training_institute_id?: number // Required only for external training
   status: string // Training status
   training_order_name: string // Training order name
-  created_at: string //Timestamp
-  updated_at: string //Timestamp
 }
 
 export interface Participant {

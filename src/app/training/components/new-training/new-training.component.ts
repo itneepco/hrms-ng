@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -8,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { InHouseTainingTopic, Participant, TrainingInfo } from '../../models/training';
 import { IN_HOUSE_TRAINING, TRAINING_TYPES } from '../../models/training-global-codes';
+import { TrainingTopicService } from '../../services/training-topic.service';
 import { TrainingService } from '../../services/training.service';
 import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
 import { DataService } from './../../services/data.service';
@@ -23,10 +25,12 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   trngTopicForm: FormGroup;
 
   full_name: FormControl = new FormControl();
-  fullNameSubs: Subscription;
-  
-  searchResult = [];
+  empSearchResult = [];
 
+  //Subscriptions
+  fullNameSubs: Subscription;  
+  trgInfoFormSubs: Subscription;
+  
   participantColumns = ["sl", "emp_code", "name", "designation", "project", "actions"]
   topicColumns = ["sl", "topic", "faculty", "actions"]  
   participants = new MatTableDataSource<Participant>([])
@@ -44,53 +48,76 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   //Training Institutes
   trgInstitutes = [];
 
-  //Saving form flag
-  saving = false;
+  //Saving and editing form flag
+  isSaving = false;
+  isEdited = false;
 
   //Training Info
-  trainingInfo: TrainingInfo = null
+  _trainingInfo: TrainingInfo = null
+  _trainingTopic: InHouseTainingTopic = null
 
   constructor(private _formBuilder: FormBuilder, 
     private trainingService: TrainingService,
     private trgInstituteService: TrainingInstituteService,
     private dataService: DataService,
+    private snackbar: MatSnackBar,
+    private trgTopicService: TrainingTopicService,
     private employeeService: EmployeeService) {}
 
   ngOnInit() {
-    // Initialize trainining info from the dataService (for edit only)
-    this.trainingInfo = this.dataService.trainingData
-    this.dataService.trainingData = null
+    // Initialize trainining info from the dataService (for update operation only)
+    this._trainingInfo = this.dataService.trainingData
+    if(this._trainingInfo) {
+      this.dataService.trainingData = null
+      this.topics.data = this._trainingInfo.training_topics
+    }
 
-    this.initializeForm()
+    //Initialize forms
+    this.initializeForms()
 
+    this.initEmployeeAutoComplete()
+    this.trgInstituteService.getTrainingInstitutes().subscribe(data => this.trgInstitutes = data)
+  }
+
+  initEmployeeAutoComplete() {
     this.fullNameSubs = this.full_name.valueChanges.pipe(debounceTime(500)).subscribe(name => {
       if(!name) return
       if(name.length < 1) return
       
       this.employeeService.searchEmployeeByName(name)
         .subscribe(response => {
-          this.searchResult = response
+          this.empSearchResult = response
         })
     })
-
-    this.trgInstituteService.getTrainingInstitutes()
-      .subscribe(data => this.trgInstitutes = data)
   }
 
-  initializeForm() {
+  initializeForms() {
+    this.initTrngInfoForm()
+    this.initTrngTopicForm()
+  }
+
+  initTrngInfoForm() {
     this.trngInfoForm = this._formBuilder.group({
-      course_title: [this.trainingInfo ? this.trainingInfo.course_title : '', Validators.required],
-      from_date: [this.trainingInfo ? this.trainingInfo.from_date : '', Validators.required],
-      to_date: [this.trainingInfo ? this.trainingInfo.to_date : '', Validators.required],
-      venue: [this.trainingInfo ? this.trainingInfo.venue : '', Validators.required],
-      objective: [this.trainingInfo ? this.trainingInfo.objective : '', Validators.required],
-      training_type: [this.trainingInfo ? this.trainingInfo.training_type : '', Validators.required],
-      training_institute_id: [this.trainingInfo ? this.trainingInfo.training_institute_id : ''],
+      course_title: [this._trainingInfo ? this._trainingInfo.course_title : '', Validators.required],
+      from_date: [this._trainingInfo ? this._trainingInfo.from_date : '', Validators.required],
+      to_date: [this._trainingInfo ? this._trainingInfo.to_date : '', Validators.required],
+      venue: [this._trainingInfo ? this._trainingInfo.venue : '', Validators.required],
+      objective: [this._trainingInfo ? this._trainingInfo.objective : '', Validators.required],
+      training_type: [this._trainingInfo ? this._trainingInfo.training_type : '', Validators.required],
+      training_institute_id: [(this._trainingInfo && this._trainingInfo.training_institute) ? 
+        this._trainingInfo.training_institute.id : ''],
     });
 
+    //Check if the training info form has been edited (for update operation only)
+    this.trgInfoFormSubs = this.trngInfoForm.valueChanges.subscribe((data) => {
+      if(this._trainingInfo) this.isEdited = true 
+    })
+  }
+
+  initTrngTopicForm() {
     this.trngTopicForm = this._formBuilder.group({
-      topic_name: ['', Validators.required],
-      faculty_name: ['', Validators.required],
+      topic_name: [this._trainingTopic ? this._trainingTopic.topic_name : '', Validators.required],
+      faculty_name: [this._trainingTopic ? this._trainingTopic.faculty_name : '', Validators.required],
     });
   }
 
@@ -125,7 +152,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   clearTrainingInfo() {
-    this.trainingInfo = null
+    this._trainingInfo = null
     this.trngInfoForm.reset()
   }
 
@@ -150,37 +177,26 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.clear()
   }
 
-
-  addTopic() {
-    if(this.trngTopicForm.invalid) return
-
-    let topic = {} as InHouseTainingTopic
-    topic.faculty_name = this.faculty_name.value
-    topic.topic_name = this.topic_name.value
-
-    let temp = this.topics.data
-    temp.push(topic)
-    this.topics.data = temp
-
-    this.trngTopicForm.reset()
+  onTrainingTypeChange(event) {
+    //set training institute 'required validation' for external type training
+    if(event.value == this.externalTrn) {
+      this.training_institute_id.setValidators(Validators.required)
+    }
+    else {
+      this.training_institute_id.clearValidators()
+    }
   }
-
-  removeTopic(index: number) {
-    let temp = this.topics.data
-    temp.splice(index, 1)
-    this.topics.data = temp
-  }
-
 
   saveTrainingInfo(stepper: MatStepper) {
     if(this.trngInfoForm.invalid) return
     
-    this.saving = true
-    if(this.trainingInfo) {
-      this.trainingService.editTrainingInfo(this.trainingInfo.id, this.trngInfoForm.value)
+    this.isSaving = true
+    if(this._trainingInfo) {
+      this.trainingService.editTrainingInfo(this._trainingInfo.id, this.trngInfoForm.value)
         .subscribe((info: TrainingInfo) => {
           console.log(info)
-          this.saving = false
+          this.isSaving = false
+          this.isEdited = false
           stepper.next()
         })
     }
@@ -188,10 +204,70 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
       this.trainingService.addTrainingInfo(this.trngInfoForm.value)
         .subscribe((info: TrainingInfo) => {
           console.log(info)
-          this.trainingInfo = info
-          this.saving = false
+          this._trainingInfo = info
+          this.isSaving = false
+          this.isEdited = false
           stepper.next()
         })
+    }
+  }
+
+  saveTrainingTopic() {
+    if(this.trngTopicForm.invalid) return
+
+    let topic = {} as InHouseTainingTopic
+    topic.faculty_name = this.faculty_name.value
+    topic.topic_name = this.topic_name.value
+
+    if(this._trainingTopic) {
+      this.trgTopicService.editTrainingTopic(this._trainingTopic.training_info_id, this._trainingTopic.id, topic)
+      .subscribe((result: InHouseTainingTopic) => {
+        let temp = this.topics.data
+        let index = this.topics.data.indexOf(this._trainingTopic)
+        temp.splice(index, 1)
+        temp.unshift(result)
+        this.topics.data = temp
+        this._trainingTopic = null
+        this.snackbar.open("Successfully updated the topic", "Dismiss", { duration: 1600 })
+      })
+    }
+    else {
+      topic.training_info_id = this._trainingInfo.id
+      this.trgTopicService.addTrainingTopic(this._trainingInfo.id, topic)
+      .subscribe((result: InHouseTainingTopic) => {
+        let temp = this.topics.data
+        temp.push(result)
+        this.topics.data = temp
+        this.snackbar.open("Successfully added the topic", "Dismiss", { duration: 1600 })
+      })
+    }
+
+    this.trngTopicForm.reset()
+    Object.keys(this.trngTopicForm.controls).forEach((name) => {
+      let control = this.trngTopicForm.controls[name];
+      control.setErrors(null);
+    });
+  }
+
+  editTrainingTopic(topic: InHouseTainingTopic) {
+    this._trainingTopic = topic
+    // console.log(this._trainingTopic)
+    this.initTrngTopicForm()
+  }
+
+  removeTrainingTopic(topic: InHouseTainingTopic) {
+    let retVal = confirm("Are you sure you want to delete?")
+    if(retVal == true) {
+      this.trgTopicService.deleteTrainingTopic(this._trainingInfo.id, topic.id)
+        .subscribe(data => {
+          this.snackbar.open("Successfully removed the topic", "Dismiss", {
+            duration: 1600
+          })
+        })
+
+      let temp = this.topics.data
+      temp.splice(temp.indexOf(topic), 1)
+      this.topics.data = temp
     }
   }
 
@@ -220,6 +296,10 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     return this.trngInfoForm.get('training_type')
   }
 
+  get training_institute_id() {
+    return this.trngInfoForm.get('training_institute_id')
+  }
+
   //In house training topic
   get faculty_name() {
     return this.trngTopicForm.get('faculty_name')
@@ -239,5 +319,6 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.fullNameSubs.unsubscribe();
+    this.trgInfoFormSubs.unsubscribe()
   }
 }

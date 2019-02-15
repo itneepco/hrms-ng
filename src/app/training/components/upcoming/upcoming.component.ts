@@ -1,4 +1,3 @@
-import { DataService } from './../../services/data.service';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +6,7 @@ import { Router } from '@angular/router';
 import { TrainingService } from '../../services/training.service';
 import { AuthService } from './../../../auth/services/auth.service';
 import { TrainingInfo } from './../../models/training';
+import { DataService } from './../../services/data.service';
 
 @Component({
   selector: 'app-upcoming',
@@ -32,15 +32,16 @@ export class UpcomingComponent implements OnInit {
     private dataService: DataService) { }
 
   ngOnInit() {
-    this.getHolidays()
+    this.getTrainingInfos()
   }
 
-  getHolidays() {
+  getTrainingInfos() {
     this.trainingService.getTrainingInfos(this.pageIndex, this.pageSize)
       .subscribe(data => {
           this.dataLength = data['count']
           this.dataSource = new MatTableDataSource<TrainingInfo>(data['rows'])
           this.isLoading = false
+          console.log(data)
         },
         errMsg => {
           this.errMsg = errMsg
@@ -48,7 +49,6 @@ export class UpcomingComponent implements OnInit {
         }
       )
   }
-
 
   onEdit(training: TrainingInfo) {
     this.dataService.trainingData = training
@@ -75,7 +75,7 @@ export class UpcomingComponent implements OnInit {
   changePage(pageEvent: PageEvent) {
     this.pageIndex = pageEvent.pageIndex
     this.pageSize = pageEvent.pageSize
-    this.getHolidays()
+    this.getTrainingInfos()
   }
 
 }
