@@ -10,7 +10,7 @@ export interface TrainingInfo {
   status: string // Training status
   training_order_name: string // Training order name
   training_topics?: InHouseTainingTopic[]  //Required only for in-house training
-  participants: Participant[]
+  training_participants: Participant[]
   training_feedback: TrainingFeedback[]
 }
 

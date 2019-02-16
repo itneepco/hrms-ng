@@ -72,6 +72,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     if(this._trainingInfo) {
       this.dataService.trainingData = null
       this.topics.data = this._trainingInfo.training_topics
+      this.participants.data = this._trainingInfo.training_participants
     }
 
     //Initialize forms
@@ -164,7 +165,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     if(retVal == true) {
       this.participantService.deleteParticipant(this._trainingInfo.id, participant.id)
         .subscribe(() => {
-          this.snackbar.open("Successfully added the participant", "Dismiss", { duration: 1600 })
+          this.snackbar.open("Successfully removed the participant", "Dismiss", { duration: 1600 })
         })
 
       let temp = this.participants.data
@@ -186,10 +187,13 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.participantService.addParticipant(this._trainingInfo.id, participant.emp_code)
       .subscribe(data => {
         console.log(data)
+        participant.id = data['id']
+
         let temp = this.participants.data
         temp.push(participant)
         this.participants.data = temp
         this.clearEmployeeSearch()
+        
         this.snackbar.open("Successfully added the participant", "Dismiss", { duration: 1600 })
       })
   }
