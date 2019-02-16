@@ -14,6 +14,7 @@ import { TrainingService } from '../../services/training.service';
 import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
 import { DataService } from './../../services/data.service';
 import { TrainingInstituteService } from './../../services/training-institute.service';
+import { TrainingParticipantService } from './../../services/training-participant.service';
 
 @Component({
   selector: 'app-new-training',
@@ -31,7 +32,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   fullNameSubs: Subscription;  
   trgInfoFormSubs: Subscription;
   
-  participantColumns = ["sl", "emp_code", "name", "designation", "project", "actions"]
+  participantColumns = ["sl", "emp_code", "name", "designation", "grade", "project", "actions"]
   topicColumns = ["sl", "topic", "faculty", "actions"]  
   participants = new MatTableDataSource<Participant>([])
   topics = new MatTableDataSource<InHouseTainingTopic>([])
@@ -62,6 +63,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private snackbar: MatSnackBar,
     private trgTopicService: TrainingTopicService,
+    private participantService: TrainingParticipantService,
     private employeeService: EmployeeService) {}
 
   ngOnInit() {
@@ -87,6 +89,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
       this.employeeService.searchEmployeeByName(name)
         .subscribe(response => {
           this.empSearchResult = response
+          // console.log(response)
         })
     })
   }
@@ -147,7 +150,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   //     })
   // }
 
-  clear() {
+  clearEmployeeSearch() {
     this.full_name.reset()
   }
 
@@ -156,10 +159,18 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.trngInfoForm.reset()
   }
 
-  removeParticipant(index: number) {
-    let temp = this.participants.data
-    temp.splice(index, 1)
-    this.participants.data = temp
+  removeParticipant(participant: Participant) {
+    let retVal = confirm("Are you sure you want to delete?")
+    if(retVal == true) {
+      this.participantService.deleteParticipant(this._trainingInfo.id, participant.id)
+        .subscribe(() => {
+          this.snackbar.open("Successfully added the participant", "Dismiss", { duration: 1600 })
+        })
+
+      let temp = this.participants.data
+      temp.splice(temp.indexOf(participant), 1)
+      this.participants.data = temp
+    }
   }
 
   addParticipant(event) {
@@ -169,12 +180,18 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     participant.name = full_info[0].trim()
     participant.emp_code = full_info[1].trim()
     participant.designation = full_info[2].trim()
-    participant.project = full_info[3].trim()
+    participant.grade = full_info[3].trim()
+    participant.project = full_info[4].trim()
 
-    let temp = this.participants.data
-    temp.push(participant)
-    this.participants.data = temp
-    this.clear()
+    this.participantService.addParticipant(this._trainingInfo.id, participant.emp_code)
+      .subscribe(data => {
+        console.log(data)
+        let temp = this.participants.data
+        temp.push(participant)
+        this.participants.data = temp
+        this.clearEmployeeSearch()
+        this.snackbar.open("Successfully added the participant", "Dismiss", { duration: 1600 })
+      })
   }
 
   onTrainingTypeChange(event) {
@@ -314,7 +331,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   getOtherInfo(item) {
-    return `${item.designation}, ${item.project}` 
+    return `${item.designation}, ${item.grade}, ${item.project}` 
   }
 
   ngOnDestroy() {

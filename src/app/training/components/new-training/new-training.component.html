@@ -171,42 +171,47 @@
               </mat-form-field>
               
               <div fxFlex="30">
-                <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+                <button mat-raised-button color="accent" (click)="clearEmployeeSearch()">Clear</button>
               </div>
             </div>
     
             <mat-table [dataSource]="participants" *ngIf="participants.data.length > 0">
               <ng-container matColumnDef="sl">
-                <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl </mat-header-cell>
                 <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
                   {{ i + 1 }} 
                 </mat-cell>
               </ng-container>
           
               <ng-container matColumnDef="emp_code">
-                <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
-                <mat-cell *matCellDef="let participant" fxFlex="15"> {{participant.emp_code}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="12"> Emp Code </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="12"> {{participant.emp_code}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef fxFlex="25"> Full Name </mat-header-cell>
-                <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.name}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="23"> Full Name </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="23"> {{participant.name}} </mat-cell>
               </ng-container>
           
               <ng-container matColumnDef="designation">
-                <mat-header-cell *matHeaderCellDef fxFlex="25"> Designation </mat-header-cell>
-                <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.designation}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="22"> Designation </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="22"> {{participant.designation}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="grade">
+                <mat-header-cell *matHeaderCellDef fxFlex="10"> Grade </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="10"> {{participant.grade}} </mat-cell>
               </ng-container>
           
               <ng-container matColumnDef="project">
-                <mat-header-cell *matHeaderCellDef fxFlex="20"> Project </mat-header-cell>
-                <mat-cell *matCellDef="let participant" fxFlex="20"> {{participant.project}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="15"> Project </mat-header-cell>
+                <mat-cell *matCellDef="let participant" fxFlex="15"> {{participant.project}} </mat-cell>
               </ng-container>
           
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
-                <mat-cell *matCellDef="let employee; let i=index" fxFlex="10">
-                  <button mat-icon-button color="accent" (click)="removeParticipant(i)">
+                <mat-cell *matCellDef="let participant; let i=index" fxFlex="10">
+                  <button mat-icon-button color="accent" (click)="removeParticipant(participant)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </mat-cell>

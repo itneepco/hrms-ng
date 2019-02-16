@@ -35,6 +35,7 @@ export interface Participant {
   emp_code: string
   designation: string
   project: string
+  grade: string
 }
 
 //Required for in-house training
