@@ -10,15 +10,16 @@ import { AuthService } from './../../../auth/services/auth.service';
 })
 export class TrainingComponent implements OnInit {
   nav: NavObject[] = [
-    { name: 'Upcoming', path: 'upcoming' },
-    { name: 'Archived', path: 'archived' },
-    { name: 'Feedback', path: 'feedback' }
+    { name: 'My Training', path: 'my-training' },
+    { name: 'My Feedback', path: 'feedback' },
+    // { name: 'All Training', path: 'all-training' },
   ]
 
   constructor(private auth: AuthService) {}
 
   ngOnInit() {  
     if(this.auth.isTrainingAdmin()) {
+      this.nav.push({ name: 'Manage Training', path: 'training-admin' })
       this.nav.push({ name: 'New / Edit', path: 'new' })
     }
   }

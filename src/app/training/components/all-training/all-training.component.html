@@ -1,0 +1,15 @@
+<div class="main-container">
+  <app-training-table *ngIf="dataSource"
+    [dataSource]="dataSource"
+    [dataLength]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [isAdminPage]="isAdminPage"
+    (pageChange)="changePage($event)">
+  </app-training-table>
+
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+</div>

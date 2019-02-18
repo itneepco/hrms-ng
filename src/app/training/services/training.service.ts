@@ -7,14 +7,15 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
 import { TrainingForm, TrainingInfo } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
 import { baseURL } from './../../shared/config/baseUrl';
-import { EXTERNAL_TRAINING, TRAINING_PUBLISHED } from './../models/training-global-codes';
+import { EXTERNAL_TRAINING, TRAINING_PUBLISHED, TRAINING_COMPLETED, TRAINING_CREATED } from './../models/training-global-codes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainingService {
   private training_url = baseURL + 'api/training/info'
-  
+  private my_training_url = baseURL + 'api/training/employee'
+
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
   // upload(data) {
@@ -67,9 +68,22 @@ export class TrainingService {
       )
   }
 
-  getTrainingType(code: string) {
+  getMyTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
+    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/my-training` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  getType(code: string) {
     if(code == IN_HOUSE_TRAINING) return "In House"
     if(code == EXTERNAL_TRAINING) return "External"
+  }
+
+  getStatus(code: string) {
+    if(code == TRAINING_COMPLETED) return "Completed"
+    if(code == TRAINING_PUBLISHED) return "Active"
+    if(code == TRAINING_CREATED) return "Pending"
   }
   
 }

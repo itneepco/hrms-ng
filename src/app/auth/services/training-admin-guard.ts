@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
-
-import { AuthService } from './auth.service';
+import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class TimeOfficeGuard implements CanActivate, CanActivateChild {
+export class TrainingAdminGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private auth: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.auth.isTimeOfficeAdmin() || this.auth.isItAdmin()) return true
+    if(this.auth.isTrainingAdmin() || this.auth.isItAdmin()) return true
   
     this.router.navigate(['/']);
     return false;

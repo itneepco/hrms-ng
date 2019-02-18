@@ -15,6 +15,7 @@ import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
 import { DataService } from './../../services/data.service';
 import { TrainingInstituteService } from './../../services/training-institute.service';
 import { TrainingParticipantService } from './../../services/training-participant.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-training',
@@ -62,6 +63,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     private trgInstituteService: TrainingInstituteService,
     private dataService: DataService,
     private snackbar: MatSnackBar,
+    private router: Router,
     private trgTopicService: TrainingTopicService,
     private participantService: TrainingParticipantService,
     private employeeService: EmployeeService) {}
@@ -301,7 +303,8 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     if(!this._trainingInfo || this.participants.data.length < 1) return
 
     this.trainingService.publishTraining(this._trainingInfo.id)
-    .subscribe(() => { 
+    .subscribe(() => {
+      this.router.navigate(['training/training-admin'])
       this.snackbar.open("Successfully published the training", "Dismiss", {
         duration: 1600
       })

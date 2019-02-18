@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
-import { ArchivedComponent } from './components/archived/archived.component';
+import { AllTrainingComponent } from './components/all-training/all-training.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
+import { MyTrainingComponent } from './components/my-training/my-training.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
-import { TrainingRoutingModule } from './training-routing.module';
+import { TrainingAdminComponent } from './components/training-admin/training-admin.component';
+import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
-import { UpcomingComponent } from './components/upcoming/upcoming.component';
+import { TrainingRoutingModule } from './training-routing.module';
 
 @NgModule({
   imports: [
@@ -15,10 +17,12 @@ import { UpcomingComponent } from './components/upcoming/upcoming.component';
   ],
   declarations: [
     TrainingComponent,
-    ArchivedComponent,
-    UpcomingComponent,
     FeedbackComponent,
     NewTrainingComponent,
+    MyTrainingComponent,
+    TrainingAdminComponent,
+    AllTrainingComponent,
+    TrainingTableComponent,
   ]
 })
 export class TrainingModule { }

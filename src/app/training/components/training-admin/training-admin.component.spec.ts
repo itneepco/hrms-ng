@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArchivedComponent } from './archived.component';
+import { TrainingAdminComponent } from './training-admin.component';
 
-describe('ArchivedComponent', () => {
-  let component: ArchivedComponent;
-  let fixture: ComponentFixture<ArchivedComponent>;
+describe('TrainingAdminComponent', () => {
+  let component: TrainingAdminComponent;
+  let fixture: ComponentFixture<TrainingAdminComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArchivedComponent ]
+      declarations: [ TrainingAdminComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArchivedComponent);
+    fixture = TestBed.createComponent(TrainingAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

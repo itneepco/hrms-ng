@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/services/auth-guard';
-import { ArchivedComponent } from './components/archived/archived.component';
+import { AllTrainingComponent } from './components/all-training/all-training.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
+import { MyTrainingComponent } from './components/my-training/my-training.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
+import { TrainingAdminComponent } from './components/training-admin/training-admin.component';
 import { TrainingComponent } from './components/training/training.component';
-import { UpcomingComponent } from './components/upcoming/upcoming.component';
+import { TrainingAdminGuard } from '../auth/services/training-admin-guard';
 
 const routes: Routes = [
   { 
@@ -14,11 +16,20 @@ const routes: Routes = [
     component: TrainingComponent,
     canActivateChild: [AuthGuard],
     children: [
-      { path: 'new', component: NewTrainingComponent },
-      { path: 'archived', component: ArchivedComponent },
-      { path: 'upcoming', component: UpcomingComponent },
+      { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
-      { path: '', redirectTo: 'upcoming', pathMatch: 'full' }
+      { path: 'all-training', component: AllTrainingComponent },
+      { 
+        path: 'training-admin', 
+        component: TrainingAdminComponent,
+        canActivate: [TrainingAdminGuard]
+      },
+      { 
+        path: 'new', 
+        component: NewTrainingComponent,
+        canActivate: [TrainingAdminGuard] 
+      },
+      { path: '', redirectTo: 'my-training', pathMatch: 'full' }
     ] 
   },
 ];
