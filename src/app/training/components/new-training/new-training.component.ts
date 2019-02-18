@@ -184,6 +184,10 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     participant.grade = full_info[3].trim()
     participant.project = full_info[4].trim()
 
+    this.clearEmployeeSearch()
+    //Check if the participant has already been added
+    if(this.participants.data.find(el => el.emp_code == participant.emp_code)) return
+
     this.participantService.addParticipant(this._trainingInfo.id, participant.emp_code)
       .subscribe(data => {
         console.log(data)
@@ -192,7 +196,6 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
         let temp = this.participants.data
         temp.push(participant)
         this.participants.data = temp
-        this.clearEmployeeSearch()
         
         this.snackbar.open("Successfully added the participant", "Dismiss", { duration: 1600 })
       })

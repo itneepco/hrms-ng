@@ -58,7 +58,7 @@
                 <button mat-raised-button type="button" color="primary" matStepperNext>Next</button>
               </ng-container>
               <ng-template #saveButton>
-                <button mat-raised-button type="submit" color="primary" [disabled]="saving">Save</button>
+                <button mat-raised-button type="submit" color="primary" [disabled]="isSaving">Save</button>
               </ng-template>
               <button mat-raised-button type="button" (click)="clearTrainingInfo()">Clear</button>
             </div>
