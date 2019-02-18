@@ -7,7 +7,7 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
 import { TrainingForm, TrainingInfo } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
 import { baseURL } from './../../shared/config/baseUrl';
-import { EXTERNAL_TRAINING } from './../models/training-global-codes';
+import { EXTERNAL_TRAINING, TRAINING_PUBLISHED } from './../models/training-global-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +55,13 @@ export class TrainingService {
 
   deleteTrainingInfo(id: number) {
     return this.http.delete(`${this.training_url}/${id}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  publishTraining(id: number) {
+    return this.http.put(`${this.training_url}/${id}/publish`, { status: TRAINING_PUBLISHED })
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

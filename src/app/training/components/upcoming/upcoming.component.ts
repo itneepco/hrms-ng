@@ -55,23 +55,6 @@ export class UpcomingComponent implements OnInit {
     this.router.navigate(['training/new'])
   }
 
-  // onRemove(holiday: Holiday) {
-  //   let retVal = confirm("Are you sure you want to delete?")
-  //   if(retVal == true) { 
-  //     this.holidayService.deleteHoliday(holiday.id)
-  //       .subscribe(() => {
-  //         let index = this.dataSource.data.indexOf(holiday)
-  //         let temp = this.dataSource.data
-  //         temp.splice(index, 1)
-  //         this.dataSource.data = temp
-  //       })
-      
-  //     this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
-  //       duration: 1600
-  //     })  
-  //   }
-  // }
-
   changePage(pageEvent: PageEvent) {
     this.pageIndex = pageEvent.pageIndex
     this.pageSize = pageEvent.pageSize

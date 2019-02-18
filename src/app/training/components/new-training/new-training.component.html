@@ -223,7 +223,8 @@
           </div>
   
           <div class="buttons">
-            <button mat-raised-button color="primary" [disabled]="participants.data.length < 1">Publish</button>
+            <button mat-raised-button color="primary" (click)="publishTraining()" 
+              [disabled]="!_trainingInfo || participants.data.length < 1">Publish</button>
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>
         </div>

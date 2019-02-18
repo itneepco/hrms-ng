@@ -295,6 +295,19 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     }
   }
 
+  //Publish Training
+  publishTraining() {
+    //Check if training exists and the no of participants is atleast 1
+    if(!this._trainingInfo || this.participants.data.length < 1) return
+
+    this.trainingService.publishTraining(this._trainingInfo.id)
+    .subscribe(() => { 
+      this.snackbar.open("Successfully published the training", "Dismiss", {
+        duration: 1600
+      })
+    })
+  }
+
   //getters for training info form
   get course_title() {
     return this.trngInfoForm.get('course_title')
