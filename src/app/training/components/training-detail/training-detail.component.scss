@@ -1,0 +1,36 @@
+.info {
+  margin-bottom: 6px;
+}
+
+.title {
+  margin-right: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+#participants, #topics {
+  mat-table {
+    mat-header-row {
+      min-height: 35px;
+    }
+    mat-row {
+      min-height: 32px;
+      font-size: 12px;
+    }
+    margin-bottom: 16px;
+  }
+}
+
+#header {
+  .flex-spacer {
+    flex: 1;
+  }
+  font-size: 14px;
+  height: 52px;
+  opacity: 0.8;
+}
+
+#container {
+  margin: 15px 20px;
+}

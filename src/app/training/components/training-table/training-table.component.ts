@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +8,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { TrainingInfo } from '../../models/training';
 import { DataService } from '../../services/data.service';
 import { TrainingService } from '../../services/training.service';
+import { TrainingDetailComponent } from '../training-detail/training-detail.component';
 
 @Component({
   selector: 'app-training-table',
@@ -27,6 +29,7 @@ export class TrainingTableComponent implements OnInit {
 
   constructor(private router: Router,
     public auth: AuthService, 
+    public dialog: MatDialog,
     public trainingService: TrainingService,
     private dataService: DataService) {}
 
@@ -47,7 +50,13 @@ export class TrainingTableComponent implements OnInit {
     this.router.navigate(['training/new'])
   }
 
-  onShow() {
+  onShow(training: TrainingInfo) {
     console.log("On Show")
+    this.dialog.open(TrainingDetailComponent, { 
+      panelClass: 'detail-dialog',
+      width: '720px',
+      height: '560px',
+      data: training 
+    })
   }
 }

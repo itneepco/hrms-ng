@@ -45,7 +45,7 @@ export class LeaveTableComponent implements OnInit {
 
   onShow(leaveApplication: LeaveApplication, index: number) {
     let dialogRef = this.dialog.open(LeaveDetailComponent, {
-      panelClass: 'leave-detail-dialog',
+      panelClass: 'detail-dialog',
       height: '550px',
       width: '700px',
       data: {
