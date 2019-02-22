@@ -1,4 +1,4 @@
-import { TRAINING_COMPLETED } from './../../models/training-global-codes';
+import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,6 +23,7 @@ export class TrainingDetailComponent implements OnInit {
   training: TrainingInfo
   isAdminPage: boolean
   training_completed = TRAINING_COMPLETED
+  training_published = TRAINING_PUBLISHED
   
   topics = new MatTableDataSource<InHouseTainingTopic>([])
   participants = new MatTableDataSource<Participant>([])

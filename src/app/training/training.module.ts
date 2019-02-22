@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
 import { AllTrainingComponent } from './components/all-training/all-training.component';
+import { FeedbackFormComponent } from './components/feedback-form/feedback-form.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { MyTrainingComponent } from './components/my-training/my-training.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
@@ -25,9 +26,11 @@ import { TrainingRoutingModule } from './training-routing.module';
     AllTrainingComponent,
     TrainingTableComponent,
     TrainingDetailComponent,
+    FeedbackFormComponent,
   ],
   entryComponents: [
-    TrainingDetailComponent
+    TrainingDetailComponent,
+    FeedbackFormComponent
   ]
 })
 export class TrainingModule { }

@@ -1,3 +1,15 @@
-<mat-card id="content">
-  <p>Feedback Page</p>    
-</mat-card>
+<div class="main-container">
+  <app-training-table *ngIf="dataSource"
+    [dataSource]="dataSource"
+    [dataLength]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    isFeedbackPage="true"
+    (pageChange)="changePage($event)">
+  </app-training-table>
+
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="errMsg" class="error-info">
+    <p class="errMsg">{{errMsg}}</p>
+  </mat-card>
+</div>

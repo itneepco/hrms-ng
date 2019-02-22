@@ -34,14 +34,21 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let training" fxFlex="15">
-        <button mat-icon-button (click)="onShow(training)" color="accent">
-          <mat-icon>search</mat-icon>
-        </button>
-        <ng-container *ngIf="auth.isTrainingAdmin() && isAdminPage">
-          <button mat-icon-button (click)="onEdit(training)" color="primary">
-            <mat-icon>edit</mat-icon>
+        <ng-container *ngIf="!isFeedbackPage; else feedback">
+          <button mat-icon-button (click)="onShow(training)" color="accent">
+            <mat-icon>search</mat-icon>
           </button>
+          <ng-container *ngIf="auth.isTrainingAdmin() && isAdminPage">
+            <button mat-icon-button (click)="onEdit(training)" color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </ng-container>
         </ng-container>
+        <ng-template #feedback>
+          <button mat-raised-button (click)="openFeedbackForm(training)" color="accent">
+            Submit
+          </button>
+        </ng-template>
       </mat-cell>
     </ng-container>
 

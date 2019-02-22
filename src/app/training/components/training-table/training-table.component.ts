@@ -1,3 +1,4 @@
+import { FeedbackFormComponent } from './../feedback-form/feedback-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -17,8 +18,11 @@ import { TrainingDetailComponent } from '../training-detail/training-detail.comp
 })
 export class TrainingTableComponent implements OnInit {
   displayedColumns = []
-  @Input('isAdminPage') isAdminPage: boolean
+  @Input('isAdminPage') isAdminPage: boolean = false
+  @Input('isFeedbackPage') isFeedbackPage: boolean = false
+
   @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>
+  
   // Pagination variables 
   @Input('dataLength') dataLength
   @Input('pageSize') pageSize
@@ -59,6 +63,13 @@ export class TrainingTableComponent implements OnInit {
         training: training,
         isAdminPage: this.isAdminPage 
       } 
+    })
+  }
+
+  openFeedbackForm(training: TrainingInfo) {
+    this.dialog.open(FeedbackFormComponent, {
+      width: '550px',
+      height: '450px'
     })
   }
 }

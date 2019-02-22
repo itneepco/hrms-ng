@@ -38,7 +38,7 @@
       
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
-            <span class="title">Type: </span>
+            <span class="title">Training Type: </span>
             {{ trainingService.getType(training.training_type) }} 
           </div>
           <div class="info" fxFlex>
@@ -133,9 +133,10 @@
           <mat-row *matRowDef="let row; columns: participantColumns;"></mat-row>
         </mat-table>
 
-        <ng-container *ngIf="isAdminPage">
+        <ng-container *ngIf="isAdminPage && 
+            (training.status == training_published || training.status == training_completed)">
           <button mat-raised-button color="primary" (click)="markAsPresent()" class="btn"
-            [disabled]="attendance.length < 1">Mark Present</button>
+            [disabled]="attendance.length < 1">Save Attendance</button>
 
           <button mat-raised-button color="primary" (click)="markTrainingCompleted()" class="btn"
             *ngIf="training.status != training_completed">Mark Training Completed</button>  

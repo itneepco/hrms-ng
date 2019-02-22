@@ -14,7 +14,6 @@ export class MyTrainingComponent implements OnInit {
   dataSource: MatTableDataSource<TrainingInfo>
   errMsg: string
   isLoading = true
-  isAdminPage = false;
   
   // Pagination variables 
   dataLength = 0
@@ -28,6 +27,7 @@ export class MyTrainingComponent implements OnInit {
   }
 
   getTrainingInfos() {
+    this.isLoading = true
     this.trainingService.getMyTrainings(this.pageIndex, this.pageSize)
     .subscribe(data => {
       this.dataLength = data['count']

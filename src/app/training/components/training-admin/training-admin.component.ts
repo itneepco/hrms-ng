@@ -15,7 +15,6 @@ export class TrainingAdminComponent implements OnInit {
   pastTraining: MatTableDataSource<TrainingInfo>
   errMsg: string
   isLoading = false
-  isAdminPage = true;
 
   // Pagination variables 
   dataLength = 0

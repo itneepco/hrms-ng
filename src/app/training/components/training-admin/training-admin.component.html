@@ -6,7 +6,7 @@
         [dataLength]="dataLength"
         [pageSize]="pageSize"
         [pageIndex]="pageIndex"
-        [isAdminPage]="isAdminPage"
+        isAdminPage="true"
         (pageChange)="changePage($event)">
       </app-training-table> 
     </mat-tab>
@@ -17,7 +17,7 @@
         [dataLength]="pastTrainingLength"
         [pageSize]="pageSize"
         [pageIndex]="pageIndex"
-        [isAdminPage]="isAdminPage"
+        isAdminPage="true"
         (pageChange)="changePastTrainingPage($event)">
       </app-training-table>
     </mat-tab>

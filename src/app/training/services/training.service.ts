@@ -89,6 +89,13 @@ export class TrainingService {
       )
   }
 
+  feedbackPending(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
+    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/feedback-pending` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
   getType(code: string) {
     if(code == IN_HOUSE_TRAINING) return "In House"
     if(code == EXTERNAL_TRAINING) return "External"
