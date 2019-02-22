@@ -224,7 +224,12 @@
   
           <div class="buttons">
             <button mat-raised-button color="primary" (click)="publishTraining()" 
+              *ngIf="_trainingInfo?.status != training_published"  
               [disabled]="!_trainingInfo || participants.data.length < 1">Publish</button>
+            
+            <button mat-raised-button color="primary" (click)="goToManageTrainings()" 
+              *ngIf="_trainingInfo?.status == training_published">Manage Trainings</button>  
+              
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>
         </div>

@@ -38,7 +38,10 @@ body {
   }
 
   mat-tab-group {
-    width: 90%;
+    width: 92%;
+    mat-card {
+      width: 92% !important;
+    }
   }
 
   mat-card.search, mat-card.query-form {

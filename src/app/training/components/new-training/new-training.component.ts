@@ -8,7 +8,7 @@ import { debounceTime } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { InHouseTainingTopic, Participant, TrainingInfo } from '../../models/training';
-import { IN_HOUSE_TRAINING, TRAINING_TYPES } from '../../models/training-global-codes';
+import { IN_HOUSE_TRAINING, TRAINING_TYPES, TRAINING_PUBLISHED } from '../../models/training-global-codes';
 import { TrainingTopicService } from '../../services/training-topic.service';
 import { TrainingService } from '../../services/training.service';
 import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
@@ -42,6 +42,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   inhouseTrn = IN_HOUSE_TRAINING
   externalTrn = EXTERNAL_TRAINING
   trainingTypes = TRAINING_TYPES
+  training_published = TRAINING_PUBLISHED
 
   //training order file upload
   selectedFile: File = null;
@@ -211,9 +212,11 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     else {
       this.training_institute_id.clearValidators()
     }
+    this.training_institute_id.updateValueAndValidity();
   }
 
   saveTrainingInfo(stepper: MatStepper) {
+    console.log(this.trngInfoForm)
     if(this.trngInfoForm.invalid) return
     
     this.isSaving = true
@@ -309,6 +312,10 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
         duration: 1600
       })
     })
+  }
+
+  goToManageTrainings() {
+    this.router.navigate(['training/training-admin'])
   }
 
   //getters for training info form

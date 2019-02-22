@@ -17,7 +17,6 @@ import { TrainingDetailComponent } from '../training-detail/training-detail.comp
 })
 export class TrainingTableComponent implements OnInit {
   displayedColumns = []
-
   @Input('isAdminPage') isAdminPage: boolean
   @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>
   // Pagination variables 
@@ -56,7 +55,10 @@ export class TrainingTableComponent implements OnInit {
       panelClass: 'detail-dialog',
       width: '720px',
       height: '560px',
-      data: training 
+      data:  { 
+        training: training,
+        isAdminPage: this.isAdminPage 
+      } 
     })
   }
 }

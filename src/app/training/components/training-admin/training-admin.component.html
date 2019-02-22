@@ -1,14 +1,29 @@
 <div class="main-container">
-  <app-training-table *ngIf="dataSource"
-    [dataSource]="dataSource"
-    [dataLength]="dataLength"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-    [isAdminPage]="isAdminPage"
-    (pageChange)="changePage($event)">
-  </app-training-table>
+  <mat-tab-group>
+    <mat-tab label="Upcoming Trainings">
+      <app-training-table *ngIf="dataSource"
+        [dataSource]="dataSource"
+        [dataLength]="dataLength"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [isAdminPage]="isAdminPage"
+        (pageChange)="changePage($event)">
+      </app-training-table> 
+    </mat-tab>
 
-  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
+    <mat-tab label="Past Trainings">
+      <app-training-table *ngIf="pastTraining"
+        [dataSource]="pastTraining"
+        [dataLength]="pastTrainingLength"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [isAdminPage]="isAdminPage"
+        (pageChange)="changePastTrainingPage($event)">
+      </app-training-table>
+    </mat-tab>
+  </mat-tab-group>
+
+  <mat-spinner diameter="60" *ngIf="isLoading" style="margin-top: 20px"></mat-spinner>
   <mat-card *ngIf="errMsg" class="error-info">
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>

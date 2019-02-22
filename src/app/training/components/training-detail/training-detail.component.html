@@ -56,7 +56,7 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>Session Topics</mat-panel-title>
         <mat-panel-description>Details of training topics</mat-panel-description>
@@ -95,8 +95,15 @@
       
       <div id="participants">
         <mat-table [dataSource]="participants" *ngIf="participants.data.length > 0">
+          <ng-container matColumnDef="mark" *ngIf="isAdminPage">
+            <mat-header-cell *matHeaderCellDef fxFlex="10"> Mark </mat-header-cell>
+            <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
+              <mat-checkbox (change)="markParticipant($event, participant)" [checked]="participant.present"></mat-checkbox>
+            </mat-cell>
+          </ng-container>
+          
           <ng-container matColumnDef="sl">
-            <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No </mat-header-cell>
             <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
               {{ i + 1 }} 
             </mat-cell>
@@ -108,8 +115,8 @@
           </ng-container>
       
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef fxFlex="25"> Full Name </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="30"> Full Name </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="30"> {{participant.name | titlecase}} </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="designation">
@@ -117,26 +124,29 @@
             <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.designation}} </mat-cell>
           </ng-container>
       
-          <ng-container matColumnDef="grade">
-            <mat-header-cell *matHeaderCellDef fxFlex="10"> Grade </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="10"> {{participant.grade}} </mat-cell>
-          </ng-container>
-      
           <ng-container matColumnDef="project">
-            <mat-header-cell *matHeaderCellDef fxFlex="18"> Project </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="18"> {{participant.project}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="13"> Project </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="13"> {{participant.project}} </mat-cell>
           </ng-container>
       
           <mat-header-row *matHeaderRowDef="participantColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: participantColumns;"></mat-row>
         </mat-table>
+
+        <ng-container *ngIf="isAdminPage">
+          <button mat-raised-button color="primary" (click)="markAsPresent()" class="btn"
+            [disabled]="attendance.length < 1">Mark Present</button>
+
+          <button mat-raised-button color="primary" (click)="markTrainingCompleted()" class="btn"
+            *ngIf="training.status != training_completed">Mark Training Completed</button>  
+        </ng-container>
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="feedbacks.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>Feedbacks</mat-panel-title>
-        <mat-panel-description>Feedback on training by participants</mat-panel-description>
+        <mat-panel-description>Feedback on the training programme</mat-panel-description>
       </mat-expansion-panel-header>
       
       <div></div>

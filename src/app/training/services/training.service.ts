@@ -40,6 +40,13 @@ export class TrainingService {
       )
   }
 
+  getPastTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
+    return this.http.get<TrainingInfo[]>(this.training_url + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&status=archived")
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
   addTrainingInfo(trainingInfo: TrainingForm) {
     return this.http.post(this.training_url, trainingInfo)
       .pipe(
@@ -63,6 +70,13 @@ export class TrainingService {
 
   publishTraining(id: number) {
     return this.http.put(`${this.training_url}/${id}/publish`, { status: TRAINING_PUBLISHED })
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  markTrainingCompleted(id: number) {
+    return this.http.put(`${this.training_url}/${id}/mark-complete`, { status: TRAINING_COMPLETED })
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

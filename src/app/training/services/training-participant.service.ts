@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 
 import { baseURL } from '../../shared/config/baseUrl';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { Participant } from './../models/training';
+import { Participant, TrainingAttendance } from './../models/training';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,13 @@ export class TrainingParticipantService {
 
   deleteParticipant(trainingId: number, participantId: number) {
     return this.http.delete(`${this.participant_url}/${trainingId}/participant/${participantId}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  markPresent(trainingId: number, attendance: TrainingAttendance[]) {
+    return this.http.put(`${this.participant_url}/${trainingId}/participant/attendance/mark`, attendance)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

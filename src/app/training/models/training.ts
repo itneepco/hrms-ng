@@ -11,7 +11,7 @@ export interface TrainingInfo {
   training_order_name: string // Training order name
   training_topics?: InHouseTainingTopic[]  //Required only for in-house training
   training_participants: Participant[]
-  training_feedback: TrainingFeedback[]
+  training_feedbacks: TrainingFeedback[]
 }
 
 //model for training Form
@@ -80,4 +80,9 @@ export interface TrainingEffectiveness {
   positive_attitude_rating: number
   created_at: string //Timestamp
   updated_at: string //Timestamp
+}
+
+export interface TrainingAttendance {
+  emp_code: string
+  present: boolean
 }
