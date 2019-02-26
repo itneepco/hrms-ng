@@ -1,6 +1,5 @@
-import { FeedbackFormComponent } from './../feedback-form/feedback-form.component';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -10,6 +9,7 @@ import { TrainingInfo } from '../../models/training';
 import { DataService } from '../../services/data.service';
 import { TrainingService } from '../../services/training.service';
 import { TrainingDetailComponent } from '../training-detail/training-detail.component';
+import { FeedbackFormComponent } from './../feedback-form/feedback-form.component';
 
 @Component({
   selector: 'app-training-table',
@@ -69,7 +69,8 @@ export class TrainingTableComponent implements OnInit {
   openFeedbackForm(training: TrainingInfo) {
     this.dialog.open(FeedbackFormComponent, {
       width: '550px',
-      height: '450px'
+      height: '450px',
+      data:  training
     })
   }
 }

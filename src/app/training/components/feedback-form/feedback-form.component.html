@@ -1,3 +1,65 @@
-<p>
-  feedback-form works!
-</p>
+<form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+  <div fxLayout="column" fxLayoutAlign="space-between stretch">
+    <div fxLayout="column">
+      <mat-form-field>
+        <mat-radio-group>
+          <mat-radio-button value="1">1</mat-radio-button>
+          <mat-radio-button value="2">2</mat-radio-button>
+          <mat-radio-button value="3">3</mat-radio-button>
+          <mat-radio-button value="4">4</mat-radio-button>
+          <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-radio-group>
+          <mat-radio-button value="1">1</mat-radio-button>
+          <mat-radio-button value="2">2</mat-radio-button>
+          <mat-radio-button value="3">3</mat-radio-button>
+          <mat-radio-button value="4">4</mat-radio-button>
+          <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-radio-group>
+          <mat-radio-button value="1">1</mat-radio-button>
+          <mat-radio-button value="2">2</mat-radio-button>
+          <mat-radio-button value="3">3</mat-radio-button>
+          <mat-radio-button value="4">4</mat-radio-button>
+          <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-radio-group>
+          <mat-radio-button value="1">1</mat-radio-button>
+          <mat-radio-button value="2">2</mat-radio-button>
+          <mat-radio-button value="3">3</mat-radio-button>
+          <mat-radio-button value="4">4</mat-radio-button>
+          <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-radio-group>
+          <mat-radio-button value="1">1</mat-radio-button>
+          <mat-radio-button value="2">2</mat-radio-button>
+          <mat-radio-button value="3">3</mat-radio-button>
+          <mat-radio-button value="4">4</mat-radio-button>
+          <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+      </mat-form-field>
+    </div>
+
+    <div class="buttons">
+      <ng-container *ngIf="_trainingInfo && !isEdited; else saveButton">
+        <button mat-raised-button type="button" color="primary" matStepperNext>Next</button>
+      </ng-container>
+      <ng-template #saveButton>
+        <button mat-raised-button type="submit" color="primary" [disabled]="isSaving">Save</button>
+      </ng-template>
+      <button mat-raised-button type="button" (click)="clearTrainingInfo()">Clear</button>
+    </div>
+  </div>
+</form>

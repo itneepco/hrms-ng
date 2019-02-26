@@ -64,8 +64,6 @@ export interface TrainingFeedback {
   methodology_rating: number
   admin_service_rating: number
   overall_utility_rating: number
-  created_at: string //Timestamp
-  updated_at: string //Timestamp 
 }
 
 export interface TrainingEffectiveness {
