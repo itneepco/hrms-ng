@@ -37,9 +37,9 @@
 
       <div fxFlex="20">
         <button mat-raised-button *ngIf="_roleMapper.id"
-          color="primary" [disabled]="roleMapperForm.invalid">Update</button>
+          color="primary" [disabled]="roleMapperForm.invalid || isSubmitting">Update</button>
         <button mat-raised-button *ngIf="!_roleMapper.id"
-          color="primary" [disabled]="roleMapperForm.invalid">Add</button>
+          color="primary" [disabled]="roleMapperForm.invalid || isSubmitting">Add</button>
       </div>
     </div>
   </form>

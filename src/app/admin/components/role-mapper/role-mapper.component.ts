@@ -9,9 +9,9 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 import { Employee } from '../../../shared/models/employee';
 import { EMPLOYEE_ROLES } from '../../../shared/models/global-codes';
 import { Project } from '../../../shared/models/project.model';
+import { RoleMapper } from '../../../shared/models/role-mapper';
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { ProjectService } from '../../../shared/services/project.service';
-import { RoleMapper } from '../../../shared/models/role-mapper';
 import { RoleMapperService } from '../../services/role-mapper.service';
 
 @Component({
@@ -30,6 +30,7 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
   roleMapperForm: FormGroup
   _roleMapper: RoleMapper = {} as RoleMapper
   searchResult: Employee[] = []
+  isSubmitting: boolean = false
 
   // Pagination variables 
   dataLength = 0
@@ -92,9 +93,11 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
   onSubmit() {
     let roleMapperFormValue = <RoleMapper> this.roleMapperForm.value
 
+    this.isSubmitting = true
     if(this._roleMapper.id) {
       this.roleMapperService.editRoleMapper(this._roleMapper.id, roleMapperFormValue).subscribe(
         (roleMapper: RoleMapper) => {
+          this.isSubmitting = false
           let index = this.dataSource.data.indexOf(this._roleMapper)
           let temp = this.dataSource.data
           temp.splice(index, 1)
@@ -105,18 +108,25 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
           this.snackbar.open("Successfully updated the roleMapper record", "Dismiss", {
             duration: 1600
           })
+        }, error => {
+          console.log(error)
+          this.isSubmitting = false
         }
       )
     }
     else {
       this.roleMapperService.addRoleMapper(roleMapperFormValue).subscribe(
         (roleMapper: RoleMapper) => {
+          this.isSubmitting = false
           let temp = this.dataSource.data
           temp.splice(0, 0, roleMapper)
           this.dataSource.data = temp
           this.snackbar.open("Successfully created the roleMapper record", "Dismiss", {
             duration: 1600
           })
+        }, error => {
+          console.log(error)
+          this.isSubmitting = false
         }
       )
     }

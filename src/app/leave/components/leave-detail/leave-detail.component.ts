@@ -68,6 +68,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   leaveStatuses: LeaveStatus[] = []
   subscription: Subscription
   leaveApp: LeaveApplication
+  isLoading: boolean = false
 
   //Leave type codes
   cl_code = CL_CODE
@@ -158,13 +159,18 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       return
     }
 
+    this.isLoading = true
     let formValue = this.actionForm.value
     this.wActionService.processLeave(formValue)
       .subscribe((result) =>  {
+        this.isLoading = false
         this.dialogRef.close("processed")
         this.snackbar.open("Successfully processed the leave request", "Dismiss", {
           duration: 1600
         }) 
+      }, error => {
+        console.log(error)
+        this.isLoading = false
       })  
   }
 
