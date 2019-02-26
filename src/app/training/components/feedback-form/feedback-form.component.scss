@@ -1,0 +1,23 @@
+:host {
+  font-size: 13px !important;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.row {
+  margin-top: 5px;
+}
+
+.divider {
+  margin: 10px 0px;
+}
+
+mat-radio-group {
+  margin-top: 10px !important;
+  mat-radio-button {
+    margin-right: 10px;
+  }
+}

@@ -68,8 +68,8 @@ export class TrainingTableComponent implements OnInit {
 
   openFeedbackForm(training: TrainingInfo) {
     this.dialog.open(FeedbackFormComponent, {
-      width: '550px',
-      height: '450px',
+      width: '650px',
+      height: '580px',
       data:  training
     })
   }

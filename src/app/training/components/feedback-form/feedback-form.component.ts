@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { EXTERNAL_TRAINING } from '../../models/training-global-codes';
 import { AuthService } from './../../../auth/services/auth.service';
 import { TrainingInfo } from './../../models/training';
 
@@ -15,6 +16,7 @@ export class FeedbackFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private auth: AuthService, 
+    public dialogRef: MatDialogRef<FeedbackFormComponent>,
     @Inject(MAT_DIALOG_DATA) public training: TrainingInfo) { }
 
   ngOnInit() {
@@ -24,7 +26,7 @@ export class FeedbackFormComponent implements OnInit {
   initForm() {
     this.feedbackForm = this.fb.group({
       emp_code: this.auth.currentUser.emp_code,
-      ta_da_incurred: ['', Validators.required],
+      ta_da_incurred: [''],
       comments: ['', Validators.required],
       duration_rating: ['', Validators.required],
       content_rating: ['', Validators.required],
@@ -36,5 +38,9 @@ export class FeedbackFormComponent implements OnInit {
 
   submitFeedback() {
     
+  }
+
+  isExternal() {
+    return this.training.training_type == EXTERNAL_TRAINING 
   }
 }
