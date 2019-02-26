@@ -213,7 +213,7 @@
             </mat-form-field>
   
             <div fxLayoutAlign="end start">
-              <button mat-raised-button color="primary">Submit</button>
+              <button mat-raised-button color="primary" [disabled]="isLoading">Submit</button>
             </div>  
           </form>
         </mat-expansion-panel>

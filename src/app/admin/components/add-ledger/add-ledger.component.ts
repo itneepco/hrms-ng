@@ -26,6 +26,7 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   ]
   ledger: LeaveLedger = {} as LeaveLedger
   empCodeSubs: Subscription
+  isSubmitting: boolean = false
 
   constructor(private fb: FormBuilder,
     private ledgerService: LedgerService,
@@ -70,19 +71,28 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
     if(this.ledgerForm.invalid) return
     console.log(this.ledgerForm.value)
 
+    this.isSubmitting = true
     if(this.ledger.id) {
       this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
-        .subscribe((val) => {
-          console.log(val)
-          this.dialogRef.close({ edit: val })
-        })
+      .subscribe((val) => {
+        this.isSubmitting = false
+        console.log(val)
+        this.dialogRef.close({ edit: val })
+      }, error => {
+        console.log(error)
+        this.isSubmitting = false
+      })
     }
     else {
       this.ledgerService.addLedger(this.ledgerForm.value)
-        .subscribe((val) => {
-          console.log(val)
-          this.dialogRef.close({ add: val })
-        })
+      .subscribe((val) => {
+        this.isSubmitting = false
+        console.log(val)
+        this.dialogRef.close({ add: val })
+      }, error => {
+        console.log(error)
+        this.isSubmitting = false
+      })
     }
   }
 

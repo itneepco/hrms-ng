@@ -24,6 +24,7 @@ export class HolidayListComponent implements OnInit {
   isLoading = true
   holidayForm: FormGroup
   _holiday: Holiday = {} as Holiday
+  isSubmitting: boolean = false
 
   // Pagination variables 
   dataLength = 0
@@ -73,9 +74,11 @@ export class HolidayListComponent implements OnInit {
     let holidayFormValue = <Holiday> this.holidayForm.value
     // console.log(this.holidayForm.value)
 
+    this.isSubmitting = true
     if(this._holiday.id) {
       this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(
         (holiday: Holiday) => {
+          this.isSubmitting = false
           let index = this.dataSource.data.indexOf(this._holiday)
           let temp = this.dataSource.data
           temp.splice(index, 1)
@@ -86,18 +89,25 @@ export class HolidayListComponent implements OnInit {
           this.snackbar.open("Successfully updated the holiday record", "Dismiss", {
             duration: 1600
           })
+        }, error => {
+          console.log(error)
+          this.isSubmitting = false
         }
       )
     }
     else {
       this.holidayService.addHoliday(holidayFormValue).subscribe(
         (holiday: Holiday) => {
+          this.isSubmitting = false
           let temp = this.dataSource.data
           temp.splice(0, 0, holiday)
           this.dataSource.data = temp
           this.snackbar.open("Successfully created the holiday record", "Dismiss", {
             duration: 1600
           })
+        }, error => {
+          console.log(error)
+          this.isSubmitting = false
         }
       )
     }
