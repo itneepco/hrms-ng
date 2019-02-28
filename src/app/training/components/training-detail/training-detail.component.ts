@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { TrainingInfo } from '../../models/training';
 import { TrainingService } from '../../services/training.service';
-import { InHouseTainingTopic, Participant, TrainingAttendance } from './../../models/training';
+import { TainingTopic, Participant, TrainingAttendance } from './../../models/training';
 import { TrainingParticipantService } from './../../services/training-participant.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class TrainingDetailComponent implements OnInit {
   training_completed = TRAINING_COMPLETED
   training_published = TRAINING_PUBLISHED
   
-  topics = new MatTableDataSource<InHouseTainingTopic>([])
+  topics = new MatTableDataSource<TainingTopic>([])
   participants = new MatTableDataSource<Participant>([])
   feedbacks = []
 

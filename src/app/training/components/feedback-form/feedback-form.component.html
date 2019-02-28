@@ -5,19 +5,19 @@
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Title</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70">{{training.course_title}}</div>
+          <div fxFlex="70" class="info">{{training.course_title}}</div>
         </div>
-  
+
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Venue</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70">{{training.venue}}</div>
+          <div fxFlex="70" class="info">{{training.venue}}</div>
         </div>
-  
+
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Date</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70">From {{training.from_date | date:'mediumDate'}} to 
+          <div fxFlex="70" class="info">From {{training.from_date | date:'mediumDate'}} to 
             {{training.to_date | date:'mediumDate'}}</div>
         </div>
       </div>
@@ -57,8 +57,8 @@
         <div fxFlex="50">
           <span class="title">Duration of the Programme</span>
         </div>
-        <div fxFlex="50" formControlName="duration_rating">
-          <mat-radio-group>
+        <div fxFlex="50">
+          <mat-radio-group formControlName="duration_rating">
             <mat-radio-button value="1">1</mat-radio-button>
             <mat-radio-button value="2">2</mat-radio-button>
             <mat-radio-button value="3">3</mat-radio-button>
@@ -130,18 +130,20 @@
 
       <mat-divider class="divider"></mat-divider>
 
-      <mat-form-field formControlName="ta_da_incurred" *ngIf="isExternal()">
-        <input matInput placeholder="Tentative DA/TA expenses incurred during the programme">
+      <mat-form-field *ngIf="isExternal()">
+        <input matInput formControlName="ta_da_incurred" placeholder="Tentative DA/TA expenses incurred during the programme">
       </mat-form-field>
 
       <mat-form-field>
         <textarea matInput placeholder="Leave a comment" rows="3" formControlName="comments"></textarea>
+        <mat-error *ngIf="comments.errors?.required">Please leave a comment or suggestions</mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-raised-button color="primary" type="submit" 
+      [disabled]="feedbackForm.invalid || isLoading">Save</button>
   </mat-dialog-actions>
-</form>
+</form>  

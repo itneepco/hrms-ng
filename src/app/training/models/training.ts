@@ -9,7 +9,7 @@ export interface TrainingInfo {
   training_institute?: TrainingInstitute  //Required only for external training
   status: string // Training status
   training_order_name: string // Training order name
-  training_topics?: InHouseTainingTopic[]  //Required only for in-house training
+  training_topics?: TainingTopic[]  //Required only for in-house training
   training_participants: Participant[]
   training_feedbacks: TrainingFeedback[]
 }
@@ -39,12 +39,11 @@ export interface Participant {
 }
 
 //Required for in-house training
-export interface InHouseTainingTopic {
+export interface TainingTopic {
   id: number
   training_info_id: number
   topic_name: string
   faculty_name: string
-  rating: number
 }
 
 //Required for external training
@@ -59,7 +58,7 @@ export interface TrainingFeedback {
   emp_code: string
   ta_da_incurred: number
   comments: string
-  duration_rating: number
+  duration_rating: string
   content_rating: number
   methodology_rating: number
   admin_service_rating: number

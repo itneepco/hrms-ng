@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
-import { InHouseTainingTopic, Participant, TrainingInfo } from '../../models/training';
+import { TainingTopic, Participant, TrainingInfo } from '../../models/training';
 import { IN_HOUSE_TRAINING, TRAINING_TYPES, TRAINING_PUBLISHED } from '../../models/training-global-codes';
 import { TrainingTopicService } from '../../services/training-topic.service';
 import { TrainingService } from '../../services/training.service';
@@ -36,7 +36,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   participantColumns = ["sl", "emp_code", "name", "designation", "grade", "project", "actions"]
   topicColumns = ["sl", "topic", "faculty", "actions"]  
   participants = new MatTableDataSource<Participant>([])
-  topics = new MatTableDataSource<InHouseTainingTopic>([])
+  topics = new MatTableDataSource<TainingTopic>([])
 
   //training types
   inhouseTrn = IN_HOUSE_TRAINING
@@ -57,7 +57,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
 
   //Training Info
   _trainingInfo: TrainingInfo = null
-  _trainingTopic: InHouseTainingTopic = null
+  _trainingTopic: TainingTopic = null
 
   constructor(private _formBuilder: FormBuilder, 
     private trainingService: TrainingService,
@@ -244,13 +244,13 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   saveTrainingTopic() {
     if(this.trngTopicForm.invalid) return
 
-    let topic = {} as InHouseTainingTopic
+    let topic = {} as TainingTopic
     topic.faculty_name = this.faculty_name.value
     topic.topic_name = this.topic_name.value
 
     if(this._trainingTopic) {
       this.trgTopicService.editTrainingTopic(this._trainingTopic.training_info_id, this._trainingTopic.id, topic)
-      .subscribe((result: InHouseTainingTopic) => {
+      .subscribe((result: TainingTopic) => {
         let temp = this.topics.data
         let index = this.topics.data.indexOf(this._trainingTopic)
         temp.splice(index, 1)
@@ -263,7 +263,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     else {
       topic.training_info_id = this._trainingInfo.id
       this.trgTopicService.addTrainingTopic(this._trainingInfo.id, topic)
-      .subscribe((result: InHouseTainingTopic) => {
+      .subscribe((result: TainingTopic) => {
         let temp = this.topics.data
         temp.push(result)
         this.topics.data = temp
@@ -278,13 +278,13 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     });
   }
 
-  editTrainingTopic(topic: InHouseTainingTopic) {
+  editTrainingTopic(topic: TainingTopic) {
     this._trainingTopic = topic
     // console.log(this._trainingTopic)
     this.initTrngTopicForm()
   }
 
-  removeTrainingTopic(topic: InHouseTainingTopic) {
+  removeTrainingTopic(topic: TainingTopic) {
     let retVal = confirm("Are you sure you want to delete?")
     if(retVal == true) {
       this.trgTopicService.deleteTrainingTopic(this._trainingInfo.id, topic.id)

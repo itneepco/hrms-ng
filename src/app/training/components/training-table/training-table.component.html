@@ -45,8 +45,9 @@
           </ng-container>
         </ng-container>
         <ng-template #feedback>
-          <button mat-icon-button (click)="openFeedbackForm(training)" color="accent">
-            <mat-icon>comment</mat-icon>
+          <button mat-icon-button color="accent" (click)="openFeedbackForm(training)">
+            <mat-icon *ngIf="training.training_feedbacks.length == 0">comment</mat-icon>
+            <mat-icon *ngIf="training.training_feedbacks.length > 0">edit</mat-icon>  
           </button>
         </ng-template>
       </mat-cell>

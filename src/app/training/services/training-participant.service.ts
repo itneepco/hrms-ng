@@ -17,7 +17,7 @@ export class TrainingParticipantService {
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
   getParticipants(trainingId: number): Observable<Participant[]> {
-    return this.http.get<Participant[]>(`${this.participant_url}/${trainingId}`)
+    return this.http.get<Participant[]>(`${this.participant_url}/${trainingId}/participant`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
