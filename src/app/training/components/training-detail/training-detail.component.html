@@ -1,9 +1,9 @@
 <mat-toolbar color="primary" id="header">
   <div fxFlex>Training Details</div>
   <div class="flex-spacer"></div>
-  <button mat-icon-button mat-dialog-close>
+  <!-- <button mat-icon-button mat-dialog-close>
     <mat-icon>close</mat-icon>
-  </button>
+  </button> -->
 </mat-toolbar>
 
 <div id="container">
@@ -144,13 +144,78 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="feedbacks.length > 0">
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="feedbacks.length > 0 && isAdminPage">
       <mat-expansion-panel-header>
         <mat-panel-title>Feedbacks</mat-panel-title>
         <mat-panel-description>Feedback on the training programme</mat-panel-description>
       </mat-expansion-panel-header>
       
-      <div></div>
+      <div id="avg-rating">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="40">Course Duration</div>
+          <div fxFlex="60">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{averageRating.duration | number:'1.1'}} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="40">Course material</div>
+          <div fxFlex="60">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{averageRating.content | number:'1.1'}} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="40">Training Methodology</div>
+          <div fxFlex="60">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{averageRating.methodology | number:'1.1'}} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="40">Administrative Service</div>
+          <div fxFlex="60">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{averageRating.admin_service | number:'1.1'}} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="40">Overall Utility</div>
+          <div fxFlex="60">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{averageRating.overall_utility | number:'1.1'}} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <mat-list>
+        <mat-list-item *ngFor="let feedback of feedbacks">
+          <h3 matLine class="comment"> {{ feedback.comments }} </h3>
+          <div matLine fxLayoutAlign="space-between center">  
+            <div class="author"> -- by {{ getEmployeeDetail(feedback) }} </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="rating">{{ calculateRating(feedback) | number:'1.1' }} / 5.0</div>
+              <div>&nbsp;<mat-icon>star</mat-icon></div>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </mat-expansion-panel>
   </mat-accordion>
 </div>
+
+<mat-dialog-actions align="end" id="close-button">
+  <button mat-button type="button" mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -1,13 +1,13 @@
-import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { TrainingInfo } from '../../models/training';
 import { TrainingService } from '../../services/training.service';
-import { TainingTopic, Participant, TrainingAttendance } from './../../models/training';
+import { Participant, TainingTopic, TrainingAttendance, TrainingFeedback, TrainingInfo } from './../../models/training';
+import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { TrainingParticipantService } from './../../services/training-participant.service';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-training-detail',
@@ -39,7 +39,7 @@ export class TrainingDetailComponent implements OnInit {
     this.isAdminPage = this.data.isAdminPage
     this.topics.data = this.training.training_topics
     this.participants.data = this.training.training_participants
-    // this.feedbacks = this.training.training_feedbacks
+    this.feedbacks = this.training.training_feedbacks
 
     if(this.data.isAdminPage) {
       this.participantColumns = ["mark", "sl", "emp_code", "name", "designation", "project"]
@@ -87,5 +87,46 @@ export class TrainingDetailComponent implements OnInit {
         duration: 1600
       })
     })
+  }
+
+  calculateRating(feedback: TrainingFeedback) {
+    let sum: number = feedback.admin_service_rating + 
+        feedback.content_rating + feedback.duration_rating + 
+        feedback.methodology_rating + feedback.overall_utility_rating
+    return (sum / 5)    
+  }
+
+  getEmployeeDetail(feedback: TrainingFeedback) {
+    let emp = this.participants.data.find(participant => participant.emp_code == feedback.emp_code)
+    if(!emp) return ""
+
+    return `${emp.name}, ${emp.designation}, ${emp.project}`
+  }
+
+  get averageRating() {
+    let sum = { 
+      duration: 0,
+      methodology: 0,
+      content: 0,
+      admin_service: 0,
+      overall_utility: 0
+    }
+
+    this.feedbacks.forEach((data: TrainingFeedback) => {
+      sum.duration += data.duration_rating
+      sum.methodology += data.methodology_rating
+      sum.content += data.content_rating
+      sum.admin_service += data.admin_service_rating
+      sum.overall_utility += data.overall_utility_rating
+    })
+
+    let total = this.feedbacks.length
+    return {
+      duration: sum.duration / total,
+      methodology: sum.methodology / total,
+      content: sum.content / total,
+      admin_service: sum.admin_service / total,
+      overall_utility: sum.overall_utility / total
+    }
   }
 }

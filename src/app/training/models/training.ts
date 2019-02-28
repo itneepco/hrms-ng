@@ -58,7 +58,7 @@ export interface TrainingFeedback {
   emp_code: string
   ta_da_incurred: number
   comments: string
-  duration_rating: string
+  duration_rating: number
   content_rating: number
   methodology_rating: number
   admin_service_rating: number

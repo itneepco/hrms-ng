@@ -13,6 +13,14 @@
   margin: 5px 10px;
 }
 
+.divider {
+  margin: 8px 0px;
+}
+
+.rating {
+  font-size: 14px;
+}
+
 #participants, #topics {
   mat-table {
     mat-header-row {
@@ -36,5 +44,24 @@
 }
 
 #container {
-  margin: 15px 20px;
+  margin: 20px;
 }
+
+#close-button {
+  margin: 20px;
+}
+
+mat-list {
+  padding: 0px !important;
+  mat-list-item {
+    height: 58px !important;
+  }
+  .comment {
+    margin-bottom: 0px !important;
+    font-size: 14px !important;
+  }
+  .author {
+    font-size: 13px !important;
+  }
+}
+
