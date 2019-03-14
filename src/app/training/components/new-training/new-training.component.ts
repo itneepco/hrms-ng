@@ -132,7 +132,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0]
   }
 
-  // uploadFile() {
+  uploadFile() {
   //   if(!this.selectedFile) return
 
   //   let data = {
@@ -152,7 +152,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   //     }, error => {
   //       console.log(error)
   //     })
-  // }
+  }
 
   clearEmployeeSearch() {
     this.full_name.reset()
