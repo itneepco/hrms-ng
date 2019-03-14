@@ -29,6 +29,7 @@ export class ApplyCLRHComponent implements OnInit {
   leaveDetails = [];
   refresh: Subject<any> = new Subject()
   leaveStatuses: LeaveStatus[] = []
+  isLoading: boolean = false
   ctrlOfficers;
 
   constructor(private holidayService: HolidayService,
@@ -152,10 +153,15 @@ export class ApplyCLRHComponent implements OnInit {
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
       { leave_details: leaves, emp_code: this.authService.currentUser.emp_code });
     
-    console.log(leavApplication)
+    // console.log(leavApplication)
+    this.isLoading = true
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
       console.log(result)
+      this.isLoading = false
       this.router.navigateByUrl('leave/leave-transaction')
+    }, error => {
+      console.log(error)
+      this.isLoading = false
     })
   }
 
