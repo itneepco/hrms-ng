@@ -24,6 +24,7 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
   el_code = EL_CODE
   hpl_code = HPL_CODE
   subscription: Subscription
+  isLoading: boolean = false
   
   constructor(private fb: FormBuilder,
     private authService: AuthService,
@@ -90,9 +91,14 @@ export class ApplyLeaveComponent implements OnInit , OnDestroy {
       { leave_details: leave_detail, emp_code: this.authService.currentUser.emp_code });
 
     // console.log(leavApplication)
+    this.isLoading = true
     this.leaveService.applyLeave(leavApplication).subscribe(result => { 
       console.log(result)
+      this.isLoading = false
       this.router.navigateByUrl('leave/leave-transaction')
+    }, error => {
+      console.log(error)
+      this.isLoading = false
     })  
   }
 

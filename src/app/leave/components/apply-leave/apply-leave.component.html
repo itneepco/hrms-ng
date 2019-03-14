@@ -98,7 +98,7 @@
           <textarea rows="1" matInput placeholder="Remarks (if any)" formControlName="remarks"></textarea>
         </mat-form-field>
         
-        <button mat-raised-button color="primary" [disabled]="leaveForm.invalid">Apply Leave</button>
+        <button mat-raised-button color="primary" [disabled]="leaveForm.invalid || isLoading">Apply Leave</button>
       </form>
     </mat-card>
   </div>

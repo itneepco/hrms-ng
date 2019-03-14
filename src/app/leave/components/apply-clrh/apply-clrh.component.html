@@ -99,7 +99,7 @@
             <mat-divider></mat-divider>
           </div>
         </div>
-        <button mat-raised-button color="primary" [disabled]="leaveForm.invalid || leaveDetails.length < 1">Apply Leave</button>
+        <button mat-raised-button color="primary" [disabled]="isLoading || leaveForm.invalid || leaveDetails.length < 1">Apply Leave</button>
       </form>
     </mat-card>
   </div>
