@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -17,6 +17,7 @@ export class FeedbackFormComponent implements OnInit {
   feedbackForm: FormGroup
   isLoading: boolean = false
   feedback: TrainingFeedback
+  topicRatings = []
 
   constructor(private fb: FormBuilder,
     private auth: AuthService, 
@@ -26,8 +27,18 @@ export class FeedbackFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public training: TrainingInfo) { }
 
   ngOnInit() {
-    this.feedback = this.training.training_feedbacks.find(feed => feed.emp_code == this.auth.currentUser.emp_code)
-    console.log(this.feedback)
+    this.feedback = this.training.training_feedbacks.find(feed => 
+      feed.emp_code == this.auth.currentUser.emp_code)
+    // console.log(this.feedback)
+    
+    this.training.training_topics.forEach(topic => {
+      this.topicRatings.push(this.fb.group({
+        rating: [ '4', Validators.required ],
+        emp_code: this.auth.currentUser.emp_code,
+        training_topic_id: [ topic.id ]
+      }))
+    })
+
     this.initForm()
   }
 
@@ -41,6 +52,7 @@ export class FeedbackFormComponent implements OnInit {
       methodology_rating: [this.feedback ? this.feedback.methodology_rating.toString() : '', Validators.required],
       admin_service_rating: [this.feedback ? this.feedback.admin_service_rating.toString() : '', Validators.required],
       overall_utility_rating: [this.feedback ? this.feedback.overall_utility_rating.toString() : '', Validators.required],
+      topic_ratings: this.fb.array(this.topicRatings),
     })
   }
 
@@ -58,10 +70,7 @@ export class FeedbackFormComponent implements OnInit {
         let index = this.training.training_feedbacks.findIndex(data => data.id == this.feedback.id)
         this.training.training_feedbacks[index] = data // Replace with the updated value
         this.dialogRef.close()
-
-        this.snackbar.open("Successfully updated the feedback", "Dismiss", {
-          duration: 1600
-        })
+        this.snackbar.open("Successfully updated the feedback", "Dismiss", { duration: 1600 })
       }, error => {
         this.isLoading = false
       })
@@ -72,10 +81,7 @@ export class FeedbackFormComponent implements OnInit {
         this.isLoading = false
         this.training.training_feedbacks.push(data)
         this.dialogRef.close()
-
-        this.snackbar.open("Successfully submitted the feedback", "Dismiss", {
-          duration: 1600
-        })
+        this.snackbar.open("Successfully submitted the feedback", "Dismiss", { duration: 1600 })
       }, error => {
         this.isLoading = false
       })
@@ -108,5 +114,9 @@ export class FeedbackFormComponent implements OnInit {
 
   get overall_utility_rating() {
     return this.feedbackForm.get('overall_utility_rating')
+  }
+
+  get topic_ratings(): FormArray {
+    return this.feedbackForm.get('topic_ratings') as FormArray
   }
 }

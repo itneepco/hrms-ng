@@ -57,8 +57,8 @@ export class TrainingTableComponent implements OnInit {
     console.log("On Show")
     this.dialog.open(TrainingDetailComponent, { 
       panelClass: 'detail-dialog',
-      width: '720px',
-      height: '560px',
+      width: '680px',
+      height: '580px',
       data:  { 
         training: training,
         isAdminPage: this.isAdminPage 
