@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { TainingTopic } from '../models/training';
+import { TrainingTopic } from '../models/training';
 import { baseURL } from './../../shared/config/baseUrl';
 
 @Injectable({
@@ -15,21 +15,21 @@ export class TrainingTopicService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainingTopics(trainingId: number): Observable<TainingTopic[]> {
-    return this.http.get<TainingTopic[]>(`${this.topic_url}/${trainingId}/topic`)
+  getTrainingTopics(trainingId: number): Observable<TrainingTopic[]> {
+    return this.http.get<TrainingTopic[]>(`${this.topic_url}/${trainingId}/topic`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  addTrainingTopic(trainingId: number, trainingTopic: TainingTopic) {
+  addTrainingTopic(trainingId: number, trainingTopic: TrainingTopic) {
     return this.http.post(`${this.topic_url}/${trainingId}/topic`, trainingTopic)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  editTrainingTopic(trainingId: number, topicId: number, trainingTopic: TainingTopic) {
+  editTrainingTopic(trainingId: number, topicId: number, trainingTopic: TrainingTopic) {
     return this.http.put(`${this.topic_url}/${trainingId}/topic/${topicId}`, trainingTopic)
       .pipe(
         catchError(err => this.handler.handleError(err))

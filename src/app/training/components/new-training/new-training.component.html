@@ -1,5 +1,10 @@
 <div class="main-container">
   <mat-card id="content">
+    <mat-card-title>
+      <span *ngIf="!_trainingInfo; else edit">New Training</span>
+      <ng-template #edit>Edit Training</ng-template>
+    </mat-card-title>
+    
     <mat-horizontal-stepper linear='true' #stepper>
       <mat-step [stepControl]="trngInfoForm">
         <form [formGroup]="trngInfoForm" (ngSubmit)="saveTrainingInfo(stepper)">
@@ -224,11 +229,11 @@
   
           <div class="buttons">
             <button mat-raised-button color="primary" (click)="publishTraining()" 
-              *ngIf="_trainingInfo?.status != training_published"  
+              *ngIf="_trainingInfo?.status == training_created"  
               [disabled]="!_trainingInfo || participants.data.length < 1">Publish</button>
             
             <button mat-raised-button color="primary" (click)="goToManageTrainings()" 
-              *ngIf="_trainingInfo?.status == training_published">Manage Trainings</button>  
+              *ngIf="_trainingInfo?.status != training_created">Manage Trainings</button>  
               
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>

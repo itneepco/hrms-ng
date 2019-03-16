@@ -72,13 +72,20 @@
           </ng-container>
       
           <ng-container matColumnDef="topic">
-            <mat-header-cell *matHeaderCellDef fxFlex="45"> Topic Name </mat-header-cell>
-            <mat-cell *matCellDef="let topic" fxFlex="45"> {{topic.topic_name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="30"> Topic Name </mat-header-cell>
+            <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.topic_name}} </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="faculty">
             <mat-header-cell *matHeaderCellDef fxFlex="30"> Faculty Name </mat-header-cell>
             <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.faculty_name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="rating">
+            <mat-header-cell *matHeaderCellDef fxFlex="15"> Avg. Rating </mat-header-cell>
+            <mat-cell *matCellDef="let topic" fxFlex="15">
+              <span *ngIf="topic.avg_rating">{{ topic.avg_rating | number:'1.1'}} / 5.0</span>
+            </mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="topicColumns"></mat-header-row>
@@ -150,7 +157,7 @@
         <mat-panel-description>Feedback on the training programme</mat-panel-description>
       </mat-expansion-panel-header>
       
-      <div id="avg-rating">
+      <div>
         <div fxLayout="row" fxLayoutAlign="start center">
           <div fxFlex="40">Course Duration</div>
           <div fxFlex="60">
@@ -217,5 +224,5 @@
 </div>
 
 <mat-dialog-actions align="end" id="close-button">
-  <button mat-button type="button" mat-dialog-close>Close</button>
+  <button mat-button color="primary" type="button" mat-dialog-close>Close</button>
 </mat-dialog-actions>

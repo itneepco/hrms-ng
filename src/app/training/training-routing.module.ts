@@ -1,3 +1,4 @@
+import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -18,7 +19,8 @@ const routes: Routes = [
     children: [
       { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
-      { path: 'all-training', component: AllTrainingComponent },
+      // { path: 'all-training', component: AllTrainingComponent },
+      { path: 'training-profile', component: TrainingProfileComponent },
       { 
         path: 'training-admin', 
         component: TrainingAdminComponent,

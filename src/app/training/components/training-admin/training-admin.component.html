@@ -28,3 +28,12 @@
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>
 </div>
+
+<button mat-fab *ngIf="auth.isTrainingAdmin()" 
+  class="fab-bottom-right"
+  matTooltip="Add New Training"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="addNewTraining()">
+    <mat-icon>add</mat-icon>
+</button>

@@ -11,6 +11,7 @@ import { TrainingDetailComponent } from './components/training-detail/training-d
 import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TrainingRoutingModule } from './training-routing.module';
+import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { TrainingRoutingModule } from './training-routing.module';
     TrainingTableComponent,
     TrainingDetailComponent,
     FeedbackFormComponent,
+    TrainingProfileComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,

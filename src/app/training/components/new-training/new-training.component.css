@@ -13,6 +13,11 @@
   flex-direction: row-reverse
 }
 
+.mat-card-title {
+  margin-left: 20px;
+  margin-bottom: 0px;
+}
+
 .content {
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;

@@ -4,10 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { TrainingService } from '../../services/training.service';
-import { Participant, TainingTopic, TrainingAttendance, TrainingFeedback, TrainingInfo } from './../../models/training';
+import { Participant, TrainingAttendance, TrainingFeedback, TrainingInfo, TrainingTopic } from './../../models/training';
 import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { TrainingParticipantService } from './../../services/training-participant.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-training-detail',
@@ -16,7 +15,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 })
 export class TrainingDetailComponent implements OnInit {
   step: number = 0
-  topicColumns = ["sl", "topic", "faculty"]  
+  topicColumns = ["sl", "topic", "faculty", "rating"]  
   attendance: TrainingAttendance[] = []
   participantColumns = []
 
@@ -25,7 +24,7 @@ export class TrainingDetailComponent implements OnInit {
   training_completed = TRAINING_COMPLETED
   training_published = TRAINING_PUBLISHED
   
-  topics = new MatTableDataSource<TainingTopic>([])
+  topics = new MatTableDataSource<TrainingTopic>([])
   participants = new MatTableDataSource<Participant>([])
   feedbacks = []
 

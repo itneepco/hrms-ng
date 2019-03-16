@@ -1,9 +1,11 @@
+import { AuthService } from './../../../auth/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { TrainingInfo } from '../../models/training';
 import { TrainingService } from '../../services/training.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-training-admin',
@@ -22,7 +24,9 @@ export class TrainingAdminComponent implements OnInit {
   pageSize = 10
   pageIndex = 0
 
-  constructor(public trainingService: TrainingService) { }
+  constructor(public trainingService: TrainingService, 
+    public auth: AuthService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getTrainingInfos()
@@ -71,5 +75,9 @@ export class TrainingAdminComponent implements OnInit {
     this.pageIndex = pageEvent.pageIndex
     this.pageSize = pageEvent.pageSize
     this.getPastTrainings()
+  }
+
+  addNewTraining() {
+    this.router.navigate(['/training/new'])
   }
 }
