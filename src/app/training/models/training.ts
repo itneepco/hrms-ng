@@ -7,11 +7,11 @@ export interface TrainingInfo {
   objective: string
   training_type: string
   training_institute?: TrainingInstitute  //Required only for external training
-  status: string // Training status
-  training_order_name: string // Training order name
-  training_topics?: TainingTopic[]  //Required only for in-house training
+  status: string  // Training status
+  training_order_name: string   // Training order name
   training_participants: Participant[]
   training_feedbacks: TrainingFeedback[]
+  training_topics?: TrainingTopic[]   //Required only for in-house training only
 }
 
 //model for training Form
@@ -39,11 +39,14 @@ export interface Participant {
 }
 
 //Required for in-house training
-export interface TainingTopic {
+export interface TrainingTopic {
   id: number
   training_info_id: number
   topic_name: string
   faculty_name: string
+  emp_code?: string
+  rating?: number
+  avg_rating?: number
 }
 
 //Required for external training

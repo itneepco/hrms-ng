@@ -35,7 +35,7 @@
         <div formArrayName="topic_ratings">
           <div *ngFor="let item of topic_ratings.controls; let i=index">
             <div [formGroupName]="i" fxLayout="row" class="row">
-              <div fxFlex="25">{{training.training_topics[i].faculty_name}}a</div>
+              <div fxFlex="25">{{training.training_topics[i].faculty_name}}</div>
               <div fxFlex="25">{{training.training_topics[i].topic_name}}</div>
               <div fxFlex="50">
                 <mat-radio-group formControlName="rating">

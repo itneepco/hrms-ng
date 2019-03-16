@@ -29,13 +29,15 @@ export class FeedbackFormComponent implements OnInit {
   ngOnInit() {
     this.feedback = this.training.training_feedbacks.find(feed => 
       feed.emp_code == this.auth.currentUser.emp_code)
-    // console.log(this.feedback)
+    console.log(this.feedback)
     
     this.training.training_topics.forEach(topic => {
       this.topicRatings.push(this.fb.group({
-        rating: [ '4', Validators.required ],
+        rating: [ topic.rating ? topic.rating.toString() : '', Validators.required ],
         emp_code: this.auth.currentUser.emp_code,
-        training_topic_id: [ topic.id ]
+        training_topic_id: [ topic.id ],
+        topic_name: topic.topic_name,
+        faculty_name: topic.faculty_name
       }))
     })
 
@@ -64,11 +66,14 @@ export class FeedbackFormComponent implements OnInit {
     
     if(this.feedback && this.feedback.id) {
       this.feedbackService.editFeedback(this.training.id, this.feedback.id, this.feedbackForm.value)
-      .subscribe((data: TrainingFeedback) => {
+      .subscribe((myFeedback: TrainingFeedback) => {
+        console.log(myFeedback)
         this.isLoading = false
         //find the index of old feedback before update
         let index = this.training.training_feedbacks.findIndex(data => data.id == this.feedback.id)
-        this.training.training_feedbacks[index] = data // Replace with the updated value
+        this.training.training_feedbacks[index] = myFeedback // Replace with the updated value
+        this.training.training_topics = this.topic_ratings.value
+
         this.dialogRef.close()
         this.snackbar.open("Successfully updated the feedback", "Dismiss", { duration: 1600 })
       }, error => {
@@ -77,9 +82,11 @@ export class FeedbackFormComponent implements OnInit {
     } 
     else {
       this.feedbackService.addFeedback(this.training.id, this.feedbackForm.value)
-      .subscribe((data: TrainingFeedback) => {
+      .subscribe((myFeedback: TrainingFeedback) => {
         this.isLoading = false
-        this.training.training_feedbacks.push(data)
+        this.training.training_feedbacks.push(myFeedback)
+        this.training.training_topics = this.topic_ratings.value
+        
         this.dialogRef.close()
         this.snackbar.open("Successfully submitted the feedback", "Dismiss", { duration: 1600 })
       }, error => {

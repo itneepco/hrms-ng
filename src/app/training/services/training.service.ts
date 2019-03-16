@@ -90,7 +90,7 @@ export class TrainingService {
   }
 
   feedbackPending(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/feedback-pending` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
