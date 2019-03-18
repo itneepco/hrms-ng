@@ -56,7 +56,7 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data.length > 0">
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data && topics.data.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>Session Topics</mat-panel-title>
         <mat-panel-description>Details of training topics</mat-panel-description>
@@ -82,9 +82,13 @@
           </ng-container>
 
           <ng-container matColumnDef="rating">
-            <mat-header-cell *matHeaderCellDef fxFlex="15"> Avg. Rating </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="15"> 
+              <span *ngIf="isAdminPage">Avg. Rating</span>
+              <span *ngIf="!isAdminPage">Rating</span>
+            </mat-header-cell>
             <mat-cell *matCellDef="let topic" fxFlex="15">
               <span *ngIf="topic.avg_rating">{{ topic.avg_rating | number:'1.1'}} / 5.0</span>
+              <span *ngIf="topic.rating">{{ topic.rating | number:'1.1'}} / 5.0</span>
             </mat-cell>
           </ng-container>
 
@@ -94,7 +98,7 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" *ngIf="participants.data">
       <mat-expansion-panel-header>
         <mat-panel-title>Participants</mat-panel-title>
         <mat-panel-description>Details of training participants</mat-panel-description>
@@ -109,31 +113,41 @@
             </mat-cell>
           </ng-container>
           
-          <ng-container matColumnDef="sl">
-            <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No </mat-header-cell>
+          <ng-container matColumnDef="sl" *ngIf="!isProfilePage">
+            <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. </mat-header-cell>
             <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
               {{ i + 1 }} 
             </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="emp_code">
-            <mat-header-cell *matHeaderCellDef fxFlex="12"> Emp Code </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="12"> {{participant.emp_code}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="15"> Emp Code </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="15"> {{participant.emp_code}} </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef fxFlex="30"> Full Name </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="30"> {{participant.name | titlecase}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="28"> Full Name </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="28"> {{participant.name | titlecase}} </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="designation">
-            <mat-header-cell *matHeaderCellDef fxFlex="25"> Designation </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="25"> {{participant.designation}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="27"> Designation </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="27"> {{participant.designation}} </mat-cell>
           </ng-container>
       
+          <ng-container matColumnDef="grade" *ngIf="isProfilePage">
+            <mat-header-cell *matHeaderCellDef fxFlex="8"> Grade </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="8"> {{participant.grade}} </mat-cell>
+          </ng-container>
+
           <ng-container matColumnDef="project">
-            <mat-header-cell *matHeaderCellDef fxFlex="13"> Project </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="13"> {{participant.project}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="12"> Project </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="12"> {{participant.project}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="attendance">
+            <mat-header-cell *matHeaderCellDef fxFlex="12"> Attendance </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="12"> {{getAttendance(participant)}} </mat-cell>
           </ng-container>
       
           <mat-header-row *matHeaderRowDef="participantColumns"></mat-header-row>
@@ -151,7 +165,7 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="feedbacks.length > 0 && isAdminPage">
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="(feedback && feedbacks.length > 0)">
       <mat-expansion-panel-header>
         <mat-panel-title>Feedbacks</mat-panel-title>
         <mat-panel-description>Feedback on the training programme</mat-panel-description>
@@ -162,7 +176,9 @@
           <div fxFlex="40">Course Duration</div>
           <div fxFlex="60">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div class="rating">{{averageRating.duration | number:'1.1'}} / 5.0</div>
+              <div class="rating">
+                <span *ngIf="isAdminPage">{{averageRating.duration | number:'1.1'}}</span>
+                <span>/ 5.0</span></div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>

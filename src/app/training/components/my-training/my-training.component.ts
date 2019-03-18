@@ -13,7 +13,7 @@ import { TrainingService } from '../../services/training.service';
 export class MyTrainingComponent implements OnInit {
   dataSource: MatTableDataSource<TrainingInfo>
   errMsg: string
-  isLoading = true
+  isLoading = false
   
   // Pagination variables 
   dataLength = 0

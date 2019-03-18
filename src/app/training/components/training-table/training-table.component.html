@@ -1,14 +1,14 @@
 <mat-card *ngIf="dataSource" class="table">
   <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No </mat-header-cell>
       <mat-cell *matCellDef="let training; let i = index;" fxFlex="8"> 
         {{ i + 1 + pageIndex*pageSize }} 
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef fxFlex="41"> Course Title </mat-header-cell>
-      <mat-cell *matCellDef="let training" fxFlex="41"> {{training.course_title}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="40"> Course Title </mat-header-cell>
+      <mat-cell *matCellDef="let training" fxFlex="40"> {{training.course_title}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
@@ -17,23 +17,23 @@
     </ng-container>
 
     <ng-container matColumnDef="from_date">
-      <mat-header-cell *matHeaderCellDef fxFlex="13"> From Date </mat-header-cell>
-      <mat-cell *matCellDef="let training" fxFlex="13"> {{training.from_date | date:'mediumDate'}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="14"> From Date </mat-header-cell>
+      <mat-cell *matCellDef="let training" fxFlex="14"> {{training.from_date | date:'mediumDate'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status" *ngIf="isAdminPage">
-      <mat-header-cell *matHeaderCellDef fxFlex="13"> Status </mat-header-cell>
-      <mat-cell *matCellDef="let training" fxFlex="13"> {{trainingService.getStatus(training.status)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Status </mat-header-cell>
+      <mat-cell *matCellDef="let training" fxFlex="15"> {{trainingService.getStatus(training.status)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="venue" *ngIf="!isAdminPage">
-      <mat-header-cell *matHeaderCellDef fxFlex="13"> Venue </mat-header-cell>
-      <mat-cell *matCellDef="let training" fxFlex="13"> {{training.venue}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Venue </mat-header-cell>
+      <mat-cell *matCellDef="let training" fxFlex="15"> {{training.venue}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let training" fxFlex="15">
+      <mat-header-cell *matHeaderCellDef fxFlex="13"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let training" fxFlex="13">
         <ng-container *ngIf="!isFeedbackPage; else feedback">
           <button mat-icon-button (click)="onShow(training)" color="accent">
             <mat-icon>search</mat-icon>
@@ -57,7 +57,7 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+  <mat-paginator [pageSizeOptions]="[1, 10, 15, 30, 50]"
     [length]="dataLength"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"

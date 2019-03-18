@@ -9,8 +9,8 @@ export interface TrainingInfo {
   training_institute?: TrainingInstitute  //Required only for external training
   status: string  // Training status
   training_order_name: string   // Training order name
-  training_participants: Participant[]
   training_feedbacks: TrainingFeedback[]
+  training_participants: Participant[]
   training_topics?: TrainingTopic[]   //Required only for in-house training only
 }
 
@@ -36,6 +36,7 @@ export interface Participant {
   designation: string
   project: string
   grade: string
+  present: boolean //Attendnace Status
 }
 
 //Required for in-house training

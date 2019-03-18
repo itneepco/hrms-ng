@@ -33,6 +33,13 @@ export class TrainingService {
   //   )
   // }
 
+  getEmployeeTrainings(pageIndex: number, pageSize: number, empCode: string): Observable<TrainingInfo[]> {
+    return this.http.get<TrainingInfo[]>(`${this.training_url}/employee/${empCode}` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
   getTrainingInfos(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
     return this.http.get<TrainingInfo[]>(this.training_url + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(

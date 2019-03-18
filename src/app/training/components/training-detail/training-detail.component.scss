@@ -22,16 +22,7 @@
 }
 
 #participants, #topics {
-  mat-table {
-    mat-header-row {
-      min-height: 35px;
-    }
-    mat-row {
-      min-height: 32px;
-      font-size: 12px;
-    }
-    margin-bottom: 16px;
-  }
+  margin-bottom: 16px;
 }
 
 #header {

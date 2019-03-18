@@ -7,6 +7,7 @@ import { TrainingService } from '../../services/training.service';
 import { Participant, TrainingAttendance, TrainingFeedback, TrainingInfo, TrainingTopic } from './../../models/training';
 import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { TrainingParticipantService } from './../../services/training-participant.service';
+import { e } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-training-detail',
@@ -21,6 +22,7 @@ export class TrainingDetailComponent implements OnInit {
 
   training: TrainingInfo
   isAdminPage: boolean
+  isProfilePage: boolean
   training_completed = TRAINING_COMPLETED
   training_published = TRAINING_PUBLISHED
   
@@ -36,12 +38,16 @@ export class TrainingDetailComponent implements OnInit {
   ngOnInit() {
     this.training = this.data.training
     this.isAdminPage = this.data.isAdminPage
+    this.isProfilePage = this.data.isProfilePage
     this.topics.data = this.training.training_topics
     this.participants.data = this.training.training_participants
     this.feedbacks = this.training.training_feedbacks
 
-    if(this.data.isAdminPage) {
+    if(this.isAdminPage) {
       this.participantColumns = ["mark", "sl", "emp_code", "name", "designation", "project"]
+    }
+    else if(this.isProfilePage) {
+      this.participantColumns = ["emp_code", "name", "designation",  "grade", "project", "attendance"]
     } else {
       this.participantColumns = ["sl", "emp_code", "name", "designation", "project"]
     }
@@ -127,5 +133,12 @@ export class TrainingDetailComponent implements OnInit {
       admin_service: sum.admin_service / total,
       overall_utility: sum.overall_utility / total
     }
+  }
+
+  getAttendance(participant: Participant) {
+    if(participant.present) 
+      return "Present"
+    else 
+      return "Absent"
   }
 }

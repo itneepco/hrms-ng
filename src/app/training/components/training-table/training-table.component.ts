@@ -20,6 +20,7 @@ export class TrainingTableComponent implements OnInit {
   displayedColumns = []
   @Input('isAdminPage') isAdminPage: boolean = false
   @Input('isFeedbackPage') isFeedbackPage: boolean = false
+  @Input('isProfilePage') isProfilePage: boolean = false
 
   @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>
   
@@ -61,7 +62,8 @@ export class TrainingTableComponent implements OnInit {
       height: '580px',
       data:  { 
         training: training,
-        isAdminPage: this.isAdminPage 
+        isAdminPage: this.isAdminPage,
+        isProfilePage: this.isProfilePage 
       } 
     })
   }
