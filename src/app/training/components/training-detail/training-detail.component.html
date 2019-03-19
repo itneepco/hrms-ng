@@ -56,7 +56,7 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data && topics.data.length > 0">
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>Session Topics</mat-panel-title>
         <mat-panel-description>Details of training topics</mat-panel-description>
@@ -72,13 +72,13 @@
           </ng-container>
       
           <ng-container matColumnDef="topic">
-            <mat-header-cell *matHeaderCellDef fxFlex="30"> Topic Name </mat-header-cell>
-            <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.topic_name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="35"> Topic Name </mat-header-cell>
+            <mat-cell *matCellDef="let topic" fxFlex="35"> {{topic.topic_name}} </mat-cell>
           </ng-container>
       
           <ng-container matColumnDef="faculty">
-            <mat-header-cell *matHeaderCellDef fxFlex="30"> Faculty Name </mat-header-cell>
-            <mat-cell *matCellDef="let topic" fxFlex="30"> {{topic.faculty_name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="35"> Faculty Name </mat-header-cell>
+            <mat-cell *matCellDef="let topic" fxFlex="35"> {{topic.faculty_name}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="rating">
@@ -98,10 +98,16 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" *ngIf="participants.data">
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
       <mat-expansion-panel-header>
-        <mat-panel-title>Participants</mat-panel-title>
-        <mat-panel-description>Details of training participants</mat-panel-description>
+        <mat-panel-title>
+          <ng-container *ngIf="isProfilePage; else partTitle">Participation</ng-container>
+          <ng-template #partTitle>Participants</ng-template>
+        </mat-panel-title>
+        <mat-panel-description>
+          <ng-container *ngIf="isProfilePage; else partDesc">Details of employee participation</ng-container>
+          <ng-template #partDesc>Details of training participants</ng-template>
+        </mat-panel-description>
       </mat-expansion-panel-header>
       
       <div id="participants">
@@ -136,13 +142,13 @@
           </ng-container>
       
           <ng-container matColumnDef="grade" *ngIf="isProfilePage">
-            <mat-header-cell *matHeaderCellDef fxFlex="8"> Grade </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="8"> {{participant.grade}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="10"> Grade </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="10"> {{participant.grade}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="project">
-            <mat-header-cell *matHeaderCellDef fxFlex="12"> Project </mat-header-cell>
-            <mat-cell *matCellDef="let participant" fxFlex="12"> {{participant.project}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="13"> Project </mat-header-cell>
+            <mat-cell *matCellDef="let participant" fxFlex="13"> {{participant.project}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="attendance">
@@ -165,7 +171,8 @@
       </div>
     </mat-expansion-panel>
   
-    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" *ngIf="(feedback && feedbacks.length > 0)">
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" 
+        *ngIf="(isAdminPage || isProfilePage) && (feedbacks && feedbacks.length > 0)">
       <mat-expansion-panel-header>
         <mat-panel-title>Feedbacks</mat-panel-title>
         <mat-panel-description>Feedback on the training programme</mat-panel-description>
@@ -173,48 +180,66 @@
       
       <div>
         <div fxLayout="row" fxLayoutAlign="start center">
-          <div fxFlex="40">Course Duration</div>
-          <div fxFlex="60">
+          <div fxFlex="50">Course Duration Rating <span *ngIf="isAdminPage">(avg.)</span></div>
+          <div fxFlex="50">
             <div fxLayout="row" fxLayoutAlign="start center">
               <div class="rating">
                 <span *ngIf="isAdminPage">{{averageRating.duration | number:'1.1'}}</span>
-                <span>/ 5.0</span></div>
+                <span *ngIf="isProfilePage">{{feedbacks[0].duration_rating | number:'1.1'}}</span>
+                <span> / 5.0</span>
+              </div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center">
-          <div fxFlex="40">Course material</div>
-          <div fxFlex="60">
+          <div fxFlex="50">Course material Rating <span *ngIf="isAdminPage">(avg.)</span></div>
+          <div fxFlex="50">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div class="rating">{{averageRating.content | number:'1.1'}} / 5.0</div>
+              <div class="rating">
+                <span *ngIf="isAdminPage">{{averageRating.content | number:'1.1'}}</span>
+                <span *ngIf="isProfilePage">{{feedbacks[0].content_rating | number:'1.1'}}</span>
+                <span> / 5.0</span>
+              </div>  
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center">
-          <div fxFlex="40">Training Methodology</div>
-          <div fxFlex="60">
+          <div fxFlex="50">Training Methodology Rating <span *ngIf="isAdminPage">(avg.)</span></div>
+          <div fxFlex="50">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div class="rating">{{averageRating.methodology | number:'1.1'}} / 5.0</div>
+              <div class="rating">
+                <span *ngIf="isAdminPage">{{averageRating.methodology | number:'1.1'}}</span>
+                <span *ngIf="isProfilePage">{{feedbacks[0].methodology_rating | number:'1.1'}}</span>
+                <span> / 5.0</span>
+              </div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center">
-          <div fxFlex="40">Administrative Service</div>
-          <div fxFlex="60">
+          <div fxFlex="50">Administrative Service Rating <span *ngIf="isAdminPage">(avg.)</span></div>
+          <div fxFlex="50">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div class="rating">{{averageRating.admin_service | number:'1.1'}} / 5.0</div>
+              <div class="rating">
+                <span *ngIf="isAdminPage">{{averageRating.admin_service | number:'1.1'}}</span>
+                <span *ngIf="isProfilePage">{{feedbacks[0].admin_service_rating | number:'1.1'}}</span>
+                <span> / 5.0</span>
+              </div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center">
-          <div fxFlex="40">Overall Utility</div>
-          <div fxFlex="60">
+          <div fxFlex="50">Overall Utility Rating <span *ngIf="isAdminPage">(avg.)</span></div>
+          <div fxFlex="50">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div class="rating">{{averageRating.overall_utility | number:'1.1'}} / 5.0</div>
+              <div class="rating">
+                <span *ngIf="isAdminPage">{{averageRating.overall_utility | number:'1.1'}}</span>
+                <span *ngIf="isProfilePage">{{feedbacks[0].overall_utility_rating | number:'1.1'}}</span>
+                <span> / 5.0</span>
+              </div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>

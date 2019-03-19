@@ -7,7 +7,6 @@ import { TrainingService } from '../../services/training.service';
 import { Participant, TrainingAttendance, TrainingFeedback, TrainingInfo, TrainingTopic } from './../../models/training';
 import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { TrainingParticipantService } from './../../services/training-participant.service';
-import { e } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-training-detail',
@@ -16,7 +15,7 @@ import { e } from '@angular/core/src/render3';
 })
 export class TrainingDetailComponent implements OnInit {
   step: number = 0
-  topicColumns = ["sl", "topic", "faculty", "rating"]  
+  topicColumns = ["sl", "topic", "faculty", "rating"]
   attendance: TrainingAttendance[] = []
   participantColumns = []
 
@@ -47,9 +46,11 @@ export class TrainingDetailComponent implements OnInit {
       this.participantColumns = ["mark", "sl", "emp_code", "name", "designation", "project"]
     }
     else if(this.isProfilePage) {
-      this.participantColumns = ["emp_code", "name", "designation",  "grade", "project", "attendance"]
-    } else {
+      this.participantColumns = ["name", "designation",  "grade", "project", "attendance"]
+    } 
+    else {
       this.participantColumns = ["sl", "emp_code", "name", "designation", "project"]
+      this.topicColumns = ["sl", "topic", "faculty"] 
     }
   }
 
