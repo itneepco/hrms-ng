@@ -54,6 +54,10 @@ export interface TrainingTopic {
 export interface TrainingInstitute {
   id: number
   name: string
+  address: string
+  website: string
+  contact_no: string
+  contact_person: string
 }
 
 export interface TrainingFeedback {
@@ -73,7 +77,7 @@ export interface TrainingEffectiveness {
   id: number
   training_info_id: number
   comments: string
-  other_tr_recommendation: string // other training recommendation by controlling officer
+  other_trg_recommendation: string // other training recommendation by controlling officer
   status: string //Whether 1) submitted by controlling officer or 2) accepted by HOD/HOP
   application_rating: number
   effectiveness_rating: number

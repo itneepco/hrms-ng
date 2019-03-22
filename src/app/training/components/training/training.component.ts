@@ -10,9 +10,9 @@ import { AuthService } from './../../../auth/services/auth.service';
 })
 export class TrainingComponent implements OnInit {
   nav: NavObject[] = [
+    { name: 'Dashboard', path: 'training-dashboard' },
     { name: 'My Training', path: 'my-training' },
     { name: 'My Feedback', path: 'feedback' },
-    // { name: 'All Training', path: 'all-training' },
   ]
 
   constructor(private auth: AuthService) {}
@@ -21,6 +21,7 @@ export class TrainingComponent implements OnInit {
     if(this.auth.isTrainingAdmin()) {
       this.nav.push({ name: 'Manage Training', path: 'training-admin' })
       this.nav.push({ name: 'View Profile', path: 'training-profile' })
+      this.nav.push({ name: 'Institutes', path: 'training-institute' })
     }
   }
 }

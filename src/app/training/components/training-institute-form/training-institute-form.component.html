@@ -1,0 +1,30 @@
+
+
+<form [formGroup]="instituteForm" fxLayout="column" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput placeholder="Institute Name" formControlName="name">
+    <mat-error *ngIf="name.errors?.required">Institute name is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Address" formControlName="address"></textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Website" formControlName="website">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Contact Person" formControlName="contact_person">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Contact No" formControlName="contact_no">
+    <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
+  </mat-form-field>
+
+  <div fxLayoutAlign="end center" id="buttons">
+    <button mat-raised-button matDialogClose class="btn" type="button">Close</button>
+    <button mat-raised-button color="primary" class="btn" type="submit">Submit</button>
+  </div>
+</form>

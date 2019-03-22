@@ -6,6 +6,12 @@ body {
   margin: 0px;
 }
 
+button.fab-bottom-right {
+  position: fixed;
+  right: 15px;
+  bottom: 20px;
+}
+
 .add-node {
 	.mat-dialog-container {
 	   padding: 0px 0px 24px 0px !important;

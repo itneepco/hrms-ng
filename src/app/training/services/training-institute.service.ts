@@ -20,4 +20,32 @@ export class TrainingInstituteService {
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  getInstitutesPaginate(pageIndex: number, pageSize: number) {
+    return this.http.get<TrainingInstitute[]>(this.training_institute_url + "/paginate?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  addTrainingInfo(institute: TrainingInstitute) {
+    return this.http.post(this.training_institute_url, institute)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  editTrainingInfo(id: number, institute: TrainingInstitute) {
+    return this.http.put(`${this.training_institute_url}/${id}`, institute)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  deleteTrainingInfo(id: number) {
+    return this.http.delete(`${this.training_institute_url}/${id}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }
