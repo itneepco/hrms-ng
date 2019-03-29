@@ -27,6 +27,7 @@
     "@auth0/angular-jwt": "^2.0.0",
     "angular-calendar": "^0.25.2",
     "core-js": "^2.5.4",
+    "file-saver": "^2.0.1",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.4.1",
     "rxjs": "^6.1.0",

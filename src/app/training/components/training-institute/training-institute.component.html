@@ -18,13 +18,13 @@
       </ng-container>
   
       <ng-container matColumnDef="website">
-        <mat-header-cell *matHeaderCellDef fxFlex="16"> Website </mat-header-cell>
-        <mat-cell *matCellDef="let institute" fxFlex="16" class="website"> {{institute.website}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Website </mat-header-cell>
+        <mat-cell *matCellDef="let institute" fxFlex="15" class="website"> {{institute.website}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="contact">
-        <mat-header-cell *matHeaderCellDef fxFlex="18"> Contact </mat-header-cell>
-        <mat-cell *matCellDef="let institute" fxFlex="18" class="contact"> 
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Contact </mat-header-cell>
+        <mat-cell *matCellDef="let institute" fxFlex="15" class="contact"> 
           <div fxLayout="column">
             <div>{{institute.contact_person}}</div>
             <div *ngIf="institute.contact_no">
@@ -36,11 +36,14 @@
       </ng-container>
   
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef fxFlex="8"> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let institute" fxFlex="8">
+        <mat-header-cell *matHeaderCellDef fxFlex="12"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let institute" fxFlex="12">
           <ng-container>
             <button mat-icon-button (click)="onEdit(institute)" color="primary">
               <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onDelete(institute)" color="warn">
+              <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
         </mat-cell>
@@ -50,7 +53,7 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <mat-paginator [pageSizeOptions]="[1, 10, 15, 30, 50]"
+    <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
       [length]="dataLength"
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"

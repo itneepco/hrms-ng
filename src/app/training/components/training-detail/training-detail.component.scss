@@ -21,6 +21,14 @@
   font-size: 14px;
 }
 
+.download {
+  text-decoration: underline;
+  color: blue;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 #participants, #topics {
   margin-bottom: 16px;
 }

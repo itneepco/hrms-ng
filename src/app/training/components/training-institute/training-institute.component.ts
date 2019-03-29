@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrainingInstituteFormComponent } from './../training-institute-form/training-institute-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
@@ -24,8 +25,9 @@ export class TrainingInstituteComponent implements OnInit {
 
   displayedColumns = ["position", "name", "address", "website", "contact", "actions"]
   
-  constructor(private instituteService: TrainingInstituteService, 
-    private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+    private snackbar: MatSnackBar,
+    private instituteService: TrainingInstituteService) { }
 
   ngOnInit() {
     this.getTrainingInstitutes()
@@ -61,6 +63,27 @@ export class TrainingInstituteComponent implements OnInit {
       temp[index] = result
       this.dataSource.data = temp
     })
+  }
+
+  onDelete(institute: TrainingInstitute) {
+    let retVal = confirm("Are you sure you want to delete?")
+    if(retVal != true) return
+
+    this.instituteService.deleteTrainingInstitute(institute.id)
+      .subscribe(() => {
+        let temp = this.dataSource.data
+        let index = temp.indexOf(institute)
+        temp.splice(index, 1)
+        this.dataSource.data = temp
+        this.snackbar.open("Successfully deleted the institute record", "Dismiss", {
+          duration: 1600
+        }) 
+      }, (error) => {
+        console.log(error)
+        this.snackbar.open("Cannot delete institute record. Its being referenced by other table", "Dismiss", {
+          duration: 2500
+        }) 
+      })
   }
 
   getTrainingInstitutes() {

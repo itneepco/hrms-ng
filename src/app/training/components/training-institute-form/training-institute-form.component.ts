@@ -43,7 +43,7 @@ export class TrainingInstituteFormComponent implements OnInit {
     console.log(this.instituteForm.value)
     this.isLoading = true
     if(this.trainingInstitute && this.trainingInstitute.id) {
-      this.instituteService.editTrainingInfo(this.trainingInstitute.id, this.instituteForm.value)
+      this.instituteService.editTrainingInstitute(this.trainingInstitute.id, this.instituteForm.value)
       .subscribe((newValue: TrainingInstitute) => {
         this.isLoading = false
         this.snackbar.open("Successfully updated the institute record", "Dismiss", {
@@ -53,7 +53,7 @@ export class TrainingInstituteFormComponent implements OnInit {
       }, (error) => this.isLoading = false)
     }
     else {
-      this.instituteService.addTrainingInfo(this.instituteForm.value)
+      this.instituteService.addTrainingInstitute(this.instituteForm.value)
       .subscribe((value: TrainingInstitute) => {
         this.isLoading = false
         this.snackbar.open("Successfully added the institute record", "Dismiss", {

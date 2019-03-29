@@ -50,7 +50,9 @@
         <div fxLayout="row">
           <div class="info" fxFlex>
             <span class="title">Training Order: </span>
-            {{ training.training_order_name }}
+            <span *ngIf="training.training_order_name"
+              (click)="downloadOrder(training.id)"
+              class="download">Download</span>
           </div>
         </div>  
       </div>

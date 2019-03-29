@@ -75,7 +75,7 @@
         <ng-template matStepLabel>Upload Training Order</ng-template>    
         <div fxLayout="column" fxLayoutAlign="space-between stretch">
           <div fxFlex class="content">
-            <input type="file" (change)="selectFile($event)">
+            <input type="file" accept="application/pdf" (change)="selectFile($event)">
             <div id="upload_progress">
               <span>Upload progress status</span>
               <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>

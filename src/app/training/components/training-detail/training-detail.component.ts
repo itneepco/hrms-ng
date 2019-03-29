@@ -7,6 +7,7 @@ import { TrainingService } from '../../services/training.service';
 import { Participant, TrainingAttendance, TrainingFeedback, TrainingInfo, TrainingTopic } from './../../models/training';
 import { TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
 import { TrainingParticipantService } from './../../services/training-participant.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-training-detail',
@@ -32,6 +33,7 @@ export class TrainingDetailComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data, 
     public trainingService: TrainingService,
     private snackbar: MatSnackBar,
+    @Inject('BaseURL') public BaseURL,
     private participantService: TrainingParticipantService) {}
 
   ngOnInit() {
@@ -141,5 +143,13 @@ export class TrainingDetailComponent implements OnInit {
       return "Present"
     else 
       return "Absent"
+  }
+
+  downloadOrder(id: number) {
+    this.trainingService.downloadOrder(id)
+      .subscribe(data => {
+        console.log(data)
+        saveAs(data, `order${id}.pdf`)
+      })
   }
 }

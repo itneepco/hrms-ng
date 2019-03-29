@@ -7,7 +7,12 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
 import { TrainingForm, TrainingInfo } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
 import { baseURL } from './../../shared/config/baseUrl';
-import { EXTERNAL_TRAINING, TRAINING_PUBLISHED, TRAINING_COMPLETED, TRAINING_CREATED } from './../models/training-global-codes';
+import {
+  EXTERNAL_TRAINING,
+  TRAINING_COMPLETED,
+  TRAINING_CREATED,
+  TRAINING_PUBLISHED,
+} from './../models/training-global-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -18,20 +23,29 @@ export class TrainingService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  // upload(data) {
-  //   let formData = new FormData()
-  //   formData.append('code', data.code)
-  //   formData.append('day', data.day)
-  //   formData.append('report', data.report)
+  uploadOrder(id: number, order) {
+    let formData = new FormData()
+    // formData.append('code', data.code)
+    // formData.append('day', data.day)
+    formData.append('order', order)
 
-  //   return this.http.post(this.training_url, formData, {
-  //     reportProgress: true,
-  //     observe: 'events'
-  //   })
-  //   .pipe(
-  //     catchError(err => this.handler.handleError(err))
-  //   )
-  // }
+    return this.http.post(`${this.training_url}/${id}/upload-order`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    })
+    .pipe(
+      catchError(err => this.handler.handleError(err))
+    )
+  }
+
+  downloadOrder(id: number) {
+    return this.http.get(`${this.training_url}/${id}/download-order`, {
+      responseType: 'blob'
+    })
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 
   getEmployeeTrainings(pageIndex: number, pageSize: number, empCode: string): Observable<TrainingInfo[]> {
     return this.http.get<TrainingInfo[]>(`${this.training_url}/employee/${empCode}` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)

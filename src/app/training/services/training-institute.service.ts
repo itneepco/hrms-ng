@@ -28,21 +28,21 @@ export class TrainingInstituteService {
       )
   }
 
-  addTrainingInfo(institute: TrainingInstitute) {
+  addTrainingInstitute(institute: TrainingInstitute) {
     return this.http.post(this.training_institute_url, institute)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  editTrainingInfo(id: number, institute: TrainingInstitute) {
+  editTrainingInstitute(id: number, institute: TrainingInstitute) {
     return this.http.put(`${this.training_institute_url}/${id}`, institute)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  deleteTrainingInfo(id: number) {
+  deleteTrainingInstitute(id: number) {
     return this.http.delete(`${this.training_institute_url}/${id}`)
       .pipe(
         catchError(err => this.handler.handleError(err))

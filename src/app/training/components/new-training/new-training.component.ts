@@ -1,21 +1,22 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
-import { TrainingTopic, Participant, TrainingInfo } from '../../models/training';
-import { IN_HOUSE_TRAINING, TRAINING_TYPES, TRAINING_PUBLISHED, TRAINING_CREATED } from '../../models/training-global-codes';
+import { Participant, TrainingInfo, TrainingTopic } from '../../models/training';
+import { IN_HOUSE_TRAINING, TRAINING_CREATED, TRAINING_PUBLISHED, TRAINING_TYPES } from '../../models/training-global-codes';
 import { TrainingTopicService } from '../../services/training-topic.service';
 import { TrainingService } from '../../services/training.service';
 import { EXTERNAL_TRAINING } from './../../models/training-global-codes';
 import { DataService } from './../../services/data.service';
 import { TrainingInstituteService } from './../../services/training-institute.service';
 import { TrainingParticipantService } from './../../services/training-participant.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-training',
@@ -134,25 +135,24 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-  //   if(!this.selectedFile) return
+    if(!this.selectedFile) return
 
-  //   let data = {
-  //     code: '1',
-  //     day: (new Date('2019-02-06')).toDateString(),
-  //     report: this.selectedFile
-  //   }
-
-  //   this.trainingService.upload(data)
-  //     .subscribe(event => {
-  //       if(event.type == HttpEventType.UploadProgress) {
-  //         this.progressValue = Math.round((event.loaded / event.total) * 100)
-  //       } 
-  //       else if(event.type == HttpEventType.Response) {
-  //         console.log(event.body)
-  //       }
-  //     }, error => {
-  //       console.log(error)
-  //     })
+    this.trainingService.uploadOrder(this._trainingInfo.id ,this.selectedFile)
+      .subscribe(event => {
+        if(event.type == HttpEventType.UploadProgress) {
+          this.progressValue = Math.round((event.loaded / event.total) * 100)
+        } 
+        else if(event.type == HttpEventType.Response) {
+          this.snackbar.open("Successfully uploaded the training order", "Dismiss", { 
+            panelClass: ['blue-snackbar'],
+            duration: 2000 
+          })
+        }
+      }, error => {
+        console.log(error)
+        this.progressValue = 0
+        this.snackbar.open("Error!! Please upload only PDF file", "Dismiss", { duration: 2000 })
+      })
   }
 
   clearEmployeeSearch() {
