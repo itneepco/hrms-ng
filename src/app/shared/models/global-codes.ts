@@ -32,3 +32,22 @@ export const EMPLOYEE_ROLES = [
   { name: "Finance Report Uploader", code: FIN_REP_UPLOADER },
   { name: "HR Leave Super Admin", code: HR_LEAVE_SUPER_ADMIN }    
 ]
+
+export const CALENDAR_COLORS = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  },
+  green: {
+    primary: '#25A707',
+    secondary: '#E9FEE4'
+  }
+};

@@ -5,8 +5,9 @@ import { catchError, map } from 'rxjs/operators';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { baseURL } from '../config/baseUrl';
-import { ErrorHandlerService } from './error-handler.service';
 import { Holiday } from '../models/holiday';
+import { CALENDAR_COLORS } from './../models/global-codes';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,7 @@ export class HolidayService {
       )
   }
 
+  // Gets the holiday list for displaying in the calendar
   getCalendarEvents() {
     return this.http.get<Holiday[]>(baseURL + `api/projects/${this.auth.currentUser.project}/calendar`)
       .pipe(
@@ -58,7 +60,7 @@ export class HolidayService {
               title: holiday.name,
               start: new Date(holiday.day),
               end: new Date(holiday.day),
-              color: holiday.type == "RH" ? this.colors.yellow : this.colors.blue,
+              color: holiday.type == "RH" ? CALENDAR_COLORS.yellow : CALENDAR_COLORS.blue,
               type: holiday.type
             }
             return calEvent
@@ -67,20 +69,5 @@ export class HolidayService {
         catchError(err => this.handler.handleError(err))
       )
   }
-
-  colors: any = {
-    red: {
-      primary: '#ad2121',
-      secondary: '#FAE3E3'
-    },
-    blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF'
-    },
-    yellow: {
-      primary: '#e3bc08',
-      secondary: '#FDF1BA'
-    }
-  };
 }
 

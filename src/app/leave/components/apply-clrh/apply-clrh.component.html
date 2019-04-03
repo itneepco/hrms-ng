@@ -21,7 +21,7 @@
 
     <div [ngSwitch]="view" id="calendar">
       <div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 10px">
-        <div fxLayout="row" fxLayoutGap="15px">
+        <div fxLayout="row" fxLayoutGap="5px">
           <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
             <div class="circle blue"></div>
             <span class="title">Closed Holiday</span>
@@ -29,6 +29,11 @@
           <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
             <div class="circle yellow"></div>
             <span class="title">Restricted Holiday</span>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <div class="circle green"></div>
+            <span class="title">Leave Applied</span>
           </div>
         </div>
       </div>
@@ -47,7 +52,7 @@
     <mat-card class="leave-balance">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px">
         <div class="title">Leave Balance:</div>
-        <div fxFlex fxLayoutGap="15px">
+        <div fxFlex fxLayoutGap="8px">
           <span *ngFor="let status of leaveStatuses">
             {{status.leave_type}}: {{status.balance}}
           </span>
