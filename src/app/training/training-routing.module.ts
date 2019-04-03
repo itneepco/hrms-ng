@@ -9,6 +9,7 @@ import { NewTrainingComponent } from './components/new-training/new-training.com
 import { TrainingAdminComponent } from './components/training-admin/training-admin.component';
 import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
 import { TrainingInstituteComponent } from './components/training-institute/training-institute.component';
+import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingComponent } from './components/training/training.component';
 
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'training-dashboard', component: TrainingDashboardComponent },
       { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
+      { path: 'training-needs', component: TrainingNeedsComponent },
       { 
         path: 'training-profile',
         component: TrainingProfileComponent, 

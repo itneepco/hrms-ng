@@ -1,5 +1,5 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TrainingInstituteFormComponent } from './../training-institute-form/training-institute-form.component';
+import { TrainingInstituteFormComponent } from './training-institute-form/training-institute-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';

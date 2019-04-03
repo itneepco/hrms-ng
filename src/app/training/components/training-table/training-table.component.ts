@@ -9,7 +9,7 @@ import { TrainingInfo } from '../../models/training';
 import { DataService } from '../../services/data.service';
 import { TrainingService } from '../../services/training.service';
 import { TrainingDetailComponent } from '../training-detail/training-detail.component';
-import { FeedbackFormComponent } from './../feedback-form/feedback-form.component';
+import { FeedbackFormComponent } from '../feedback/feedback-form/feedback-form.component';
 
 @Component({
   selector: 'app-training-table',

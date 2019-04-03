@@ -1,0 +1,40 @@
+<mat-card class="form">
+  <form [formGroup]="needForm" (ngSubmit)="onSubmit()">
+    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
+      <mat-form-field fxFlex="40">
+        <input matInput placeholder="Training Topic" formControlName="topic">
+        <mat-error *ngIf="topic.touched && topic.errors?.required">
+          Training topic is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Need Type</mat-label>
+        <mat-select formControlName="need_type">
+          <mat-option *ngFor="let need_type of need_types" [value]="need_type.value">
+            {{need_type.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="need_type.touched && need_type.errors?.required">
+          Need type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Term Duration</mat-label>
+        <mat-select formControlName="duration">
+          <mat-option *ngFor="let duration of durations" [value]="duration.value">
+            {{duration.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="duration.touched && duration.errors?.required">
+          Duration is required
+        </mat-error>
+      </mat-form-field>
+
+      <div>
+        <button mat-raised-button color="primary">Add</button>
+      </div>
+    </div>
+  </form>
+</mat-card>

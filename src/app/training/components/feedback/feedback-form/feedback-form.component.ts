@@ -3,10 +3,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { EXTERNAL_TRAINING } from '../../models/training-global-codes';
-import { AuthService } from './../../../auth/services/auth.service';
-import { TrainingFeedback, TrainingInfo } from './../../models/training';
-import { FeedbackService } from './../../services/feedback.service';
+import { EXTERNAL_TRAINING } from '../../../models/training-global-codes';
+import { AuthService } from '../../../../auth/services/auth.service';
+import { TrainingFeedback, TrainingInfo } from '../../../models/training';
+import { FeedbackService } from '../../../services/feedback.service';
 
 @Component({
   selector: 'app-feedback-form',
