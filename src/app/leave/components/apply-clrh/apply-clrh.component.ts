@@ -5,16 +5,17 @@ import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 
+import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { LeaveStatus } from '../../../shared/models/leave';
+import { CL_CODE, HD_CL_CODE } from '../../../shared/models/global-codes';
+import { LeaveAppForm, LeaveStatus } from '../../../shared/models/leave';
 import { HolidayService } from '../../../shared/services/holiday.service';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
-import { LeaveAppForm } from '../../../shared/models/leave';
-import { LeaveTypeService } from '../../../shared/services/leave-type.service';
-import { HierarchyService } from '../../../admin/services/hierarchy.service';
-import { HD_CL_CODE, CL_CODE } from '../../../shared/models/global-codes';
+import { CALENDAR_COLORS } from './../../../shared/models/global-codes';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-apply-leave',
@@ -34,7 +35,7 @@ export class ApplyCLRHComponent implements OnInit {
 
   constructor(private holidayService: HolidayService,
     private fb: FormBuilder,
-    private authService: AuthService,
+    private auth: AuthService,
     private hierarchyService: HierarchyService,
     private ledgerService: LedgerService,
     private leaveService: LeaveService,
@@ -44,14 +45,23 @@ export class ApplyCLRHComponent implements OnInit {
 
   ngOnInit() {
     this.holidayService.getCalendarEvents()
-      .subscribe(events => this.events = events)
+      .pipe(
+        switchMap(events => {
+          this.events = events 
+          return this.leaveService.getEmployeeLeaves(this.auth.currentUser.emp_code)
+        })
+      )
+      .subscribe(data => {
+        this.events = this.events.concat(data)
+        console.log(this.events)
+      })  
 
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
+    this.ledgerService.getLeaveStatus(this.auth.currentUser.emp_code)
       .subscribe((status: LeaveStatus[]) => {
         this.leaveStatuses = status
       })
 
-    this.hierarchyService.getParents(this.authService.currentUser.emp_code)
+    this.hierarchyService.getParents(this.auth.currentUser.emp_code)
       .subscribe(ctrlOfficers => {
         this.ctrlOfficers = ctrlOfficers
       })
@@ -97,7 +107,7 @@ export class ApplyCLRHComponent implements OnInit {
           title: "Applied for " + this.leaveTypeService.getLeaveType(data.status.leave_code),
           start: data.date,
           end: data.date,
-          color: this.holidayService.colors.red,
+          color: CALENDAR_COLORS.green,
         }
 
         this.events.push(event)
@@ -151,7 +161,7 @@ export class ApplyCLRHComponent implements OnInit {
     })
 
     let leavApplication: LeaveAppForm = Object.assign(this.leaveForm.value, 
-      { leave_details: leaves, emp_code: this.authService.currentUser.emp_code });
+      { leave_details: leaves, emp_code: this.auth.currentUser.emp_code });
     
     // console.log(leavApplication)
     this.isLoading = true

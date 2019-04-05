@@ -46,7 +46,7 @@ h4.list-heading{
 }
 
 .title {
-  font-size: 13px;
+  font-size: 12px;
   margin-right: 15px;
 }
 
@@ -60,4 +60,17 @@ h4.list-heading{
 
 .blue {
   background-color: #1e90ff;
+}
+
+.green {
+  background-color: #25A707;
+}
+
+.cal-event {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.cal-day-badge {
+  display: none !important;
 }
