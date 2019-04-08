@@ -1,14 +1,14 @@
-import { LeaveTypeService } from './../../shared/services/leave-type.service';
-import { LeaveDetail } from './../../shared/models/leave';
-import { CALENDAR_COLORS } from './../../shared/models/global-codes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { baseURL } from './../../shared/config/baseUrl';
+import { CALENDAR_COLORS } from './../../shared/models/global-codes';
+import { LeaveDetail } from './../../shared/models/leave';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { LeaveAppForm } from '../../shared/models/leave';
+import { LeaveTypeService } from './../../shared/services/leave-type.service';
+import { LeaveAppForm } from './../models/leave-app-form';
 
 @Injectable({
   providedIn: 'root'

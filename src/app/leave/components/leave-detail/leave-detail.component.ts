@@ -14,7 +14,8 @@ import {
   HR_LEAVE_SUPER_ADMIN,
   RH_CODE,
 } from '../../../shared/models/global-codes';
-import { LeaveDetail, LeaveStatus } from '../../../shared/models/leave';
+import { LeaveDetail } from '../../../shared/models/leave';
+import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import {
   APPROVE_ACTION_TYPES,
   CALLBACK_ACTION_TYPES,
@@ -39,12 +40,12 @@ import {
   TRANSACTION_PAGE,
 } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
-import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { HD_CL_CODE } from './../../../shared/models/global-codes';
 import { LeaveApplication } from './../../../shared/models/leave';
 import { Addressee } from './../../models/adressee';
+import { LeaveStatus } from './../../models/leave-status';
 import {
   LEAVE_CANCEL_CALLBACK_ACTION_TYPES,
   LEAVE_CANCEL_CALLBACKED,

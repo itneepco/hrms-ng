@@ -14,11 +14,15 @@ export class ErrorHandlerService {
   handleError(error: HttpErrorResponse) {
     console.log(error)
 
-    if(error.status == 422) {
+    if(error.status == 409) { //conflict
+      return throwError(error) 
+    }
+
+    if(error.status == 422) { //Unprocessable Entity
       return throwError(error)
     }
 
-    if(error.status == 401) {
+    if(error.status == 401) { //Unauthorized
       localStorage.removeItem(JWT_TOKEN_NAME)
       this.router.navigate(['/login'])
       return throwError(error)
