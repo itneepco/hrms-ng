@@ -1,21 +1,24 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { HierarchyService } from '../../../admin/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CL_CODE, HD_CL_CODE } from '../../../shared/models/global-codes';
-import { LeaveAppForm, LeaveStatus } from '../../../shared/models/leave';
 import { HolidayService } from '../../../shared/services/holiday.service';
 import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LeaveService } from '../../services/leave.service';
 import { LedgerService } from '../../services/ledger.service';
 import { LeaveMenuComponent } from '../leave-menu/leave-menu.component';
 import { CALENDAR_COLORS } from './../../../shared/models/global-codes';
-import { switchMap } from 'rxjs/operators';
+import { LeaveAppForm } from './../../models/leave-app-form';
+import { LeaveStatus } from './../../models/leave-status';
 
 @Component({
   selector: 'app-apply-leave',
@@ -40,6 +43,7 @@ export class ApplyCLRHComponent implements OnInit {
     private ledgerService: LedgerService,
     private leaveService: LeaveService,
     private router: Router,
+    private snackbar: MatSnackBar,
     private leaveTypeService: LeaveTypeService,
     private bottomSheet: MatBottomSheet) { }
 
@@ -53,7 +57,7 @@ export class ApplyCLRHComponent implements OnInit {
       )
       .subscribe(data => {
         this.events = this.events.concat(data)
-        console.log(this.events)
+        // console.log(this.events)
       })  
 
     this.ledgerService.getLeaveStatus(this.auth.currentUser.emp_code)
@@ -111,6 +115,7 @@ export class ApplyCLRHComponent implements OnInit {
         }
 
         this.events.push(event)
+        //make station leave default value to false
         this.leaveDetails.push(Object.assign({ event: event, station_leave: false }, data))
         this.refresh.next()
       })
@@ -169,9 +174,17 @@ export class ApplyCLRHComponent implements OnInit {
       console.log(result)
       this.isLoading = false
       this.router.navigateByUrl('leave/leave-transaction')
-    }, error => {
-      console.log(error)
+    }, 
+    (responseError: HttpErrorResponse) => {
+      console.log(responseError)
       this.isLoading = false
+      if(responseError.status == 409) {
+        let msg = responseError.error.message ? responseError.error.message : 
+          "You have already applied for leave. Please check that you have not already applied for leave"
+        this.snackbar.open(msg, "Dismiss", {
+          duration: 2000
+        }) 
+      }
     })
   }
 

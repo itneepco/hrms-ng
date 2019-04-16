@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../auth/services/auth.service';
 import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from '../../../shared/models/global-codes';
-import { LeaveStatus } from '../../../shared/models/leave';
+import { LeaveJoiningReport } from '../../../shared/models/joining-report';
 import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
-import { LeaveJoiningReport } from '../../../shared/models/joining-report';
+import { LeaveStatus } from './../../models/leave-status';
 import { JR_CALLBACKED, JR_PENDING, JR_RECOMMENDED, JR_SUBMITTED } from './../../models/leave.codes';
 import { JoiningReportService } from './../../services/joining-report.service';
 import { JoiningReportComponent } from './../joining-report/joining-report.component';

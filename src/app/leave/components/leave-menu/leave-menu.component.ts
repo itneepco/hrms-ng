@@ -2,8 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 import { CL_CODE, HD_CL_CODE, RH_CODE } from '../../../shared/models/global-codes';
-import { LeaveStatus } from '../../../shared/models/leave';
 import { LeaveTypeService } from '../../../shared/services/leave-type.service';
+import { LeaveStatus } from './../../models/leave-status';
 
 @Component({
   selector: 'app-leave-menu',
