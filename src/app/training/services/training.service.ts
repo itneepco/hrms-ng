@@ -13,13 +13,14 @@ import {
   TRAINING_CREATED,
   TRAINING_PUBLISHED,
 } from './../models/training-global-codes';
+import { TrainingLabel } from '../models/training-needs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainingService {
   private training_url = baseURL + 'api/training/info'
-  private my_training_url = baseURL + 'api/training/employee'
+  private employee_url = baseURL + 'api/training/employee'
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
@@ -104,18 +105,26 @@ export class TrainingService {
   }
 
   getMyTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/my-training` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-training` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
   feedbackPending(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.my_training_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
+
+  getTrainingLabels(): Observable<TrainingLabel[]> {
+    return this.http.get<TrainingLabel[]>(`${this.employee_url}/training-label`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
 
   getType(code: string) {
     if(code == IN_HOUSE_TRAINING) return "In House"
@@ -127,5 +136,4 @@ export class TrainingService {
     if(code == TRAINING_PUBLISHED) return "Active"
     if(code == TRAINING_CREATED) return "Pending"
   }
-  
 }

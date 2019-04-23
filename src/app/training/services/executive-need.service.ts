@@ -6,6 +6,12 @@ import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { ExecutiveNeed } from '../models/training-needs';
 import { baseURL } from './../../shared/config/baseUrl';
+import {
+  DESIRABLE_NEED_TYPE,
+  ESSENTIAL_NEED_TYPE,
+  LONG_TERM_DURATION,
+  SHORT_TERM_DURATION,
+} from './../models/training-global-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +21,8 @@ export class ExecutiveNeedService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainigNeeds(): Observable<ExecutiveNeed[]> {
-    return this.http.get<ExecutiveNeed[]>(this.topic_url)
+  getTrainigNeeds(empCode: string): Observable<ExecutiveNeed[]> {
+    return this.http.get<ExecutiveNeed[]>(`${this.topic_url}/employee/${empCode}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
@@ -41,5 +47,19 @@ export class ExecutiveNeedService {
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
+  }
+
+  getDuration(code: string) {
+    if(code == SHORT_TERM_DURATION)
+      return "Short Term"
+    if(code == LONG_TERM_DURATION)
+      return "Long Term"
+  }
+
+  getNeedType(code: string) {
+    if(code == ESSENTIAL_NEED_TYPE)
+      return "Essential"
+    if(code == DESIRABLE_NEED_TYPE)
+      return "Desirable"  
   }
 }

@@ -1,40 +1,61 @@
-<mat-card class="form">
-  <form [formGroup]="needForm" (ngSubmit)="onSubmit()">
-    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
-      <mat-form-field fxFlex="40">
-        <input matInput placeholder="Training Topic" formControlName="topic">
-        <mat-error *ngIf="topic.touched && topic.errors?.required">
-          Training topic is required
-        </mat-error>
-      </mat-form-field>
+<div class="main-container">
+  <mat-card class="table">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No </mat-header-cell>
+        <mat-cell *matCellDef="let need; let i = index;" fxFlex="8"> 
+          {{ i + 1 }} 
+        </mat-cell>
+      </ng-container>
 
-      <mat-form-field>
-        <mat-label>Need Type</mat-label>
-        <mat-select formControlName="need_type">
-          <mat-option *ngFor="let need_type of need_types" [value]="need_type.value">
-            {{need_type.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="need_type.touched && need_type.errors?.required">
-          Need type is required
-        </mat-error>
-      </mat-form-field>
+      <ng-container matColumnDef="training_label">
+        <mat-header-cell *matHeaderCellDef fxFlex="12"> Label / Category </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="12"> {{need.training_label.name }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="topic">
+        <mat-header-cell *matHeaderCellDef fxFlex="30"> Training Need </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="30"> {{need.topic}} </mat-cell>
+      </ng-container>
 
-      <mat-form-field>
-        <mat-label>Term Duration</mat-label>
-        <mat-select formControlName="duration">
-          <mat-option *ngFor="let duration of durations" [value]="duration.value">
-            {{duration.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="duration.touched && duration.errors?.required">
-          Duration is required
-        </mat-error>
-      </mat-form-field>
+      <ng-container matColumnDef="need_type">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Need Type </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="10"> {{ executiveNeedService.getNeedType(need.need_type) }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Duration </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="10"> {{ executiveNeedService.getDuration(need.duration) }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="hod_remarks">
+        <mat-header-cell *matHeaderCellDef fxFlex="20"> HOD Remarks </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="20"> {{need.hod_remarks}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let need" fxFlex="10">
+          <button mat-icon-button color="accent" (click)="onEdit(need)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="onDelete(need)">
+            <mat-icon>delete</mat-icon>  
+          </button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+</div>
 
-      <div>
-        <button mat-raised-button color="primary">Add</button>
-      </div>
-    </div>
-  </form>
-</mat-card>
+<button mat-fab 
+  class="fab-bottom-right"
+  matTooltip="Add Training Needs"
+  matTooltipPosition="left"
+  color="accent" 
+  (click)="addTrainingNeed()">
+    <mat-icon>add</mat-icon>
+</button>

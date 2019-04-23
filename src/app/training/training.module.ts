@@ -8,15 +8,20 @@ import { NewTrainingComponent } from './components/new-training/new-training.com
 import { TrainingAdminComponent } from './components/training-admin/training-admin.component';
 import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
 import { TrainingDetailComponent } from './components/training-detail/training-detail.component';
-import { TrainingInstituteFormComponent } from './components/training-institute/training-institute-form/training-institute-form.component';
+import {
+  TrainingInstituteFormComponent,
+} from './components/training-institute/training-institute-form/training-institute-form.component';
 import { TrainingInstituteComponent } from './components/training-institute/training-institute.component';
+import {
+  ExecutiveNeedsFormComponent,
+} from './components/training-needs/executive-needs/executive-needs-form/executive-needs-form.component';
+import { ExecutiveNeedsComponent } from './components/training-needs/executive-needs/executive-needs.component';
+import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecutive-needs/nonexecutive-needs.component';
+import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TrainingRoutingModule } from './training-routing.module';
-import { ExecutiveNeedsComponent } from './components/training-needs/executive-needs/executive-needs.component';
-import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
-import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecutive-needs/nonexecutive-needs.component';
 
 @NgModule({
   imports: [
@@ -39,11 +44,13 @@ import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecu
     ExecutiveNeedsComponent,
     TrainingNeedsComponent,
     NonexecutiveNeedsComponent,
+    ExecutiveNeedsFormComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,
     FeedbackFormComponent,
     TrainingInstituteFormComponent,
+    ExecutiveNeedsFormComponent
   ]
 })
 export class TrainingModule { }
