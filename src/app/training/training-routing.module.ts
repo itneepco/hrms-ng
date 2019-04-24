@@ -43,7 +43,7 @@ const routes: Routes = [
         component: NewTrainingComponent,
         canActivate: [TrainingAdminGuard] 
       },
-      { path: '', redirectTo: 'my-training', pathMatch: 'full' }
+      { path: '', redirectTo: 'training-dashboard', pathMatch: 'full' }
     ] 
   },
 ];

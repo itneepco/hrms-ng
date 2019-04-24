@@ -112,6 +112,13 @@ export class TrainingService {
   }
 
   feedbackPending(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&status=pending")
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  feedbackSubmitted(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
     return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))

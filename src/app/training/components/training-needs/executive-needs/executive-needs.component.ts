@@ -14,7 +14,7 @@ import { ExecutiveNeedsFormComponent } from './executive-needs-form/executive-ne
   styleUrls: ['./executive-needs.component.scss']
 })
 export class ExecutiveNeedsComponent implements OnInit {
-  
+  finYear = null  
   displayedColumns = ["position", "training_label", "topic", "need_type", "duration", "hod_remarks", "actions"]
   dataSource: MatTableDataSource<ExecutiveNeed>
   errMsg: string
@@ -86,10 +86,11 @@ export class ExecutiveNeedsComponent implements OnInit {
   getExecutiveNeeds() {
     this.isLoading = true
     this.executiveNeedService.getTrainigNeeds(this.auth.currentUser.emp_code)
-      .subscribe(data => {
-        this.dataSource = new MatTableDataSource<ExecutiveNeed>(data)
+      .subscribe(result => {
+        this.dataSource = new MatTableDataSource<ExecutiveNeed>(result.data)
+        this.finYear = result.finYear
         this.isLoading = false
-        console.log(data)
+        console.log(result)
       },
       errMsg => {
         this.errMsg = errMsg

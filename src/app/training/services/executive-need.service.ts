@@ -13,6 +13,11 @@ import {
   SHORT_TERM_DURATION,
 } from './../models/training-global-codes';
 
+interface ExecutiveNeedResult {
+  data: ExecutiveNeed[]
+  finYear: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +26,8 @@ export class ExecutiveNeedService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainigNeeds(empCode: string): Observable<ExecutiveNeed[]> {
-    return this.http.get<ExecutiveNeed[]>(`${this.topic_url}/employee/${empCode}`)
+  getTrainigNeeds(empCode: string, year?: string): Observable<ExecutiveNeedResult> {
+    return this.http.get<ExecutiveNeedResult>(`${this.topic_url}/employee/${empCode}?year=${year}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

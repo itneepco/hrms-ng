@@ -3,10 +3,11 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { EXTERNAL_TRAINING } from '../../../models/training-global-codes';
 import { AuthService } from '../../../../auth/services/auth.service';
 import { TrainingFeedback, TrainingInfo } from '../../../models/training';
+import { EXTERNAL_TRAINING } from '../../../models/training-global-codes';
 import { FeedbackService } from '../../../services/feedback.service';
+import { MyFeedbackStatusService } from './../../../services/my-feedback-status.service';
 
 @Component({
   selector: 'app-feedback-form',
@@ -23,6 +24,7 @@ export class FeedbackFormComponent implements OnInit {
     private auth: AuthService, 
     private feedbackService: FeedbackService,
     private snackbar: MatSnackBar,
+    private myFeedbackStatus: MyFeedbackStatusService,
     public dialogRef: MatDialogRef<FeedbackFormComponent>,
     @Inject(MAT_DIALOG_DATA) public training: TrainingInfo) { }
 
@@ -88,6 +90,7 @@ export class FeedbackFormComponent implements OnInit {
         this.training.training_topics = this.topic_ratings.value
         
         this.dialogRef.close()
+        this.myFeedbackStatus.update(true)
         this.snackbar.open("Successfully submitted the feedback", "Dismiss", { duration: 1600 })
       }, error => {
         this.isLoading = false
