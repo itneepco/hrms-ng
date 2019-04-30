@@ -13,42 +13,37 @@ import {
   SHORT_TERM_DURATION,
 } from './../models/training-global-codes';
 
-interface ExecutiveNeedResult {
-  data: ExecutiveNeed[]
-  finYear: string
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class ExecutiveNeedService {
-  private topic_url = baseURL + 'api/training/executive-needs'
+  private ex_need_url = baseURL + 'api/training/executive-needs'
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainigNeeds(empCode: string, year?: string): Observable<ExecutiveNeedResult> {
-    return this.http.get<ExecutiveNeedResult>(`${this.topic_url}/employee/${empCode}?year=${year}`)
+  getTrainigNeeds(year: string, empCode: string): Observable<ExecutiveNeed[]> {
+    return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/year/${year}/employee/${empCode}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
   addExecutiveNeed(trainingNeed: ExecutiveNeed) {
-    return this.http.post(this.topic_url, trainingNeed)
+    return this.http.post(this.ex_need_url, trainingNeed)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
   editExecutiveNeed(executiveNeedId: number, trainingNeed: ExecutiveNeed) {
-    return this.http.put(`${this.topic_url}/${executiveNeedId}`, trainingNeed)
+    return this.http.put(`${this.ex_need_url}/${executiveNeedId}`, trainingNeed)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
   deleteExecutiveNeed(executiveNeedId: number) {
-    return this.http.delete(`${this.topic_url}/${executiveNeedId}`)
+    return this.http.delete(`${this.ex_need_url}/${executiveNeedId}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

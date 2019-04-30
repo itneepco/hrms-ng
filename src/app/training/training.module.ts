@@ -22,6 +22,7 @@ import { TrainingProfileComponent } from './components/training-profile/training
 import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TrainingRoutingModule } from './training-routing.module';
+import { WorkflowComponent } from './components/training-needs/workflow/workflow.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { TrainingRoutingModule } from './training-routing.module';
     TrainingNeedsComponent,
     NonexecutiveNeedsComponent,
     ExecutiveNeedsFormComponent,
+    WorkflowComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,

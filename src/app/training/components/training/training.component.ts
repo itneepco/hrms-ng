@@ -10,9 +10,9 @@ import { AuthService } from './../../../auth/services/auth.service';
 })
 export class TrainingComponent implements OnInit {
   nav: NavObject[] = [
-    { name: 'Dashboard', path: 'training-dashboard' },
     { name: 'My Training', path: 'my-training' },
     { name: 'My Feedback', path: 'feedback' },
+    { name: 'Training Needs', path: 'training-needs' },
   ]
 
   constructor(private auth: AuthService) {}

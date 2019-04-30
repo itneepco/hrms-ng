@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 
 import { ExecutiveNeedService } from '../../../services/executive-need.service';
 import { AuthService } from './../../../../auth/services/auth.service';
@@ -23,16 +24,19 @@ export class ExecutiveNeedsComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private snackbar: MatSnackBar,
     private auth: AuthService,
+    private route: ActivatedRoute,
     public executiveNeedService: ExecutiveNeedService) { }
 
   ngOnInit() {
     this.getExecutiveNeeds()
+    this.finYear = this.route.snapshot.params.year
   }
 
   addTrainingNeed() {
     let dialogRef = this.dialog.open(ExecutiveNeedsFormComponent, {
       width: '550px',
-      height: '430px'
+      height: '430px',
+      data: { year: this.finYear }
     })
     
     dialogRef.afterClosed().subscribe(result => {
@@ -49,7 +53,7 @@ export class ExecutiveNeedsComponent implements OnInit {
     let dialogRef = this.dialog.open(ExecutiveNeedsFormComponent, {
       width: '550px',
       height: '430px',
-      data: executiveNeed
+      data: { year: this.finYear, need: executiveNeed }
     })
     
     dialogRef.afterClosed().subscribe(result => {
@@ -85,10 +89,12 @@ export class ExecutiveNeedsComponent implements OnInit {
 
   getExecutiveNeeds() {
     this.isLoading = true
-    this.executiveNeedService.getTrainigNeeds(this.auth.currentUser.emp_code)
+    this.executiveNeedService.getTrainigNeeds( 
+      this.route.snapshot.params.year,
+      this.auth.currentUser.emp_code
+      )
       .subscribe(result => {
-        this.dataSource = new MatTableDataSource<ExecutiveNeed>(result.data)
-        this.finYear = result.finYear
+        this.dataSource = new MatTableDataSource<ExecutiveNeed>(result)
         this.isLoading = false
         console.log(result)
       },

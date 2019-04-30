@@ -23,3 +23,16 @@ export const TRAINING_DURATIONS = [
   { name: "Short Term", value: SHORT_TERM_DURATION },
   { name: "Long Term", value: LONG_TERM_DURATION }
 ]
+
+export const NEEDS_CREATED = '01'
+export const NEEDS_SUBMITTED = '02'
+export const NEEDS_RECOMMENDED = '03'
+export const NEEDS_APPROVED = '04'
+export const NEEDS_RETURNED = '05'
+
+export const NEEDS_ACTION_TYPES = [
+  { name: "Submit Training Needs", code: NEEDS_SUBMITTED },
+  { name: "Recommen Training Needs", code: NEEDS_RECOMMENDED },
+  { name: "Approve Training Needs", code: NEEDS_APPROVED },
+  { name: "Return back to employee for changes", code: NEEDS_RETURNED }
+]

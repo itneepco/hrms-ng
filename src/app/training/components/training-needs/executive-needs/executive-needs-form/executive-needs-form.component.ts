@@ -21,6 +21,7 @@ export class ExecutiveNeedsFormComponent implements OnInit {
   trainigLabels: TrainingLabel[]
   executiveNeed: ExecutiveNeed
   isLoading = false
+  finYear
 
   constructor(private auth: AuthService, 
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -31,7 +32,8 @@ export class ExecutiveNeedsFormComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.executiveNeed = this.data ? this.data : null
+    this.finYear = this.data.year
+    this.executiveNeed = this.data.need ? this.data.need : null
     this.trainingService.getTrainingLabels()
       .subscribe(data => {
         console.log(data) 
@@ -47,7 +49,7 @@ export class ExecutiveNeedsFormComponent implements OnInit {
       training_label_id: [this.executiveNeed ? this.executiveNeed.training_label.id : '', Validators.required],
       topic: [this.executiveNeed ? this.executiveNeed.topic : '', Validators.required],
       emp_code: this.auth.currentUser.emp_code,
-      year: this.executiveNeed ? this.executiveNeed.year : '',
+      year: this.finYear,
     })
   }
 
