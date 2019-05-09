@@ -60,6 +60,6 @@ export class ExecutiveNeedService {
     if(code == ESSENTIAL_NEED_TYPE)
       return "Essential"
     if(code == DESIRABLE_NEED_TYPE)
-      return "Desirable"  
+      return "Desirable"
   }
 }

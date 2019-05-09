@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { HierarchyService } from '../../services/hierarchy.service';
+import { HierarchyService } from '../../../shared/services/hierarchy.service';
 import { AddChildNodeComponent } from '../add-child-node/add-child-node.component';
-import { EmployeeNode, TreeNode } from './../../model/employee-node';
+import { EmployeeNode, TreeNode } from '../../../shared/model/employee-node';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';

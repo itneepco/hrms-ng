@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../../auth/services/auth.service';
-import { Addressee } from '../../models/adressee';
+import { Addressee } from '../../../shared/models/adressee';
 import { JR_CALLBACK_ACTION_TYPES, JR_CALLBACKED, JR_PENDING } from '../../models/leave.codes';
 import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
 import { EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN } from './../../../shared/models/global-codes';

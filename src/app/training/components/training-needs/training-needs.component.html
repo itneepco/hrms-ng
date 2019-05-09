@@ -20,7 +20,7 @@
 
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef fxFlex="23"> Status </mat-header-cell>
-        <mat-cell *matCellDef="let needInfo" fxFlex="23"> {{ needInfo.status }} </mat-cell>
+        <mat-cell *matCellDef="let needInfo" fxFlex="23"> {{ getNeedsStatus(needInfo.status) }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">

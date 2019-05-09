@@ -13,40 +13,45 @@ import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecu
 import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingComponent } from './components/training/training.component';
+import { NeedsInfoResolver } from './services/training-needs-info.resolver';
 
 const routes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     component: TrainingComponent,
     canActivateChild: [AuthGuard],
     children: [
       { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
-      { path: 'training-needs', component: TrainingNeedsComponent },
-      { path: 'executive-needs/:year', component: ExecutiveNeedsComponent },
-      { path: 'non-exec-needs/:year', component: NonexecutiveNeedsComponent },
-      { 
+      { path: 'needs', component: TrainingNeedsComponent },
+      {
+        path: 'executive-needs/:needInfoId',
+        component: ExecutiveNeedsComponent,
+        resolve: { needInfo: NeedsInfoResolver }
+      },
+      { path: 'non-exec-needs/:needInfoId', component: NonexecutiveNeedsComponent },
+      {
         path: 'training-profile',
-        component: TrainingProfileComponent, 
+        component: TrainingProfileComponent,
         canActivate: [TrainingAdminGuard]
       },
-      { 
-        path: 'training-institute', 
+      {
+        path: 'training-institute',
         component: TrainingInstituteComponent,
         canActivate: [TrainingAdminGuard]
       },
-      { 
-        path: 'training-admin', 
+      {
+        path: 'training-admin',
         component: TrainingAdminComponent,
         canActivate: [TrainingAdminGuard]
       },
-      { 
-        path: 'new', 
+      {
+        path: 'new',
         component: NewTrainingComponent,
-        canActivate: [TrainingAdminGuard] 
+        canActivate: [TrainingAdminGuard]
       },
       { path: '', redirectTo: 'my-training', pathMatch: 'full' }
-    ] 
+    ]
   },
 ];
 

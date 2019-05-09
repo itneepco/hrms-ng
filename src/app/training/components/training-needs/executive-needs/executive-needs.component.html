@@ -1,11 +1,16 @@
 <div class="main-container">
   <mat-card class="table">
-    <h2 class="heading">Training needs for the assessment year {{finYear}}</h2>
+    <div class="heading" fxLayoutAlign="space-between center">
+      <span>Training needs for the assessment year {{needInfo.year}}</span>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No </mat-header-cell>
-        <mat-cell *matCellDef="let need; let i = index;" fxFlex="8"> 
-          {{ i + 1 }} 
+        <mat-cell *matCellDef="let need; let i = index;" fxFlex="8">
+          {{ i + 1 }}
         </mat-cell>
       </ng-container>
 
@@ -13,7 +18,7 @@
         <mat-header-cell *matHeaderCellDef fxFlex="12"> Label / Category </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="12"> {{need.training_label.name }} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="topic">
         <mat-header-cell *matHeaderCellDef fxFlex="30"> Training Need </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="30"> {{need.topic}} </mat-cell>
@@ -23,17 +28,17 @@
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Need Type </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="10"> {{ executiveNeedService.getNeedType(need.need_type) }} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="duration">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Duration </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="10"> {{ executiveNeedService.getDuration(need.duration) }} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="hod_remarks">
         <mat-header-cell *matHeaderCellDef fxFlex="20"> HOD Remarks </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="20"> {{need.hod_remarks}} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="10">
@@ -41,26 +46,26 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="accent" (click)="onDelete(need)">
-            <mat-icon>delete</mat-icon>  
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
-  
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
   </mat-card>
-  
+
   <mat-card class="table" *ngIf="dataSource && dataSource.data.length > 0">
-    <app-workflow [year]="finYear"></app-workflow>
+    <app-workflow></app-workflow>
   </mat-card>
 </div>
 
-<button mat-fab 
+<button mat-fab
   class="fab-bottom-right"
   matTooltip="Add Training Needs"
   matTooltipPosition="left"
-  color="accent" 
+  color="accent"
   (click)="addTrainingNeed()">
     <mat-icon>add</mat-icon>
 </button>

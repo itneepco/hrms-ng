@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { HierarchyService } from '../../../admin/services/hierarchy.service';
+import { HierarchyService } from '../../../shared/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { EL_CODE, HPL_CODE } from '../../../shared/models/global-codes';
 import { LeaveService } from '../../services/leave.service';

@@ -8,7 +8,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { HierarchyService } from '../../../admin/services/hierarchy.service';
+import { HierarchyService } from '../../../shared/services/hierarchy.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CL_CODE, HD_CL_CODE } from '../../../shared/models/global-codes';
 import { HolidayService } from '../../../shared/services/holiday.service';

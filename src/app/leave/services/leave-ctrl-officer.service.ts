@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { HierarchyService } from '../../admin/services/hierarchy.service';
+import { HierarchyService } from '../../shared/services/hierarchy.service';
 import { EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN } from '../../shared/models/global-codes';
 import { LeaveDetail } from '../../shared/models/leave';
-import { CtrlOfficer } from '../models/adressee';
-import { Addressee } from './../models/adressee';
+import { CtrlOfficer } from '../../shared/models/adressee';
+import { Addressee } from '../../shared/models/adressee';
 import { LeaveTypeService } from '../../shared/services/leave-type.service';
 
 @Injectable({

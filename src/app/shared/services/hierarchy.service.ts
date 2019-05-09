@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { baseURL } from '../../shared/config/baseUrl';
-import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { baseURL } from '../config/baseUrl';
 import { EmployeeNode, Hierarchy, TreeNode } from '../model/employee-node';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'

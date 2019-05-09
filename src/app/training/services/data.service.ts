@@ -6,5 +6,5 @@ import { TrainingInfo } from '../models/training';
   providedIn: 'root'
 })
 export class DataService {
-  trainingData: TrainingInfo; 
+  trainingData: TrainingInfo;
 }

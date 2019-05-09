@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class MyFeedbackStatusService {
 
-  private feebackStatus = new Subject() 
+  private feebackStatus = new Subject()
 
   status$ = this.feebackStatus.asObservable()
 

@@ -44,7 +44,7 @@ import { LedgerService } from '../../services/ledger.service';
 import { WorkflowActionService } from '../../services/workflow-action.service';
 import { HD_CL_CODE } from './../../../shared/models/global-codes';
 import { LeaveApplication } from './../../../shared/models/leave';
-import { Addressee } from './../../models/adressee';
+import { Addressee } from '../../../shared/models/adressee';
 import { LeaveStatus } from './../../models/leave-status';
 import {
   LEAVE_CANCEL_CALLBACK_ACTION_TYPES,

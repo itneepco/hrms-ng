@@ -12,12 +12,12 @@ export class TrainingComponent implements OnInit {
   nav: NavObject[] = [
     { name: 'My Training', path: 'my-training' },
     { name: 'My Feedback', path: 'feedback' },
-    { name: 'Training Needs', path: 'training-needs' },
+    { name: 'Training Needs', path: 'needs' },
   ]
 
   constructor(private auth: AuthService) {}
 
-  ngOnInit() {  
+  ngOnInit() {
     if(this.auth.isTrainingAdmin()) {
       this.nav.push({ name: 'Manage Training', path: 'training-admin' })
       this.nav.push({ name: 'View Profile', path: 'training-profile' })
