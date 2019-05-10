@@ -55,27 +55,27 @@ export class LeaveTypeService {
 
   isEarnedLeave(leaves: LeaveDetail[]): boolean {
     let el_type = leaves.find(leaveDetail => leaveDetail.leave_type == EL_CODE)
-    return el_type ? true : false  
+    return el_type ? true : false
   }
 
   isHalfPayLeave(leaves: LeaveDetail[]): boolean {
     let ml_type = leaves.find(leaveDetail => leaveDetail.leave_type == HPL_CODE)
-    return ml_type ? true : false  
+    return ml_type ? true : false
   }
 
   isCasualLeave(leaves: LeaveDetail[]): boolean {
     let el_type = leaves.find(leaveDetail => leaveDetail.leave_type == CL_CODE)
-    return el_type ? true : false  
+    return el_type ? true : false
   }
 
   isRestrictedHoliday(leaves: LeaveDetail[]): boolean {
     let el_type = leaves.find(leaveDetail => leaveDetail.leave_type == RH_CODE)
-    return el_type ? true : false  
+    return el_type ? true : false
   }
 
   isHalfDayCl(leaves: LeaveDetail[]): boolean {
     let el_type = leaves.find(leaveDetail => leaveDetail.leave_type == HD_CL_CODE)
-    return el_type ? true : false  
+    return el_type ? true : false
   }
 
   noOfCasualLeave(leaves: LeaveDetail[]) {
@@ -83,7 +83,7 @@ export class LeaveTypeService {
   }
 
   noOfHalfDayCL(leaves: LeaveDetail[]) {
-    return leaves.filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length
+    return (leaves.filter(leaveDetail => leaveDetail.leave_type == HD_CL_CODE).length) / 2
   }
 
   noOfRestrictedHoliday(leaves: LeaveDetail[]) {
@@ -95,11 +95,11 @@ export class LeaveTypeService {
     let to_date = new Date(leave.to_date)
     let from_date = new Date(leave.from_date)
     let no_of_el = ((to_date.valueOf() - from_date.valueOf()) / (60*60*24*1000)) + 1
-    
+
     if(leave.leave_type == EL_CODE) {
       return no_of_el
     }
-    
+
     return 0;
   }
 
@@ -112,7 +112,7 @@ export class LeaveTypeService {
     if(leave.leave_type == HPL_CODE) {
       return no_of_hpl
     }
-    
+
     return 0;
   }
 }
