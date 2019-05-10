@@ -29,9 +29,9 @@ export class ExecutiveNeedsComponent implements OnInit {
     public executiveNeedService: ExecutiveNeedService) { }
 
   ngOnInit() {
-    this.route.data.subscribe((routeData: TrainingNeedInfo) => {
-      this.needInfo = routeData;
-      console.log(this.needInfo)
+    this.route.data.subscribe(routeData => {
+      this.needInfo = routeData.needInfo;
+      console.log(this.needInfo);
       this.getExecutiveNeeds();
     });
   }
@@ -57,7 +57,7 @@ export class ExecutiveNeedsComponent implements OnInit {
     const dialogRef = this.dialog.open(ExecutiveNeedsFormComponent, {
       width: '550px',
       height: '430px',
-      data: { year: this.needInfo, need: executiveNeed }
+      data: { needInfo: this.needInfo, need: executiveNeed }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -93,10 +93,7 @@ export class ExecutiveNeedsComponent implements OnInit {
 
   getExecutiveNeeds() {
     this.isLoading = true;
-    this.executiveNeedService.getTrainigNeeds(
-      this.needInfo.year,
-      this.needInfo.emp_code
-    )
+    this.executiveNeedService.getTrainigNeeds(this.needInfo.id)
     .subscribe(result => {
       this.dataSource = new MatTableDataSource<ExecutiveNeed>(result);
       this.isLoading = false;

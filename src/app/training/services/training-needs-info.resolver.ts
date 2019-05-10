@@ -4,9 +4,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { NeedsInfoService } from './needs-info.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NeedsInfoResolver implements Resolve<any> {
   constructor(private needsInfoService: NeedsInfoService) {}
 
@@ -14,10 +12,10 @@ export class NeedsInfoResolver implements Resolve<any> {
     return new Promise((resolve, reject) => {
       const id = +route.paramMap.get('needInfoId');
       this.needsInfoService.getTrainingNeed(id)
-        .subscribe(
-          data => resolve(data),
-          err => reject(err)
-        );
+      .subscribe(
+        data => resolve(data),
+        err => reject(err)
+      );
     });
   }
 }

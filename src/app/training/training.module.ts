@@ -22,16 +22,7 @@ import { WorkflowComponent } from './components/training-needs/workflow/workflow
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
-import { DataService } from './services/data.service';
-import { ExecutiveNeedService } from './services/executive-need.service';
-import { FeedbackService } from './services/feedback.service';
-import { MyFeedbackStatusService } from './services/my-feedback-status.service';
-import { NeedsInfoService } from './services/needs-info.service';
-import { NeedsWorkflowService } from './services/needs-workflow.service';
-import { TrainingInstituteService } from './services/training-institute.service';
-import { TrainingParticipantService } from './services/training-participant.service';
-import { TrainingTopicService } from './services/training-topic.service';
-import { TrainingService } from './services/training.service';
+import { NeedsInfoResolver } from './services/training-needs-info.resolver';
 import { TrainingRoutingModule } from './training-routing.module';
 
 @NgModule({
@@ -64,5 +55,6 @@ import { TrainingRoutingModule } from './training-routing.module';
     TrainingInstituteFormComponent,
     ExecutiveNeedsFormComponent
   ],
+  providers: [NeedsInfoResolver]
 })
 export class TrainingModule { }

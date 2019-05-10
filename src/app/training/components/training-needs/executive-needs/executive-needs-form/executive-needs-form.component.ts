@@ -48,8 +48,7 @@ export class ExecutiveNeedsFormComponent implements OnInit {
       duration: [this.executiveNeed ? this.executiveNeed.duration : '', Validators.required],
       training_label_id: [this.executiveNeed ? this.executiveNeed.training_label.id : '', Validators.required],
       topic: [this.executiveNeed ? this.executiveNeed.topic : '', Validators.required],
-      emp_code: this.auth.currentUser.emp_code,
-      year: this.needInfo.year,
+      training_need_info_id: this.needInfo.id
     });
   }
 

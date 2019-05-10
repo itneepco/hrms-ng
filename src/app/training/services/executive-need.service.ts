@@ -21,8 +21,8 @@ export class ExecutiveNeedService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainigNeeds(year: string, empCode: string): Observable<ExecutiveNeed[]> {
-    return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/year/${year}/employee/${empCode}`)
+  getTrainigNeeds(needInfoId: number): Observable<ExecutiveNeed[]> {
+    return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/info/${needInfoId}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
