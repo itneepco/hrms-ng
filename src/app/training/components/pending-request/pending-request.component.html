@@ -1,0 +1,40 @@
+<div class="main-container">
+  <mat-card class="table">
+    <mat-card-title class="title">Training Needs Pending Requests</mat-card-title>
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No </mat-header-cell>
+        <mat-cell *matCellDef="let needInfo; let i = index;" fxFlex="10">
+          {{ i + 1 }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="year">
+        <mat-header-cell *matHeaderCellDef fxFlex="23"> Assessment Year </mat-header-cell>
+        <mat-cell *matCellDef="let needInfo" fxFlex="23"> {{ needInfo.year }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cadre">
+        <mat-header-cell *matHeaderCellDef fxFlex="22"> Employee </mat-header-cell>
+        <mat-cell *matCellDef="let needInfo" fxFlex="22"> {{ getFullName(needInfo.employee) }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef fxFlex="23"> Status </mat-header-cell>
+        <mat-cell *matCellDef="let needInfo" fxFlex="23"> {{ getNeedsStatus(needInfo.status) }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef fxFlex="22"> Action </mat-header-cell>
+        <mat-cell *matCellDef="let needInfo" fxFlex="22">
+          <button mat-icon-button color="accent" (click)="onView(needInfo)">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+</div>

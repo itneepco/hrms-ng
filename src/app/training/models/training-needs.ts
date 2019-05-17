@@ -1,3 +1,6 @@
+import { Employee } from './../../shared/models/employee';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
+
 export interface ExecutiveNeed {
   id: number;
   emp_code: string;
@@ -28,12 +31,18 @@ export interface TrainingNeedInfo {
   status: string;
   cadre: string;
   addressee: string;
+  created_at: string;
+  updated_at: string;
+  training_need_info_hists?: TrainingNeedHistory[];
 }
 
 export interface TrainingNeedHistory {
   id: number;
-  year: string;
+  training_need_info_id: number;
   workflow_action: string;
   officer_emp_code: string;
   remarks: string;
+  created_at: string;
+  updated_at: string;
+  officer?: Employee;
 }

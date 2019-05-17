@@ -1,9 +1,8 @@
 <form [formGroup]="actionForm"
-  fxLayout="row"
-  fxLayoutGap="20px"
+  fxLayout="column"
   (ngSubmit)="onSubmit()">
 
-  <mat-form-field fxFlex="40">
+  <mat-form-field fxFlex>
     <mat-select placeholder="Select required action" formControlName="workflow_action">
       <mat-option *ngFor="let action of actions" [value]="action.code">
         {{action.name}}
@@ -12,14 +11,23 @@
     <mat-error *ngIf="workflow_action.errors?.required">Workflow action is required</mat-error>
   </mat-form-field>
 
-  <mat-form-field fxFlex="40">
-    <mat-select placeholder="Forward to" formControlName="addressee">
-      <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.emp_code">
-        {{ getFullName(ctrlOfficer) | titlecase }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
-  </mat-form-field>
+  <ng-container *ngIf="needInfo.status == needs_created ||
+      needInfo.status === needs_returned; else remarksTemplate">
+    <mat-form-field fxFlex>
+      <mat-select placeholder="Forward to" formControlName="addressee">
+        <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.emp_code">
+          {{ getFullName(ctrlOfficer) | titlecase }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
+    </mat-form-field>
+  </ng-container>
+
+  <ng-template #remarksTemplate>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Remarks" formControlName="remarks">
+    </mat-form-field>
+  </ng-template>
 
   <div fxFlex="20">
     <button mat-raised-button color="primary" [disabled]="actionForm.invalid || isSubmitting">Submit</button>

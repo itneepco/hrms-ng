@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { NEEDS_CREATED, NEEDS_SUBMITTED } from '../models/training-global-codes';
 import { baseURL } from './../../shared/config/baseUrl';
 import { ErrorHandlerService } from './../../shared/services/error-handler.service';
-import { NEEDS_APPROVED, NEEDS_RECOMMENDED } from './../models/training-global-codes';
+import { NEEDS_RECOMMENDED, NEEDS_RETURNED } from './../models/training-global-codes';
 import { TrainingNeedInfo } from './../models/training-needs';
 
 @Injectable({
@@ -17,18 +17,25 @@ export class NeedsInfoService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
-  getTrainigNeeds(empCode: string, year?: string): Observable<TrainingNeedInfo[]> {
+  getTrainigNeeds(empCode: string): Observable<TrainingNeedInfo[]> {
     return this.http.get<TrainingNeedInfo[]>(`${this.ex_need_url}/employee/${empCode}`)
-      .pipe(
-        catchError(err => this.handler.handleError(err))
-      );
+    .pipe(
+      catchError(err => this.handler.handleError(err))
+    );
+  }
+
+  getPendingNeeds(empCode: string) {
+    return this.http.get<TrainingNeedInfo[]>(`${this.ex_need_url}/pending/${empCode}`)
+    .pipe(
+      catchError(err => this.handler.handleError(err))
+    );
   }
 
   getTrainingNeed(id: number) {
     return this.http.get<TrainingNeedInfo>(`${this.ex_need_url}/${id}`)
-      .pipe(
-        catchError(err => this.handler.handleError(err))
-      );
+    .pipe(
+      catchError(err => this.handler.handleError(err))
+    );
   }
 
   getGrade(grade: string) {
@@ -43,7 +50,7 @@ export class NeedsInfoService {
     switch (status) {
       case NEEDS_CREATED: return 'Pending';
       case NEEDS_SUBMITTED: return 'Submitted';
-      case NEEDS_APPROVED: return 'Approved';
+      case NEEDS_RETURNED: return 'Returned';
       case NEEDS_RECOMMENDED: return 'Recommended';
     }
   }

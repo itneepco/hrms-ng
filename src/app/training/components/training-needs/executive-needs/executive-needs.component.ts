@@ -1,12 +1,15 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { ExecutiveNeedService } from '../../../services/executive-need.service';
 import { AuthService } from './../../../../auth/services/auth.service';
+import { NEEDS_CREATED, NEEDS_RECOMMENDED, NEEDS_RETURNED, NEEDS_SUBMITTED } from './../../../models/training-global-codes';
 import { ExecutiveNeed, TrainingNeedInfo } from './../../../models/training-needs';
+import { NeedsInfoService } from './../../../services/needs-info.service';
 import { ExecutiveNeedsFormComponent } from './executive-needs-form/executive-needs-form.component';
 
 @Component({
@@ -16,16 +19,21 @@ import { ExecutiveNeedsFormComponent } from './executive-needs-form/executive-ne
 })
 export class ExecutiveNeedsComponent implements OnInit {
   needInfo: TrainingNeedInfo;
-  displayedColumns = ['position', 'training_label', 'topic', 'need_type', 'duration', 'hod_remarks', 'actions'];
+  displayedColumns = ['position', 'training_label', 'topic', 'need_type', 'duration'];
   dataSource: MatTableDataSource<ExecutiveNeed>;
   errMsg: string;
   isLoading = false;
+  needs_created = NEEDS_CREATED;
+  needs_submitted = NEEDS_SUBMITTED;
+  needs_returned = NEEDS_RETURNED;
+  needs_recommended = NEEDS_RECOMMENDED;
 
   constructor(private dialog: MatDialog,
     private snackbar: MatSnackBar,
-    private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router,
+    private location: Location,
+    public auth: AuthService,
+    public needsInfoService: NeedsInfoService,
     public executiveNeedService: ExecutiveNeedService) { }
 
   ngOnInit() {
@@ -33,6 +41,14 @@ export class ExecutiveNeedsComponent implements OnInit {
       this.needInfo = routeData.needInfo;
       console.log(this.needInfo);
       this.getExecutiveNeeds();
+      if (this.needInfo.status === NEEDS_CREATED) {
+        this.displayedColumns.push('actions');
+      } else if (this.needInfo.status === NEEDS_RETURNED) {
+        this.displayedColumns.push('hod_remarks');
+        this.displayedColumns.push('actions');
+      } else {
+        this.displayedColumns.push('hod_remarks');
+      }
     });
   }
 
@@ -74,7 +90,7 @@ export class ExecutiveNeedsComponent implements OnInit {
     const retVal = confirm('Are you sure you want to delete?');
     if (retVal !== true) { return; }
 
-    this.executiveNeedService.deleteExecutiveNeed(executiveNeed.id)
+    this.executiveNeedService.deleteExecutiveNeed(this.needInfo.id, executiveNeed.id)
       .subscribe(() => {
         const temp = this.dataSource.data;
         const index = temp.indexOf(executiveNeed);
@@ -106,6 +122,10 @@ export class ExecutiveNeedsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/training/needs']);
+    this.location.back();
+  }
+
+  getFullName(employee) {
+    return `${employee.first_name} ${employee.middle_name} ${employee.last_name}`;
   }
 }

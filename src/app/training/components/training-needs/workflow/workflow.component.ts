@@ -1,36 +1,63 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
+import { TrainingNeedInfo } from '../../../models/training-needs';
 import { NeedsWorkflowService } from '../../../services/needs-workflow.service';
 import { AuthService } from './../../../../auth/services/auth.service';
 import { CtrlOfficer } from './../../../../shared/models/adressee';
 import { HierarchyService } from './../../../../shared/services/hierarchy.service';
-import { SUBMIT_NEEDS_ACTION } from './../../../models/training-global-codes';
+import {
+  NEEDS_ACTION_TYPES,
+  NEEDS_CREATED,
+  NEEDS_RETURNED,
+  NEEDS_SUBMITTED,
+  SUBMIT_NEEDS_ACTION,
+} from './../../../models/training-global-codes';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.scss']
 })
-export class WorkflowComponent implements OnInit {
+export class WorkflowComponent implements OnInit, OnDestroy {
   actionForm: FormGroup;
-  @Input('year') year;
-  actions = SUBMIT_NEEDS_ACTION;
   ctrlOfficers: CtrlOfficer[];
+  @Input('needInfo') needInfo: TrainingNeedInfo;
+  subscription: Subscription;
+  needs_created = NEEDS_CREATED;
+  needs_returned = NEEDS_RETURNED;
   isSubmitting = false;
+  actions = [];
 
   constructor(private fb: FormBuilder,
     private hierarchyService: HierarchyService,
     private needWorkflow: NeedsWorkflowService,
+    private location: Location,
     private snackbar: MatSnackBar,
     private auth: AuthService) { }
 
   ngOnInit() {
     this.initForm();
 
-    this.hierarchyService.getParents(this.auth.currentUser.emp_code)
-      .subscribe((data: CtrlOfficer[]) => this.ctrlOfficers = data);
+    if (this.needInfo.status === NEEDS_CREATED || this.needInfo.status === NEEDS_RETURNED) {
+      this.actions = SUBMIT_NEEDS_ACTION;
+      this.hierarchyService.getParents(this.auth.currentUser.emp_code)
+        .subscribe((data: CtrlOfficer[]) => this.ctrlOfficers = data);
+    }
+
+    if (this.needInfo.status === NEEDS_SUBMITTED) {
+      this.actions = NEEDS_ACTION_TYPES;
+    }
+
+    this.subscription = this.workflow_action.valueChanges
+      .subscribe((data) => {
+        if (data === NEEDS_SUBMITTED) {
+          this.addressee.setValidators(Validators.required);
+        }
+      });
   }
 
   initForm() {
@@ -38,7 +65,7 @@ export class WorkflowComponent implements OnInit {
       workflow_action: ['', Validators.required],
       addressee: '',
       officer_emp_code: this.auth.currentUser.emp_code,
-      year: this.year
+      remarks: ''
     });
   }
 
@@ -51,9 +78,11 @@ export class WorkflowComponent implements OnInit {
     .subscribe(
       () => {
         this.isSubmitting = false;
+        this.needInfo.status = NEEDS_SUBMITTED;
         this.snackbar.open('Successfully submitted the training needs', 'Dismiss', {
           duration: 1600
         });
+        this.location.back();
       },
       (error) => {
         this.isSubmitting = false;
@@ -74,5 +103,9 @@ export class WorkflowComponent implements OnInit {
 
   getFullName(item) {
     return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}`;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -10,6 +10,7 @@ import { TrainingAdminComponent } from './components/training-admin/training-adm
 import { TrainingInstituteComponent } from './components/training-institute/training-institute.component';
 import { ExecutiveNeedsComponent } from './components/training-needs/executive-needs/executive-needs.component';
 import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecutive-needs/nonexecutive-needs.component';
+import { PendingRequestComponent } from './components/pending-request/pending-request.component';
 import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingComponent } from './components/training/training.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
       { path: 'needs', component: TrainingNeedsComponent },
+      { path: 'pending-needs', component: PendingRequestComponent },
       {
         path: 'executive-needs/:needInfoId',
         component: ExecutiveNeedsComponent,

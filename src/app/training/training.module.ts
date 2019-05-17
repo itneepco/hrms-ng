@@ -24,6 +24,7 @@ import { TrainingTableComponent } from './components/training-table/training-tab
 import { TrainingComponent } from './components/training/training.component';
 import { NeedsInfoResolver } from './services/training-needs-info.resolver';
 import { TrainingRoutingModule } from './training-routing.module';
+import { PendingRequestComponent } from './components/pending-request/pending-request.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { TrainingRoutingModule } from './training-routing.module';
     NonexecutiveNeedsComponent,
     ExecutiveNeedsFormComponent,
     WorkflowComponent,
+    PendingRequestComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,

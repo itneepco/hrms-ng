@@ -1,19 +1,20 @@
-import { baseURL } from './../../shared/config/baseUrl';
-import { Injectable } from '@angular/core';
-import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
+
+import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { baseURL } from './../../shared/config/baseUrl';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NeedsWorkflowService {
-  private needWorkflowUrl = baseURL + 'api/training/needs-workflow';
+  private needWorkflowUrl = baseURL + 'api/training/needs-info';
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 
-  processWorkflow(needsInfoId, workflow) {
-    return this.http.post(`${this.needWorkflowUrl}/${needsInfoId}/actions`, workflow)
+  processWorkflow(needInfoId: number, workflow) {
+    return this.http.post(`${this.needWorkflowUrl}/${needInfoId}/workflow`, workflow)
     .pipe(
       catchError(err => this.handler.handleError(err))
     );

@@ -58,7 +58,7 @@ export class ExecutiveNeedsFormComponent implements OnInit {
     console.log(this.needForm.value);
     this.isSubmitting = true;
     if (this.executiveNeed && this.executiveNeed.id) {
-      this.executiveNeedService.editExecutiveNeed(this.executiveNeed.id, this.needForm.value)
+      this.executiveNeedService.editExecutiveNeed(this.needInfo.id, this.executiveNeed.id, this.needForm.value)
       .subscribe((newValue: ExecutiveNeed) => {
         this.isSubmitting = false;
         this.snackbar.open('Successfully updated the executive need record', 'Dismiss', {
@@ -67,7 +67,7 @@ export class ExecutiveNeedsFormComponent implements OnInit {
         this.dialogRef.close(newValue);
       }, (error) => this.isSubmitting = false);
     } else {
-      this.executiveNeedService.addExecutiveNeed(this.needForm.value)
+      this.executiveNeedService.addExecutiveNeed(this.needInfo.id, this.needForm.value)
       .subscribe((value: ExecutiveNeed) => {
         this.isSubmitting = false;
         this.snackbar.open('Successfully added the executive need record', 'Dismiss', {

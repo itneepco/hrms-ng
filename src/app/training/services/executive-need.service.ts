@@ -17,49 +17,53 @@ import {
   providedIn: 'root'
 })
 export class ExecutiveNeedService {
-  private ex_need_url = baseURL + 'api/training/executive-needs'
+  private ex_need_url = baseURL + 'api/training/needs-info';
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
   getTrainigNeeds(needInfoId: number): Observable<ExecutiveNeed[]> {
-    return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/info/${needInfoId}`)
+    return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/${needInfoId}/executive-needs`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
-  addExecutiveNeed(trainingNeed: ExecutiveNeed) {
-    return this.http.post(this.ex_need_url, trainingNeed)
+  addExecutiveNeed(needInfoId: number, trainingNeed: ExecutiveNeed) {
+    return this.http.post(`${this.ex_need_url}/${needInfoId}/executive-needs`, trainingNeed)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
-  editExecutiveNeed(executiveNeedId: number, trainingNeed: ExecutiveNeed) {
-    return this.http.put(`${this.ex_need_url}/${executiveNeedId}`, trainingNeed)
+  editExecutiveNeed(needInfoId: number, executiveNeedId: number, trainingNeed: ExecutiveNeed) {
+    return this.http.put(`${this.ex_need_url}/${needInfoId}/executive-needs/${executiveNeedId}`, trainingNeed)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
-  deleteExecutiveNeed(executiveNeedId: number) {
-    return this.http.delete(`${this.ex_need_url}/${executiveNeedId}`)
+  deleteExecutiveNeed(needInfoId: number, executiveNeedId: number) {
+    return this.http.delete(`${this.ex_need_url}/${needInfoId}/executive-needs/${executiveNeedId}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getDuration(code: string) {
-    if(code == SHORT_TERM_DURATION)
-      return "Short Term"
-    if(code == LONG_TERM_DURATION)
-      return "Long Term"
+    if (code == SHORT_TERM_DURATION) {
+      return 'Short Term';
+    }
+    if (code == LONG_TERM_DURATION) {
+      return 'Long Term';
+    }
   }
 
   getNeedType(code: string) {
-    if(code == ESSENTIAL_NEED_TYPE)
-      return "Essential"
-    if(code == DESIRABLE_NEED_TYPE)
-      return "Desirable"
+    if (code == ESSENTIAL_NEED_TYPE) {
+      return 'Essential';
+    }
+    if (code == DESIRABLE_NEED_TYPE) {
+      return 'Desirable';
+    }
   }
 }

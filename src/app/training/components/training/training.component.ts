@@ -13,6 +13,7 @@ export class TrainingComponent implements OnInit {
     { name: 'My Training', path: 'my-training' },
     { name: 'My Feedback', path: 'feedback' },
     { name: 'Training Needs', path: 'needs' },
+    { name: 'Pending Request', path: 'pending-needs' },
   ]
 
   constructor(private auth: AuthService) {}

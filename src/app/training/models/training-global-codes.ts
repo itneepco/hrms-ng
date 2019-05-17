@@ -27,11 +27,11 @@ export const TRAINING_DURATIONS = [
 export const NEEDS_CREATED = '01';
 export const NEEDS_SUBMITTED = '02';
 export const NEEDS_RECOMMENDED = '03';
-export const NEEDS_APPROVED = '04';
+export const NEEDS_RETURNED = '04';
 
 export const NEEDS_ACTION_TYPES = [
   { name: 'Recommend Training Needs', code: NEEDS_RECOMMENDED },
-  { name: 'Approve Training Needs', code: NEEDS_APPROVED },
+  { name: 'Return Back to Employee', code: NEEDS_RETURNED },
 ];
 
 export const SUBMIT_NEEDS_ACTION = [
