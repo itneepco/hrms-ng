@@ -1,0 +1,58 @@
+<section fxLayout="column" fxLayoutAlign="start center">
+  <mat-card class="form">
+    <form [formGroup]="labelForm" (ngSubmit)="onSubmit()" fxLayout="row" fxLayoutGap="20px">
+      <mat-form-field fxFlex='75'>
+        <input matInput placeholder="Training Label" formControlName="name">
+        <mat-error *ngIf="name.touched && name.errors?.required">
+          Training label is required
+        </mat-error>
+      </mat-form-field>
+
+      <div fxFlex="27">
+        <button mat-raised-button *ngIf="_label.id"
+          color="primary" [disabled]="labelForm.invalid || isSubmitting">Update</button>
+        <button mat-raised-button *ngIf="!_label.id"
+          color="primary" [disabled]="labelForm.invalid || isSubmitting">Add</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <mat-table [dataSource]="dataSource">
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i=index" fxFlex="10"> {{ i + 1 }}</mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef fxFlex="60"> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="60"> {{element.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" >
+        <mat-header-cell *matHeaderCellDef fxFlex="25"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="25">
+          <button mat-icon-button color="primary" (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="onDelete(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+      [length]="dataLength"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      showFirstLastButtons
+      (page)="changePage($event)">
+    </mat-paginator>
+  </mat-card>
+</section>

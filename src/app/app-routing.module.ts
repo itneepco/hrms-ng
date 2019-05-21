@@ -37,8 +37,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: 'app/report/report.module#ReportModule'
   },
-  { path: '', redirectTo: '/leave/dashboard', pathMatch: "full" },
-  { path: '**', redirectTo: '/leave/dashboard', pathMatch: "full" }
+  { path: '', redirectTo: '/leave/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/leave/dashboard', pathMatch: 'full' }
 ]
 
 @NgModule({

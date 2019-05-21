@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { TrainingForm, TrainingInfo } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
+import { TrainingLabel } from '../models/training-needs';
 import { baseURL } from './../../shared/config/baseUrl';
 import {
   EXTERNAL_TRAINING,
@@ -13,22 +14,21 @@ import {
   TRAINING_CREATED,
   TRAINING_PUBLISHED,
 } from './../models/training-global-codes';
-import { TrainingLabel } from '../models/training-needs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainingService {
-  private training_url = baseURL + 'api/training/info'
-  private employee_url = baseURL + 'api/training/employee'
+  private training_url = baseURL + 'api/training/info';
+  private employee_url = baseURL + 'api/training/employee';
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
   uploadOrder(id: number, order) {
-    let formData = new FormData()
+    const formData = new FormData();
     // formData.append('code', data.code)
     // formData.append('day', data.day)
-    formData.append('order', order)
+    formData.append('order', order);
 
     return this.http.post(`${this.training_url}/${id}/upload-order`, formData, {
       reportProgress: true,
@@ -36,7 +36,7 @@ export class TrainingService {
     })
     .pipe(
       catchError(err => this.handler.handleError(err))
-    )
+    );
   }
 
   downloadOrder(id: number) {
@@ -45,102 +45,103 @@ export class TrainingService {
     })
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getEmployeeTrainings(pageIndex: number, pageSize: number, empCode: string): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.training_url}/employee/${empCode}` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.training_url}/employee/${empCode}` + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getTrainingInfos(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(this.training_url + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(this.training_url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getPastTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(this.training_url + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&status=archived")
+    return this.http.get<TrainingInfo[]>(this.training_url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize + '&status=archived')
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   addTrainingInfo(trainingInfo: TrainingForm) {
     return this.http.post(this.training_url, trainingInfo)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   editTrainingInfo(id: number, trainingInfo: TrainingForm) {
     return this.http.put(`${this.training_url}/${id}`, trainingInfo)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   deleteTrainingInfo(id: number) {
     return this.http.delete(`${this.training_url}/${id}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   publishTraining(id: number) {
     return this.http.put(`${this.training_url}/${id}/publish`, { status: TRAINING_PUBLISHED })
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   markTrainingCompleted(id: number) {
     return this.http.put(`${this.training_url}/${id}/mark-complete`, { status: TRAINING_COMPLETED })
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getMyTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-training` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-training` + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   feedbackPending(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&status=pending")
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + '?pageIndex=' +
+      pageIndex + '&pageSize=' + pageSize + '&status=pending')
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   feedbackSubmitted(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
-    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize)
+    return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   getTrainingLabels(): Observable<TrainingLabel[]> {
     return this.http.get<TrainingLabel[]>(`${this.employee_url}/training-label`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
 
   getType(code: string) {
-    if(code == IN_HOUSE_TRAINING) return "In House"
-    if(code == EXTERNAL_TRAINING) return "External"
+    if (code == IN_HOUSE_TRAINING) { return 'In House'; }
+    if (code == EXTERNAL_TRAINING) { return 'External'; }
   }
 
   getStatus(code: string) {
-    if(code == TRAINING_COMPLETED) return "Completed"
-    if(code == TRAINING_PUBLISHED) return "Active"
-    if(code == TRAINING_CREATED) return "Pending"
+    if (code == TRAINING_COMPLETED) { return 'Completed'; }
+    if (code == TRAINING_PUBLISHED) { return 'Active'; }
+    if (code == TRAINING_CREATED) { return 'Pending'; }
   }
 }

@@ -1,5 +1,5 @@
 <div class="main-container">
-  <mat-card class="table">
+  <mat-card class="table content">
     <div class="heading" fxLayoutAlign="space-between center">
       <span>Training needs for the assessment year {{needInfo.year}}</span>
       <button mat-icon-button (click)="goBack()">
@@ -36,7 +36,9 @@
 
       <ng-container matColumnDef="hod_remarks">
         <mat-header-cell *matHeaderCellDef fxFlex> HOD Remarks </mat-header-cell>
-        <mat-cell *matCellDef="let need" fxFlex> {{need.hod_remarks}} </mat-cell>
+        <mat-cell *matCellDef="let need" fxFlex>
+          <button mat-button (click)="addRemark()">Action</button>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -58,17 +60,20 @@
     </mat-table>
   </mat-card>
 
-  <mat-card class="table">
+  <mat-card class="table content">
     <div fxLayout="row" fxLayoutGap="20px">
       <ng-container *ngIf="needInfo.status == needs_created || needInfo.status == needs_returned ||
         (needInfo.status == needs_submitted && needInfo.addressee == auth.currentUser.emp_code)">
-        <div fxFlex="50" *ngIf="dataSource && dataSource.data.length > 0">
-          <app-workflow [needInfo]="needInfo"></app-workflow>
+        <div fxFlex="50" >
+          <app-workflow [needInfo]="needInfo" *ngIf="dataSource && dataSource.data.length > 0">
+          </app-workflow>
         </div>
+
+        <mat-divider [vertical]="true"></mat-divider>
       </ng-container>
-      <mat-divider [vertical]="true"></mat-divider>
+
       <mat-list fxFlex="50">
-        <h2 class="heading">Training Needs Info History</h2>
+        <h2 class="heading" *ngIf=" needInfo.training_need_info_hists.length > 0">Training Needs Info History</h2>
         <mat-list-item *ngFor="let hist_info of needInfo.training_need_info_hists; let i=index">
           <h3 matLine class="info">
             <span>{{i + 1}}.&nbsp;</span>

@@ -19,10 +19,8 @@ export class TrainingComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    if(this.auth.isTrainingAdmin()) {
-      this.nav.push({ name: 'Manage Training', path: 'training-admin' })
-      this.nav.push({ name: 'View Profile', path: 'training-profile' })
-      this.nav.push({ name: 'Institutes', path: 'training-institute' })
+    if (this.auth.isTrainingAdmin()) {
+      this.nav.push({ name: 'Training Admin', path: '/training/admin-training' });
     }
   }
 }

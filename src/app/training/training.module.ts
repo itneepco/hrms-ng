@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
+import { AdminTrainingComponent } from './components/admin-training/admin-training.component';
 import { FeedbackFormComponent } from './components/feedback/feedback-form/feedback-form.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
+import { ManageTrainingComponent } from './components/manage-training/manage-training.component';
 import { MyTrainingComponent } from './components/my-training/my-training.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
-import { TrainingAdminComponent } from './components/training-admin/training-admin.component';
+import { PendingRequestComponent } from './components/pending-request/pending-request.component';
 import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
 import { TrainingDetailComponent } from './components/training-detail/training-detail.component';
 import {
@@ -24,7 +26,7 @@ import { TrainingTableComponent } from './components/training-table/training-tab
 import { TrainingComponent } from './components/training/training.component';
 import { NeedsInfoResolver } from './services/training-needs-info.resolver';
 import { TrainingRoutingModule } from './training-routing.module';
-import { PendingRequestComponent } from './components/pending-request/pending-request.component';
+import { TrainingLabelComponent } from './components/training-label/training-label.component';
 
 @NgModule({
   imports: [
@@ -36,7 +38,7 @@ import { PendingRequestComponent } from './components/pending-request/pending-re
     FeedbackComponent,
     NewTrainingComponent,
     MyTrainingComponent,
-    TrainingAdminComponent,
+    ManageTrainingComponent,
     TrainingTableComponent,
     TrainingDetailComponent,
     FeedbackFormComponent,
@@ -50,6 +52,8 @@ import { PendingRequestComponent } from './components/pending-request/pending-re
     ExecutiveNeedsFormComponent,
     WorkflowComponent,
     PendingRequestComponent,
+    AdminTrainingComponent,
+    TrainingLabelComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,

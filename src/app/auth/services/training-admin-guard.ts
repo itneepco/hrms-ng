@@ -9,12 +9,12 @@ export class TrainingAdminGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private auth: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.auth.isTrainingAdmin() || this.auth.isItAdmin()) return true
-  
-    this.router.navigate(['/']);
+    if (this.auth.isTrainingAdmin() || this.auth.isItAdmin()) { return true; }
+
+    this.router.navigate(['/training']);
     return false;
   }
-  
+
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.canActivate(route, state);
   }

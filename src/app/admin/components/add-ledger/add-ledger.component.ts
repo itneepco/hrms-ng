@@ -17,16 +17,16 @@ import { EmployeeService } from '../../../shared/services/employee.service';
   styleUrls: ['./add-ledger.component.scss']
 })
 export class AddLedgerComponent implements OnInit, OnDestroy {
-  ledgerForm: FormGroup
-  leaveTypes: LeaveType[]
-  searchResult: Employee[] = []
+  ledgerForm: FormGroup;
+  leaveTypes: LeaveType[];
+  searchResult: Employee[] = [];
   dc_flag = [
-    {name: "Debit", value: "D"}, 
-    {name: "Credit", value: "C"}
-  ]
-  ledger: LeaveLedger = {} as LeaveLedger
-  empCodeSubs: Subscription
-  isSubmitting: boolean = false
+    {name: 'Debit', value: 'D'},
+    {name: 'Credit', value: 'C'}
+  ];
+  ledger: LeaveLedger = {} as LeaveLedger;
+  empCodeSubs: Subscription;
+  isSubmitting = false;
 
   constructor(private fb: FormBuilder,
     private ledgerService: LedgerService,
@@ -35,12 +35,12 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<AddLedgerComponent>) { }
 
   ngOnInit() {
-    this.leaveTypes = LEAVE_TYPES
+    this.leaveTypes = LEAVE_TYPES;
 
-    if(this.data && this.data.ledger) {
-      this.ledger = this.data.ledger
+    if (this.data && this.data.ledger) {
+      this.ledger = this.data.ledger;
     }
-    
+
     this.ledgerForm = this.fb.group({
       emp_code: [this.ledger.emp_code, [Validators.required, Validators.pattern('[0-9]{6}')]],
       cal_year: [this.ledger.cal_year, [Validators.required, Validators.pattern('[1-9][0-9]{3}')]],
@@ -48,83 +48,82 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
       no_of_days: [this.ledger.no_of_days, [Validators.required, Validators.pattern('[1-9][0-9]*')]],
       leave_type: [this.ledger.leave_type ? this.ledger.leave_type : '', Validators.required],
       remarks: this.ledger.remarks
-    })
+    });
 
     this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
-      if(!data) return
-      if(data.length < 1) return
-      
+      if (!data) { return }
+      if (data.length < 1) { return }
+
       this.employeeService.searchEmployee(data)
         .subscribe(response => {
-          this.searchResult = response
-        })
-    })
-    
+          this.searchResult = response;
+        });
+    });
+
   }
 
   onSubmit() {
-    if(this.searchResult.length < 1) {
-      this.emp_code.setErrors({"invalidEmpCode": true})
-      return
+    if (this.searchResult.length < 1) {
+      this.emp_code.setErrors({'invalidEmpCode': true});
+      return;
     }
 
-    if(this.ledgerForm.invalid) return
-    console.log(this.ledgerForm.value)
+    if (this.ledgerForm.invalid) { return }
+    console.log(this.ledgerForm.value);
 
-    this.isSubmitting = true
-    if(this.ledger.id) {
+    this.isSubmitting = true;
+    if (this.ledger.id) {
       this.ledgerService.updateLedger(this.ledger.id, this.ledgerForm.value)
       .subscribe((val) => {
-        this.isSubmitting = false
-        console.log(val)
-        this.dialogRef.close({ edit: val })
+        this.isSubmitting = false;
+        console.log(val);
+        this.dialogRef.close({ edit: val });
       }, error => {
-        console.log(error)
-        this.isSubmitting = false
-      })
-    }
-    else {
+        console.log(error);
+        this.isSubmitting = false;
+      });
+    } else {
       this.ledgerService.addLedger(this.ledgerForm.value)
       .subscribe((val) => {
-        this.isSubmitting = false
-        console.log(val)
-        this.dialogRef.close({ add: val })
+        this.isSubmitting = false;
+        console.log(val);
+        this.dialogRef.close({ add: val });
       }, error => {
-        console.log(error)
-        this.isSubmitting = false
-      })
+        console.log(error);
+        this.isSubmitting = false;
+      });
     }
   }
 
   getFullName(item) {
-    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}` 
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}`;
   }
 
   get emp_code() {
-    return this.ledgerForm.get('emp_code')
+    return this.ledgerForm.get('emp_code');
   }
 
   get cal_year() {
-    return this.ledgerForm.get('cal_year')
+    return this.ledgerForm.get('cal_year');
   }
 
   get db_cr_flag() {
-    return this.ledgerForm.get('db_cr_flag')
+    return this.ledgerForm.get('db_cr_flag');
   }
 
   get no_of_days() {
-    return this.ledgerForm.get('no_of_days')
+    return this.ledgerForm.get('no_of_days');
   }
 
   get leave_type() {
-    return this.ledgerForm.get('leave_type')
+    return this.ledgerForm.get('leave_type');
   }
 
   get remarks() {
-    return this.ledgerForm.get('remarks')
+    return this.ledgerForm.get('remarks');
   }
 
   ngOnDestroy() {
-    this.empCodeSubs.unsubscribe()
+    this.empCodeSubs.unsubscribe();
   }
 }

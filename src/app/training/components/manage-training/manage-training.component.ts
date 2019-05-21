@@ -1,30 +1,30 @@
-import { AuthService } from './../../../auth/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
+import { AuthService } from '../../../auth/services/auth.service';
 import { TrainingInfo } from '../../models/training';
 import { TrainingService } from '../../services/training.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-training-admin',
-  templateUrl: './training-admin.component.html',
-  styleUrls: ['./training-admin.component.scss']
+  templateUrl: './manage-training.component.html',
+  styleUrls: ['./manage-training.component.scss']
 })
-export class TrainingAdminComponent implements OnInit {
+export class ManageTrainingComponent implements OnInit {
   dataSource: MatTableDataSource<TrainingInfo>
   pastTraining: MatTableDataSource<TrainingInfo>
   errMsg: string
   isLoading = false
 
-  // Pagination variables 
+  // Pagination variables
   dataLength = 0
   pastTrainingLength = 0
   pageSize = 10
   pageIndex = 0
 
-  constructor(public trainingService: TrainingService, 
+  constructor(public trainingService: TrainingService,
     public auth: AuthService,
     private router: Router) { }
 

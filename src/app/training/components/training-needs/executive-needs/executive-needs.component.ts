@@ -107,6 +107,10 @@ export class ExecutiveNeedsComponent implements OnInit {
       });
   }
 
+  addRemark() {
+
+  }
+
   getExecutiveNeeds() {
     this.isLoading = true;
     this.executiveNeedService.getTrainigNeeds(this.needInfo.id)

@@ -16,20 +16,20 @@ import { ProjectService } from '../../../shared/services/project.service';
   styleUrls: ['./holiday-list.component.scss']
 })
 export class HolidayListComponent implements OnInit {
-  holiday_types = ["CH", "RH"]
-  projects: Project[]
-  displayedColumns = ["position", "name", "date", "type", "actions"]
-  dataSource: MatTableDataSource<Holiday>
-  errMsg: string
-  isLoading = true
-  holidayForm: FormGroup
-  _holiday: Holiday = {} as Holiday
-  isSubmitting: boolean = false
+  holiday_types = ['CH', 'RH'];
+  projects: Project[];
+  displayedColumns = ['position', 'name', 'date', 'type', 'actions'];
+  dataSource: MatTableDataSource<Holiday>;
+  errMsg: string;
+  isLoading = true;
+  holidayForm: FormGroup;
+  _holiday: Holiday = {} as Holiday;
+  isSubmitting = false;
 
-  // Pagination variables 
-  dataLength = 0
-  pageSize = 10
-  pageIndex = 0
+  // Pagination variables
+  dataLength = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
   constructor(private holidayService: HolidayService,
     private projectService: ProjectService,
@@ -37,28 +37,28 @@ export class HolidayListComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.initializeForm()
-    this.getHolidays()
+    this.initializeForm();
+    this.getHolidays();
   }
 
   getHolidays() {
     this.projectService.getProjects()
       .pipe(
-        switchMap((projects: Project[]) => { 
-          this.projects = projects
-          return this.holidayService.getHolidays(this.pageIndex, this.pageSize)
+        switchMap((projects: Project[]) => {
+          this.projects = projects;
+          return this.holidayService.getHolidays(this.pageIndex, this.pageSize);
         })
       )
       .subscribe(data => {
-          this.dataLength = data['count']
-          this.dataSource = new MatTableDataSource<Holiday>(data['rows'])
-          this.isLoading = false
+          this.dataLength = data['count'];
+          this.dataSource = new MatTableDataSource<Holiday>(data['rows']);
+          this.isLoading = false;
         },
         errMsg => {
-          this.errMsg = errMsg
-          this.isLoading = false
+          this.errMsg = errMsg;
+          this.isLoading = false;
         }
-      )
+      );
   }
 
   initializeForm() {
@@ -67,96 +67,95 @@ export class HolidayListComponent implements OnInit {
       day: [this._holiday.day, [Validators.required]],
       type: [this._holiday.type, [Validators.required]],
       // project_id: [this._holiday.project_id, [Validators.required]]
-    })
+    });
   }
 
   onSubmit() {
-    let holidayFormValue = <Holiday> this.holidayForm.value
+    const holidayFormValue = <Holiday> this.holidayForm.value;
     // console.log(this.holidayForm.value)
 
-    this.isSubmitting = true
-    if(this._holiday.id) {
+    this.isSubmitting = true;
+    if (this._holiday.id) {
       this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(
         (holiday: Holiday) => {
-          this.isSubmitting = false
-          let index = this.dataSource.data.indexOf(this._holiday)
-          let temp = this.dataSource.data
-          temp.splice(index, 1)
-          temp.unshift(holiday)
-          this.dataSource.data = temp
-          
-          this._holiday = {} as Holiday
-          this.snackbar.open("Successfully updated the holiday record", "Dismiss", {
+          this.isSubmitting = false;
+          const index = this.dataSource.data.indexOf(this._holiday);
+          const temp = this.dataSource.data;
+          temp.splice(index, 1);
+          temp.unshift(holiday);
+          this.dataSource.data = temp;
+
+          this._holiday = {} as Holiday;
+          this.snackbar.open('Successfully updated the holiday record', 'Dismiss', {
             duration: 1600
-          })
+          });
         }, error => {
-          console.log(error)
-          this.isSubmitting = false
+          console.log(error);
+          this.isSubmitting = false;
         }
-      )
-    }
-    else {
+      );
+    } else {
       this.holidayService.addHoliday(holidayFormValue).subscribe(
         (holiday: Holiday) => {
-          this.isSubmitting = false
-          let temp = this.dataSource.data
-          temp.splice(0, 0, holiday)
-          this.dataSource.data = temp
-          this.snackbar.open("Successfully created the holiday record", "Dismiss", {
+          this.isSubmitting = false;
+          const temp = this.dataSource.data;
+          temp.splice(0, 0, holiday);
+          this.dataSource.data = temp;
+          this.snackbar.open('Successfully created the holiday record', 'Dismiss', {
             duration: 1600
-          })
+          });
         }, error => {
-          console.log(error)
-          this.isSubmitting = false
+          console.log(error);
+          this.isSubmitting = false;
         }
-      )
+      );
     }
-    
-    this.holidayForm.reset()
+
+    this.holidayForm.reset();
     Object.keys(this.holidayForm.controls).forEach((name) => {
-      let control = this.holidayForm.controls[name];
+      const control = this.holidayForm.controls[name];
       control.setErrors(null);
     });
   }
 
   onEdit(holiday: Holiday) {
-    this._holiday = holiday
-    this.initializeForm()
+    this._holiday = holiday;
+    this.initializeForm();
   }
 
   onRemove(holiday: Holiday) {
-    let retVal = confirm("Are you sure you want to delete?")
-    if(retVal == true) { 
+    const retVal = confirm('Are you sure you want to delete?');
+    if (retVal == true) {
       this.holidayService.deleteHoliday(holiday.id)
         .subscribe(() => {
-          let index = this.dataSource.data.indexOf(holiday)
-          let temp = this.dataSource.data
-          temp.splice(index, 1)
-          this.dataSource.data = temp
-        })
-      
-      this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
+          const index = this.dataSource.data.indexOf(holiday);
+          const temp = this.dataSource.data;
+          temp.splice(index, 1);
+          this.dataSource.data = temp;
+        });
+
+      this.snackbar.open('Successfully deleted the holiday record', 'Dismiss', {
         duration: 1600
-      })  
+      })
     }
   }
 
   changePage(pageEvent: PageEvent) {
-    this.pageIndex = pageEvent.pageIndex
-    this.pageSize = pageEvent.pageSize
-    this.getHolidays()
-  } 
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getHolidays();
+  }
 
   get name() {
-    return this.holidayForm.get('name')
+    return this.holidayForm.get('name');
   }
   get day() {
-    return this.holidayForm.get('day')
+    return this.holidayForm.get('day');
   }
   get type() {
-    return this.holidayForm.get('type')
+    return this.holidayForm.get('type');
   }
   get project_id() {
-    return this.holidayForm.get('project_id')
+    return this.holidayForm.get('project_id');
   }
 }
