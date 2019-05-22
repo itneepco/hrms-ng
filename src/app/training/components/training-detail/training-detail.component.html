@@ -13,78 +13,99 @@
         <mat-panel-title>Training Info</mat-panel-title>
         <mat-panel-description>Course title, objective and other details</mat-panel-description>
       </mat-expansion-panel-header>
-  
+
       <div>
         <div class="info" fxFlex>
           <span class="title">Course Title: </span>
           {{ training.course_title }}
         </div>
-      
+
         <div class="info" fxFlex>
           <span class="title">Objective: </span>
           {{ training.objective }}
         </div>
-      
+
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">From Date: </span>
-            {{ training.from_date | date:'mediumDate' }} 
+            {{ training.from_date | date:'mediumDate' }}
           </div>
           <div class="info" fxFlex>
             <span class="title">To Date: </span>
             {{ training.to_date | date:'mediumDate' }}
           </div>
         </div>
-      
+
         <div fxLayout="row" fxLayoutGap="20px">
-          <div class="info" fxFlex>
-            <span class="title">Training Type: </span>
-            {{ trainingService.getType(training.training_type) }} 
-          </div>
-          <div class="info" fxFlex>
-            <span class="title">Venue: </span>
-            {{ training.venue }}
-          </div>
-        </div>
-      
-        <div fxLayout="row">
           <div class="info" fxFlex>
             <span class="title">Training Order: </span>
             <span *ngIf="training.training_order_name"
               (click)="downloadOrder(training.id)"
               class="download">Download</span>
           </div>
-        </div>  
+          <div class="info" fxFlex>
+            <span class="title">Venue: </span>
+            {{ training.venue }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex>
+            <span class="title">Training Type: </span>
+            {{ trainingService.getType(training.training_type) }}
+          </div>
+
+          <div class="info" fxFlex *ngIf="trainingInstitute">
+            <span class="title">Institute Name: </span>
+            {{ trainingInstitute.name }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px" *ngIf="trainingInstitute">
+
+          <div class="info" fxFlex>
+            <div class="title">Institute Contact: </div>
+            <address>
+              <ng-container *ngIf="trainingInstitute.contact_person">{{trainingInstitute.contact_person}}.<br></ng-container>
+              <ng-container *ngIf="trainingInstitute.contact_no || trainingInstitute.contact_no2">{{trainingInstitute.contact_no}} {{trainingInstitute.contact_no2}}<br></ng-container>
+              <ng-container *ngIf="trainingInstitute.website">Website: {{trainingInstitute.website}}<br></ng-container>
+              <ng-container *ngIf="trainingInstitute.address">{{trainingInstitute.address}}<br></ng-container>
+              <ng-container *ngIf="trainingInstitute.city || trainingInstitute.state">{{trainingInstitute.city}}, {{trainingInstitute.state}}<br></ng-container>
+              <ng-container *ngIf="trainingInstitute.country || trainingInstitute.pin">{{trainingInstitute.country}}, {{trainingInstitute.pin}}</ng-container>
+            </address>
+          </div>
+        </div>
+
       </div>
     </mat-expansion-panel>
-  
+
     <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" *ngIf="topics.data.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>Session Topics</mat-panel-title>
         <mat-panel-description>Details of training topics</mat-panel-description>
       </mat-expansion-panel-header>
-      
+
       <div id="topics">
         <mat-table [dataSource]="topics">
           <ng-container matColumnDef="sl">
             <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl. No </mat-header-cell>
-            <mat-cell *matCellDef="let topic; let i=index" fxFlex="15"> 
-              {{ i + 1 }} 
+            <mat-cell *matCellDef="let topic; let i=index" fxFlex="15">
+              {{ i + 1 }}
             </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="topic">
             <mat-header-cell *matHeaderCellDef fxFlex="35"> Topic Name </mat-header-cell>
             <mat-cell *matCellDef="let topic" fxFlex="35"> {{topic.topic_name}} </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="faculty">
             <mat-header-cell *matHeaderCellDef fxFlex="35"> Faculty Name </mat-header-cell>
             <mat-cell *matCellDef="let topic" fxFlex="35"> {{topic.faculty_name}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="rating">
-            <mat-header-cell *matHeaderCellDef fxFlex="15"> 
+            <mat-header-cell *matHeaderCellDef fxFlex="15">
               <span *ngIf="isAdminPage">Avg. Rating</span>
               <span *ngIf="!isAdminPage">Rating</span>
             </mat-header-cell>
@@ -99,7 +120,7 @@
         </mat-table>
       </div>
     </mat-expansion-panel>
-  
+
     <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -111,38 +132,38 @@
           <ng-template #partDesc>Details of training participants</ng-template>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      
+
       <div id="participants">
         <mat-table [dataSource]="participants" *ngIf="participants.data.length > 0">
           <ng-container matColumnDef="mark" *ngIf="isAdminPage">
             <mat-header-cell *matHeaderCellDef fxFlex="10"> Mark </mat-header-cell>
-            <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
+            <mat-cell *matCellDef="let participant; let i=index" fxFlex="10">
               <mat-checkbox (change)="markParticipant($event, participant)" [checked]="participant.present"></mat-checkbox>
             </mat-cell>
           </ng-container>
-          
+
           <ng-container matColumnDef="sl" *ngIf="!isProfilePage">
             <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. </mat-header-cell>
-            <mat-cell *matCellDef="let participant; let i=index" fxFlex="10"> 
-              {{ i + 1 }} 
+            <mat-cell *matCellDef="let participant; let i=index" fxFlex="10">
+              {{ i + 1 }}
             </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="emp_code">
             <mat-header-cell *matHeaderCellDef fxFlex="15"> Emp Code </mat-header-cell>
             <mat-cell *matCellDef="let participant" fxFlex="15"> {{participant.emp_code}} </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef fxFlex="28"> Full Name </mat-header-cell>
             <mat-cell *matCellDef="let participant" fxFlex="28"> {{participant.name | titlecase}} </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="designation">
             <mat-header-cell *matHeaderCellDef fxFlex="27"> Designation </mat-header-cell>
             <mat-cell *matCellDef="let participant" fxFlex="27"> {{participant.designation}} </mat-cell>
           </ng-container>
-      
+
           <ng-container matColumnDef="grade" *ngIf="isProfilePage">
             <mat-header-cell *matHeaderCellDef fxFlex="10"> Grade </mat-header-cell>
             <mat-cell *matCellDef="let participant" fxFlex="10"> {{participant.grade}} </mat-cell>
@@ -157,29 +178,29 @@
             <mat-header-cell *matHeaderCellDef fxFlex="12"> Attendance </mat-header-cell>
             <mat-cell *matCellDef="let participant" fxFlex="12"> {{getAttendance(participant)}} </mat-cell>
           </ng-container>
-      
+
           <mat-header-row *matHeaderRowDef="participantColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: participantColumns;"></mat-row>
         </mat-table>
 
-        <ng-container *ngIf="isAdminPage && 
+        <ng-container *ngIf="isAdminPage &&
             (training.status == training_published || training.status == training_completed)">
           <button mat-raised-button color="primary" (click)="markAsPresent()" class="btn"
             [disabled]="attendance.length < 1">Save Attendance</button>
 
           <button mat-raised-button color="primary" (click)="markTrainingCompleted()" class="btn"
-            *ngIf="training.status != training_completed">Mark Training Completed</button>  
+            *ngIf="training.status != training_completed">Mark Training Completed</button>
         </ng-container>
       </div>
     </mat-expansion-panel>
-  
-    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" 
+
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
         *ngIf="(isAdminPage || isProfilePage) && (feedbacks && feedbacks.length > 0)">
       <mat-expansion-panel-header>
         <mat-panel-title>Feedbacks</mat-panel-title>
         <mat-panel-description>Feedback on the training programme</mat-panel-description>
       </mat-expansion-panel-header>
-      
+
       <div>
         <div fxLayout="row" fxLayoutAlign="start center">
           <div fxFlex="50">Course Duration Rating <span *ngIf="isAdminPage">(avg.)</span></div>
@@ -202,7 +223,7 @@
                 <span *ngIf="isAdminPage">{{averageRating.content | number:'1.1'}}</span>
                 <span *ngIf="isProfilePage">{{feedbacks[0].content_rating | number:'1.1'}}</span>
                 <span> / 5.0</span>
-              </div>  
+              </div>
               <div>&nbsp;<mat-icon>star</mat-icon></div>
             </div>
           </div>
@@ -253,7 +274,7 @@
       <mat-list>
         <mat-list-item *ngFor="let feedback of feedbacks">
           <h3 matLine class="comment"> {{ feedback.comments }} </h3>
-          <div matLine fxLayoutAlign="space-between center">  
+          <div matLine fxLayoutAlign="space-between center">
             <div class="author"> -- by {{ getEmployeeDetail(feedback) }} </div>
             <div fxLayout="row" fxLayoutAlign="start center">
               <div class="rating">{{ calculateRating(feedback) | number:'1.1' }} / 5.0</div>

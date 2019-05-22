@@ -41,9 +41,9 @@ const routes: Routes = [{
     component: AdminTrainingComponent,
     canActivateChild: [AuthGuard, TrainingAdminGuard],
     children: [
+      { path: '', component: ManageTrainingComponent },
       { path: 'training-profile', component: TrainingProfileComponent },
       { path: 'training-institute', component: TrainingInstituteComponent },
-      { path: 'manage-training', component: ManageTrainingComponent },
       { path: 'new', component: NewTrainingComponent },
       { path: 'training-label', component: TrainingLabelComponent },
       { path: '', redirectTo: 'manage-training', pathMatch: 'full' }

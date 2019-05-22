@@ -17,55 +17,55 @@ import { FeedbackFormComponent } from '../feedback/feedback-form/feedback-form.c
   styleUrls: ['./training-table.component.scss']
 })
 export class TrainingTableComponent implements OnInit {
-  displayedColumns = []
-  @Input('isAdminPage') isAdminPage: boolean = false
-  @Input('isFeedbackPage') isFeedbackPage: boolean = false
-  @Input('isProfilePage') isProfilePage: boolean = false
+  displayedColumns = [];
+  @Input('isAdminPage') isAdminPage = false;
+  @Input('isFeedbackPage') isFeedbackPage = false;
+  @Input('isProfilePage') isProfilePage = false;
 
-  @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>
-  
-  // Pagination variables 
-  @Input('dataLength') dataLength
-  @Input('pageSize') pageSize
-  @Input('pageIndex') pageIndex  
+  @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>;
 
-  @Output() pageChange = new EventEmitter()
+  // Pagination variables
+  @Input('dataLength') dataLength;
+  @Input('pageSize') pageSize;
+  @Input('pageIndex') pageIndex;
+
+  @Output() pageChange = new EventEmitter();
 
   constructor(private router: Router,
-    public auth: AuthService, 
+    public auth: AuthService,
     public dialog: MatDialog,
     public trainingService: TrainingService,
     private dataService: DataService) {}
 
   ngOnInit() {
-    if(this.isAdminPage) {
-      this.displayedColumns = ["position", "title", "type", "from_date", "status", "actions"]
+    if (this.isAdminPage) {
+      this.displayedColumns = ['position', 'title', 'type', 'from_date', 'status', 'actions'];
     } else {
-      this.displayedColumns = ["position", "title", "type", "from_date", "venue", "actions"]
+      this.displayedColumns = ['position', 'title', 'type', 'from_date', 'venue', 'actions'];
     }
-  }  
+  }
 
   changePage(pageEvent: PageEvent) {
-    this.pageChange.emit(pageEvent)
+    this.pageChange.emit(pageEvent);
   }
 
   onEdit(training: TrainingInfo) {
-    this.dataService.trainingData = training
-    this.router.navigate(['training/new'])
+    this.dataService.trainingData = training;
+    this.router.navigate(['/training/admin-training/new']);
   }
 
   onShow(training: TrainingInfo) {
-    console.log("On Show")
-    this.dialog.open(TrainingDetailComponent, { 
+    console.log('On Show');
+    this.dialog.open(TrainingDetailComponent, {
       panelClass: 'detail-dialog',
       width: '680px',
       height: '580px',
-      data:  { 
+      data:  {
         training: training,
         isAdminPage: this.isAdminPage,
-        isProfilePage: this.isProfilePage 
-      } 
-    })
+        isProfilePage: this.isProfilePage
+      }
+    });
   }
 
   openFeedbackForm(training: TrainingInfo) {
@@ -73,6 +73,6 @@ export class TrainingTableComponent implements OnInit {
       width: '650px',
       height: '580px',
       data:  training
-    })
+    });
   }
 }

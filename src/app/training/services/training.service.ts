@@ -104,6 +104,7 @@ export class TrainingService {
       );
   }
 
+  // For Employee API endpoint *** start ***
   getMyTrainings(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
     return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-training` + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(
@@ -133,15 +134,22 @@ export class TrainingService {
       );
   }
 
+  getTrainingInstitute(instituteId: number): Observable<TrainingInstitute> {
+    return this.http.get<TrainingInstitute>(`${this.employee_url}/training-institute/${instituteId}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      );
+  }
+  // For Employee API endpoint *** end ***
 
   getType(code: string) {
-    if (code == IN_HOUSE_TRAINING) { return 'In House'; }
-    if (code == EXTERNAL_TRAINING) { return 'External'; }
+    if (code === IN_HOUSE_TRAINING) { return 'In House'; }
+    if (code === EXTERNAL_TRAINING) { return 'External'; }
   }
 
   getStatus(code: string) {
-    if (code == TRAINING_COMPLETED) { return 'Completed'; }
-    if (code == TRAINING_PUBLISHED) { return 'Active'; }
-    if (code == TRAINING_CREATED) { return 'Pending'; }
+    if (code === TRAINING_COMPLETED) { return 'Completed'; }
+    if (code === TRAINING_PUBLISHED) { return 'Active'; }
+    if (code === TRAINING_CREATED) { return 'Pending'; }
   }
 }

@@ -35,12 +35,12 @@ export class TrainingInstituteComponent implements OnInit {
 
   addNewInstitute() {
     const dialogRef = this.dialog.open(TrainingInstituteFormComponent, {
-      width: '550px',
-      height: '430px'
+      width: '600px',
+      height: '530px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) { return }
+      if (!result) { return; }
 
       const temp = this.dataSource.data;
       temp.unshift(result);
@@ -50,13 +50,13 @@ export class TrainingInstituteComponent implements OnInit {
 
   onEdit(institute: TrainingInstitute) {
     const dialogRef = this.dialog.open(TrainingInstituteFormComponent, {
-      width: '550px',
-      height: '430px',
+      width: '600px',
+      height: '530px',
       data: institute
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) { return }
+      if (!result) { return; }
 
       const index = this.dataSource.data.indexOf(institute);
       const temp = this.dataSource.data;
@@ -67,7 +67,7 @@ export class TrainingInstituteComponent implements OnInit {
 
   onDelete(institute: TrainingInstitute) {
     const retVal = confirm('Are you sure you want to delete?');
-    if (retVal != true) { return }
+    if (retVal != true) { return; }
 
     this.instituteService.deleteTrainingInstitute(institute.id)
       .subscribe(() => {
@@ -77,7 +77,7 @@ export class TrainingInstituteComponent implements OnInit {
         this.dataSource.data = temp;
         this.snackbar.open('Successfully deleted the institute record', 'Dismiss', {
           duration: 1600
-        })
+        });
       }, (error) => {
         console.log(error);
         this.snackbar.open('Cannot delete institute record. Its being referenced by other table', 'Dismiss', {

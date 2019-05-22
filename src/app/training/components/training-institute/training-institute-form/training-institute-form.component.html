@@ -10,6 +10,26 @@
     <textarea matInput placeholder="Address" formControlName="address"></textarea>
   </mat-form-field>
 
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="City" formControlName="city">
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <input matInput placeholder="State" formControlName="state">
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Country" formControlName="country">
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Pin Code" formControlName="pin">
+    </mat-form-field>
+  </div>
+
   <mat-form-field>
     <input matInput placeholder="Website" formControlName="website">
   </mat-form-field>
@@ -18,10 +38,17 @@
     <input matInput placeholder="Contact Person" formControlName="contact_person">
   </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Contact No" formControlName="contact_no">
-    <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
-  </mat-form-field>
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Contact No" formControlName="contact_no">
+      <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Alternate Contact No" formControlName="contact_no2">
+      <mat-error *ngIf="contact_no2.errors?.pattern">Mobile number should be 10 digits</mat-error>
+    </mat-form-field>
+  </div>
 
   <div fxLayoutAlign="end center" id="buttons">
     <button mat-raised-button matDialogClose class="btn" type="button">Close</button>

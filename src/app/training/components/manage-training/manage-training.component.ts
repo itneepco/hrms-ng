@@ -13,71 +13,71 @@ import { TrainingService } from '../../services/training.service';
   styleUrls: ['./manage-training.component.scss']
 })
 export class ManageTrainingComponent implements OnInit {
-  dataSource: MatTableDataSource<TrainingInfo>
-  pastTraining: MatTableDataSource<TrainingInfo>
-  errMsg: string
-  isLoading = false
+  dataSource: MatTableDataSource<TrainingInfo>;
+  pastTraining: MatTableDataSource<TrainingInfo>;
+  errMsg: string;
+  isLoading = false;
 
   // Pagination variables
-  dataLength = 0
-  pastTrainingLength = 0
-  pageSize = 10
-  pageIndex = 0
+  dataLength = 0;
+  pastTrainingLength = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
   constructor(public trainingService: TrainingService,
     public auth: AuthService,
     private router: Router) { }
 
   ngOnInit() {
-    this.getTrainingInfos()
-    this.getPastTrainings()
+    this.getTrainingInfos();
+    this.getPastTrainings();
   }
 
   getTrainingInfos() {
-    this.isLoading = true
+    this.isLoading = true;
     this.trainingService.getTrainingInfos(this.pageIndex, this.pageSize)
     .subscribe(data => {
-      this.dataLength = data['count']
-      this.dataSource = new MatTableDataSource<TrainingInfo>(data['rows'])
-      this.isLoading = false
-      console.log(data)
+      this.dataLength = data['count'];
+      this.dataSource = new MatTableDataSource<TrainingInfo>(data['rows']);
+      this.isLoading = false;
+      // console.log(data);
     },
     errMsg => {
-      this.errMsg = errMsg
-      this.isLoading = false
-    })
+      this.errMsg = errMsg;
+      this.isLoading = false;
+    });
   }
 
   getPastTrainings() {
-    this.isLoading = true
+    this.isLoading = true;
     this.trainingService.getPastTrainings(this.pageIndex, this.pageSize)
     .subscribe(data => {
-      this.pastTrainingLength = data['count']
-      this.pastTraining = new MatTableDataSource<TrainingInfo>(data['rows'])
-      this.isLoading = false
-      console.log(data)
+      this.pastTrainingLength = data['count'];
+      this.pastTraining = new MatTableDataSource<TrainingInfo>(data['rows']);
+      this.isLoading = false;
+      // console.log(data);
     },
     errMsg => {
-      this.errMsg = errMsg
-      this.isLoading = false
-    })
+      this.errMsg = errMsg;
+      this.isLoading = false;
+    });
   }
 
   changePage(pageEvent: PageEvent) {
-    console.log(pageEvent)
-    this.pageIndex = pageEvent.pageIndex
-    this.pageSize = pageEvent.pageSize
-    this.getTrainingInfos()
+    console.log(pageEvent);
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getTrainingInfos();
   }
 
   changePastTrainingPage(pageEvent: PageEvent) {
-    console.log(pageEvent)
-    this.pageIndex = pageEvent.pageIndex
-    this.pageSize = pageEvent.pageSize
-    this.getPastTrainings()
+    console.log(pageEvent);
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getPastTrainings();
   }
 
   addNewTraining() {
-    this.router.navigate(['/training/new'])
+    this.router.navigate(['/training/admin-training/new']);
   }
 }
