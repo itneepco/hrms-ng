@@ -42,6 +42,13 @@ export class ExecutiveNeedService {
       );
   }
 
+  updateNeedRemarks(needInfoId: number, executiveNeedId: number, remarks) {
+    return this.http.put(`${this.ex_need_url}/${needInfoId}/executive-needs/${executiveNeedId}/remarks`, remarks)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      );
+  }
+
   deleteExecutiveNeed(needInfoId: number, executiveNeedId: number) {
     return this.http.delete(`${this.ex_need_url}/${needInfoId}/executive-needs/${executiveNeedId}`)
       .pipe(

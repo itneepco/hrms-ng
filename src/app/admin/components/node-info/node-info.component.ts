@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
-import { TreeNode } from '../../../shared/model/employee-node';
+import { TreeNode } from '../../../shared/models/employee-node';
 
 @Component({
   selector: 'app-node-info',

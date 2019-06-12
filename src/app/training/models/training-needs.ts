@@ -2,6 +2,7 @@ import { Employee } from './../../shared/models/employee';
 
 export interface ExecutiveNeed {
   id: number;
+  training_need_info_id: number;
   emp_code: string;
   need_type: string;
   duration: string;

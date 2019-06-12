@@ -37,19 +37,27 @@
       <ng-container matColumnDef="hod_remarks">
         <mat-header-cell *matHeaderCellDef fxFlex> HOD Remarks </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex>
-          <button mat-button (click)="addRemark()">Action</button>
+          <span>{{need.hod_remarks}}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
         <mat-cell *matCellDef="let need" fxFlex="10">
+
           <ng-container *ngIf="needInfo.status == needs_created || needInfo.status == needs_returned">
             <button mat-icon-button color="accent" (click)="onEdit(need)">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="accent" (click)="onDelete(need)">
               <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-container *ngIf="auth.currentUser.emp_code == needInfo.addressee">
+            <button mat-icon-button color="accent" (click)="addRemark(need)">
+              <mat-icon *ngIf="!need.hod_remarks">add</mat-icon>
+              <mat-icon *ngIf="need.hod_remarks">edit</mat-icon>
             </button>
           </ng-container>
         </mat-cell>

@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
-import { TreeNode } from '../../../shared/model/employee-node';
-import { Hierarchy } from '../../../shared/model/employee-node';
+import { TreeNode } from '../../../shared/models/employee-node';
+import { Hierarchy } from '../../../shared/models/employee-node';
 import { HierarchyService } from '../../../shared/services/hierarchy.service';
 
 @Component({

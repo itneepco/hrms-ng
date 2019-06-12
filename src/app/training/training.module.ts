@@ -9,24 +9,25 @@ import { MyTrainingComponent } from './components/my-training/my-training.compon
 import { NewTrainingComponent } from './components/new-training/new-training.component';
 import { PendingRequestComponent } from './components/pending-request/pending-request.component';
 import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
-import { TrainingDetailComponent } from './components/training-table/training-detail/training-detail.component';
 import {
   TrainingInstituteFormComponent,
 } from './components/training-institute/training-institute-form/training-institute-form.component';
 import { TrainingInstituteComponent } from './components/training-institute/training-institute.component';
+import { TrainingLabelComponent } from './components/training-label/training-label.component';
 import {
   ExecutiveNeedsFormComponent,
 } from './components/training-needs/executive-needs/executive-needs-form/executive-needs-form.component';
 import { ExecutiveNeedsComponent } from './components/training-needs/executive-needs/executive-needs.component';
+import { RemarksComponent } from './components/training-needs/executive-needs/remarks/remarks.component';
 import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecutive-needs/nonexecutive-needs.component';
 import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
 import { WorkflowComponent } from './components/training-needs/workflow/workflow.component';
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
+import { TrainingDetailComponent } from './components/training-table/training-detail/training-detail.component';
 import { TrainingTableComponent } from './components/training-table/training-table.component';
 import { TrainingComponent } from './components/training/training.component';
 import { NeedsInfoResolver } from './services/training-needs-info.resolver';
 import { TrainingRoutingModule } from './training-routing.module';
-import { TrainingLabelComponent } from './components/training-label/training-label.component';
 
 @NgModule({
   imports: [
@@ -54,12 +55,14 @@ import { TrainingLabelComponent } from './components/training-label/training-lab
     PendingRequestComponent,
     AdminTrainingComponent,
     TrainingLabelComponent,
+    RemarksComponent,
   ],
   entryComponents: [
     TrainingDetailComponent,
     FeedbackFormComponent,
     TrainingInstituteFormComponent,
-    ExecutiveNeedsFormComponent
+    ExecutiveNeedsFormComponent,
+    RemarksComponent
   ],
   providers: [NeedsInfoResolver]
 })
