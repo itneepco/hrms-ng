@@ -8,7 +8,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { TrainingInfo } from '../../models/training';
 import { DataService } from '../../services/data.service';
 import { TrainingService } from '../../services/training.service';
-import { TrainingDetailComponent } from '../training-detail/training-detail.component';
+import { TrainingDetailComponent } from './training-detail/training-detail.component';
 import { FeedbackFormComponent } from '../feedback/feedback-form/feedback-form.component';
 
 @Component({

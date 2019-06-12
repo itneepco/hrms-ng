@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
 
-import { TrainingService } from '../../services/training.service';
+import { TrainingService } from '../../../services/training.service';
 import {
   Participant,
   TrainingAttendance,
@@ -12,9 +12,9 @@ import {
   TrainingInfo,
   TrainingInstitute,
   TrainingTopic,
-} from './../../models/training';
-import { EXTERNAL_TRAINING, TRAINING_COMPLETED, TRAINING_PUBLISHED } from './../../models/training-global-codes';
-import { TrainingParticipantService } from './../../services/training-participant.service';
+} from '../../../models/training';
+import { EXTERNAL_TRAINING, TRAINING_COMPLETED, TRAINING_PUBLISHED } from '../../../models/training-global-codes';
+import { TrainingParticipantService } from '../../../services/training-participant.service';
 
 @Component({
   selector: 'app-training-detail',
@@ -53,7 +53,10 @@ export class TrainingDetailComponent implements OnInit {
 
     if (this.training.training_type === EXTERNAL_TRAINING) {
       this.trainingService.getTrainingInstitute(this.training.training_institute_id)
-        .subscribe(data => this.trainingInstitute = data);
+        .subscribe(data => {
+          console.log(data);
+          this.trainingInstitute = data;
+        });
     }
 
     if (this.isAdminPage) {

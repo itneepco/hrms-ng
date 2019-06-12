@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { TrainingForm, TrainingInfo } from '../models/training';
+import { TrainingForm, TrainingInfo, TrainingInstitute } from '../models/training';
 import { IN_HOUSE_TRAINING } from '../models/training-global-codes';
 import { TrainingLabel } from '../models/training-needs';
 import { baseURL } from './../../shared/config/baseUrl';

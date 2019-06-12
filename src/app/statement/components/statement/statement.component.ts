@@ -15,11 +15,11 @@ export class StatementComponent implements OnInit {
     { name: 'Pension Statement', path: 'pension' },
     { name: 'Salary Statement', path: 'salary' },
   ];
-  
+
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    if(this.auth.isAdmin() || this.auth.isTimeOfficeAdmin()) {
+    if(this.auth.isItAdmin() || this.auth.isTimeOfficeAdmin()) {
       this.navObj.push({ name: 'Approved Leaves', path: 'approved-leaves' })
     }
   }

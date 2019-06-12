@@ -41,7 +41,7 @@ const routes: Routes = [{
     component: AdminTrainingComponent,
     canActivateChild: [AuthGuard, TrainingAdminGuard],
     children: [
-      { path: '', component: ManageTrainingComponent },
+      { path: 'manage-training', component: ManageTrainingComponent },
       { path: 'training-profile', component: TrainingProfileComponent },
       { path: 'training-institute', component: TrainingInstituteComponent },
       { path: 'new', component: NewTrainingComponent },

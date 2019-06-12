@@ -9,7 +9,7 @@ import { MyTrainingComponent } from './components/my-training/my-training.compon
 import { NewTrainingComponent } from './components/new-training/new-training.component';
 import { PendingRequestComponent } from './components/pending-request/pending-request.component';
 import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
-import { TrainingDetailComponent } from './components/training-detail/training-detail.component';
+import { TrainingDetailComponent } from './components/training-table/training-detail/training-detail.component';
 import {
   TrainingInstituteFormComponent,
 } from './components/training-institute/training-institute-form/training-institute-form.component';
