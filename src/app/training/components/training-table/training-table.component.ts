@@ -21,6 +21,7 @@ export class TrainingTableComponent implements OnInit {
   @Input('isAdminPage') isAdminPage = false;
   @Input('isFeedbackPage') isFeedbackPage = false;
   @Input('isProfilePage') isProfilePage = false;
+  @Input('title') title = null;
 
   @Input('dataSource') dataSource: MatTableDataSource<TrainingInfo>;
 

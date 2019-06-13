@@ -18,27 +18,43 @@
       </div>
     </div>
   </mat-card>
+  <ng-container *ngIf="dataSource">
+    <app-training-table *ngIf="dataSource"
+      [dataSource]="dataSource"
+      [dataLength]="dataLength"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      isProfilePage="true"
+      title="List of trainings attended"
+      (pageChange)="changePage($event)">
+    </app-training-table>
 
+    <mat-card class="table">
+      <mat-card-title>List of Training Needs</mat-card-title>
+      <mat-accordion *ngIf="needInfos && needInfos.length > 0; else noTrainingNeeds">
+        <mat-expansion-panel *ngFor="let info of needInfos" [expanded]="initExpand">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Assessment Year {{info.year}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{trgNeedsInfoService.getGrade(info.cadre)}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>Hello</p>
+        </mat-expansion-panel>
+      </mat-accordion>
 
-  <mat-tab-group>
-    <mat-tab label="List of trainings attended" *ngIf="dataSource">
-      <app-training-table *ngIf="dataSource"
-        [dataSource]="dataSource"
-        [dataLength]="dataLength"
-        [pageSize]="pageSize"
-        [pageIndex]="pageIndex"
-        isProfilePage="true"
-        (pageChange)="changePage($event)">
-      </app-training-table>
-    </mat-tab>
-
-    <mat-tab label="List of training needs">
-
-    </mat-tab>
-  </mat-tab-group>
+      <ng-template #noTrainingNeeds>
+        There are no training needs availble for this employee
+      </ng-template>
+    </mat-card>
+  </ng-container>
 
   <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
   <mat-card *ngIf="errMsg" class="error-info">
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>
 </div>
+
+

@@ -1,9 +1,10 @@
 <mat-card *ngIf="dataSource" class="table">
+  <mat-card-title *ngIf="title">{{title}}</mat-card-title>
   <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No </mat-header-cell>
-      <mat-cell *matCellDef="let training; let i = index;" fxFlex="8"> 
-        {{ i + 1 + pageIndex*pageSize }} 
+      <mat-cell *matCellDef="let training; let i = index;" fxFlex="8">
+        {{ i + 1 + pageIndex*pageSize }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="title">
@@ -47,7 +48,7 @@
         <ng-template #feedback>
           <button mat-icon-button color="accent" (click)="openFeedbackForm(training)">
             <mat-icon *ngIf="training.training_feedbacks.length == 0">comment</mat-icon>
-            <mat-icon *ngIf="training.training_feedbacks.length > 0">edit</mat-icon>  
+            <mat-icon *ngIf="training.training_feedbacks.length > 0">edit</mat-icon>
           </button>
         </ng-template>
       </mat-cell>
@@ -57,7 +58,7 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator 
+  <mat-paginator
     [pageSizeOptions]="[10, 15, 30, 50]"
     [length]="dataLength"
     [pageSize]="pageSize"

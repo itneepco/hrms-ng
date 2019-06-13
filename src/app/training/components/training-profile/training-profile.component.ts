@@ -1,9 +1,10 @@
+import { TrainingNeedInfo } from './../../models/training-needs';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 import { EmployeeService } from '../../../shared/services/employee.service';
 import { TrainingInfo } from '../../models/training';
@@ -21,6 +22,9 @@ export class TrainingProfileComponent implements OnInit {
   errMsg: string;
   isLoading = false;
   empCode: string;
+  needInfos: TrainingNeedInfo[];
+  step = 0;
+  initExpand = false;
 
   full_name: FormControl = new FormControl();
   empSearchResult = [];
@@ -36,7 +40,7 @@ export class TrainingProfileComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     public trainingService: TrainingService,
-    private trgNeedsInfoService: NeedsInfoService,
+    public trgNeedsInfoService: NeedsInfoService,
     private executiveNeedService: ExecutiveNeedService
   ) {}
 
@@ -60,37 +64,44 @@ export class TrainingProfileComponent implements OnInit {
   clearEmployeeSearch() {
     this.full_name.reset();
     this.empCode = null;
+    this.needInfos = [];
+    this.dataSource = null;
   }
 
   searchEmployee(event) {
     const full_info = event.source.viewValue.split(',');
     this.empCode = full_info[1].trim();
     this.getEmployeeTrainings();
-
+    this.getEmployeeTrgNeedsInfo();
   }
 
   getEmployeeTrainings() {
     if (!this.empCode) { return; }
 
     this.isLoading = true;
+
     this.trainingService
-      .getEmployeeTrainings(this.pageIndex, this.pageSize, this.empCode)
-      .subscribe(
-        data => {
-          this.dataLength = data['count'];
-          this.dataSource = new MatTableDataSource<TrainingInfo>(data['rows']);
-          this.isLoading = false;
-          console.log(data);
-        },
-        errMsg => {
-          this.errMsg = errMsg;
-          this.isLoading = false;
-        }
-      );
+    .getEmployeeTrainings(this.pageIndex, this.pageSize, this.empCode)
+    .subscribe(
+      data => {
+        this.dataLength = data['count'];
+        this.dataSource = new MatTableDataSource<TrainingInfo>(data['rows']);
+        this.isLoading = false;
+        console.log(data);
+      },
+      errMsg => {
+        this.errMsg = errMsg;
+        this.isLoading = false;
+      }
+    );
   }
 
   getEmployeeTrgNeedsInfo() {
-
+    this.trgNeedsInfoService.getTrainigNeeds(this.empCode)
+    .subscribe(data => {
+      this.needInfos = data;
+      console.log(data);
+    });
   }
 
   changePage(pageEvent: PageEvent) {
@@ -104,5 +115,9 @@ export class TrainingProfileComponent implements OnInit {
     return `${item.first_name} ${item.middle_name} ${item.last_name}, ${
       item.emp_code
     }, ${item.designation}`;
+  }
+
+  setStep(index: number) {
+    this.step = index;
   }
 }
