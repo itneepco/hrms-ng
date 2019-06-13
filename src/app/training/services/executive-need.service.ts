@@ -21,6 +21,7 @@ export class ExecutiveNeedService {
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
+  // Get all executive training needs based on the training needs info id
   getTrainigNeeds(needInfoId: number): Observable<ExecutiveNeed[]> {
     return this.http.get<ExecutiveNeed[]>(`${this.ex_need_url}/${needInfoId}/executive-needs`)
       .pipe(
@@ -57,19 +58,19 @@ export class ExecutiveNeedService {
   }
 
   getDuration(code: string) {
-    if (code == SHORT_TERM_DURATION) {
+    if (code === SHORT_TERM_DURATION) {
       return 'Short Term';
     }
-    if (code == LONG_TERM_DURATION) {
+    if (code === LONG_TERM_DURATION) {
       return 'Long Term';
     }
   }
 
   getNeedType(code: string) {
-    if (code == ESSENTIAL_NEED_TYPE) {
+    if (code === ESSENTIAL_NEED_TYPE) {
       return 'Essential';
     }
-    if (code == DESIRABLE_NEED_TYPE) {
+    if (code === DESIRABLE_NEED_TYPE) {
       return 'Desirable';
     }
   }

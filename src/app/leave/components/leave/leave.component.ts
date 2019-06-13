@@ -19,7 +19,7 @@ export class LeaveComponent implements OnInit, OnDestroy {
     { name: 'Processed Request', path: 'processed-request' },
   ];
 
-  pendingRequest: number = 0;
+  pendingRequest = 0;
   subscription: Subscription;
 
   constructor(private leaveRequestService: LeaveRequestService,
@@ -28,20 +28,20 @@ export class LeaveComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit() {
-    this.getPendingReqStatus()
+    this.getPendingReqStatus();
     this.subscription = this.pendingReqService.pendingState.subscribe((data) => {
-      this.getPendingReqStatus()
-    })
+      this.getPendingReqStatus();
+    });
   }
 
   getPendingReqStatus() {
     this.leaveRequestService.getPendingRequestCount(this.authService.currentUser.emp_code)
     .subscribe((count: number) => {
-      this.navObj[2] =  { name: 'Pending Request', path: 'leave-request', count: count ? count : 0 }
-    })
+      this.navObj[2].count = count ? count : 0;
+    });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    this.subscription.unsubscribe();
   }
 }

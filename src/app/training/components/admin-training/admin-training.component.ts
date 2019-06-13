@@ -15,6 +15,7 @@ export class AdminTrainingComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isTrainingAdmin()) {
+      this.nav.push({ name: 'Dashboard', path: 'dashboard' });
       this.nav.push({ name: 'Manage Training', path: 'manage-training' });
       this.nav.push({ name: 'View Profile', path: 'training-profile' });
       this.nav.push({ name: 'Institutes', path: 'training-institute' });

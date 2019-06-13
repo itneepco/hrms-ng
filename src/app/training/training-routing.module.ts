@@ -17,6 +17,7 @@ import { TrainingNeedsComponent } from './components/training-needs/training-nee
 import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
 import { TrainingComponent } from './components/training/training.component';
 import { NeedsInfoResolver } from './services/training-needs-info.resolver';
+import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
 
 const routes: Routes = [{
     path: '',
@@ -41,12 +42,13 @@ const routes: Routes = [{
     component: AdminTrainingComponent,
     canActivateChild: [AuthGuard, TrainingAdminGuard],
     children: [
+      { path: 'dashboard', component: TrainingDashboardComponent },
       { path: 'manage-training', component: ManageTrainingComponent },
       { path: 'training-profile', component: TrainingProfileComponent },
       { path: 'training-institute', component: TrainingInstituteComponent },
       { path: 'new', component: NewTrainingComponent },
       { path: 'training-label', component: TrainingLabelComponent },
-      { path: '', redirectTo: 'manage-training', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: '/training/my-training', pathMatch: 'full' }

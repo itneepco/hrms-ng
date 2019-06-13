@@ -71,7 +71,7 @@ export class FeedbackFormComponent implements OnInit {
       .subscribe((myFeedback: TrainingFeedback) => {
         console.log(myFeedback);
         this.isLoading = false;
-        //find the index of old feedback before update
+        // find the index of old feedback before update
         const index = this.training.training_feedbacks.findIndex(data => data.id == this.feedback.id);
         this.training.training_feedbacks[index] = myFeedback; // Replace with the updated value
         this.training.training_topics = this.topic_ratings.value;

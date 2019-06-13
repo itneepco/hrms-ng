@@ -185,9 +185,7 @@ export class ExecutiveNeedsComponent implements OnInit, OnDestroy {
   }
 
   getFullName(employee) {
-    return `${employee.first_name} ${employee.middle_name} ${
-      employee.last_name
-    }`;
+    return `${employee.first_name} ${employee.middle_name} ${employee.last_name}`;
   }
 
   ngOnDestroy() {

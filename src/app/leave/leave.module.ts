@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CalendarModule } from 'angular-calendar';
 
 import { LoginComponent } from '../auth/components/login/login.component';
 import { SharedModule } from '../shared/shared.module';
@@ -20,7 +19,6 @@ import { LeaveRoutingModule } from './leave-routing.module';
   imports: [
     SharedModule,
     LeaveRoutingModule,
-    CalendarModule.forRoot()
   ],
   declarations: [
     LeaveTransactionComponent,

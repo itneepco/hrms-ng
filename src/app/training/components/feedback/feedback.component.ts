@@ -13,78 +13,78 @@ import { MyFeedbackStatusService } from '../../services/my-feedback-status.servi
   styleUrls: ['./feedback.component.css']
 })
 export class FeedbackComponent implements OnInit, OnDestroy {
-  pendingSource: MatTableDataSource<TrainingInfo>
-  submittedSource: MatTableDataSource<TrainingInfo>
-  errMsg: string
-  isLoading = true
+  pendingSource: MatTableDataSource<TrainingInfo>;
+  submittedSource: MatTableDataSource<TrainingInfo>;
+  errMsg: string;
+  isLoading = true;
   isAdminPage = false;
-  subscription: Subscription
+  subscription: Subscription;
 
-  // Pagination variables 
-  pendingLength = 0
-  submittedLength = 0
-  pageSize = 10
-  pageIndex = 0
+  // Pagination variables
+  pendingLength = 0;
+  submittedLength = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
   constructor(public trainingService: TrainingService,
     private myFeedbackStatus: MyFeedbackStatusService) { }
 
   ngOnInit() {
-    this.fetchData()
-    this.subscription = this.myFeedbackStatus.status$.subscribe(() => this.fetchData())
+    this.fetchData();
+    this.subscription = this.myFeedbackStatus.status$.subscribe(() => this.fetchData());
   }
 
   private fetchData() {
-    this.getFeedbackPendings()
-    this.getSubmittedFeedbacks()
+    this.getFeedbackPendings();
+    this.getSubmittedFeedbacks();
   }
 
   private getFeedbackPendings() {
-    this.isLoading = true
+    this.isLoading = true;
     this.trainingService.feedbackPending(this.pageIndex, this.pageSize)
     .subscribe(data => {
-      this.pendingLength = data['count']
-      this.pendingSource = new MatTableDataSource<TrainingInfo>(data['rows'])
-      this.isLoading = false
-      console.log(data)
+      this.pendingLength = data['count'];
+      this.pendingSource = new MatTableDataSource<TrainingInfo>(data['rows']);
+      this.isLoading = false;
+      console.log(data);
     },
     errMsg => {
-      this.errMsg = errMsg
-      this.isLoading = false
-    })
+      this.errMsg = errMsg;
+      this.isLoading = false;
+    });
   }
 
   private getSubmittedFeedbacks() {
-    this.isLoading = true
+    this.isLoading = true;
     this.trainingService.feedbackSubmitted(this.pageIndex, this.pageSize)
     .subscribe(data => {
-      this.submittedLength = data['count']
-      this.submittedSource = new MatTableDataSource<TrainingInfo>(data['rows'])
-      this.isLoading = false
-      console.log(data)
+      this.submittedLength = data['count'];
+      this.submittedSource = new MatTableDataSource<TrainingInfo>(data['rows']);
+      this.isLoading = false;
+      console.log(data);
     },
     errMsg => {
-      this.errMsg = errMsg
-      this.isLoading = false
-    })
+      this.errMsg = errMsg;
+      this.isLoading = false;
+    });
   }
 
   private changePendingPage(pageEvent: PageEvent) {
-    console.log(pageEvent)
-    this.pageIndex = pageEvent.pageIndex
-    this.pageSize = pageEvent.pageSize
-    this.getFeedbackPendings()
+    console.log(pageEvent);
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getFeedbackPendings();
   }
 
   private changeSubmittedPage(pageEvent: PageEvent) {
-    console.log(pageEvent)
-    this.pageIndex = pageEvent.pageIndex
-    this.pageSize = pageEvent.pageSize
-    this.getSubmittedFeedbacks()
+    console.log(pageEvent);
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getSubmittedFeedbacks();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    this.subscription.unsubscribe();
   }
 
 }

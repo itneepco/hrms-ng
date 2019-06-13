@@ -13,26 +13,37 @@ import { TrainingNeedInfo } from './../models/training-needs';
   providedIn: 'root'
 })
 export class NeedsInfoService {
-  private ex_need_url = baseURL + 'api/training/needs-info';
+  private needsInfo = baseURL + 'api/training/needs-info';
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
+  // Get all training needs info for the specified employee
   getTrainigNeeds(empCode: string): Observable<TrainingNeedInfo[]> {
-    return this.http.get<TrainingNeedInfo[]>(`${this.ex_need_url}/employee/${empCode}`)
+    return this.http.get<TrainingNeedInfo[]>(`${this.needsInfo}/employee/${empCode}`)
     .pipe(
       catchError(err => this.handler.handleError(err))
     );
   }
 
+  // Get all pending request for the specified employee (Training needs workflow)
   getPendingNeeds(empCode: string) {
-    return this.http.get<TrainingNeedInfo[]>(`${this.ex_need_url}/pending/${empCode}`)
+    return this.http.get<TrainingNeedInfo[]>(`${this.needsInfo}/pending/${empCode}`)
     .pipe(
       catchError(err => this.handler.handleError(err))
     );
   }
 
+  // Get all pending request count for the specified employee (Training needs workflow)
+  pendingNeedsCount(empCode: string): Observable<number> {
+    return this.http.get<number>(`${this.needsInfo}/pending/${empCode}/count`)
+    .pipe(
+      catchError(err => this.handler.handleError(err))
+    );
+  }
+
+  // Get the training needs info based on the training need info id
   getTrainingNeed(id: number) {
-    return this.http.get<TrainingNeedInfo>(`${this.ex_need_url}/${id}`)
+    return this.http.get<TrainingNeedInfo>(`${this.needsInfo}/${id}`)
     .pipe(
       catchError(err => this.handler.handleError(err))
     );

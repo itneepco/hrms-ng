@@ -1,12 +1,15 @@
-import { debounceTime } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { EmployeeService } from '../../../shared/services/employee.service';
-import { TrainingService } from '../../services/training.service';
 import { PageEvent } from '@angular/material/paginator';
-import { TrainingInfo } from '../../models/training';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+import { EmployeeService } from '../../../shared/services/employee.service';
+import { TrainingInfo } from '../../models/training';
+import { TrainingService } from '../../services/training.service';
+import { ExecutiveNeedService } from './../../services/executive-need.service';
+import { NeedsInfoService } from './../../services/needs-info.service';
 
 @Component({
   selector: 'app-training-profile',
@@ -32,7 +35,9 @@ export class TrainingProfileComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    public trainingService: TrainingService
+    public trainingService: TrainingService,
+    private trgNeedsInfoService: NeedsInfoService,
+    private executiveNeedService: ExecutiveNeedService
   ) {}
 
   ngOnInit() {
@@ -61,6 +66,7 @@ export class TrainingProfileComponent implements OnInit {
     const full_info = event.source.viewValue.split(',');
     this.empCode = full_info[1].trim();
     this.getEmployeeTrainings();
+
   }
 
   getEmployeeTrainings() {
@@ -81,6 +87,10 @@ export class TrainingProfileComponent implements OnInit {
           this.isLoading = false;
         }
       );
+  }
+
+  getEmployeeTrgNeedsInfo() {
+
   }
 
   changePage(pageEvent: PageEvent) {

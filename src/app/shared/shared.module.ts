@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CalendarModule } from 'angular-calendar';
 
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SubheaderComponent } from './components/subheader/subheader.component';
@@ -17,6 +18,7 @@ import { SubheaderComponent } from './components/subheader/subheader.component';
     FlexLayoutModule,
     HttpClientModule,
     RouterModule,
+    CalendarModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { SubheaderComponent } from './components/subheader/subheader.component';
     AppMaterialModule,
     FlexLayoutModule,
     HttpClientModule,
-    SubheaderComponent
+    SubheaderComponent,
+    CalendarModule
   ],
   declarations: [
     SubheaderComponent,

@@ -16,6 +16,7 @@ import {
   SUBMIT_NEEDS_ACTION,
 } from './../../../models/training-global-codes';
 import { Location } from '@angular/common';
+import { PendingRequestStatusService } from '../../../services/pending-request-status.service';
 
 @Component({
   selector: 'app-workflow',
@@ -35,6 +36,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
     private hierarchyService: HierarchyService,
     private needWorkflow: NeedsWorkflowService,
+    private pendingRequestStatus: PendingRequestStatusService,
     private location: Location,
     private snackbar: MatSnackBar,
     private auth: AuthService) { }
@@ -83,6 +85,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
           duration: 1600
         });
         this.location.back();
+        this.pendingRequestStatus.update(true);
       },
       (error) => {
         this.isSubmitting = false;

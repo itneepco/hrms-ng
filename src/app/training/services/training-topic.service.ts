@@ -11,7 +11,7 @@ import { baseURL } from './../../shared/config/baseUrl';
   providedIn: 'root'
 })
 export class TrainingTopicService {
-  private topic_url = baseURL + 'api/training/info'
+  private topic_url = baseURL + 'api/training/info';
 
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
@@ -19,27 +19,27 @@ export class TrainingTopicService {
     return this.http.get<TrainingTopic[]>(`${this.topic_url}/${trainingId}/topic`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   addTrainingTopic(trainingId: number, trainingTopic: TrainingTopic) {
     return this.http.post(`${this.topic_url}/${trainingId}/topic`, trainingTopic)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   editTrainingTopic(trainingId: number, topicId: number, trainingTopic: TrainingTopic) {
     return this.http.put(`${this.topic_url}/${trainingId}/topic/${topicId}`, trainingTopic)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 
   deleteTrainingTopic(trainingId: number, topicId: number) {
     return this.http.delete(`${this.topic_url}/${trainingId}/topic/${topicId}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
-      )
+      );
   }
 }

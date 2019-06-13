@@ -120,6 +120,13 @@ export class TrainingService {
       );
   }
 
+  feedbackPendingCount(): Observable<number> {
+    return this.http.get<number>(`${this.employee_url}/my-feedback/count`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      );
+  }
+
   feedbackSubmitted(pageIndex: number, pageSize: number): Observable<TrainingInfo[]> {
     return this.http.get<TrainingInfo[]>(`${this.employee_url}/my-feedback` + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize)
       .pipe(

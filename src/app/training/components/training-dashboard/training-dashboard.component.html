@@ -1,3 +1,52 @@
-<button mat-raised-button (click)="trainingNeeds()">
-  Training Needs
-</button>
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" id="container">
+  <mat-card fxFlex="60">
+    <div fxLayout="row" fxLayoutAlign="space-between center" id="header">
+      <mat-button-toggle-group color="primary">
+        <mat-button-toggle mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">Previous
+        </mat-button-toggle>
+
+        <mat-button-toggle mwlCalendarToday checked="true" [(viewDate)]="viewDate">Today
+        </mat-button-toggle>
+
+        <mat-button-toggle class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">Next
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div>
+        <h3 class="month">{{ viewDate | calendarDate:(view + 'ViewTitle') }}</h3>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div [ngSwitch]="view" id="calendar">
+      <div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 10px">
+        <div fxLayout="row" fxLayoutGap="5px">
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <div class="circle blue"></div>
+            <span class="title">External Training</span>
+          </div>
+          <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+            <div class="circle yellow"></div>
+            <span class="title">Internal Training</span>
+          </div>
+        </div>
+      </div>
+
+      <mwl-calendar-month-view
+        *ngSwitchCase="'month'"
+        [viewDate]="viewDate"
+        [refresh]="refresh"
+        [events]="events"
+        [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)">
+      </mwl-calendar-month-view>
+    </div>
+  </mat-card>
+
+  <div fxFlex="40" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
+    <mat-card fxFlex>
+    </mat-card>
+  </div>
+</div>
+
