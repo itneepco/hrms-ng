@@ -1,3 +1,4 @@
+import { IN_HOUSE_TRAINING } from './../../../models/training-global-codes';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -30,18 +31,21 @@ export class FeedbackFormComponent implements OnInit {
 
   ngOnInit() {
     this.feedback = this.training.training_feedbacks.find(feed =>
-      feed.emp_code == this.auth.currentUser.emp_code);
-    console.log(this.feedback);
+      feed.emp_code === this.auth.currentUser.emp_code);
+    // console.log(this.feedback);
 
-    this.training.training_topics.forEach(topic => {
-      this.topicRatings.push(this.fb.group({
-        rating: [ topic.rating ? topic.rating.toString() : '', Validators.required ],
-        emp_code: this.auth.currentUser.emp_code,
-        training_topic_id: [ topic.id ],
-        topic_name: topic.topic_name,
-        faculty_name: topic.faculty_name
-      }));
-    });
+    // Training topic feedback is required only for in house training
+    if (this.training.training_type === IN_HOUSE_TRAINING) {
+      this.training.training_topics.forEach(topic => {
+        this.topicRatings.push(this.fb.group({
+          rating: [ topic.rating ? topic.rating.toString() : '', Validators.required ],
+          emp_code: this.auth.currentUser.emp_code,
+          training_topic_id: [ topic.id ],
+          topic_name: topic.topic_name,
+          faculty_name: topic.faculty_name
+        }));
+      });
+    }
 
     this.initForm();
   }
@@ -61,7 +65,7 @@ export class FeedbackFormComponent implements OnInit {
   }
 
   submitFeedback() {
-    if (this.feedbackForm.invalid) { return }
+    if (this.feedbackForm.invalid) { return; }
 
     console.log(this.feedbackForm.value);
     this.isLoading = true;
@@ -97,8 +101,8 @@ export class FeedbackFormComponent implements OnInit {
     }
   }
 
-  isExternal() {
-    return this.training.training_type == EXTERNAL_TRAINING;
+  get isExternalTraining(): boolean {
+    return this.training.training_type === EXTERNAL_TRAINING;
   }
 
   get comments() {

@@ -25,6 +25,7 @@ export class TrainingProfileComponent implements OnInit {
   needInfos: TrainingNeedInfo[];
   step = 0;
   initExpand = false;
+  trainingNeeds = [];
 
   full_name: FormControl = new FormControl();
   empSearchResult = [];
@@ -119,5 +120,9 @@ export class TrainingProfileComponent implements OnInit {
 
   setStep(index: number) {
     this.step = index;
+  }
+
+  onOpen() {
+    console.log("Open");
   }
 }

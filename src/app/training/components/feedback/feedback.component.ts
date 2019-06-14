@@ -69,14 +69,14 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     });
   }
 
-  private changePendingPage(pageEvent: PageEvent) {
+  changePendingPage(pageEvent: PageEvent) {
     console.log(pageEvent);
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
     this.getFeedbackPendings();
   }
 
-  private changeSubmittedPage(pageEvent: PageEvent) {
+  changeSubmittedPage(pageEvent: PageEvent) {
     console.log(pageEvent);
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;

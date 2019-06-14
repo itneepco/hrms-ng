@@ -1,3 +1,4 @@
+<h2 id="header">Training Feeback Form</h2>
 <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
   <mat-dialog-content>
     <div fxLayout="column" fxLayoutAlign="space-between stretch">
@@ -17,39 +18,41 @@
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Date</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70" class="info">From {{training.from_date | date:'mediumDate'}} to 
+          <div fxFlex="70" class="info">From {{training.from_date | date:'mediumDate'}} to
             {{training.to_date | date:'mediumDate'}}</div>
         </div>
       </div>
 
-      <mat-divider class="divider"></mat-divider>
+      <ng-container *ngIf="!isExternalTraining">
+        <mat-divider class="divider"></mat-divider>
 
-      <div id="resource-person">
-        <div>Performance of the resource person</div>
-        <div fxLayout="row" class="row">
-          <div fxFlex="25" class="title">Resource Person</div>
-          <div fxFlex="25" class="title">Topic Session</div>
-          <div fxFlex="50" class="rating-header">Unstatisfactory ------> Excellent</div>
-        </div>
+        <div id="resource-person">
+          <div>Performance of the resource person</div>
+          <div fxLayout="row" class="row">
+            <div fxFlex="25" class="title">Resource Person</div>
+            <div fxFlex="25" class="title">Topic Session</div>
+            <div fxFlex="50" class="rating-header">Unstatisfactory ------> Excellent</div>
+          </div>
 
-        <div formArrayName="topic_ratings">
-          <div *ngFor="let item of topic_ratings.controls; let i=index">
-            <div [formGroupName]="i" fxLayout="row" class="row">
-              <div fxFlex="25">{{training.training_topics[i].faculty_name}}</div>
-              <div fxFlex="25">{{training.training_topics[i].topic_name}}</div>
-              <div fxFlex="50">
-                <mat-radio-group formControlName="rating">
-                  <mat-radio-button value="1">1</mat-radio-button>
-                  <mat-radio-button value="2">2</mat-radio-button>
-                  <mat-radio-button value="3">3</mat-radio-button>
-                  <mat-radio-button value="4">4</mat-radio-button>
-                  <mat-radio-button value="5">5</mat-radio-button>
-                </mat-radio-group>
+          <div formArrayName="topic_ratings">
+            <div *ngFor="let item of topic_ratings.controls; let i=index">
+              <div [formGroupName]="i" fxLayout="row" class="row">
+                <div fxFlex="25">{{training.training_topics[i].faculty_name}}</div>
+                <div fxFlex="25">{{training.training_topics[i].topic_name}}</div>
+                <div fxFlex="50">
+                  <mat-radio-group formControlName="rating">
+                    <mat-radio-button value="1">1</mat-radio-button>
+                    <mat-radio-button value="2">2</mat-radio-button>
+                    <mat-radio-button value="3">3</mat-radio-button>
+                    <mat-radio-button value="4">4</mat-radio-button>
+                    <mat-radio-button value="5">5</mat-radio-button>
+                  </mat-radio-group>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
 
       <mat-divider class="divider"></mat-divider>
 
@@ -58,7 +61,7 @@
         <div fxFlex="50" class="rating-header">Unstatisfactory ------> Excellent</div>
       </div>
 
-      <div fxLayout="row" class="row"> 
+      <div fxLayout="row" class="row">
         <div fxFlex="50">
           <span class="title">Duration of the Programme</span>
         </div>
@@ -69,9 +72,9 @@
             <mat-radio-button value="3">3</mat-radio-button>
             <mat-radio-button value="4">4</mat-radio-button>
             <mat-radio-button value="5">5</mat-radio-button>
-          </mat-radio-group>  
+          </mat-radio-group>
         </div>
-      </div>  
+      </div>
 
       <div fxLayout="row" class="row">
         <div fxFlex="50">
@@ -84,12 +87,12 @@
             <mat-radio-button value="3">3</mat-radio-button>
             <mat-radio-button value="4">4</mat-radio-button>
             <mat-radio-button value="5">5</mat-radio-button>
-          </mat-radio-group>  
+          </mat-radio-group>
         </div>
       </div>
 
       <div fxLayout="row" class="row">
-        <div fxFlex="50">  
+        <div fxFlex="50">
           <span class="title">Training Methodology</span>
         </div>
         <div fxFlex="50">
@@ -104,7 +107,7 @@
       </div>
 
       <div fxLayout="row" class="row">
-        <div fxFlex="50">  
+        <div fxFlex="50">
           <span class="title">Administrative Service</span>
         </div>
         <div fxFlex="50">
@@ -135,7 +138,7 @@
 
       <mat-divider class="divider"></mat-divider>
 
-      <mat-form-field *ngIf="isExternal()">
+      <mat-form-field *ngIf="isExternalTraining">
         <input matInput formControlName="ta_da_incurred" placeholder="Tentative DA/TA expenses incurred during the programme">
       </mat-form-field>
 
@@ -146,9 +149,9 @@
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
+  <mat-dialog-actions align="end" id="buttons">
     <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit" 
+    <button mat-raised-button color="primary" type="submit"
       [disabled]="feedbackForm.invalid || isLoading">Save</button>
   </mat-dialog-actions>
-</form>  
+</form>

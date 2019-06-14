@@ -32,7 +32,10 @@
     <mat-card class="table">
       <mat-card-title>List of Training Needs</mat-card-title>
       <mat-accordion *ngIf="needInfos && needInfos.length > 0; else noTrainingNeeds">
-        <mat-expansion-panel *ngFor="let info of needInfos" [expanded]="initExpand">
+        <mat-expansion-panel
+            *ngFor="let info of needInfos; let i=index"
+            [expanded]="initExpand" (opened)="onOpen()">
+
           <mat-expansion-panel-header>
             <mat-panel-title>
               Assessment Year {{info.year}}
@@ -46,7 +49,7 @@
       </mat-accordion>
 
       <ng-template #noTrainingNeeds>
-        There are no training needs availble for this employee
+        <span class="no-data">There are no training needs availble for this employee</span>
       </ng-template>
     </mat-card>
   </ng-container>

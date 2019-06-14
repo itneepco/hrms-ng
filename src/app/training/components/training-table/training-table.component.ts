@@ -55,12 +55,15 @@ export class TrainingTableComponent implements OnInit {
     this.router.navigate(['/training/admin-training/new']);
   }
 
+  // Open dialog to display training detail
   onShow(training: TrainingInfo) {
     console.log('On Show');
     this.dialog.open(TrainingDetailComponent, {
       panelClass: 'detail-dialog',
-      width: '680px',
-      height: '580px',
+      minWidth: '58vw',
+      minHeight: '80vh',
+      maxWidth: '70vw',
+      maxHeight: '100vh',
       data:  {
         training: training,
         isAdminPage: this.isAdminPage,
@@ -69,10 +72,13 @@ export class TrainingTableComponent implements OnInit {
     });
   }
 
+  // Open the training feedback form
   openFeedbackForm(training: TrainingInfo) {
     this.dialog.open(FeedbackFormComponent, {
-      width: '650px',
-      height: '580px',
+      minWidth: '660px',
+      minHeight: '580px',
+      maxWidth: '70vw',
+      maxHeight: '100vh',
       data:  training
     });
   }
