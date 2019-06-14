@@ -10,7 +10,7 @@
         </mat-autocomplete>
         <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
       </mat-form-field>
-      <button mat-raised-button color="primary" 
+      <button mat-raised-button color="primary"
           (click)="onSearch()" [disabled]="emp_code.invalid">
         <mat-icon>search</mat-icon>Search
       </button>
@@ -21,8 +21,8 @@
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
-        <mat-cell *matCellDef="let ledger; let i=index" fxFlex="10"> 
-          {{ i + 1 + pageIndex*pageSize }} 
+        <mat-cell *matCellDef="let ledger; let i=index" fxFlex="10">
+          {{ i + 1 + pageIndex*pageSize }}
         </mat-cell>
       </ng-container>
 
@@ -30,12 +30,12 @@
         <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
         <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.emp_code}} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="cal_year">
         <mat-header-cell *matHeaderCellDef fxFlex="15"> Year </mat-header-cell>
         <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.cal_year}} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="db_cr_flag">
         <mat-header-cell *matHeaderCellDef fxFlex="10"> Flag </mat-header-cell>
         <mat-cell *matCellDef="let ledger" fxFlex="10"> {{ledger.db_cr_flag}} </mat-cell>
@@ -48,27 +48,29 @@
 
       <ng-container matColumnDef="leave_type">
         <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15"> 
-          {{leaveTypeService.getLeaveType(ledger.leave_type)}} 
+        <mat-cell *matCellDef="let ledger" fxFlex="15">
+          {{leaveTypeService.getLeaveType(ledger.leave_type)}}
         </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
         <mat-cell *matCellDef="let ledger" fxFlex="20">
-          <button mat-icon-button (click)="onEdit(ledger)" color="primary">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="onRemove(ledger)" color="warn">
-            <mat-icon>cancel</mat-icon>
-          </button>
+          <ng-container *ngIf="ledger.is_manually_added">
+            <button mat-icon-button (click)="onEdit(ledger)" color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onRemove(ledger)" color="warn">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </ng-container>
         </mat-cell>
       </ng-container>
-  
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-    
+
     <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
       [length]="dataLength"
       [pageSize]="pageSize"
@@ -79,13 +81,13 @@
   </mat-card>
 
   <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
-  
+
   <mat-card *ngIf="errMsg">
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>
 </div>
 
-<button mat-fab class="fab-bottom-right" 
+<button mat-fab class="fab-bottom-right"
     matTooltip="Add a new ledger record"
     matTooltipPosition="left"
     (click)="onAdd()">

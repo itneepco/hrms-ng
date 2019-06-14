@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -67,6 +68,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private snackbar: MatSnackBar,
     private router: Router,
+    private location: Location,
     private trgTopicService: TrainingTopicService,
     private participantService: TrainingParticipantService,
     private employeeService: EmployeeService) {}
@@ -311,7 +313,11 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   goToManageTrainings() {
-    this.router.navigate(['/training/admin-training']);
+    this.router.navigate(['/training/admin-training/manage-training']);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   // getters for training info form
