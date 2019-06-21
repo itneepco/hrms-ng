@@ -10,12 +10,12 @@ const routes: Routes = [
   {
     path: 'administrator',
     canActivate: [AuthGuard, AdminGuard],
-    loadChildren: 'app/admin/admin.module#AdminModule'
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: 'statements',
     canActivate: [AuthGuard],
-    loadChildren: 'app/statement/statement.module#StatementModule'
+    loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule)
   },
   {
     path: 'login',
@@ -25,17 +25,17 @@ const routes: Routes = [
   {
     path: 'leave',
     canActivate: [AuthGuard],
-    loadChildren: 'app/leave/leave.module#LeaveModule'
+    loadChildren: () => import('./leave/leave.module').then(m => m.LeaveModule)
   },
   {
     path: 'training',
     canActivate: [AuthGuard],
-    loadChildren: 'app/training/training.module#TrainingModule'
+    loadChildren: () => import('./training/training.module').then(m => m.TrainingModule)
   },
   {
     path: 'report',
     canActivate: [AuthGuard],
-    loadChildren: 'app/report/report.module#ReportModule'
+    loadChildren: () => import('./report/report.module').then(m => m.ReportModule)
   },
   { path: '', redirectTo: '/leave/dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '/leave/dashboard', pathMatch: 'full' }
