@@ -6,19 +6,19 @@
   </button>
 </mat-toolbar>
 
-<div fxLayout="column" fxLayoutAlign="end stretch" id="container">
-  <div fxFlex>
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
-        <mat-expansion-panel-header>
-          <mat-panel-title>General Info</mat-panel-title>
-          <mat-panel-description>Purpose, address and contact during leave</mat-panel-description>
-        </mat-expansion-panel-header>
-  
+<div id="container">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>General Info</mat-panel-title>
+        <mat-panel-description>Purpose, address and contact during leave</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="column">
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">Emp Name: </span>
-            {{leaveApp.first_name | titlecase}} 
+            {{leaveApp.first_name | titlecase}}
             {{leaveApp.last_name | titlecase}}</div>
           <div class="info" fxFlex>
             <span class="title">Contact: </span>
@@ -55,58 +55,60 @@
           <span class="title">Remarks: </span>
           {{leaveApp.remarks}}
         </div>
-      </mat-expansion-panel>
+      </div>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
-        <mat-expansion-panel-header>
-          <mat-panel-title>Leave Info</mat-panel-title>
-          <mat-panel-description>Details of leave types and no of days</mat-panel-description>
-        </mat-expansion-panel-header>
-        
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Leave Info</mat-panel-title>
+        <mat-panel-description>Details of leave types and no of days</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
         <div *ngIf="leaveDetailSource" style="padding-top: 8px" id="leaveDetail">
           <mat-table [dataSource]="leaveDetailSource">
             <ng-container matColumnDef="position">
               <mat-header-cell *matHeaderCellDef fxFlex="15"> Sl. No. </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDetail; let i = index;" fxFlex="15"> 
-                {{ i + 1 }} 
+              <mat-cell *matCellDef="let leaveDetail; let i = index;" fxFlex="15">
+                {{ i + 1 }}
               </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="leave_type">
               <mat-header-cell *matHeaderCellDef fxFlex="30"> Leave Type </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDetail" fxFlex="30"> 
-                {{leaveType.getLeaveType(leaveDetail.leave_type)}} 
+              <mat-cell *matCellDef="let leaveDetail" fxFlex="30">
+                {{leaveType.getLeaveType(leaveDetail.leave_type)}}
               </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="station_leave">
               <mat-header-cell *matHeaderCellDef fxFlex="15"> Station Leave </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDetail" fxFlex="15"> 
-                {{ leaveDetail.station_leave ? "YES": "NO" }} 
+              <mat-cell *matCellDef="let leaveDetail" fxFlex="15">
+                {{ leaveDetail.station_leave ? "YES": "NO" }}
               </mat-cell>
             </ng-container>
-        
+
             <ng-container matColumnDef="from_date">
               <mat-header-cell *matHeaderCellDef fxFlex="20"> From Date </mat-header-cell>
               <mat-cell *matCellDef="let leaveDetail" fxFlex="20"> {{leaveDetail.from_date | date:'mediumDate'}} </mat-cell>
             </ng-container>
-        
+
             <ng-container matColumnDef="to_date">
               <mat-header-cell *matHeaderCellDef fxFlex="20"> To Date </mat-header-cell>
-              <mat-cell *matCellDef="let leaveDetail" fxFlex="20"> 
+              <mat-cell *matCellDef="let leaveDetail" fxFlex="20">
                 <span *ngIf="!(leaveDetail.leave_type == cl_code || leaveDetail.leave_type == rh_code || leaveDetail.leave_type == hdcl_code)">
                   {{leaveDetail.to_date | date:'mediumDate'}}
-                </span> 
+                </span>
               </mat-cell>
             </ng-container>
-        
+
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
-        </div>  
+        </div>
 
-        <div *ngIf="leaveApp.status == leave_applied || 
-            leaveApp.status == leave_recommended_code || 
+        <div *ngIf="leaveApp.status == leave_applied ||
+            leaveApp.status == leave_recommended_code ||
             leaveApp.status == leave_callback_code">
 
           <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="15px" id="leave-info">
@@ -118,36 +120,40 @@
             </div>
           </div>
         </div>
-      </mat-expansion-panel>
+      </ng-template>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
-        <mat-expansion-panel-header>
-          <mat-panel-title>History Info</mat-panel-title>
-          <mat-panel-description>Details of leave approval history</mat-panel-description>
-        </mat-expansion-panel-header>
-        
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>History Info</mat-panel-title>
+        <mat-panel-description>Details of leave approval history</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
         <mat-list>
           <mat-list-item *ngFor="let hist_info of leaveApp.history; let i=index">
-            <h3 matLine class="info"> 
+            <h3 matLine class="info">
               <span>{{i + 1}}.&nbsp;</span>
               <span>{{wActionService.getWorkflowAction(hist_info.workflow_action)}}</span>
               <span>&nbsp;on&nbsp;</span>
-              <span>{{hist_info.updated_at | date:'mediumDate'}}</span> 
+              <span>{{hist_info.updated_at | date:'mediumDate'}}</span>
             </h3>
             <p matLine class="officer">
               <span *ngIf="hist_info.officer">&nbsp;&nbsp;&nbsp;&nbsp; -- by {{hist_info.officer.first_name | titlecase}} {{hist_info.officer.last_name | titlecase}} </span>
             </p>
           </mat-list-item>
         </mat-list>
-      </mat-expansion-panel>
+      </ng-template>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
-          *ngIf="leaveApp.joiningReport && leaveApp.joiningReport.status != jr_pending">
-        <mat-expansion-panel-header>
-          <mat-panel-title>Joining Letter</mat-panel-title>
-          <mat-panel-description>Joining date, session and joining application</mat-panel-description>
-        </mat-expansion-panel-header>
-  
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)"
+        *ngIf="leaveApp.joiningReport && leaveApp.joiningReport.status != jr_pending">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Joining Letter</mat-panel-title>
+        <mat-panel-description>Joining date, session and joining application</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex>
             <span class="title">Joining Date: </span>
@@ -169,20 +175,22 @@
             {{ leaveApp.joiningReport.comment }}
           </div>
         </div>
-      </mat-expansion-panel>
+      </ng-template>
+    </mat-expansion-panel>
 
-      <!-- Dont show if leave status is calledback/cancelled and the page is not leave request page-->
-      <div [hidden]="actions.length < 1">
-        <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Actions</mat-panel-title>
-            <mat-panel-description>Actions to be performed by officer</mat-panel-description>
-          </mat-expansion-panel-header>
-          
-          <form [formGroup]="actionForm" 
-            fxLayout="column" 
+    <!-- Dont show if leave status is calledback/cancelled and the page is not leave request page-->
+    <div [hidden]="actions.length < 1">
+      <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Actions</mat-panel-title>
+          <mat-panel-description>Actions to be performed by officer</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+          <form [formGroup]="actionForm"
+            fxLayout="column"
             (ngSubmit)="onSubmit()">
-            
+
             <mat-form-field>
               <mat-select placeholder="Select required action" formControlName="workflow_action">
                 <mat-option *ngFor="let action of actions" [value]="action.code">
@@ -194,30 +202,30 @@
                 Cannot process as the concerned employee doest not have sufficient leave balance. Please check leave info
               </mat-error>
             </mat-form-field>
-            
-            <mat-form-field 
-              *ngIf="workflow_action.value == leave_recommended_code || 
-                workflow_action.value == leave_cancel_initiate || 
+
+            <mat-form-field
+              *ngIf="workflow_action.value == leave_recommended_code ||
+                workflow_action.value == leave_cancel_initiate ||
                 workflow_action.value == leave_cancel_recommended">
-  
+
               <mat-select placeholder="Forward to" formControlName="addressee">
-                <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code"> 
+                <mat-option *ngFor="let ctrlOfficer of ctrlOfficers" [value]="ctrlOfficer.code">
                   {{ ctrlOfficer.name | titlecase }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="addressee.errors?.required">Forward to is required</mat-error>
             </mat-form-field>
-  
+
             <mat-form-field>
               <input matInput placeholder="Remarks" formControlName="remarks">
             </mat-form-field>
-  
+
             <div fxLayoutAlign="end start">
               <button mat-raised-button color="primary" [disabled]="isLoading">Submit</button>
-            </div>  
+            </div>
           </form>
-        </mat-expansion-panel>
-      </div>
-    </mat-accordion>
-  </div>
+        </ng-template>
+      </mat-expansion-panel>
+    </div>
+  </mat-accordion>
 </div>
