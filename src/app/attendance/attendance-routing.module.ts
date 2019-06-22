@@ -1,9 +1,12 @@
+import { ShiftComponent } from './components/admin/shift/shift.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/services/auth-guard';
-import { AttendanceComponent } from './attendance/attendance.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AttendanceComponent } from './components/attendance/attendance.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TimeOfficeGuard } from '../auth/services/time-office-guard';
+import { GroupComponent } from './components/admin/group/group.component';
 
 const routes: Routes = [
   {
@@ -12,9 +15,19 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      {
+        path: 'shift',
+        component: ShiftComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: 'group',
+        component: GroupComponent,
+        canActivate: [TimeOfficeGuard]
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
-  }
+  },
 ];
 
 @NgModule({

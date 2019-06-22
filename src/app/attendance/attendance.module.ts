@@ -1,18 +1,30 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AttendanceRoutingModule } from './attendance-routing.module';
-import { AttendanceComponent } from './attendance/attendance.component';
-import { ShiftComponent } from './admin/shift/shift.component';
-import { GroupComponent } from './admin/group/group.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { GroupFormComponent } from './components/admin/group/group-form/group-form.component';
+import { GroupComponent } from './components/admin/group/group.component';
+import { ShiftFormComponent } from './components/admin/shift/shift-form/shift-form.component';
+import { ShiftComponent } from './components/admin/shift/shift.component';
+import { AttendanceComponent } from './components/attendance/attendance.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [AdminDashboardComponent, AttendanceComponent, ShiftComponent, GroupComponent, DashboardComponent],
   imports: [
     SharedModule,
     AttendanceRoutingModule
+  ],
+  declarations: [
+    AttendanceComponent,
+    DashboardComponent,
+    ShiftComponent,
+    ShiftFormComponent,
+    GroupComponent,
+    GroupFormComponent,
+  ],
+  entryComponents: [
+    ShiftFormComponent,
+    GroupFormComponent
   ]
 })
-export class AttendanceModule { }
+export class AttendanceModule {}
