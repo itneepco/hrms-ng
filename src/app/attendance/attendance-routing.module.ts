@@ -1,12 +1,13 @@
-import { ShiftComponent } from './components/admin/shift/shift.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/services/auth-guard';
+import { TimeOfficeGuard } from '../auth/services/time-office-guard';
+import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
+import { GroupComponent } from './components/admin/group/group.component';
+import { ShiftComponent } from './components/admin/shift/shift.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { TimeOfficeGuard } from '../auth/services/time-office-guard';
-import { GroupComponent } from './components/admin/group/group.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
       {
         path: 'group',
         component: GroupComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: 'employee-group',
+        component: EmployeeGroupComponent,
         canActivate: [TimeOfficeGuard]
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
