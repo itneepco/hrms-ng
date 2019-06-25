@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
+import { Shift } from './../../../models/shift';
+import { ShiftService } from './../../../services/shift.service';
 import { ShiftFormComponent } from './shift-form/shift-form.component';
 
 @Component({
@@ -12,28 +14,39 @@ import { ShiftFormComponent } from './shift-form/shift-form.component';
   styleUrls: ['./shift.component.scss']
 })
 export class ShiftComponent implements OnInit {
-  shiftForm: FormGroup
+  displayedColumns = [
+    "position",
+    "name",
+    "in_time_start",
+    "in_time_end",
+    "out_time_start",
+    "out_time_end",
+    "late_time",
+    "half_time",
+    "is_night_shift",
+    "actions"
+  ];
+
+  dataSource: MatTableDataSource<Shift>;
 
   constructor(private location: Location,
-    private dialog: MatDialog,
+    private shiftService: ShiftService,
     private auth: AuthService,
-    private fb: FormBuilder) { }
+    private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.initForm()
+    this.shiftService.getShifts(this.auth.currentUser.project).subscribe(data => {
+      console.log(data)
+      this.dataSource = new MatTableDataSource<Shift>(data);
+    })
   }
 
-  initForm() {
-    this.shiftForm = this.fb.group({
-      name: ['', Validators.required],
-      project_id: [this.auth.currentUser.project, Validators.required],
-      in_time_start: ['', Validators.required],
-      in_time_end: ['', Validators.required],
-      out_time_start: ['', Validators.required],
-      late_time: ['', Validators.required],
-      half_time: ['', Validators.required],
-      is_night_shift: ['', Validators.required],
-    })
+  onEdit(shift: Shift) {
+
+  }
+
+  onRemove(shift: Shift) {
+
   }
 
   goBack() {

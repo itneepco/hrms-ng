@@ -8,6 +8,8 @@ import { ShiftFormComponent } from './components/admin/shift/shift-form/shift-fo
 import { ShiftComponent } from './components/admin/shift/shift.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GroupService } from './services/group.service';
+import { ShiftService } from './services/shift.service';
 
 @NgModule({
   imports: [
@@ -25,6 +27,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   entryComponents: [
     ShiftFormComponent,
     GroupFormComponent
+  ],
+  providers: [
+    ShiftService,
+    GroupService,
   ]
 })
 export class AttendanceModule {}

@@ -1,3 +1,52 @@
-<p>
-  shift-form works!
-</p>
+<h3 mat-dialog-title>Add New Shift</h3>
+
+<form [formGroup]="shiftForm" (ngSubmit)="onSubmit()">
+  <div fxLayout="column">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Shift Name" formControlName="name">
+      <mat-error *ngIf="name.errors?.required">Group name is required</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="In time start" formControlName="in_time_start">
+        <mat-error *ngIf="in_time_start.errors?.required">In Time Start is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <input matInput placeholder="In time end" formControlName="in_time_end">
+        <mat-error *ngIf="in_time_end.errors?.required">In Time End is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Out time start" formControlName="out_time_start">
+        <mat-error *ngIf="out_time_start.errors?.required">Out Time Start is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Out time end" formControlName="out_time_end">
+        <mat-error *ngIf="out_time_end.errors?.required">Out Time End is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Half time" formControlName="half_time">
+        <mat-error *ngIf="out_time_end.errors?.required">Half Time is required</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Late time" formControlName="late_time">
+        <mat-error *ngIf="out_time_end.errors?.required">Late Time is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-checkbox formControlName="is_night_shift">Night Shift</mat-checkbox>
+  </div>
+
+  <mat-dialog-actions align="end" id="buttons">
+    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">Save</button>
+  </mat-dialog-actions>
+</form>

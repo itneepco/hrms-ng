@@ -6,6 +6,39 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
+
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No. </mat-header-cell>
+        <mat-cell *matCellDef="let group; let i = index;" fxFlex="8">
+          {{ i + 1 }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef fxFlex="12"> Name </mat-header-cell>
+        <mat-cell *matCellDef="let group" fxFlex="12"> {{group.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="in_time_start">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> General Group </mat-header-cell>
+        <mat-cell *matCellDef="let group" fxFlex="10"> {{group.is_general}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let group" fxFlex="10">
+          <button mat-icon-button (click)="onEdit(group)" color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onRemove(group)" color="warn">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </mat-card>
 </div>
 
