@@ -67,7 +67,6 @@ export class TrainingInstituteFormComponent implements OnInit {
         this.dialogRef.close(value);
       }, (error) => this.isLoading = false);
     }
-
   }
 
   get name() {

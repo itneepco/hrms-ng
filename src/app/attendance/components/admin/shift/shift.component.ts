@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
@@ -9,9 +10,9 @@ import { ShiftService } from './../../../services/shift.service';
 import { ShiftFormComponent } from './shift-form/shift-form.component';
 
 @Component({
-  selector: 'app-shift',
-  templateUrl: './shift.component.html',
-  styleUrls: ['./shift.component.scss']
+  selector: "app-shift",
+  templateUrl: "./shift.component.html",
+  styleUrls: ["./shift.component.scss"]
 })
 export class ShiftComponent implements OnInit {
   displayedColumns = [
@@ -29,34 +30,97 @@ export class ShiftComponent implements OnInit {
 
   dataSource: MatTableDataSource<Shift>;
 
-  constructor(private location: Location,
+  constructor(
+    private location: Location,
     private shiftService: ShiftService,
     private auth: AuthService,
-    private dialog: MatDialog) { }
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.shiftService.getShifts(this.auth.currentUser.project).subscribe(data => {
-      console.log(data)
-      this.dataSource = new MatTableDataSource<Shift>(data);
-    })
+    this.shiftService
+      .getShifts(this.auth.currentUser.project)
+      .subscribe(data => {
+        console.log(data);
+        this.dataSource = new MatTableDataSource<Shift>(data);
+      });
+  }
+
+  onAddShift() {
+    const dialogRef = this.dialog.open(ShiftFormComponent, {
+      width: "550px",
+      height: "450px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully added the shift record", "Dismiss", {
+        duration: 1600
+      });
+      const temp = this.dataSource.data;
+      temp.unshift(result);
+      this.dataSource.data = temp;
+    });
   }
 
   onEdit(shift: Shift) {
+    const dialogRef = this.dialog.open(ShiftFormComponent, {
+      width: "550px",
+      height: "450px",
+      data: shift
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully edited the shift record", "Dismiss", {
+        duration: 1600
+      });
+      const index = this.dataSource.data.indexOf(shift);
+      const temp = this.dataSource.data;
+      temp[index] = result;
+      this.dataSource.data = temp;
+    });
   }
 
-  onRemove(shift: Shift) {
+  onDelete(shift: Shift) {
+    const retVal = confirm("Are you sure you want to delete?");
+    if (retVal != true) {
+      return;
+    }
 
+    this.shiftService.deleteShift(this.auth.currentUser.project, shift.id).subscribe(
+      () => {
+        const temp = this.dataSource.data;
+        const index = temp.indexOf(shift);
+        temp.splice(index, 1);
+        this.dataSource.data = temp;
+        this.snackbar.open(
+          "Successfully deleted the shift record",
+          "Dismiss",
+          {
+            duration: 1600
+          }
+        );
+      },
+      error => {
+        console.log(error);
+        this.snackbar.open(
+          "Cannot delete shift record. Its being referenced by other table",
+          "Dismiss",
+          {
+            duration: 2500
+          }
+        );
+      }
+    );
   }
 
   goBack() {
     this.location.back();
-  }
-
-  onAddShift() {
-    this.dialog.open(ShiftFormComponent, {
-      width: '550px',
-      height: '450px'
-    })
   }
 }

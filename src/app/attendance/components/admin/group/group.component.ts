@@ -1,57 +1,115 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { Location } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatTableDataSource } from "@angular/material/table";
+import { AuthService } from "src/app/auth/services/auth.service";
 
-import { Group } from './../../../models/group';
-import { GroupService } from './../../../services/group.service';
-import { GroupFormComponent } from './group-form/group-form.component';
+import { Group } from "./../../../models/group";
+import { GroupService } from "./../../../services/group.service";
+import { GroupFormComponent } from "./group-form/group-form.component";
 
 @Component({
-  selector: 'app-group',
-  templateUrl: './group.component.html',
-  styleUrls: ['./group.component.scss']
+  selector: "app-group",
+  templateUrl: "./group.component.html",
+  styleUrls: ["./group.component.scss"]
 })
 export class GroupComponent implements OnInit {
-  displayedColumns = [
-    "position",
-    "name",
-    "is_general",
-    "actions"
-  ];
+  displayedColumns = ["position", "name", "is_general", "actions"];
 
   dataSource: MatTableDataSource<Group>;
 
-  constructor(private location: Location,
+  constructor(
+    private location: Location,
     private groupService: GroupService,
     private auth: AuthService,
-    private dialog: MatDialog) { }
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.groupService.getGroups(this.auth.currentUser.project).subscribe(data => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource<Group>(data)
-    })
+    this.groupService
+      .getGroups(this.auth.currentUser.project)
+      .subscribe(data => {
+        console.log(data);
+        this.dataSource = new MatTableDataSource<Group>(data);
+      });
   }
 
+  onAddGroup() {
+    const dialogRef = this.dialog.open(GroupFormComponent, {
+      width: "520px",
+      height: "320px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully added the group record", "Dismiss", {
+        duration: 1600
+      });
+      const temp = this.dataSource.data;
+      temp.unshift(result);
+      this.dataSource.data = temp;
+    });
+  }
 
   onEdit(group: Group) {
+    const dialogRef = this.dialog.open(GroupFormComponent, {
+      width: "520px",
+      height: "320px",
+      data: group
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully edited the group record", "Dismiss", {
+        duration: 1600
+      });
+      const index = this.dataSource.data.indexOf(group);
+      const temp = this.dataSource.data;
+      temp[index] = result;
+      this.dataSource.data = temp;
+    });
   }
 
   onRemove(group: Group) {
-
+    const retVal = confirm("Are you sure you want to delete?");
+    if (retVal === true) {
+      this.groupService
+        .deleteGroup(this.auth.currentUser.project, group.id)
+        .subscribe(
+          () => {
+            const index = this.dataSource.data.indexOf(group);
+            const temp = this.dataSource.data;
+            temp.splice(index, 1);
+            this.dataSource.data = temp;
+            this.snackbar.open(
+              "Successfully deleted the group record",
+              "Dismiss",
+              {
+                duration: 1600
+              }
+            );
+          },
+          error => {
+            console.log(error);
+            this.snackbar.open(
+              "Cannot delete group record. Its being referenced by other table",
+              "Dismiss",
+              {
+                duration: 2500
+              }
+            );
+          }
+        );
+    }
   }
 
   goBack() {
     this.location.back();
-  }
-
-  onAddGroup() {
-    this.dialog.open(GroupFormComponent, {
-      width: '520px',
-      height: '320px'
-    })
   }
 }
