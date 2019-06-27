@@ -7,7 +7,9 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
 
 import { Shift } from '../models/shift';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ShiftService {
 
   constructor(private http: HttpClient,
@@ -51,5 +53,14 @@ export class ShiftService {
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
+  }
+
+  isNightShift(val: boolean) {
+    if(val) {
+      return "YES"
+    }
+    else {
+      return "NO"
+    }
   }
 }

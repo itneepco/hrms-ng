@@ -39,7 +39,7 @@ export class GroupComponent implements OnInit {
   onAddGroup() {
     const dialogRef = this.dialog.open(GroupFormComponent, {
       width: "520px",
-      height: "320px"
+      height: "340px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -58,7 +58,7 @@ export class GroupComponent implements OnInit {
   onEdit(group: Group) {
     const dialogRef = this.dialog.open(GroupFormComponent, {
       width: "520px",
-      height: "320px",
+      height: "340px",
       data: group
     });
 
@@ -111,5 +111,9 @@ export class GroupComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  isGeneral(val: boolean) {
+    return this.groupService.isGeneralGroup(val)
   }
 }

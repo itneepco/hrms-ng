@@ -21,7 +21,7 @@
 
       <ng-container matColumnDef="is_general">
         <mat-header-cell *matHeaderCellDef fxFlex="20"> General Group </mat-header-cell>
-        <mat-cell *matCellDef="let group" fxFlex="20"> {{group.is_general}} </mat-cell>
+        <mat-cell *matCellDef="let group" fxFlex="20"> {{isGeneral(group.is_general)}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">

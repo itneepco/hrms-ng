@@ -1,45 +1,63 @@
-<h3 mat-dialog-title>Add New Shift</h3>
+<h3 mat-dialog-title *ngIf="!shift">Add New Shift</h3>
+<h3 mat-dialog-title *ngIf="shift">Edit Shift</h3>
 
 <form [formGroup]="shiftForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column">
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Shift Name" formControlName="name">
-      <mat-error *ngIf="name.errors?.required">Group name is required</mat-error>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field fxFlex appearance="outline" >
+        <mat-label>Shift Name</mat-label>
+        <input matInput placeholder="Shift Name" formControlName="name">
+        <mat-error *ngIf="name.errors?.required">Shift name is required</mat-error>
+      </mat-form-field>
+      <span></span>
+    </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-form-field fxFlex>
-        <input matInput placeholder="In time start" formControlName="in_time_start">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>In time start</mat-label>
+        <input matInput [ngxTimepicker]="inTimeStart" [format]="24" formControlName="in_time_start" required />
         <mat-error *ngIf="in_time_start.errors?.required">In Time Start is required</mat-error>
       </mat-form-field>
+      <ngx-material-timepicker #inTimeStart></ngx-material-timepicker>
 
-      <mat-form-field fxFlex>
-        <input matInput placeholder="In time end" formControlName="in_time_end">
-        <mat-error *ngIf="in_time_end.errors?.required">In Time End is required</mat-error>
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>In time end</mat-label>
+        <input matInput [ngxTimepicker]="inTimeEnd" [format]="24" placeholder="In time end" formControlName="in_time_end" required />
+        <mat-error *ngIf="in_time_end.errors?.required">In Time end is required</mat-error>
       </mat-form-field>
+      <ngx-material-timepicker #inTimeEnd></ngx-material-timepicker>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-form-field fxFlex>
-        <input matInput placeholder="Out time start" formControlName="out_time_start">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Out time start</mat-label>
+        <input matInput [ngxTimepicker]="outTimeStart" [format]="24" placeholder="Out time start" formControlName="out_time_start"/>
         <mat-error *ngIf="out_time_start.errors?.required">Out Time Start is required</mat-error>
       </mat-form-field>
+      <ngx-material-timepicker #outTimeStart></ngx-material-timepicker>
 
-      <mat-form-field fxFlex>
-        <input matInput placeholder="Out time end" formControlName="out_time_end">
-        <mat-error *ngIf="out_time_end.errors?.required">Out Time End is required</mat-error>
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Out time end</mat-label>
+        <input matInput [ngxTimepicker]="outTimeEnd" [format]="24" placeholder="Out time end" formControlName="out_time_end"/>
+        <mat-error *ngIf="out_time_end.errors?.required">Out Time end is required</mat-error>
       </mat-form-field>
+      <ngx-material-timepicker #outTimeEnd></ngx-material-timepicker>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-form-field fxFlex>
-        <input matInput placeholder="Half time" formControlName="half_time">
-        <mat-error *ngIf="out_time_end.errors?.required">Half Time is required</mat-error>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Half time</mat-label>
+        <input matInput [ngxTimepicker]="halfTime" [format]="24" placeholder="Half time" formControlName="half_time"/>
+        <mat-error *ngIf="half_time.errors?.required">Half Time is required</mat-error>
       </mat-form-field>
-      <mat-form-field fxFlex>
-        <input matInput placeholder="Late time" formControlName="late_time">
-        <mat-error *ngIf="out_time_end.errors?.required">Late Time is required</mat-error>
+      <ngx-material-timepicker #halfTime></ngx-material-timepicker>
+
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Late time</mat-label>
+        <input matInput [ngxTimepicker]="lateTIme" [format]="24" placeholder="Late time" formControlName="late_time"/>
+        <mat-error *ngIf="late_time.errors?.required">Late time is required</mat-error>
       </mat-form-field>
+      <ngx-material-timepicker #lateTIme></ngx-material-timepicker>
     </div>
 
     <mat-checkbox formControlName="is_night_shift">Night Shift</mat-checkbox>

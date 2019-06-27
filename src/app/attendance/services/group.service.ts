@@ -7,7 +7,9 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
 import { baseURL } from './../../shared/config/baseUrl';
 import { Group } from './../models/group';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GroupService {
 
   constructor(private http: HttpClient,
@@ -19,6 +21,7 @@ export class GroupService {
   }
 
   getGroups(projectId: number): Observable<Group[]> {
+    console.log(`${this.getUrl()}/${projectId}/groups`)
     return this.http.get<Group[]>(`${this.getUrl()}/${projectId}/groups`)
       .pipe(
         catchError(err => this.handler.handleError(err))
@@ -51,5 +54,14 @@ export class GroupService {
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
+  }
+
+  isGeneralGroup(val: boolean) {
+    if(val) {
+      return "YES"
+    }
+    else {
+      return "NO"
+    }
   }
 }

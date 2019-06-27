@@ -7,7 +7,9 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
 
 import { EmployeeGroup } from '../models/employee-group';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EmployeeGroupService {
 
   constructor(private http: HttpClient,

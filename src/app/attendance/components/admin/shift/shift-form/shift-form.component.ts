@@ -38,7 +38,7 @@ export class ShiftFormComponent implements OnInit {
       out_time_end: [this.shift ? this.shift.out_time_end : "", Validators.required],
       late_time: [this.shift ? this.shift.late_time : "", Validators.required],
       half_time: [this.shift ? this.shift.half_time : "", Validators.required],
-      is_night_shift: [this.shift ? this.shift.is_night_shift : ""]
+      is_night_shift: [this.shift ? this.shift.is_night_shift : false]
     });
   }
 

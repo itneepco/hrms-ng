@@ -1,4 +1,5 @@
-<h3 mat-dialog-title>Add New Group</h3>
+<h3 mat-dialog-title *ngIf="!group">Add New Group</h3>
+<h3 mat-dialog-title *ngIf="group">Edit Group</h3>
 
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column">

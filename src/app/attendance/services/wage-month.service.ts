@@ -7,7 +7,9 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
 import { baseURL } from './../../shared/config/baseUrl';
 import { WageMonth } from './../models/wage-month';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WageMonthService {
 
   constructor(private http: HttpClient,

@@ -33,7 +33,7 @@ export class GroupFormComponent implements OnInit {
     this.groupForm = this.fb.group({
       name: [this.group ? this.group.name : "", Validators.required],
       project_id: this.auth.currentUser.emp_code,
-      is_general: [this.group ? this.group.is_general : ""]
+      is_general: [this.group ? this.group.is_general : false]
     });
   }
 

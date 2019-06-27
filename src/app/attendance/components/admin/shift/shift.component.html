@@ -9,14 +9,14 @@
 
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl. No. </mat-header-cell>
-        <mat-cell *matCellDef="let shift; let i = index;" fxFlex="8">
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Sl. No. </mat-header-cell>
+        <mat-cell *matCellDef="let shift; let i = index;" fxFlex="7">
           {{ i + 1 }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef fxFlex="12"> Name </mat-header-cell>
-        <mat-cell *matCellDef="let shift" fxFlex="12"> {{shift.name}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="16"> Name </mat-header-cell>
+        <mat-cell *matCellDef="let shift" fxFlex="16"> {{shift.name}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="in_time_start">
@@ -35,13 +35,13 @@
       </ng-container>
 
       <ng-container matColumnDef="out_time_end">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Out Time End </mat-header-cell>
-        <mat-cell *matCellDef="let shift" fxFlex="10"> {{shift.out_time_end}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="11"> Out Time End </mat-header-cell>
+        <mat-cell *matCellDef="let shift" fxFlex="11"> {{shift.out_time_end}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="late_time">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Late Time </mat-header-cell>
-        <mat-cell *matCellDef="let shift" fxFlex="10"> {{shift.late_time}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="11"> Late Time </mat-header-cell>
+        <mat-cell *matCellDef="let shift" fxFlex="11"> {{shift.late_time}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="half_time">
@@ -49,14 +49,9 @@
         <mat-cell *matCellDef="let shift" fxFlex="10"> {{shift.half_time}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="is_night_shift">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Night Shift </mat-header-cell>
-        <mat-cell *matCellDef="let shift" fxFlex="10"> {{shift.is_night_shift}} </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let shift" fxFlex="10">
+        <mat-header-cell *matHeaderCellDef fxFlex="15"> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let shift" fxFlex="15">
           <button mat-icon-button (click)="onEdit(shift)" color="primary">
             <mat-icon>edit</mat-icon>
           </button>

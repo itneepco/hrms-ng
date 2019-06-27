@@ -13,10 +13,6 @@ import { ShiftComponent } from './components/admin/shift/shift.component';
 import { WageMonthFormComponent } from './components/admin/wage-month-form/wage-month-form.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EmployeeGroupService } from './services/employee-group.service';
-import { GroupService } from './services/group.service';
-import { ShiftService } from './services/shift.service';
-import { WageMonthService } from './services/wage-month.service';
 
 @NgModule({
   imports: [
@@ -40,11 +36,5 @@ import { WageMonthService } from './services/wage-month.service';
     WageMonthFormComponent,
     EmployeeGroupFormComponent
   ],
-  providers: [
-    ShiftService,
-    GroupService,
-    EmployeeGroupService,
-    WageMonthService
-  ]
 })
 export class AttendanceModule {}

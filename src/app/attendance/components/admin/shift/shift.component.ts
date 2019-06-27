@@ -24,7 +24,6 @@ export class ShiftComponent implements OnInit {
     "out_time_end",
     "late_time",
     "half_time",
-    "is_night_shift",
     "actions"
   ];
 
@@ -49,8 +48,8 @@ export class ShiftComponent implements OnInit {
 
   onAddShift() {
     const dialogRef = this.dialog.open(ShiftFormComponent, {
-      width: "550px",
-      height: "450px"
+      width: "600px",
+      height: "550px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -68,8 +67,8 @@ export class ShiftComponent implements OnInit {
 
   onEdit(shift: Shift) {
     const dialogRef = this.dialog.open(ShiftFormComponent, {
-      width: "550px",
-      height: "450px",
+      width: "600px",
+      height: "550px",
       data: shift
     });
 
@@ -87,7 +86,7 @@ export class ShiftComponent implements OnInit {
     });
   }
 
-  onDelete(shift: Shift) {
+  onRemove(shift: Shift) {
     const retVal = confirm("Are you sure you want to delete?");
     if (retVal != true) {
       return;
@@ -122,5 +121,9 @@ export class ShiftComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  isNightShift(val: boolean) {
+    return this.shiftService.isNightShift(val)
   }
 }
