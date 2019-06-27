@@ -1,17 +1,17 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TrainingInstituteFormComponent } from './training-institute-form/training-institute-form.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { TrainingInstituteFormComponent } from "./training-institute-form/training-institute-form.component";
+import { MatDialog } from "@angular/material/dialog";
+import { Component, OnInit } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 
-import { TrainingInstitute } from './../../models/training';
-import { TrainingInstituteService } from './../../services/training-institute.service';
+import { TrainingInstitute } from "./../../models/training";
+import { TrainingInstituteService } from "./../../services/training-institute.service";
 
 @Component({
-  selector: 'app-training-institute',
-  templateUrl: './training-institute.component.html',
-  styleUrls: ['./training-institute.component.scss']
+  selector: "app-training-institute",
+  templateUrl: "./training-institute.component.html",
+  styleUrls: ["./training-institute.component.scss"]
 })
 export class TrainingInstituteComponent implements OnInit {
   dataSource: MatTableDataSource<TrainingInstitute>;
@@ -23,11 +23,20 @@ export class TrainingInstituteComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  displayedColumns = ['position', 'name', 'address', 'website', 'contact', 'actions'];
+  displayedColumns = [
+    "position",
+    "name",
+    "address",
+    "website",
+    "contact",
+    "actions"
+  ];
 
-  constructor(private dialog: MatDialog,
+  constructor(
+    private dialog: MatDialog,
     private snackbar: MatSnackBar,
-    private instituteService: TrainingInstituteService) { }
+    private instituteService: TrainingInstituteService
+  ) {}
 
   ngOnInit() {
     this.getTrainingInstitutes();
@@ -35,13 +44,17 @@ export class TrainingInstituteComponent implements OnInit {
 
   addNewInstitute() {
     const dialogRef = this.dialog.open(TrainingInstituteFormComponent, {
-      width: '600px',
-      height: '530px'
+      width: "600px",
+      height: "530px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) { return; }
-
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully added the institute record", "Dismiss", {
+        duration: 1600
+      });
       const temp = this.dataSource.data;
       temp.unshift(result);
       this.dataSource.data = temp;
@@ -50,14 +63,22 @@ export class TrainingInstituteComponent implements OnInit {
 
   onEdit(institute: TrainingInstitute) {
     const dialogRef = this.dialog.open(TrainingInstituteFormComponent, {
-      width: '600px',
-      height: '530px',
+      width: "600px",
+      height: "530px",
       data: institute
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) { return; }
-
+      if (!result) {
+        return;
+      }
+      this.snackbar.open(
+        "Successfully updated the institute record",
+        "Dismiss",
+        {
+          duration: 1600
+        }
+      );
       const index = this.dataSource.data.indexOf(institute);
       const temp = this.dataSource.data;
       temp[index] = result;
@@ -66,39 +87,56 @@ export class TrainingInstituteComponent implements OnInit {
   }
 
   onDelete(institute: TrainingInstitute) {
-    const retVal = confirm('Are you sure you want to delete?');
-    if (retVal != true) { return; }
+    const retVal = confirm("Are you sure you want to delete?");
+    if (retVal != true) {
+      return;
+    }
 
-    this.instituteService.deleteTrainingInstitute(institute.id)
-      .subscribe(() => {
+    this.instituteService.deleteTrainingInstitute(institute.id).subscribe(
+      () => {
         const temp = this.dataSource.data;
         const index = temp.indexOf(institute);
         temp.splice(index, 1);
         this.dataSource.data = temp;
-        this.snackbar.open('Successfully deleted the institute record', 'Dismiss', {
-          duration: 1600
-        });
-      }, (error) => {
+        this.snackbar.open(
+          "Successfully deleted the institute record",
+          "Dismiss",
+          {
+            duration: 1600
+          }
+        );
+      },
+      error => {
         console.log(error);
-        this.snackbar.open('Cannot delete institute record. Its being referenced by other table', 'Dismiss', {
-          duration: 2500
-        });
-      });
+        this.snackbar.open(
+          "Cannot delete institute record. Its being referenced by other table",
+          "Dismiss",
+          {
+            duration: 2500
+          }
+        );
+      }
+    );
   }
 
   getTrainingInstitutes() {
     this.isLoading = true;
-    this.instituteService.getInstitutesPaginate(this.pageIndex, this.pageSize)
-      .subscribe(data => {
-        this.dataLength = data['count'];
-        this.dataSource = new MatTableDataSource<TrainingInstitute>(data['rows']);
-        this.isLoading = false;
-        console.log(data);
-      },
-      errMsg => {
-        this.errMsg = errMsg;
-        this.isLoading = false;
-      });
+    this.instituteService
+      .getInstitutesPaginate(this.pageIndex, this.pageSize)
+      .subscribe(
+        data => {
+          this.dataLength = data["count"];
+          this.dataSource = new MatTableDataSource<TrainingInstitute>(
+            data["rows"]
+          );
+          this.isLoading = false;
+          console.log(data);
+        },
+        errMsg => {
+          this.errMsg = errMsg;
+          this.isLoading = false;
+        }
+      );
   }
 
   changePage(pageEvent: PageEvent) {
