@@ -102,7 +102,7 @@ export class TrainingProfileComponent implements OnInit {
   }
 
   getEmployeeTrgNeedsInfo() {
-    this.trgNeedsInfoService.getTrainigNeeds(this.empCode).subscribe(data => {
+    this.trgNeedsInfoService.getNeedInfos(this.empCode).subscribe(data => {
       this.needInfos = data;
       console.log(data);
     });

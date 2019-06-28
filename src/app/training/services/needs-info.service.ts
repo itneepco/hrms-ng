@@ -18,7 +18,7 @@ export class NeedsInfoService {
   constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
 
   // Get all training needs info for the specified employee
-  getTrainigNeeds(empCode: string): Observable<TrainingNeedInfo[]> {
+  getNeedInfos(empCode: string): Observable<TrainingNeedInfo[]> {
     return this.http.get<TrainingNeedInfo[]>(`${this.needsInfo}/employee/${empCode}`)
     .pipe(
       catchError(err => this.handler.handleError(err))
@@ -42,7 +42,7 @@ export class NeedsInfoService {
   }
 
   // Get the training needs info based on the training need info id
-  getTrainingNeed(id: number) {
+  getNeedInfo(id: number) {
     return this.http.get<TrainingNeedInfo>(`${this.needsInfo}/${id}`)
     .pipe(
       catchError(err => this.handler.handleError(err))

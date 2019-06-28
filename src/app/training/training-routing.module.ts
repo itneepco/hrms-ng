@@ -26,8 +26,8 @@ const routes: Routes = [{
     children: [
       { path: 'my-training', component: MyTrainingComponent },
       { path: 'feedback', component: FeedbackComponent },
-      { path: 'needs', component: TrainingNeedsComponent },
       { path: 'pending-needs', component: PendingRequestComponent },
+      { path: 'needs', component: TrainingNeedsComponent },
       {
         path: 'executive-needs/:needInfoId',
         component: ExecutiveNeedsComponent,

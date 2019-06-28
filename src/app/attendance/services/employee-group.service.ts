@@ -6,6 +6,7 @@ import { baseURL } from 'src/app/shared/config/baseUrl';
 import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 import { EmployeeGroup } from '../models/employee-group';
+import { EmployeeGroupDtl } from './../models/employee-group';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class EmployeeGroupService {
     return baseURL + 'api/attendance/group'
   }
 
-  getEmployeeGroups(groupId: number): Observable<EmployeeGroup[]> {
-    return this.http.get<EmployeeGroup[]>(`${this.getUrl()}/${groupId}/employees`)
+  getEmployeeGroups(groupId: number): Observable<EmployeeGroupDtl> {
+    return this.http.get<EmployeeGroupDtl>(`${this.getUrl()}/${groupId}/employees`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

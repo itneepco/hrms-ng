@@ -11,7 +11,7 @@ export class NeedsInfoResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot): Promise<TrainingNeedInfo> {
     return new Promise((resolve, reject) => {
       const id = +route.paramMap.get('needInfoId');
-      this.needsInfoService.getTrainingNeed(id)
+      this.needsInfoService.getNeedInfo(id)
       .subscribe(
         data => resolve(data),
         err => reject(err)
