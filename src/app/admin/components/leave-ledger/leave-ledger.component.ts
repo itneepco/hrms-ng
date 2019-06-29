@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { PageEvent } from "@angular/material/paginator";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -10,7 +10,7 @@ import { debounceTime } from "rxjs/operators";
 import { LeaveTypeService } from "../../../shared/services/leave-type.service";
 import { LedgerService } from "../../../leave/services/ledger.service";
 import { LeaveLedger } from "../../../shared/models/ledger";
-import { AddLedgerComponent } from "../add-ledger/add-ledger.component";
+import { AddLedgerComponent } from "./add-ledger/add-ledger.component";
 import { EmployeeService } from "./../../../shared/services/employee.service";
 
 @Component({
@@ -49,13 +49,17 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.emp_code = new FormControl();
+    this.emp_code = new FormControl("", Validators.required);
 
     this.empCodeSubs = this.emp_code.valueChanges
       .pipe(debounceTime(500))
       .subscribe(data => {
-        if (!data) { return; }
-        if (data.length < 1) { return; }
+        if (!data) {
+          return;
+        }
+        if (data.length < 1) {
+          return;
+        }
 
         this.employeeService.searchEmployee(data).subscribe(response => {
           this.searchResult = response;
@@ -67,8 +71,7 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
   onSearch() {
     this.errMsg = null;
 
-    if (!this.emp_code) { return; }
-
+    if (this.emp_code.invalid) return;
     if (this.searchResult.length < 1) {
       this.errMsg =
         "No such employee code exists in this office / project. Please try again!!";
@@ -94,11 +97,14 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
   onAdd() {
     const dialogRef = this.dialog.open(AddLedgerComponent, {
       width: "550px",
-      height: "450px"
+      height: "450px",
+      data: {
+        emp_code: this.emp_code.value
+      }
     });
 
-    dialogRef.afterClosed().subscribe(val => {
-      if (val && val.add) {
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         this.snackbar.open(
           "Successfully created the leave ledger record",
           "Dismiss",
@@ -106,8 +112,9 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
             duration: 1600
           }
         );
-        this.dataSource = new MatTableDataSource<LeaveLedger>();
-        this.dataSource.data.push(val.add);
+        const temp = this.dataSource.data;
+        temp.unshift(result);
+        this.dataSource.data = temp;
         this.emp_code.reset();
       }
     });
@@ -120,8 +127,8 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
       data: { ledger: ledger }
     });
 
-    dialogRef.afterClosed().subscribe(val => {
-      if (val && val.edit) {
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         this.snackbar.open(
           "Successfully edited the leave ledger record",
           "Dismiss",
@@ -132,8 +139,7 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
 
         const index = this.dataSource.data.indexOf(ledger);
         const temp = this.dataSource.data;
-        temp.splice(index, 1);
-        temp.unshift(val.edit);
+        temp[index] = result;
         this.dataSource.data = temp;
       }
     });

@@ -2,14 +2,12 @@ import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
-import { debounceTime } from "rxjs/operators";
 
-import { LedgerService } from "../../../leave/services/ledger.service";
-import { Employee } from "../../../shared/models/employee";
-import { LEAVE_TYPES } from "../../../shared/models/global-codes";
-import { LeaveType } from "../../../shared/models/leave";
-import { LeaveLedger } from "../../../shared/models/ledger";
-import { EmployeeService } from "../../../shared/services/employee.service";
+import { LedgerService } from "../../../../leave/services/ledger.service";
+import { Employee } from "../../../../shared/models/employee";
+import { LEAVE_TYPES } from "../../../../shared/models/global-codes";
+import { LeaveType } from "../../../../shared/models/leave";
+import { LeaveLedger } from "../../../../shared/models/ledger";
 
 @Component({
   selector: "app-add-ledger",
@@ -21,14 +19,13 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   leaveTypes: LeaveType[];
   searchResult: Employee[] = [];
   dc_flag = [{ name: "Debit", value: "D" }, { name: "Credit", value: "C" }];
-  ledger: LeaveLedger = {} as LeaveLedger;
+  ledger: LeaveLedger;
   empCodeSubs: Subscription;
   isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
     private ledgerService: LedgerService,
-    private employeeService: EmployeeService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddLedgerComponent>
   ) {}
@@ -42,62 +39,47 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
 
     this.ledgerForm = this.fb.group({
       emp_code: [
-        this.ledger.emp_code,
+        this.ledger ? this.ledger.emp_code : "",
         [Validators.required, Validators.pattern("[0-9]{6}")]
       ],
       cal_year: [
-        this.ledger.cal_year,
+        this.ledger ? this.ledger.cal_year : "",
         [Validators.required, Validators.pattern("[1-9][0-9]{3}")]
       ],
-      db_cr_flag: [this.ledger.db_cr_flag, Validators.required],
+      db_cr_flag: [
+        this.ledger ? this.ledger.db_cr_flag : "",
+        Validators.required
+      ],
       no_of_days: [
-        this.ledger.no_of_days,
+        this.ledger ? this.ledger.no_of_days : "",
         [Validators.required, Validators.pattern("[1-9][0-9]*")]
       ],
       leave_type: [
-        this.ledger.leave_type ? this.ledger.leave_type : "",
+        this.ledger ? this.ledger.leave_type : "",
         Validators.required
       ],
-      remarks: this.ledger.remarks,
+      remarks: this.ledger ? this.ledger.remarks : "",
       is_manually_added: true
     });
 
-    this.empCodeSubs = this.emp_code.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe(data => {
-        if (!data) {
-          return;
-        }
-        if (data.length < 1) {
-          return;
-        }
-
-        this.employeeService.searchEmployee(data).subscribe(response => {
-          this.searchResult = response;
-        });
-      });
+    if (this.data && this.data.emp_code) {
+      this.emp_code.setValue(this.data.emp_code);
+    }
   }
 
   onSubmit() {
-    if (this.searchResult.length < 1) {
-      this.emp_code.setErrors({ invalidEmpCode: true });
-      return;
-    }
-
-    if (this.ledgerForm.invalid) {
-      return;
-    }
+    if (this.ledgerForm.invalid) return;
     console.log(this.ledgerForm.value);
 
     this.isSubmitting = true;
-    if (this.ledger.id) {
+    if (this.ledger) {
       this.ledgerService
         .updateLedger(this.ledger.id, this.ledgerForm.value)
         .subscribe(
           val => {
             this.isSubmitting = false;
             console.log(val);
-            this.dialogRef.close({ edit: val });
+            this.dialogRef.close(val);
           },
           error => {
             console.log(error);
@@ -109,7 +91,7 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
         val => {
           this.isSubmitting = false;
           console.log(val);
-          this.dialogRef.close({ add: val });
+          this.dialogRef.close(val);
         },
         error => {
           console.log(error);
@@ -150,6 +132,6 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.empCodeSubs.unsubscribe();
+    // this.empCodeSubs.unsubscribe();
   }
 }

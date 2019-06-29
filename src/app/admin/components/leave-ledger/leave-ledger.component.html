@@ -8,7 +8,7 @@
             {{ getFullName(item) | titlecase }}
           </mat-option>
         </mat-autocomplete>
-        <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
+        <mat-hint *ngIf="emp_code.touched && emp_code.invalid">Employee Code should be 6 digit</mat-hint>
       </mat-form-field>
       <button mat-raised-button color="primary"
           (click)="onSearch()" [disabled]="emp_code.invalid">
@@ -87,7 +87,8 @@
   </mat-card>
 </div>
 
-<button mat-fab class="fab-bottom-right"
+<button *ngIf="dataSource"
+    mat-fab class="fab-bottom-right"
     matTooltip="Add a new ledger record"
     matTooltipPosition="left"
     (click)="onAdd()">

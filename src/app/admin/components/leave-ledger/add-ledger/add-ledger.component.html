@@ -4,14 +4,8 @@
   <mat-dialog-content fxLayout="column">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
       <mat-form-field fxFlex>
-        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
-            {{ getFullName(item) | titlecase }}
-          </mat-option>
-        </mat-autocomplete>
+        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code">
         <mat-error *ngIf="emp_code.errors?.required">Employee Code is required</mat-error>
-        <mat-error *ngIf="emp_code.errors?.invalidEmpCode">This employee code does not exist in this office / project</mat-error>
         <mat-error *ngIf="emp_code.errors?.pattern">Employee Code should be 6 digit</mat-error>
       </mat-form-field>
     </div>
@@ -29,7 +23,7 @@
           </mat-option>
         </mat-select>
         <mat-error *ngIf="leave_type.errors?.required">Leave type is required</mat-error>
-      </mat-form-field> 
+      </mat-form-field>
     </div>
 
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="25px">
@@ -52,10 +46,10 @@
       <textarea matInput placeholder="Remarks" formControlName="remarks" rows="5">
       </textarea>
     </mat-form-field>
-  
+
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">Save</button>
   </mat-dialog-actions>
-</form>  
+</form>
