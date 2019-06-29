@@ -6,7 +6,7 @@ import { baseURL } from 'src/app/shared/config/baseUrl';
 import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 import { EmployeeGroup } from '../models/employee-group';
-import { EmployeeGroupDtl } from './../models/employee-group';
+import { EmployeeGroupDtl, EmployeeGroupForm } from './../models/employee-group';
 
 @Injectable({
   providedIn: 'root'
@@ -28,15 +28,15 @@ export class EmployeeGroupService {
       )
   }
 
-  addEmployeeGroup(groupId: number, shift: EmployeeGroup) {
-    return this.http.post(`${this.getUrl()}/${groupId}/employees`, shift)
+  addEmployeeGroup(groupId: number, empGroup: EmployeeGroupForm) {
+    return this.http.post(`${this.getUrl()}/${groupId}/employees`, empGroup)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
   }
 
-  editEmployeeGroup(groupId: number, id: number, shift: EmployeeGroup) {
-    return this.http.put(`${this.getUrl()}/${groupId}/employees/${id}`, shift)
+  editEmployeeGroup(groupId: number, id: number, empGroup: EmployeeGroupForm) {
+    return this.http.put(`${this.getUrl()}/${groupId}/employees/${id}`, empGroup)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

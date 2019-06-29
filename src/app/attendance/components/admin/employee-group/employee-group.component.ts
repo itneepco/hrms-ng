@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
 import { GroupService } from "src/app/attendance/services/group.service";
 
@@ -15,13 +16,14 @@ import { EmployeeGroupFormComponent } from "./employee-group-form/employee-group
 })
 export class EmployeeGroupComponent implements OnInit {
   groups: Group[];
-  empGroupDtls: EmployeeGroupDtl[];
+  empGroupDtls: EmployeeGroupDtl[] = [];
 
   constructor(
     private dialog: MatDialog,
     private auth: AuthService,
     private empGroupService: EmployeeGroupService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -39,9 +41,17 @@ export class EmployeeGroupComponent implements OnInit {
   }
 
   addEmpToGroup() {
-    this.dialog.open(EmployeeGroupFormComponent, {
+    const dialogRef = this.dialog.open(EmployeeGroupFormComponent, {
       width: "520px",
       height: "320px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+
+      this.snackbar.open("Successfully added employee to the group", "Dismiss", {
+        duration: 1600
+      });
     });
   }
 }

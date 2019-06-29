@@ -1,13 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { GroupService } from 'src/app/attendance/services/group.service';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { EmployeeService } from 'src/app/shared/services/employee.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Subscription } from "rxjs";
+import { debounceTime } from "rxjs/operators";
+import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
+import { GroupService } from "src/app/attendance/services/group.service";
+import { AuthService } from "src/app/auth/services/auth.service";
+import { EmployeeService } from "src/app/shared/services/employee.service";
 
-import { Group } from './../../../../models/group';
+import { Group } from "./../../../../models/group";
 
 @Component({
   selector: "app-employee-group-form",
@@ -26,32 +27,32 @@ export class EmployeeGroupFormComponent implements OnInit, OnDestroy {
     private groupService: GroupService,
     private auth: AuthService,
     private employeeService: EmployeeService,
+    private empGroupService: EmployeeGroupService,
     public dialogRef: MatDialogRef<EmployeeGroupFormComponent>
   ) {}
 
   ngOnInit() {
     this.initForm();
     this.initEmployeeAutoComplete();
-    this.groupService.getGroups(this.auth.currentUser.project)
-    .subscribe(data => {
-      console.log(data);
-      this.groups = data;
-    });
+    this.groupService
+      .getGroups(this.auth.currentUser.project)
+      .subscribe(data => {
+        console.log(data);
+        this.groups = data;
+      });
   }
 
   initEmployeeAutoComplete() {
     this.subscription = this.emp_name.valueChanges
-    .pipe(debounceTime(500))
-    .subscribe(name => {
-      if (!name) {
-        return;
-      }
-      if (name.length < 1) {
-        return;
-      }
-      this.employeeService.searchEmployeeByName(name)
-        .subscribe(response => (this.empSearchResult = response));
-    });
+      .pipe(debounceTime(500))
+      .subscribe(name => {
+        if (!name) return;
+        if (name.length < 1) return;
+
+        this.employeeService
+          .searchEmployeeByName(name)
+          .subscribe(response => (this.empSearchResult = response));
+      });
   }
 
   initForm() {
@@ -62,18 +63,25 @@ export class EmployeeGroupFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.empGroupForm.invalid) {
-      return;
-    }
+    if (this.empGroupForm.invalid) return;
 
     const full_info = this.emp_name.value.split(",");
     const emp_code = full_info[1].trim();
-    const emp_group = {
-      emp_code: emp_code,
-      group_id: this.group_id.value
-    }
 
-    console.log(emp_group);
+    if (!emp_code) return;
+    const emp_group = { emp_code: emp_code };
+
+    this.isSubmitting = true;
+    this.empGroupService
+      .addEmployeeGroup(this.group_id.value, emp_group)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.isSubmitting = false;
+          this.dialogRef.close(data);
+        },
+        error => (this.isSubmitting = false)
+      );
   }
 
   clearEmployeeSearch() {

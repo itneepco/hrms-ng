@@ -38,11 +38,9 @@ export class GroupFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.groupForm.invalid) {
-      return;
-    }
-    console.log(this.groupForm.value);
+    if (this.groupForm.invalid) return;
 
+    // console.log(this.groupForm.value);
     const project_id = this.auth.currentUser.project;
     this.isSubmitting = true;
 
