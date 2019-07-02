@@ -1,14 +1,45 @@
 <div class="main-container">
-  <mat-card>
+  <mat-accordion>
+    <div fxLayoutAlign="space-between center" id="heading">
+      <span>List of all employees groupwise</span>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
 
-  </mat-card>
+    <mat-expansion-panel *ngFor="let group of groups">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ group.name }}
+        </mat-panel-title>
+        <mat-panel-description>
+          employees in this group
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div
+        *ngFor="let empGroup of filterEmpGroup(group.id); let i = index"
+        (click)="onEdit(empGroup)"
+        fxLayout="row"
+        class="emp-info"
+      >
+        <span class="space">{{ i + 1 }}) </span>
+        <span class="space">{{ empGroup.employee.first_name | titlecase }}</span>
+        <span class="space">{{ empGroup.employee.last_name | titlecase }},</span>
+        <span class="space">{{ empGroup.employee.emp_code }},</span>
+        <span class="space">{{ empGroup.employee.designation }}</span>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
-<button mat-fab
+<button
+  mat-fab
   class="fab-bottom-right"
   matTooltip="Add employee to group"
   matTooltipPosition="left"
   (click)="addEmpToGroup()"
-  color="accent">
-    <mat-icon>add</mat-icon>
+  color="accent"
+>
+  <mat-icon>add</mat-icon>
 </button>

@@ -29,7 +29,7 @@ export class EmployeeService {
   }
 
   getFullName(item: Employee) {
-    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${
+    return `${item.first_name} ${item.middle_name ? item.middle_name: ''} ${item.last_name}, ${
       item.emp_code
     }, ${item.designation}`;
   }

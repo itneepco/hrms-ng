@@ -16,6 +16,7 @@ export interface EmployeeGroupDtl {
   employee: {
     emp_code: string
     first_name: string
+    middle_name: string
     last_name: string
     designation: string
   }

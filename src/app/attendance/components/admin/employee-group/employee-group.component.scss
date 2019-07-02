@@ -1,0 +1,18 @@
+#heading {
+  margin: 5px 10px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.emp-info {
+  padding: 3px;
+  font-size: 14px !important;
+  cursor: pointer;
+  &:hover {
+    font-weight: 500;
+  }
+}
+
+.space {
+  margin-right: 4px;
+}

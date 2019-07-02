@@ -21,8 +21,8 @@ export class EmployeeGroupService {
     return baseURL + 'api/attendance/group'
   }
 
-  getEmployeeGroups(groupId: number): Observable<EmployeeGroupDtl> {
-    return this.http.get<EmployeeGroupDtl>(`${this.getUrl()}/${groupId}/employees`)
+  getEmployeeGroups(groupId: number): Observable<EmployeeGroupDtl[]> {
+    return this.http.get<EmployeeGroupDtl[]>(`${this.getUrl()}/${groupId}/employees`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )
