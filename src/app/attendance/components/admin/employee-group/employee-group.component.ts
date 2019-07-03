@@ -1,14 +1,14 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { EmployeeGroupService } from 'src/app/attendance/services/employee-group.service';
-import { GroupService } from 'src/app/attendance/services/group.service';
+import { Location } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
+import { GroupService } from "src/app/attendance/services/group.service";
 
-import { AuthService } from './../../../../auth/services/auth.service';
-import { EmployeeGroupDtl } from './../../../models/employee-group';
-import { Group } from './../../../models/group';
-import { EmployeeGroupFormComponent } from './employee-group-form/employee-group-form.component';
+import { AuthService } from "./../../../../auth/services/auth.service";
+import { EmployeeGroupDtl } from "./../../../models/employee-group";
+import { Group } from "./../../../models/group";
+import { EmployeeGroupFormComponent } from "./employee-group-form/employee-group-form.component";
 
 @Component({
   selector: "app-employee-group",
@@ -17,7 +17,7 @@ import { EmployeeGroupFormComponent } from './employee-group-form/employee-group
 })
 export class EmployeeGroupComponent implements OnInit {
   groups: Group[];
-  empGroupDtls: EmployeeGroupDtl[] = [];
+  empGroupDtls: EmployeeGroupDtl[][] = []; // Array of EmployeeGroupDtl array
 
   constructor(
     private dialog: MatDialog,
@@ -35,9 +35,11 @@ export class EmployeeGroupComponent implements OnInit {
         this.groups = data;
 
         this.groups.forEach(group => {
-          this.empGroupService.getEmployeeGroups(group.id).subscribe(data => {
-            this.empGroupDtls.push(...data);
-          });
+          this.empGroupService
+            .getEmployeeGroups(group.id)
+            .subscribe((data: EmployeeGroupDtl[]) => {
+              this.empGroupDtls[group.id] = data;
+            });
         });
       });
   }
@@ -48,10 +50,12 @@ export class EmployeeGroupComponent implements OnInit {
       height: "320px"
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) return;
+    dialogRef.afterClosed().subscribe(newData => {
+      if (!newData) return;
 
-      this.empGroupDtls.push(result)
+      console.log(newData);
+      this.empGroupDtls[newData.group_id].push(newData);
+
       this.snackbar.open(
         "Successfully added employee to the group",
         "Dismiss",
@@ -69,11 +73,15 @@ export class EmployeeGroupComponent implements OnInit {
       data: empGroup
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) return;
+    dialogRef.afterClosed().subscribe(newData => {
+      if (!newData) return;
 
-      const index = this.empGroupDtls.findIndex(data => data.id == result.id)
-      this.empGroupDtls.splice(index, 1, result)
+      console.log(newData);
+      const index = this.empGroupDtls[empGroup.group_id].findIndex(
+        data => data.id === empGroup.id
+      );
+      this.empGroupDtls[empGroup.group_id].splice(index, 1);
+      this.empGroupDtls[newData.group_id].push(newData);
 
       this.snackbar.open(
         "Successfully edited employee group record",
@@ -85,9 +93,9 @@ export class EmployeeGroupComponent implements OnInit {
     });
   }
 
-  filterEmpGroup(groupId: number) {
-    return this.empGroupDtls.filter(row => row.group_id == groupId);
-  }
+  // filterEmpGroup(groupId: number) {
+  //   return this.empGroupDtls.filter(row => row.group_id == groupId);
+  // }
 
   goBack() {
     this.location.back();

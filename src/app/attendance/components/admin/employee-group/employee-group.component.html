@@ -18,7 +18,7 @@
       </mat-expansion-panel-header>
 
       <div
-        *ngFor="let empGroup of filterEmpGroup(group.id); let i = index"
+        *ngFor="let empGroup of empGroupDtls[group.id]; let i = index"
         (click)="onEdit(empGroup)"
         fxLayout="row"
         class="emp-info"
