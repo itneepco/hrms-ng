@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/services/auth-guard';
 import { TimeOfficeGuard } from '../auth/services/time-office-guard';
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
+import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftComponent } from './components/admin/shift/shift.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
@@ -29,6 +30,11 @@ const routes: Routes = [
       {
         path: 'employee-group',
         component: EmployeeGroupComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: 'group-roster',
+        component: GroupRosterComponent,
         canActivate: [TimeOfficeGuard]
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

@@ -1,0 +1,71 @@
+<form
+  [formGroup]="rosterForm"
+  *ngIf="groups"
+  (submit)="saveRoster()"
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  fxLayoutGap="20px"
+>
+  <table fxFlex="75" fxFlex.lt-md>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th *ngFor="let group of groups">{{ group.name }}</th>
+      </tr>
+    </thead>
+
+    <tbody formArrayName="rosters">
+      <ng-container
+        *ngFor="let item of rosters.controls; let roster_index = index"
+      >
+        <tr [formGroupName]="roster_index">
+          <td>{{ getDate(roster_index) }}</td>
+
+          <ng-container formArrayName="group_shifts">
+            <td
+              *ngFor="
+                let group_shift of getGroupShifts(roster_index).controls;
+                let gs_index = index
+              "
+            >
+              <div [formGroupName]="gs_index">
+                <select formControlName="shift_id">
+                  <option *ngFor="let shift of shifts" [value]="shift.id">
+                    {{ shift.name }}
+                  </option>
+                </select>
+                <p
+                  class="error-msg"
+                  *ngIf="
+                    getShift(roster_index, gs_index).touched &&
+                    getShift(roster_index, gs_index).errors?.required"
+                >
+                  is required
+                </p>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <div fxFlex="25">
+    <mat-card>
+      <div>Wage period:</div>
+      <div>
+        <span>{{ startDate | date: "mediumDate" }} </span>
+        <span>to </span>
+        <span>{{ endDate | date: "mediumDate" }} </span>
+      </div>
+      <div fxLayout="column">
+        <button mat-raised-button class="button" color="primary" type="submit" >
+          Save Group Roster
+        </button>
+        <button mat-raised-button class="button" type="button">
+          Generate Employee Roster
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</form>

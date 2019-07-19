@@ -10,7 +10,7 @@ import { MenuService } from "./core/services/menu.service";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-  @ViewChild(MatSidenav, {static: false}) private sidenav: MatSidenav;
+  @ViewChild(MatSidenav, { static: false }) private sidenav: MatSidenav;
   opened = true;
   mode = "side";
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.mediaObserver.media$.subscribe((change: MediaChange) => {
       const screenSize = change.mqAlias;
-      if (screenSize === "xs" || screenSize === "sm") {
+      if (screenSize === "xs" || screenSize === "sm" || screenSize === "md") {
         this.opened = false;
         this.mode = "over";
       } else {
@@ -35,7 +35,11 @@ export class AppComponent implements OnInit {
       if (data) {
         this.sidenav.toggle();
       } else {
-        if (this.mediaObserver.isActive("xs") || this.mediaObserver.isActive("sm")) {
+        if (
+          this.mediaObserver.isActive("xs") ||
+          this.mediaObserver.isActive("sm") ||
+          this.mediaObserver.isActive("md")
+        ) {
           this.sidenav.close();
         }
       }
