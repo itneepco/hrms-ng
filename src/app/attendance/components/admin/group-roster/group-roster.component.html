@@ -1,7 +1,7 @@
 <form
   [formGroup]="rosterForm"
   *ngIf="groups"
-  (submit)="saveRoster()"
+  (ngSubmit)="saveRoster()"
   fxLayout="row"
   fxLayout.lt-md="column"
   fxLayoutGap="20px"
@@ -19,7 +19,7 @@
         *ngFor="let item of rosters.controls; let roster_index = index"
       >
         <tr [formGroupName]="roster_index">
-          <td>{{ getDate(roster_index) }}</td>
+          <td>{{ getDay(roster_index) }}</td>
 
           <ng-container formArrayName="group_shifts">
             <td
@@ -62,9 +62,9 @@
         <button mat-raised-button class="button" color="primary" type="submit" >
           Save Group Roster
         </button>
-        <button mat-raised-button class="button" type="button">
+        <!-- <button mat-raised-button class="button" type="button">
           Generate Employee Roster
-        </button>
+        </button> -->
       </div>
     </mat-card>
   </div>

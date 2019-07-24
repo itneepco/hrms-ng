@@ -1,4 +1,4 @@
-export interface EMployeeWiseRoster {
+export interface EmployeeWiseRoster {
   id: number;
   emp_code: string;
   day: Date;

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/services/auth-guard';
 import { TimeOfficeGuard } from '../auth/services/time-office-guard';
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
+import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
 import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftComponent } from './components/admin/shift/shift.component';
@@ -33,8 +34,13 @@ const routes: Routes = [
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'group-roster',
+        path: 'shift-grp-roster',
         component: GroupRosterComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: 'gen-grp-roster',
+        component: GenGroupRosterComponent,
         canActivate: [TimeOfficeGuard]
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

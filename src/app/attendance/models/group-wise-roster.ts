@@ -1,12 +1,11 @@
-export interface GroupWiseRoster {
-  id: number;
-  day: Date;
-  is_holiday: boolean;
-  shift_id: number;
-  group_id: number;
-  // is_editable: boolean;
-  created_by: string;
-  updated_by: string;
-  created_at: string;
-  updated_at: string;
+export interface GroupRoster {
+  day: Date,
+  group_shifts: [{
+    group_id: number,
+    shift_id: number
+  }]
+}
+
+export interface GroupRosterForm {
+  rosters: GroupRoster[]
 }

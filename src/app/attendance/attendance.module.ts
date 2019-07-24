@@ -14,6 +14,7 @@ import { ShiftComponent } from './components/admin/shift/shift.component';
 import { WageMonthFormComponent } from './components/admin/wage-month-form/wage-month-form.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     EmployeeGroupComponent,
     EmployeeGroupFormComponent,
     GroupRosterComponent,
+    GenGroupRosterComponent,
   ],
   entryComponents: [
     ShiftFormComponent,

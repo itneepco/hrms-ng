@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import * as moment from 'moment';
-import { switchMap } from 'rxjs/operators';
-import { Group } from 'src/app/attendance/models/group';
-import { ShiftService } from 'src/app/attendance/services/shift.service';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { switchMap } from "rxjs/operators";
+import { Group } from "src/app/attendance/models/group";
+import { DateService } from "src/app/attendance/services/date.service";
+import { ShiftService } from "src/app/attendance/services/shift.service";
+import { AuthService } from "src/app/auth/services/auth.service";
 
-import { Shift } from './../../../models/shift';
-import { GroupService } from './../../../services/group.service';
-
+import { Shift } from "./../../../models/shift";
+import { GroupService } from "./../../../services/group.service";
+import { GroupRosterService } from "src/app/attendance/services/group-roster.service";
 
 @Component({
   selector: "app-group-roster",
@@ -27,11 +27,16 @@ export class GroupRosterComponent implements OnInit {
     private auth: AuthService,
     private shiftService: ShiftService,
     private groupService: GroupService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private grpRosterService: GroupRosterService,
+    private dateService: DateService
   ) {}
 
   ngOnInit() {
-    this.dates = this.enumerateDaysBetweenDates(this.startDate, this.endDate);
+    this.dates = this.dateService.enumerateDaysBetweenDates(
+      this.startDate,
+      this.endDate
+    );
 
     this.shiftService
       .getShifts(this.auth.currentUser.project)
@@ -59,13 +64,13 @@ export class GroupRosterComponent implements OnInit {
         group_shifts.push(
           this.fb.group({
             group_id: group.id,
-            shift_id: ["", Validators.required]
+            shift_id: [3, Validators.required]
           })
         );
       });
 
       let formControl = this.fb.group({
-        date: date,
+        day: date,
         group_shifts: this.fb.array(group_shifts)
       });
 
@@ -84,35 +89,30 @@ export class GroupRosterComponent implements OnInit {
     });
   }
 
-  enumerateDaysBetweenDates(startDate, endDate) {
-    var dates = [];
-
-    var currDate = moment(startDate).startOf("day");
-    var lastDate = moment(endDate).startOf("day");
-
-    dates.push(currDate.clone().toDate());
-
-    while (currDate.add(1, "days").diff(lastDate) <= 0) {
-      dates.push(currDate.clone().toDate());
-    }
-
-    return dates;
-  }
-
   formatDate(date) {
-    return moment(date).format("dddd, Do MMMM");
+    return this.dateService.formatDate(date);
   }
 
   saveRoster() {
-    console.log(this.rosterForm.value)
+    console.log(this.rosterForm.invalid);
+    // if (this.rosterForm.invalid) return;
+
+    this.grpRosterService
+      .addShiftRoster(
+        this.auth.currentUser.project,
+        this.rosterForm.get("rosters").value
+      )
+      .subscribe(data => {
+        console.log(data);
+      });
   }
 
   get rosters(): FormArray {
     return this.rosterForm.get("rosters") as FormArray;
   }
 
-  getDate(index: number) {
-    const dateValue = this.rosters.controls[index].get("date").value;
+  getDay(index: number) {
+    const dateValue = this.rosters.controls[index].get("day").value;
     return this.formatDate(dateValue);
   }
 
@@ -121,7 +121,9 @@ export class GroupRosterComponent implements OnInit {
   }
 
   getShift(roster_index: number, gs_index: number) {
-    let group_shifts = this.rosters.controls[roster_index].get("group_shifts") as FormArray;
-    return group_shifts.controls[gs_index].get('shift_id')
+    let group_shifts = this.rosters.controls[roster_index].get(
+      "group_shifts"
+    ) as FormArray;
+    return group_shifts.controls[gs_index].get("shift_id");
   }
 }
