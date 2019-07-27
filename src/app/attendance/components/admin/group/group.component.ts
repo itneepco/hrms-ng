@@ -1,13 +1,12 @@
-import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatTableDataSource } from "@angular/material/table";
-import { AuthService } from "src/app/auth/services/auth.service";
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
-import { Group } from "./../../../models/group";
-import { GroupService } from "./../../../services/group.service";
-import { GroupFormComponent } from "./group-form/group-form.component";
+import { Group } from './../../../models/group';
+import { GroupService } from './../../../services/group.service';
+import { GroupFormComponent } from './group-form/group-form.component';
 
 @Component({
   selector: "app-group",
@@ -22,18 +21,15 @@ export class GroupComponent implements OnInit {
   constructor(
     private location: Location,
     private groupService: GroupService,
-    private auth: AuthService,
     private snackbar: MatSnackBar,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.groupService
-      .getGroups(this.auth.currentUser.project)
-      .subscribe(data => {
-        console.log(data);
-        this.dataSource = new MatTableDataSource<Group>(data);
-      });
+    this.groupService.getGroups().subscribe(data => {
+      console.log(data);
+      this.dataSource = new MatTableDataSource<Group>(data);
+    });
   }
 
   onAddGroup() {
@@ -79,33 +75,31 @@ export class GroupComponent implements OnInit {
   onRemove(group: Group) {
     const retVal = confirm("Are you sure you want to delete?");
     if (retVal === true) {
-      this.groupService
-        .deleteGroup(this.auth.currentUser.project, group.id)
-        .subscribe(
-          () => {
-            const index = this.dataSource.data.indexOf(group);
-            const temp = this.dataSource.data;
-            temp.splice(index, 1);
-            this.dataSource.data = temp;
-            this.snackbar.open(
-              "Successfully deleted the group record",
-              "Dismiss",
-              {
-                duration: 1600
-              }
-            );
-          },
-          error => {
-            console.log(error);
-            this.snackbar.open(
-              "Cannot delete group record. Its being referenced by other table",
-              "Dismiss",
-              {
-                duration: 2500
-              }
-            );
-          }
-        );
+      this.groupService.deleteGroup(group.id).subscribe(
+        () => {
+          const index = this.dataSource.data.indexOf(group);
+          const temp = this.dataSource.data;
+          temp.splice(index, 1);
+          this.dataSource.data = temp;
+          this.snackbar.open(
+            "Successfully deleted the group record",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        },
+        error => {
+          console.log(error);
+          this.snackbar.open(
+            "Cannot delete group record. Its being referenced by other table",
+            "Dismiss",
+            {
+              duration: 2500
+            }
+          );
+        }
+      );
     }
   }
 
@@ -114,6 +108,6 @@ export class GroupComponent implements OnInit {
   }
 
   isGeneral(val: boolean) {
-    return this.groupService.isGeneralGroup(val)
+    return this.groupService.isGeneralGroup(val);
   }
 }

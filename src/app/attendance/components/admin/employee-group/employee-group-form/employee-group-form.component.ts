@@ -1,15 +1,15 @@
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Subscription } from "rxjs";
-import { debounceTime } from "rxjs/operators";
-import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
-import { GroupService } from "src/app/attendance/services/group.service";
-import { AuthService } from "src/app/auth/services/auth.service";
-import { EmployeeService } from "src/app/shared/services/employee.service";
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { EmployeeGroupService } from 'src/app/attendance/services/employee-group.service';
+import { GroupService } from 'src/app/attendance/services/group.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { EmployeeService } from 'src/app/shared/services/employee.service';
 
-import { EmployeeGroupDtl } from "./../../../../models/employee-group";
-import { Group } from "./../../../../models/group";
+import { EmployeeGroupDtl } from './../../../../models/employee-group';
+import { Group } from './../../../../models/group';
 
 @Component({
   selector: "app-employee-group-form",
@@ -27,7 +27,6 @@ export class EmployeeGroupFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private groupService: GroupService,
-    private auth: AuthService,
     private employeeService: EmployeeService,
     private empGroupService: EmployeeGroupService,
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -40,9 +39,7 @@ export class EmployeeGroupFormComponent implements OnInit, OnDestroy {
 
     this.initForm();
     this.initEmployeeAutoComplete();
-    this.groupService
-      .getGroups(this.auth.currentUser.project)
-      .subscribe(data => (this.groups = data));
+    this.groupService.getGroups().subscribe(data => (this.groups = data));
   }
 
   initEmployeeAutoComplete() {

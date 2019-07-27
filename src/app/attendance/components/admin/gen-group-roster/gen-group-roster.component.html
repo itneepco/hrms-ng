@@ -1,44 +1,39 @@
 <div class="main-container">
   <mat-card>
-    <section>
-      <div fxLayoutAlign="space-between center" fxLayout="row" style="margin-bottom: 10px">
-        <div id="head-info">
-          <span class="title">Wage Period:</span>
-          <span>{{ startDate | date: "mediumDate" }} </span>
-          <span>to </span>
-          <span>{{ endDate | date: "mediumDate" }} </span>
-        </div>
-        <div>
-          <button mat-icon-button (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
+    <div fxLayoutAlign="space-between center" id="head-info">
+      <span>Wage Period from {{ startDate | date:'mediumDate'}} to {{ endDate | date:'mediumDate'}}</span>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+
+    <section fxLayout="row" fxLayout.lt-md="column">
+      <div *ngIf="workDays" fxFlex class="box">
+        <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
+          <div fxFlex="60">{{ formatDate(weekend) }}</div>
+          <div fxFlex="40">
+            <button (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
+              Mark Work Day
+            </button>
+            <button (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
+              Remove Work Day
+            </button>
+          </div>
         </div>
       </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div fxFlex class="box">
+        <h3>List of regular groups</h3>
+        <div *ngFor="let group of genGroups" fxLayout="row">
+          <div fxFlex>{{group.name}}</div>
+          <div fxFlex>
 
-      <mat-divider></mat-divider>
-
-      <div fxLayout="row" id="column-name">
-        <div fxFlex="30">Day</div>
-        <div fxFlex="30">Action</div>
-        <div fxFlex="30">Remarks</div>
-      </div>
-
-      <div
-        *ngFor="let date of dates"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        class="row"
-      >
-        <div fxFlex="30">{{ formatDate(date) }}</div>
-        <div *ngIf="isSundaySaturday(date)" fxFlex="30">
-          <button (click)="markAsWorkingDay()" class="btn-action">
-            Mark Working Day
-          </button>
+          </div>
+          <div fxFlex>
+            <button (click)="changeTiming()">Change Timing</button>
+          </div>
         </div>
-        <div *ngIf="findHoliday(date)">dasd</div>
       </div>
     </section>
-
-
   </mat-card>
 </div>

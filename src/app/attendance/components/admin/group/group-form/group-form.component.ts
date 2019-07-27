@@ -41,12 +41,11 @@ export class GroupFormComponent implements OnInit {
     if (this.groupForm.invalid) return;
 
     // console.log(this.groupForm.value);
-    const project_id = this.auth.currentUser.project;
     this.isSubmitting = true;
 
     if (this.group && this.group.id) {
       this.groupService
-        .editGroup(project_id, this.group.id, this.groupForm.value)
+        .editGroup(this.group.id, this.groupForm.value)
         .subscribe(
           (newValue: Group) => {
             this.isSubmitting = false;
@@ -55,7 +54,7 @@ export class GroupFormComponent implements OnInit {
           error => (this.isSubmitting = false)
         );
     } else {
-      this.groupService.addGroup(project_id, this.groupForm.value).subscribe(
+      this.groupService.addGroup(this.groupForm.value).subscribe(
         (value: Group) => {
           this.isSubmitting = false;
           this.dialogRef.close(value);

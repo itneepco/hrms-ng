@@ -39,13 +39,11 @@ export class GroupRosterComponent implements OnInit {
     );
 
     this.shiftService
-      .getShifts(this.auth.currentUser.project)
+      .getShifts()
       .pipe(
         switchMap(shifts => {
           this.shifts = shifts;
-          return this.groupService.getShiftGroups(
-            this.auth.currentUser.project
-          );
+          return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {

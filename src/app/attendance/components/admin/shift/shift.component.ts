@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { Shift } from './../../../models/shift';
 import { ShiftService } from './../../../services/shift.service';
@@ -32,18 +31,15 @@ export class ShiftComponent implements OnInit {
   constructor(
     private location: Location,
     private shiftService: ShiftService,
-    private auth: AuthService,
     private snackbar: MatSnackBar,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.shiftService
-      .getShifts(this.auth.currentUser.project)
-      .subscribe(data => {
-        console.log(data);
-        this.dataSource = new MatTableDataSource<Shift>(data);
-      });
+    this.shiftService.getShifts().subscribe(data => {
+      console.log(data);
+      this.dataSource = new MatTableDataSource<Shift>(data);
+    });
   }
 
   onAddShift() {
@@ -92,19 +88,15 @@ export class ShiftComponent implements OnInit {
       return;
     }
 
-    this.shiftService.deleteShift(this.auth.currentUser.project, shift.id).subscribe(
+    this.shiftService.deleteShift(shift.id).subscribe(
       () => {
         const temp = this.dataSource.data;
         const index = temp.indexOf(shift);
         temp.splice(index, 1);
         this.dataSource.data = temp;
-        this.snackbar.open(
-          "Successfully deleted the shift record",
-          "Dismiss",
-          {
-            duration: 1600
-          }
-        );
+        this.snackbar.open("Successfully deleted the shift record", "Dismiss", {
+          duration: 1600
+        });
       },
       error => {
         console.log(error);
@@ -124,6 +116,6 @@ export class ShiftComponent implements OnInit {
   }
 
   isNightShift(val: boolean) {
-    return this.shiftService.isNightShift(val)
+    return this.shiftService.isNightShift(val);
   }
 }

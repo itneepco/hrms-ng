@@ -1,62 +1,64 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { ErrorHandlerService } from "src/app/shared/services/error-handler.service";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
-import { baseURL } from "./../../shared/config/baseUrl";
-import { Group } from "./../models/group";
+import { baseURL } from './../../shared/config/baseUrl';
+import { Group } from './../models/group';
 
 @Injectable({
   providedIn: "root"
 })
 export class GroupService {
-  constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
+  constructor(private http: HttpClient,
+    private auth: AuthService,
+    private handler: ErrorHandlerService) {}
 
   getUrl() {
-    return baseURL + "api/attendance/project";
+    return baseURL + `api/attendance/project/${this.auth.currentUser.project}`;
   }
 
-  getGroups(projectId: number): Observable<Group[]> {
-    console.log(`${this.getUrl()}/${projectId}/groups`);
+  getGroups(): Observable<Group[]> {
     return this.http
-      .get<Group[]>(`${this.getUrl()}/${projectId}/groups`)
+      .get<Group[]>(`${this.getUrl()}/groups`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  getShiftGroups(projectId: number): Observable<Group[]> {
-    return this.getGroups(projectId).pipe(
+  getShiftGroups(): Observable<Group[]> {
+    return this.getGroups().pipe(
       map(groups => groups.filter(group => !group.is_general))
     );
   }
 
-  getGeneralGroups(projectId: number): Observable<Group[]> {
-    return this.getGroups(projectId).pipe(
+  getGeneralGroups(): Observable<Group[]> {
+    return this.getGroups().pipe(
       map(groups => groups.filter(group => group.is_general))
     );
   }
 
-  addGroup(projectId: number, group: Group) {
+  addGroup(group: Group) {
     return this.http
-      .post(`${this.getUrl()}/${projectId}/groups`, group)
+      .post(`${this.getUrl()}/groups`, group)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  editGroup(projectId: number, id: number, group: Group) {
+  editGroup(id: number, group: Group) {
     return this.http
-      .put(`${this.getUrl()}/${projectId}/groups/${id}`, group)
+      .put(`${this.getUrl()}/groups/${id}`, group)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  deleteGroup(projectId: number, id: number) {
+  deleteGroup(id: number) {
     return this.http
-      .delete(`${this.getUrl()}/${projectId}/groups/${id}`)
+      .delete(`${this.getUrl()}/groups/${id}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  getGroup(projectId: number, id: number) {
+  getGroup(id: number) {
     return this.http
-      .get<Group>(`${this.getUrl()}/${projectId}/groups/${id}`)
+      .get<Group>(`${this.getUrl()}/groups/${id}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 

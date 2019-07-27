@@ -32,10 +32,22 @@ export class ShiftFormComponent implements OnInit {
     this.shiftForm = this.fb.group({
       name: [this.shift ? this.shift.name : "", Validators.required],
       project_id: [this.auth.currentUser.project, Validators.required],
-      in_time_start: [this.shift ? this.shift.in_time_start : "", Validators.required],
-      in_time_end: [this.shift ? this.shift.in_time_end : "", Validators.required],
-      out_time_start: [this.shift ? this.shift.out_time_start : "", Validators.required],
-      out_time_end: [this.shift ? this.shift.out_time_end : "", Validators.required],
+      in_time_start: [
+        this.shift ? this.shift.in_time_start : "",
+        Validators.required
+      ],
+      in_time_end: [
+        this.shift ? this.shift.in_time_end : "",
+        Validators.required
+      ],
+      out_time_start: [
+        this.shift ? this.shift.out_time_start : "",
+        Validators.required
+      ],
+      out_time_end: [
+        this.shift ? this.shift.out_time_end : "",
+        Validators.required
+      ],
       late_time: [this.shift ? this.shift.late_time : "", Validators.required],
       half_time: [this.shift ? this.shift.half_time : "", Validators.required],
       is_night_shift: [this.shift ? this.shift.is_night_shift : false]
@@ -53,7 +65,7 @@ export class ShiftFormComponent implements OnInit {
 
     if (this.shift && this.shift.id) {
       this.shiftService
-        .editShift(project_id, this.shift.id, this.shiftForm.value)
+        .editShift(this.shift.id, this.shiftForm.value)
         .subscribe(
           (newValue: Shift) => {
             this.isSubmitting = false;
@@ -62,7 +74,7 @@ export class ShiftFormComponent implements OnInit {
           error => (this.isSubmitting = false)
         );
     } else {
-      this.shiftService.addShift(project_id, this.shiftForm.value).subscribe(
+      this.shiftService.addShift(this.shiftForm.value).subscribe(
         (value: Shift) => {
           this.isSubmitting = false;
           this.dialogRef.close(value);

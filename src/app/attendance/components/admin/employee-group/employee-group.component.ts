@@ -5,7 +5,6 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
 import { GroupService } from "src/app/attendance/services/group.service";
 
-import { AuthService } from "./../../../../auth/services/auth.service";
 import { EmployeeGroupDtl } from "./../../../models/employee-group";
 import { Group } from "./../../../models/group";
 import { EmployeeGroupFormComponent } from "./employee-group-form/employee-group-form.component";
@@ -21,7 +20,6 @@ export class EmployeeGroupComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private auth: AuthService,
     private empGroupService: EmployeeGroupService,
     private groupService: GroupService,
     private snackbar: MatSnackBar,
@@ -29,19 +27,17 @@ export class EmployeeGroupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.groupService
-      .getGroups(this.auth.currentUser.project)
-      .subscribe(data => {
-        this.groups = data;
+    this.groupService.getGroups().subscribe(data => {
+      this.groups = data;
 
-        this.groups.forEach(group => {
-          this.empGroupService
-            .getEmployeeGroups(group.id)
-            .subscribe((data: EmployeeGroupDtl[]) => {
-              this.empGroupDtls[group.id] = data;
-            });
-        });
+      this.groups.forEach(group => {
+        this.empGroupService
+          .getEmployeeGroups(group.id)
+          .subscribe((data: EmployeeGroupDtl[]) => {
+            this.empGroupDtls[group.id] = data;
+          });
       });
+    });
   }
 
   addEmpToGroup() {

@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import { Injectable } from "@angular/core";
+import * as moment from "moment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DateService {
-
-  constructor() { }
+  constructor() {}
 
   enumerateDaysBetweenDates(startDate: Date, endDate: Date) {
     var dates = [];
@@ -24,15 +23,15 @@ export class DateService {
   }
 
   formatDate(date: Date) {
-    return moment(date).format("dddd, Do MMMM");
+    return moment(date).format("dddd, Do MMMM, YYYY");
   }
 
   isSundaySaturday(date: Date) {
-    const day = moment(date).day()
-    return  day === 0 || day === 6
+    const day = moment(date).day();
+    return day === 0 || day === 6;
   }
 
   compareDates(first: Date, second: Date) {
-    return moment(first).diff(moment(second).date()) == 0
+    return moment(first).diff(moment(second), 'days') === 0
   }
 }
