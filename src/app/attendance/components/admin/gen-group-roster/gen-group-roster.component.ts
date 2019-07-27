@@ -1,17 +1,19 @@
-import { Shift } from 'src/app/attendance/models/shift';
-import { ShiftService } from './../../../services/shift.service';
-import { GroupService } from 'src/app/attendance/services/group.service';
-import { Group } from 'src/app/attendance/models/group';
 import { Location } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { switchMap } from "rxjs/operators";
+import { Group } from "src/app/attendance/models/group";
+import { Shift } from "src/app/attendance/models/shift";
 import { DateService } from "src/app/attendance/services/date.service";
+import { GroupService } from "src/app/attendance/services/group.service";
 
-import { Holiday } from "./../../../../shared/models/holiday";
 import { GeneralRoster } from "./../../../models/general-roster";
 import { WorkingDay } from "./../../../models/working-day";
 import { GeneralRosterService } from "./../../../services/general-roster.service";
+import { ShiftService } from "./../../../services/shift.service";
 import { WorkingDayService } from "./../../../services/working-day.service";
+import { ChangeTimingComponent } from "./change-timing/change-timing.component";
 
 @Component({
   selector: "app-gen-group-roster",
@@ -22,7 +24,6 @@ export class GenGroupRosterComponent implements OnInit {
   startDate = new Date(2019, 5, 16);
   endDate = new Date(2019, 6, 15);
   weekends: Date[];
-  holidays: Holiday[] = [];
   workDays: WorkingDay[];
   genRosters: GeneralRoster[];
   genGroups: Group[];
@@ -35,6 +36,8 @@ export class GenGroupRosterComponent implements OnInit {
     private workDayService: WorkingDayService,
     private groupService: GroupService,
     private shiftService: ShiftService,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -47,20 +50,20 @@ export class GenGroupRosterComponent implements OnInit {
       .pipe(
         switchMap(genRosters => {
           this.genRosters = genRosters;
-          console.log(genRosters)
           return this.workDayService.getWorkingDays();
         })
       )
       .subscribe(workDays => (this.workDays = workDays));
 
-    this.groupService.getGeneralGroups()
-    .pipe(
-      switchMap(groups => {
-        this.genGroups = groups
-        return this.shiftService.getShifts()
-      })
-    )
-    .subscribe(shifts => this.shifts = shifts)
+    this.groupService
+      .getGeneralGroups()
+      .pipe(
+        switchMap(groups => {
+          this.genGroups = groups;
+          return this.shiftService.getShifts();
+        })
+      )
+      .subscribe(shifts => (this.shifts = shifts));
   }
 
   formatDate(date: Date) {
@@ -93,7 +96,40 @@ export class GenGroupRosterComponent implements OnInit {
     );
   }
 
-  changeTiming() {
+  changeTiming(group: Group) {
+    const roster = this.genRosters.find(roster => roster.group_id == group.id);
+    const dialogRef = this.dialog.open(ChangeTimingComponent, {
+      width: "400px",
+      height: "250px",
+      data: {
+        group: group,
+        roster: roster,
+        shifts: this.shifts
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(newData => {
+      if (!newData) return;
+
+      // Fetch after successful update
+      this.genRosterService
+        .getGenRosters()
+        .subscribe(rosters => (this.genRosters = rosters));
+
+      this.snackbar.open(
+        "Successfully changed punching timing for group " + group.name,
+        "Dismiss",
+        {
+          duration: 1600
+        }
+      );
+    });
+  }
+
+  getShiftName(group: Group) {
+    const roster = this.genRosters.find(roster => roster.group_id == group.id);
+    if (!roster) return "Not Defined";
+
+    return this.shifts.find(shift => shift.id == roster.shift_id).name;
   }
 }

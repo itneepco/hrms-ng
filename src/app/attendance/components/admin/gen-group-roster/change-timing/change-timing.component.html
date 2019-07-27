@@ -1,0 +1,26 @@
+<div fxLayout="column">
+  <p>Change Punching Timing for {{ group.name }}</p>
+
+  <mat-form-field fxFlex>
+    <mat-label>Shift Timings</mat-label>
+    <select matNativeControl [formControl]="shift_id">
+      <option *ngFor="let shift of shifts" [value]="shift.id">{{
+        shift.name
+      }}</option>
+    </select>
+    <mat-error *ngIf="shift_id.errors?.required">is required</mat-error>
+  </mat-form-field>
+</div>
+
+<mat-dialog-actions align="end" id="buttons">
+  <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+  <button
+    mat-raised-button
+    color="accent"
+    type="button"
+    (click)="onSave()"
+    [disabled]="shift_id.invalid || isSubmitting"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

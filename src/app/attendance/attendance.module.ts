@@ -6,6 +6,8 @@ import {
   EmployeeGroupFormComponent,
 } from './components/admin/employee-group/employee-group-form/employee-group-form.component';
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
+import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
+import { ChangeTimingComponent } from './components/admin/gen-group-roster/change-timing/change-timing.component';
 import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
 import { GroupFormComponent } from './components/admin/group/group-form/group-form.component';
 import { GroupComponent } from './components/admin/group/group.component';
@@ -14,7 +16,6 @@ import { ShiftComponent } from './components/admin/shift/shift.component';
 import { WageMonthFormComponent } from './components/admin/wage-month-form/wage-month-form.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
 
 @NgModule({
   imports: [
@@ -33,12 +34,14 @@ import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen
     EmployeeGroupFormComponent,
     GroupRosterComponent,
     GenGroupRosterComponent,
+    ChangeTimingComponent,
   ],
   entryComponents: [
     ShiftFormComponent,
     GroupFormComponent,
     WageMonthFormComponent,
-    EmployeeGroupFormComponent
+    EmployeeGroupFormComponent,
+    ChangeTimingComponent
   ],
 })
 export class AttendanceModule {}

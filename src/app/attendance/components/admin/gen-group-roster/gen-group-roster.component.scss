@@ -12,3 +12,30 @@
 .box {
   padding: 5px 15px;
 }
+
+.title {
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.btn {
+  // color: #20bf6b !important;
+  text-transform: uppercase;
+  background: #ffffff;
+  font-size: 11px;
+  padding: 5px;
+  border: 2px solid #1d7747 !important;
+  border-radius: 6px;
+  display: inline-block;
+  transition: all 0.3s ease 0s;
+  &:hover {
+    color: #494949 !important;
+    border-radius: 50px;
+    border-color: #494949 !important;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+section {
+  margin-top: 10px;
+}

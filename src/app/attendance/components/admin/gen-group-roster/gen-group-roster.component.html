@@ -7,30 +7,32 @@
       </button>
     </div>
 
+    <mat-divider></mat-divider>
+
     <section fxLayout="row" fxLayout.lt-md="column">
       <div *ngIf="workDays" fxFlex class="box">
         <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
           <div fxFlex="60">{{ formatDate(weekend) }}</div>
           <div fxFlex="40">
-            <button (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
+            <button class="btn" (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
               Mark Work Day
             </button>
-            <button (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
+            <button class="btn" (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
               Remove Work Day
             </button>
           </div>
         </div>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex class="box">
-        <h3>List of regular groups</h3>
-        <div *ngFor="let group of genGroups" fxLayout="row">
+      <div fxFlex class="box" *ngIf="genRosters && shifts">
+        <h3 class="title">List of regular groups</h3>
+        <div *ngFor="let group of genGroups" fxLayout="row" class="row">
           <div fxFlex>{{group.name}}</div>
           <div fxFlex>
-
+            {{getShiftName(group)}}
           </div>
           <div fxFlex>
-            <button (click)="changeTiming()">Change Timing</button>
+            <button class="btn" (click)="changeTiming(group)">Change Timing</button>
           </div>
         </div>
       </div>
