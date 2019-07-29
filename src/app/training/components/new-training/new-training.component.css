@@ -1,4 +1,4 @@
-#content {
+#card {
   margin: 20px 30px;
   min-height: 400px;
 }
@@ -9,6 +9,7 @@
 
 .buttons {
   margin-top: 25px;
+  margin-right: 12px;
   display: flex;
   flex-direction: row-reverse
 }
@@ -22,10 +23,6 @@
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 10px;
-}
-
-.buttons > button {
-  margin-right: 12px;
 }
 
 #upload-btn {

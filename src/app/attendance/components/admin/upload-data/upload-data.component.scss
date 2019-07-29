@@ -1,0 +1,30 @@
+#head-info {
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.progress {
+  margin: 10px 0px;
+}
+
+.btn {
+  margin-right: 10px;
+}
+.content {
+  padding-left: 20px;
+}
+
+.file-table {
+  width: 100%;
+  tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  th {
+    text-align: left;
+  }
+}
+
+mat-card-content {
+  padding-top: 12px;
+}

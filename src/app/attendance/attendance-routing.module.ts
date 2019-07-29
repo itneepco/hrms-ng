@@ -8,6 +8,7 @@ import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen
 import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftComponent } from './components/admin/shift/shift.component';
+import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
@@ -41,6 +42,11 @@ const routes: Routes = [
       {
         path: 'gen-grp-roster',
         component: GenGroupRosterComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: 'upload-data',
+        component: UploadDataComponent,
         canActivate: [TimeOfficeGuard]
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

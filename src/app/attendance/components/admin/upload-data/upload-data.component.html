@@ -1,0 +1,81 @@
+<div class="main-container">
+  <mat-card>
+    <div fxLayoutAlign="space-between center" id="head-info">
+      <span>Upload Attendance Data</span>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div fxLayout="row" class="content">
+        <div>
+          <input
+            type="file"
+            ng2FileSelect
+            [uploader]="uploader"
+            multiple
+          /><br />
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div fxFlex class="content">
+          <p>No of files selected: {{ uploader?.queue?.length }}</p>
+
+          <ng-container *ngIf="uploader?.queue?.length > 0">
+            <table class="file-table">
+              <thead>
+                <tr>
+                  <th fxFlex="50">Name</th>
+                  <th fxFlex="25">Size</th>
+                  <th fxFlex="25">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                  <td fxFlex="50" fxLayoutAlign="start center">
+                    {{ item?.file?.name }}
+                  </td>
+                  <td fxFlex="25" fxLayoutAlign="start center">
+                    {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
+                  </td>
+                  <td fxFlex="25" fxLayoutAlign="start center">
+                    <button mat-icon-button (click)="item.remove()">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="progress">
+              Queue progress:
+              <mat-progress-bar
+                mode="determinate"
+                [value]="uploader.progress"
+              ></mat-progress-bar>
+            </div>
+
+            <button
+              class="btn"
+              mat-raised-button
+              color="primary"
+              (click)="uploader.uploadAll()"
+              [disabled]="!uploader.getNotUploadedItems().length"
+            >
+              Upload all
+            </button>
+            <button
+              class="btn"
+              mat-raised-button
+              color="accent"
+              (click)="uploader.clearQueue()"
+              [disabled]="!uploader.queue.length"
+            >
+              Remove all
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
