@@ -60,7 +60,10 @@
       <ngx-material-timepicker #lateTIme></ngx-material-timepicker>
     </div>
 
-    <mat-checkbox formControlName="is_night_shift">Night Shift</mat-checkbox>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-checkbox formControlName="is_night_shift" fxFlex>Night Shift</mat-checkbox>
+      <mat-checkbox formControlName="is_general" fxFlex>General Timing</mat-checkbox>
+    </div>
   </div>
 
   <mat-dialog-actions align="end" id="buttons">

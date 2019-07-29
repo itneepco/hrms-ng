@@ -60,7 +60,7 @@ export class GenGroupRosterComponent implements OnInit {
       .pipe(
         switchMap(groups => {
           this.genGroups = groups;
-          return this.shiftService.getShifts();
+          return this.shiftService.getGeneralPunchings();
         })
       )
       .subscribe(shifts => (this.shifts = shifts));

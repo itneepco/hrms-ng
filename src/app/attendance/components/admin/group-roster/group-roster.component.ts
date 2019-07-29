@@ -1,14 +1,15 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { switchMap } from "rxjs/operators";
 import { Group } from "src/app/attendance/models/group";
+import { GroupRoster } from "src/app/attendance/models/group-wise-roster";
 import { DateService } from "src/app/attendance/services/date.service";
+import { GroupRosterService } from "src/app/attendance/services/group-roster.service";
 import { ShiftService } from "src/app/attendance/services/shift.service";
-import { AuthService } from "src/app/auth/services/auth.service";
 
 import { Shift } from "./../../../models/shift";
 import { GroupService } from "./../../../services/group.service";
-import { GroupRosterService } from "src/app/attendance/services/group-roster.service";
 
 @Component({
   selector: "app-group-roster",
@@ -22,14 +23,15 @@ export class GroupRosterComponent implements OnInit {
   startDate = new Date(2019, 5, 16);
   endDate = new Date(2019, 6, 15);
   rosterForm: FormGroup;
+  shiftRosters: GroupRoster[];
 
   constructor(
-    private auth: AuthService,
     private shiftService: ShiftService,
     private groupService: GroupService,
     private fb: FormBuilder,
     private grpRosterService: GroupRosterService,
-    private dateService: DateService
+    private dateService: DateService,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -39,42 +41,69 @@ export class GroupRosterComponent implements OnInit {
     );
 
     this.shiftService
-      .getShifts()
+      .getShiftPunchings()
       .pipe(
         switchMap(shifts => {
+          console.log(shifts);
           this.shifts = shifts;
+          return this.grpRosterService.getShiftRoster(
+            this.dateService.getDateYYYYMMDD(this.startDate),
+            this.dateService.getDateYYYYMMDD(this.endDate)
+          );
+        })
+      )
+      .pipe(
+        switchMap(rosters => {
+          console.log(rosters);
+          this.shiftRosters = rosters;
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
         this.groups = groups;
+        console.log(groups);
         this.initForm();
-        console.log(this.rosterForm);
       });
   }
 
   initForm() {
     let rosters = [];
-
-    this.dates.forEach(date => {
-      let group_shifts = [];
-      this.groups.forEach(group => {
-        group_shifts.push(
-          this.fb.group({
-            group_id: group.id,
-            shift_id: [3, Validators.required]
-          })
-        );
+    if (!this.shiftRosters) {
+      this.dates.forEach(date => {
+        let group_shifts = [];
+        this.groups.forEach(group => {
+          group_shifts.push(
+            this.fb.group({
+              group_id: group.id,
+              shift_id: ["", Validators.required]
+            })
+          );
+        });
+        let formControl = this.fb.group({
+          day: date,
+          group_shifts: this.fb.array(group_shifts)
+        });
+        rosters.push(formControl);
       });
-
-      let formControl = this.fb.group({
-        day: date,
-        group_shifts: this.fb.array(group_shifts)
+    } else {
+      // console.log(this.shiftRosters);
+      this.shiftRosters.forEach(roster => {
+        let group_shifts = [];
+        roster.group_shifts.forEach(groupShift => {
+          group_shifts.push(
+            this.fb.group({
+              group_id: groupShift.group_id,
+              shift_id: [groupShift.shift_id, Validators.required]
+            })
+          );
+        });
+        let formControl = this.fb.group({
+          day: roster.day,
+          group_shifts: this.fb.array(group_shifts)
+        });
+        rosters.push(formControl);
       });
-
-      rosters.push(formControl);
-    });
-
+    }
     this.rosterForm = this.fb.group({
       rosters: this.fb.array(rosters)
     });
@@ -92,16 +121,15 @@ export class GroupRosterComponent implements OnInit {
   }
 
   saveRoster() {
-    console.log(this.rosterForm.invalid);
-    // if (this.rosterForm.invalid) return;
+    if (this.rosterForm.invalid) return;
 
     this.grpRosterService
-      .addShiftRoster(
-        this.auth.currentUser.project,
-        this.rosterForm.get("rosters").value
-      )
+      .addShiftRoster(this.rosterForm.get("rosters").value)
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
+        this.snackbar.open("Successfully saved the shift group roster", "Dismiss", {
+          duration: 1600
+        });
       });
   }
 
@@ -124,4 +152,11 @@ export class GroupRosterComponent implements OnInit {
     ) as FormArray;
     return group_shifts.controls[gs_index].get("shift_id");
   }
+
+  // initShift(day: Date, group_id: number) {
+  //   if(!this.shiftRosters) return;
+  //   this.shiftRosters.find(roster => {
+  //     return roster.day == day &&
+  //   })
+  // }
 }

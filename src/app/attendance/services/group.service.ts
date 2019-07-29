@@ -26,12 +26,14 @@ export class GroupService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
+  // Get all shift groups
   getShiftGroups(): Observable<Group[]> {
     return this.getGroups().pipe(
       map(groups => groups.filter(group => !group.is_general))
     );
   }
 
+  // Get all general groups
   getGeneralGroups(): Observable<Group[]> {
     return this.getGroups().pipe(
       map(groups => groups.filter(group => group.is_general))
