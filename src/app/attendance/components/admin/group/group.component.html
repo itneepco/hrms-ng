@@ -7,25 +7,35 @@
       </button>
     </div>
 
-    <mat-table [dataSource]="dataSource">
+    <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-        <mat-cell *matCellDef="let group; let i = index;" fxFlex="10">
+        <mat-header-cell *matHeaderCellDef fxFlex="10">
+          Sl. No.
+        </mat-header-cell>
+        <mat-cell *matCellDef="let group; let i = index" fxFlex="10">
           {{ i + 1 }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef fxFlex> Name </mat-header-cell>
-        <mat-cell *matCellDef="let group" fxFlex> {{group.name}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
+          Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let group" fxFlex> {{ group.name }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="is_general">
-        <mat-header-cell *matHeaderCellDef fxFlex="20"> General Group </mat-header-cell>
-        <mat-cell *matCellDef="let group" fxFlex="20"> {{isGeneral(group.is_general)}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
+          General Group
+        </mat-header-cell>
+        <mat-cell *matCellDef="let group" fxFlex="20">
+          {{ isGeneral(group.is_general) }}
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="20">
+          Actions
+        </mat-header-cell>
         <mat-cell *matCellDef="let group" fxFlex="20">
           <button mat-icon-button (click)="onEdit(group)" color="primary">
             <mat-icon>edit</mat-icon>
@@ -37,17 +47,18 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
   </mat-card>
 </div>
 
-
-<button mat-fab
+<button
+  mat-fab
   class="fab-bottom-right"
   matTooltip="Add new group"
   matTooltipPosition="left"
   (click)="onAddGroup()"
-  color="accent">
-    <mat-icon>add</mat-icon>
+  color="accent"
+>
+  <mat-icon>add</mat-icon>
 </button>

@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Shift } from './../../../models/shift';
@@ -27,6 +28,7 @@ export class ShiftComponent implements OnInit {
   ];
 
   dataSource: MatTableDataSource<Shift>;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     private location: Location,
@@ -39,6 +41,7 @@ export class ShiftComponent implements OnInit {
     this.shiftService.getShifts().subscribe(data => {
       console.log(data);
       this.dataSource = new MatTableDataSource<Shift>(data);
+      this.dataSource.sort = this.sort;
     });
   }
 

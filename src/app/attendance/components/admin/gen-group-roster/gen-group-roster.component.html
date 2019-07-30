@@ -2,7 +2,7 @@
   <mat-card>
     <div fxLayoutAlign="space-between center" id="head-info">
       <span
-        >Wage Period from {{ startDate | date: "mediumDate" }} to
+        >Wage Period: {{ startDate | date: "mediumDate" }} to
         {{ endDate | date: "mediumDate" }}</span
       >
       <button mat-icon-button (click)="goBack()">
@@ -37,16 +37,23 @@
       <mat-divider [vertical]="true"></mat-divider>
       <div fxFlex class="box" *ngIf="genRosters && shifts">
         <h3 class="title">List of regular groups</h3>
-        <div *ngFor="let group of genGroups" fxLayout="row" class="row">
-          <div fxFlex>{{ group.name }}</div>
-          <div fxFlex>
-            {{ getShiftName(group) }}
-          </div>
-          <div fxFlex>
-            <button class="btn" (click)="changeTiming(group)">
-              Change Timing
-            </button>
-          </div>
+        <div>
+          <table fxFlex>
+            <tr>
+              <th fxFlex="32">Group</th>
+              <th fxFlex="32">Shift Type</th>
+              <th fxFlex="34">Action</th>
+            </tr>
+            <tr *ngFor="let group of genGroups">
+              <td fxFlex="32" fxLayoutAlign="start center">{{ group.name }}</td>
+              <td fxFlex="32" fxLayoutAlign="start center">{{ getShiftName(group) }}</td>
+              <td fxFlex="34" fxLayoutAlign="start center">
+                <button class="btn" (click)="changeTiming(group)">
+                  Change Timing
+                </button>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </section>

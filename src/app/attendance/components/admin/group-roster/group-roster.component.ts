@@ -1,15 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Component, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { switchMap } from "rxjs/operators";
-import { Group } from "src/app/attendance/models/group";
-import { GroupRoster } from "src/app/attendance/models/group-wise-roster";
-import { DateService } from "src/app/attendance/services/date.service";
-import { GroupRosterService } from "src/app/attendance/services/group-roster.service";
-import { ShiftService } from "src/app/attendance/services/shift.service";
+import { switchMap } from 'rxjs/operators';
+import { Group } from 'src/app/attendance/models/group';
+import { GroupRoster } from 'src/app/attendance/models/group-wise-roster';
+import { DateService } from 'src/app/attendance/services/date.service';
+import { GroupRosterService } from 'src/app/attendance/services/group-roster.service';
+import { ShiftService } from 'src/app/attendance/services/shift.service';
 
-import { Shift } from "./../../../models/shift";
-import { GroupService } from "./../../../services/group.service";
+import { Shift } from './../../../models/shift';
+import { GroupService } from './../../../services/group.service';
 
 @Component({
   selector: "app-group-roster",
@@ -24,6 +24,7 @@ export class GroupRosterComponent implements OnInit {
   endDate = new Date(2019, 6, 15);
   rosterForm: FormGroup;
   shiftRosters: GroupRoster[];
+  isSubmitting = false;
 
   constructor(
     private shiftService: ShiftService,
@@ -86,7 +87,6 @@ export class GroupRosterComponent implements OnInit {
         rosters.push(formControl);
       });
     } else {
-      // console.log(this.shiftRosters);
       this.shiftRosters.forEach(roster => {
         let group_shifts = [];
         roster.group_shifts.forEach(groupShift => {
@@ -123,14 +123,22 @@ export class GroupRosterComponent implements OnInit {
   saveRoster() {
     if (this.rosterForm.invalid) return;
 
+    this.isSubmitting = true;
     this.grpRosterService
       .addShiftRoster(this.rosterForm.get("rosters").value)
-      .subscribe(data => {
-        // console.log(data);
-        this.snackbar.open("Successfully saved the shift group roster", "Dismiss", {
-          duration: 1600
-        });
-      });
+      .subscribe(
+        () => {
+          this.isSubmitting = false;
+          this.snackbar.open(
+            "Successfully saved the shift group roster",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        },
+        () => (this.isSubmitting = false)
+      );
   }
 
   get rosters(): FormArray {

@@ -1,6 +1,6 @@
 <form
   [formGroup]="rosterForm"
-  *ngIf="groups"
+  *ngIf="groups; else loading"
   (ngSubmit)="saveRoster()"
   fxLayout="row"
   fxLayout.lt-md="column"
@@ -38,7 +38,8 @@
                   class="error-msg"
                   *ngIf="
                     getShift(roster_index, gs_index).touched &&
-                    getShift(roster_index, gs_index).errors?.required"
+                    getShift(roster_index, gs_index).errors?.required
+                  "
                 >
                   is required
                 </p>
@@ -59,13 +60,22 @@
         <span>{{ endDate | date: "mediumDate" }} </span>
       </div>
       <div fxLayout="column">
-        <button mat-raised-button class="button" color="primary" type="submit" >
+        <button
+          mat-raised-button
+          class="button"
+          color="primary"
+          type="submit"
+          [disabled]="isSubmitting || rosterForm.invalid"
+        >
           Save Group Roster
         </button>
-        <!-- <button mat-raised-button class="button" type="button">
-          Generate Employee Roster
-        </button> -->
       </div>
     </mat-card>
   </div>
 </form>
+
+<ng-template #loading>
+  <div fxLayoutAlign="center center">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+</ng-template>

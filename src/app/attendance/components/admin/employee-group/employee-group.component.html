@@ -13,21 +13,36 @@
           {{ group.name }}
         </mat-panel-title>
         <mat-panel-description>
-          employees in this group
+          List of employees in this group
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div
-        *ngFor="let empGroup of empGroupDtls[group.id]; let i = index"
-        (click)="onEdit(empGroup)"
-        fxLayout="row"
-        class="emp-info"
-      >
-        <span class="space">{{ i + 1 }}) </span>
-        <span class="space">{{ empGroup.employee.first_name | titlecase }}</span>
-        <span class="space">{{ empGroup.employee.last_name | titlecase }},</span>
-        <span class="space">{{ empGroup.employee.emp_code }},</span>
-        <span class="space">{{ empGroup.employee.designation }}</span>
+      <div>
+        <table fxFlex matSort (matSortChange)="sortData($event, group)">
+          <tr>
+            <th fxFlex="10">Sl. No</th>
+            <th fxFlex="15" mat-sort-header="first_name">First Name</th>
+            <th fxFlex="15" mat-sort-header="last_name">Last Name</th>
+            <th fxFlex="15" mat-sort-header="emp_code">Emp Code</th>
+            <th fxFlex="25" mat-sort-header="designation">Designation</th>
+            <th fxFlex="20">Actions</th>
+          </tr>
+          <tr *ngFor="let empGroup of empGroupDtls[group.id]; let i = index">
+            <td fxFlex="10" fxLayoutAlign="start center">{{ i + 1 }}</td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ empGroup.employee.first_name | titlecase }}
+            </td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ empGroup.employee.last_name | titlecase }}
+            </td>
+            <td fxFlex="15" fxLayoutAlign="start center">{{ empGroup.employee.emp_code }}</td>
+            <td fxFlex="25" fxLayoutAlign="start center">{{ empGroup.employee.designation }}</td>
+            <td fxFlex="20" fxLayoutAlign="start center">
+              <mat-icon (click)="onEdit(empGroup)" class="btn" color="primary">edit</mat-icon>
+              <mat-icon (click)="onDelete(empGroup)" class="btn" color="accent">delete</mat-icon>
+            </td>
+          </tr>
+        </table>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Group } from './../../../models/group';
@@ -17,6 +18,7 @@ export class GroupComponent implements OnInit {
   displayedColumns = ["position", "name", "is_general", "actions"];
 
   dataSource: MatTableDataSource<Group>;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     private location: Location,
@@ -29,6 +31,7 @@ export class GroupComponent implements OnInit {
     this.groupService.getGroups().subscribe(data => {
       console.log(data);
       this.dataSource = new MatTableDataSource<Group>(data);
+      this.dataSource.sort = this.sort;
     });
   }
 
