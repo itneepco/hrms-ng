@@ -11,7 +11,7 @@ table {
 }
 th,
 td {
-  padding: 10px 15px;
+  padding: 6px 10px;
 }
 thead {
   background: #714c69;
@@ -23,7 +23,8 @@ th {
 tbody tr:nth-child(even) {
   background: #f0f0f2;
 }
-th, td {
+th,
+td {
   border-bottom: 1px solid #cecfd5;
   border-right: 1px solid #cecfd5;
 }
@@ -32,7 +33,7 @@ td:first-child {
 }
 
 select {
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: 5px;
 }
 
@@ -46,10 +47,14 @@ select {
   margin-top: 10px;
 }
 
+.title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
 p.error-msg {
   margin: 0px;
   padding: 0px;
   color: red;
   font-size: 11px;
 }
-

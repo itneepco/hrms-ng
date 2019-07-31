@@ -13,6 +13,7 @@
           <input
             type="file"
             ng2FileSelect
+            name="dataFile"
             [uploader]="uploader"
             multiple
           /><br />
@@ -64,6 +65,17 @@
             >
               Upload all
             </button>
+
+            <button
+              class="btn"
+              mat-raised-button
+              color="primary"
+              (click)="insertToPuchingRec()"
+              [disabled]="uploader.getNotUploadedItems().length != 0"
+            >
+              Insert to punching rec
+            </button>
+
             <button
               class="btn"
               mat-raised-button
