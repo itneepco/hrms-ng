@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { switchMap } from 'rxjs/operators';
 
@@ -11,30 +12,35 @@ import { HolidayService } from '../../../shared/services/holiday.service';
 import { ProjectService } from '../../../shared/services/project.service';
 
 @Component({
-  selector: 'app-holiday-list',
-  templateUrl: './holiday-list.component.html',
-  styleUrls: ['./holiday-list.component.scss']
+  selector: "app-holiday-list",
+  templateUrl: "./holiday-list.component.html",
+  styleUrls: ["./holiday-list.component.scss"]
 })
 export class HolidayListComponent implements OnInit {
-  holiday_types = ['CH', 'RH'];
+  holiday_types = ["CH", "RH"];
   projects: Project[];
-  displayedColumns = ['position', 'name', 'date', 'type', 'actions'];
-  dataSource: MatTableDataSource<Holiday>;
-  errMsg: string;
   isLoading = true;
   holidayForm: FormGroup;
   _holiday: Holiday = {} as Holiday;
   isSubmitting = false;
 
+  // data table
+  displayedColumns = ["position", "name", "day", "type", "actions"];
+  dataSource: MatTableDataSource<Holiday>;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  errMsg: string;
+
   // Pagination variables
   dataLength = 0;
-  pageSize = 10;
+  pageSize = 15;
   pageIndex = 0;
 
-  constructor(private holidayService: HolidayService,
+  constructor(
+    private holidayService: HolidayService,
     private projectService: ProjectService,
     private snackbar: MatSnackBar,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.initializeForm();
@@ -42,21 +48,24 @@ export class HolidayListComponent implements OnInit {
   }
 
   getHolidays() {
-    this.projectService.getProjects()
+    this.projectService
+      .getProjects()
       .pipe(
         switchMap((projects: Project[]) => {
           this.projects = projects;
           return this.holidayService.getHolidays(this.pageIndex, this.pageSize);
         })
       )
-      .subscribe(data => {
-          this.dataLength = data['count'];
-          this.dataSource = new MatTableDataSource<Holiday>(data['rows']);
+      .subscribe(
+        data => {
           this.isLoading = false;
+          this.dataLength = data["count"];
+          this.dataSource = new MatTableDataSource<Holiday>(data["rows"]);
+          this.dataSource.sort = this.sort;
         },
         errMsg => {
-          this.errMsg = errMsg;
           this.isLoading = false;
+          this.errMsg = errMsg;
         }
       );
   }
@@ -65,35 +74,42 @@ export class HolidayListComponent implements OnInit {
     this.holidayForm = this.fb.group({
       name: [this._holiday.name, [Validators.required]],
       day: [this._holiday.day, [Validators.required]],
-      type: [this._holiday.type, [Validators.required]],
+      type: [this._holiday.type, [Validators.required]]
       // project_id: [this._holiday.project_id, [Validators.required]]
     });
   }
 
   onSubmit() {
-    const holidayFormValue = <Holiday> this.holidayForm.value;
+    const holidayFormValue = <Holiday>this.holidayForm.value;
     // console.log(this.holidayForm.value)
 
     this.isSubmitting = true;
     if (this._holiday.id) {
-      this.holidayService.editHoliday(this._holiday.id, holidayFormValue).subscribe(
-        (holiday: Holiday) => {
-          this.isSubmitting = false;
-          const index = this.dataSource.data.indexOf(this._holiday);
-          const temp = this.dataSource.data;
-          temp.splice(index, 1);
-          temp.unshift(holiday);
-          this.dataSource.data = temp;
+      this.holidayService
+        .editHoliday(this._holiday.id, holidayFormValue)
+        .subscribe(
+          (holiday: Holiday) => {
+            this.isSubmitting = false;
+            const index = this.dataSource.data.indexOf(this._holiday);
+            const temp = this.dataSource.data;
+            temp.splice(index, 1);
+            temp.unshift(holiday);
+            this.dataSource.data = temp;
 
-          this._holiday = {} as Holiday;
-          this.snackbar.open('Successfully updated the holiday record', 'Dismiss', {
-            duration: 1600
-          });
-        }, error => {
-          console.log(error);
-          this.isSubmitting = false;
-        }
-      );
+            this._holiday = {} as Holiday;
+            this.snackbar.open(
+              "Successfully updated the holiday record",
+              "Dismiss",
+              {
+                duration: 1600
+              }
+            );
+          },
+          error => {
+            console.log(error);
+            this.isSubmitting = false;
+          }
+        );
     } else {
       this.holidayService.addHoliday(holidayFormValue).subscribe(
         (holiday: Holiday) => {
@@ -101,10 +117,15 @@ export class HolidayListComponent implements OnInit {
           const temp = this.dataSource.data;
           temp.splice(0, 0, holiday);
           this.dataSource.data = temp;
-          this.snackbar.open('Successfully created the holiday record', 'Dismiss', {
-            duration: 1600
-          });
-        }, error => {
+          this.snackbar.open(
+            "Successfully created the holiday record",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        },
+        error => {
           console.log(error);
           this.isSubmitting = false;
         }
@@ -112,7 +133,7 @@ export class HolidayListComponent implements OnInit {
     }
 
     this.holidayForm.reset();
-    Object.keys(this.holidayForm.controls).forEach((name) => {
+    Object.keys(this.holidayForm.controls).forEach(name => {
       const control = this.holidayForm.controls[name];
       control.setErrors(null);
     });
@@ -124,19 +145,18 @@ export class HolidayListComponent implements OnInit {
   }
 
   onRemove(holiday: Holiday) {
-    const retVal = confirm('Are you sure you want to delete?');
+    const retVal = confirm("Are you sure you want to delete?");
     if (retVal == true) {
-      this.holidayService.deleteHoliday(holiday.id)
-        .subscribe(() => {
-          const index = this.dataSource.data.indexOf(holiday);
-          const temp = this.dataSource.data;
-          temp.splice(index, 1);
-          this.dataSource.data = temp;
-        });
+      this.holidayService.deleteHoliday(holiday.id).subscribe(() => {
+        const index = this.dataSource.data.indexOf(holiday);
+        const temp = this.dataSource.data;
+        temp.splice(index, 1);
+        this.dataSource.data = temp;
+      });
 
-      this.snackbar.open('Successfully deleted the holiday record', 'Dismiss', {
+      this.snackbar.open("Successfully deleted the holiday record", "Dismiss", {
         duration: 1600
-      })
+      });
     }
   }
 
@@ -147,15 +167,15 @@ export class HolidayListComponent implements OnInit {
   }
 
   get name() {
-    return this.holidayForm.get('name');
+    return this.holidayForm.get("name");
   }
   get day() {
-    return this.holidayForm.get('day');
+    return this.holidayForm.get("day");
   }
   get type() {
-    return this.holidayForm.get('type');
+    return this.holidayForm.get("type");
   }
   get project_id() {
-    return this.holidayForm.get('project_id');
+    return this.holidayForm.get("project_id");
   }
 }

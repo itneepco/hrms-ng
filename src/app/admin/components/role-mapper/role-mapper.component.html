@@ -1,11 +1,16 @@
 <mat-card class="form">
   <mat-card-subtitle>Add new role mapper</mat-card-subtitle>
   <form [formGroup]="roleMapperForm" (ngSubmit)="onSubmit()">
-    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
+    <div
+      fxLayoutGap="20px"
+      fxLayoutGap.md="15px"
+      fxLayoutGap.lt-md="8px"
+      fxLayout.lt-sm="column"
+    >
       <mat-form-field fxFlex="25">
         <mat-select placeholder="Project" formControlName="project_id">
           <mat-option *ngFor="let project of projects" [value]="project.id">
-            {{project.name}}
+            {{ project.name }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="project_id.touched && project_id.errors?.required">
@@ -15,8 +20,11 @@
 
       <mat-form-field fxFlex="25">
         <mat-select placeholder="Role" formControlName="role">
-          <mat-option *ngFor="let emp_role of emp_roles" [value]="emp_role.code">
-            {{emp_role.name}}
+          <mat-option
+            *ngFor="let emp_role of emp_roles"
+            [value]="emp_role.code"
+          >
+            {{ emp_role.name }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="role.touched && role.errors?.required">
@@ -25,48 +33,74 @@
       </mat-form-field>
 
       <mat-form-field fxFlex="30">
-        <input matInput placeholder="6 Digit Employee Code" formControlName="emp_code" [matAutocomplete]="auto">
+        <input
+          matInput
+          placeholder="6 Digit Employee Code"
+          formControlName="emp_code"
+          [matAutocomplete]="auto"
+        />
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
             {{ item.first_name | titlecase }} {{ item.last_name | titlecase }}
           </mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="emp_code.errors?.required">is required</mat-error>
-        <mat-error *ngIf="emp_code.errors?.pattern">Employee code should be six digits</mat-error>
+        <mat-error *ngIf="emp_code.errors?.pattern"
+          >Employee code should be six digits</mat-error
+        >
       </mat-form-field>
 
       <div fxFlex="20">
-        <button mat-raised-button *ngIf="_roleMapper.id"
-          color="primary" [disabled]="roleMapperForm.invalid || isSubmitting">Update</button>
-        <button mat-raised-button *ngIf="!_roleMapper.id"
-          color="primary" [disabled]="roleMapperForm.invalid || isSubmitting">Add</button>
+        <button
+          mat-raised-button
+          *ngIf="_roleMapper.id"
+          color="primary"
+          [disabled]="roleMapperForm.invalid || isSubmitting"
+        >
+          Update
+        </button>
+        <button
+          mat-raised-button
+          *ngIf="!_roleMapper.id"
+          color="primary"
+          [disabled]="roleMapperForm.invalid || isSubmitting"
+        >
+          Add
+        </button>
       </div>
     </div>
   </form>
 </mat-card>
 
-<mat-card *ngIf="dataSource" style="padding-top: 8px">
-  <mat-table [dataSource]="dataSource">
+<mat-card [hidden]="isLoading" style="padding-top: 8px">
+  <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper; let i = index;" fxFlex="10"> 
-        {{ i + 1 + pageIndex*pageSize }} 
+      <mat-cell *matCellDef="let roleMapper; let i = index" fxFlex="10">
+        {{ i + 1 + pageIndex * pageSize }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="project_id">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> Project </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> {{roleMapper.project_name}} </mat-cell>
+    <ng-container matColumnDef="project_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25"> Project </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25">
+        {{ roleMapper.project_name }}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="role">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> Role </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> {{roleMapperService.getRoleName(roleMapper.role)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25"> Role </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25">
+        {{ roleMapperService.getRoleName(roleMapper.role) }}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="emp_code">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> Employee </mat-header-cell>
-      <mat-cell *matCellDef="let roleMapper" fxFlex="25"> 
-        {{roleMapper.first_name | titlecase }} {{roleMapper.last_name | titlecase}} 
+      <mat-header-cell *matHeaderCellDef fxFlex="25">
+        Employee
+      </mat-header-cell>
+      <mat-cell *matCellDef="let roleMapper" fxFlex="25">
+        {{ roleMapper.first_name | titlecase }}
+        {{ roleMapper.last_name | titlecase }}
       </mat-cell>
     </ng-container>
 
@@ -83,20 +117,22 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+  <mat-paginator
+    [pageSizeOptions]="[15, 30, 50, 100]"
     [length]="dataLength"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
     showFirstLastButtons
-    (page)="changePage($event)">
+    (page)="changePage($event)"
+  >
   </mat-paginator>
 </mat-card>
 
 <mat-card *ngIf="errMsg">
-  <p class="errMsg">{{errMsg}}</p>
+  <p class="errMsg">{{ errMsg }}</p>
 </mat-card>
 
 <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>

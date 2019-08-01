@@ -49,6 +49,7 @@ export class GenGroupRosterComponent implements OnInit {
       .getGenRosters()
       .pipe(
         switchMap(genRosters => {
+          console.log(genRosters);
           this.genRosters = genRosters;
           return this.workDayService.getWorkingDays();
         })
@@ -63,7 +64,10 @@ export class GenGroupRosterComponent implements OnInit {
           return this.shiftService.getGeneralPunchings();
         })
       )
-      .subscribe(shifts => (this.shifts = shifts));
+      .subscribe(shifts => {
+        console.log(shifts);
+        this.shifts = shifts;
+      });
   }
 
   formatDate(date: Date) {
@@ -130,6 +134,7 @@ export class GenGroupRosterComponent implements OnInit {
     const roster = this.genRosters.find(roster => roster.group_id == group.id);
     if (!roster) return "Not Defined";
 
-    return this.shifts.find(shift => shift.id == roster.shift_id).name;
+    const shift = this.shifts.find(shift => shift.id == roster.shift_id);
+    return shift ? shift.name : "Not Defined";
   }
 }

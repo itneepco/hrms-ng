@@ -45,7 +45,7 @@ export class GroupRosterComponent implements OnInit {
       .getShiftPunchings()
       .pipe(
         switchMap(shifts => {
-          console.log(shifts);
+          // console.log(shifts);
           this.shifts = shifts;
           return this.grpRosterService.getShiftRoster(
             this.dateService.getDateYYYYMMDD(this.startDate),
@@ -55,38 +55,22 @@ export class GroupRosterComponent implements OnInit {
       )
       .pipe(
         switchMap(rosters => {
-          console.log(rosters);
+          // console.log(rosters);
           this.shiftRosters = rosters;
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
         this.groups = groups;
-        console.log(groups);
+        // console.log(groups);
         this.initForm();
       });
   }
 
   initForm() {
-    let rosters = [];
-    if (!this.shiftRosters) {
-      this.dates.forEach(date => {
-        let group_shifts = [];
-        this.groups.forEach(group => {
-          group_shifts.push(
-            this.fb.group({
-              group_id: group.id,
-              shift_id: ["", Validators.required]
-            })
-          );
-        });
-        let formControl = this.fb.group({
-          day: date,
-          group_shifts: this.fb.array(group_shifts)
-        });
-        rosters.push(formControl);
-      });
-    } else {
+    let roster_arr = [];
+
+    if (this.shiftRosters && this.shiftRosters.length > 0) {
       this.shiftRosters.forEach(roster => {
         let group_shifts = [];
         roster.group_shifts.forEach(groupShift => {
@@ -101,11 +85,29 @@ export class GroupRosterComponent implements OnInit {
           day: roster.day,
           group_shifts: this.fb.array(group_shifts)
         });
-        rosters.push(formControl);
+        roster_arr.push(formControl);
+      });
+    } else {
+      this.dates.forEach(date => {
+        let group_shifts = [];
+        this.groups.forEach(group => {
+          group_shifts.push(
+            this.fb.group({
+              group_id: group.id,
+              shift_id: ["", Validators.required]
+            })
+          );
+        });
+        let formControl = this.fb.group({
+          day: date,
+          group_shifts: this.fb.array(group_shifts)
+        });
+        roster_arr.push(formControl);
       });
     }
+    // console.log(roster_arr)
     this.rosterForm = this.fb.group({
-      rosters: this.fb.array(rosters)
+      rosters: this.fb.array(roster_arr)
     });
   }
 

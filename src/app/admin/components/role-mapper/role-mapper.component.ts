@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -15,16 +16,14 @@ import { ProjectService } from '../../../shared/services/project.service';
 import { RoleMapperService } from '../../services/role-mapper.service';
 
 @Component({
-  selector: 'app-roleMapper-list',
-  templateUrl: './role-mapper.component.html',
-  styleUrls: ['./role-mapper.component.scss']
+  selector: "app-roleMapper-list",
+  templateUrl: "./role-mapper.component.html",
+  styleUrls: ["./role-mapper.component.scss"]
 })
 export class RoleMapperComponent implements OnInit, OnDestroy {
-  roleMapper_types = ['CH', 'RH'];
+  roleMapper_types = ["CH", "RH"];
   projects: Project[];
   emp_roles = EMPLOYEE_ROLES;
-  displayedColumns = ['position', 'project_id', 'role', 'emp_code', 'actions'];
-  dataSource: MatTableDataSource<RoleMapper>;
   errMsg: string;
   isLoading = true;
   roleMapperForm: FormGroup;
@@ -32,52 +31,76 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
   searchResult: Employee[] = [];
   isSubmitting = false;
 
+  // data table
+  displayedColumns = [
+    "position",
+    "project_name",
+    "role",
+    "emp_code",
+    "actions"
+  ];
+  dataSource: MatTableDataSource<RoleMapper>;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   // Pagination variables
   dataLength = 0;
-  pageSize = 10;
+  pageSize = 15;
   pageIndex = 0;
 
   //Subscriptions
   empCodeSubs: Subscription;
 
-  constructor(private roleMapperService: RoleMapperService,
+  constructor(
+    public roleMapperService: RoleMapperService,
     private projectService: ProjectService,
     private snackbar: MatSnackBar,
     private employeeService: EmployeeService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.initializeForm();
     this.getRoleMappers();
 
-    this.empCodeSubs = this.emp_code.valueChanges.pipe(debounceTime(500)).subscribe(data => {
-      if (!data) { return }
-      if (data.length < 1) { return }
-      // console.log(data)
-      this.employeeService.searchEmployee(data)
-        .subscribe(response => {
+    this.empCodeSubs = this.emp_code.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(data => {
+        if (!data) {
+          return;
+        }
+        if (data.length < 1) {
+          return;
+        }
+        // console.log(data)
+        this.employeeService.searchEmployee(data).subscribe(response => {
           // console.log(response)
           this.searchResult = response;
         });
-    });
+      });
   }
 
   getRoleMappers() {
-    this.projectService.getProjects()
+    this.projectService
+      .getProjects()
       .pipe(
         switchMap((projects: Project[]) => {
           this.projects = projects;
-          return this.roleMapperService.getRoleMappers(this.pageIndex, this.pageSize);
+          return this.roleMapperService.getRoleMappers(
+            this.pageIndex,
+            this.pageSize
+          );
         })
       )
-      .subscribe(data => {
-          this.dataLength = data['count'];
-          this.dataSource = new MatTableDataSource<RoleMapper>(data['rows']);
+      .subscribe(
+        data => {
           this.isLoading = false;
+          this.dataLength = data["count"];
+          this.dataSource = new MatTableDataSource<RoleMapper>(data["rows"]);
+          this.dataSource.sort = this.sort;
         },
         errMsg => {
-          this.errMsg = errMsg;
           this.isLoading = false;
+          this.errMsg = errMsg;
         }
       );
   }
@@ -86,33 +109,43 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
     this.roleMapperForm = this.fb.group({
       project_id: [this._roleMapper.project_id, [Validators.required]],
       role: [this._roleMapper.role, [Validators.required]],
-      emp_code: [this._roleMapper.emp_code, [Validators.required, Validators.pattern('[0-9]{6}')]]
+      emp_code: [
+        this._roleMapper.emp_code,
+        [Validators.required, Validators.pattern("[0-9]{6}")]
+      ]
     });
   }
 
   onSubmit() {
-    const roleMapperFormValue = <RoleMapper> this.roleMapperForm.value;
+    const roleMapperFormValue = <RoleMapper>this.roleMapperForm.value;
 
     this.isSubmitting = true;
     if (this._roleMapper.id) {
-      this.roleMapperService.editRoleMapper(this._roleMapper.id, roleMapperFormValue).subscribe(
-        (roleMapper: RoleMapper) => {
-          this.isSubmitting = false;
-          const index = this.dataSource.data.indexOf(this._roleMapper);
-          const temp = this.dataSource.data;
-          temp.splice(index, 1);
-          temp.unshift(roleMapper);
-          this.dataSource.data = temp;
+      this.roleMapperService
+        .editRoleMapper(this._roleMapper.id, roleMapperFormValue)
+        .subscribe(
+          (roleMapper: RoleMapper) => {
+            this.isSubmitting = false;
+            const index = this.dataSource.data.indexOf(this._roleMapper);
+            const temp = this.dataSource.data;
+            temp.splice(index, 1);
+            temp.unshift(roleMapper);
+            this.dataSource.data = temp;
 
-          this._roleMapper = {} as RoleMapper;
-          this.snackbar.open('Successfully updated the roleMapper record', 'Dismiss', {
-            duration: 1600
-          });
-        }, error => {
-          console.log(error);
-          this.isSubmitting = false;
-        }
-      );
+            this._roleMapper = {} as RoleMapper;
+            this.snackbar.open(
+              "Successfully updated the roleMapper record",
+              "Dismiss",
+              {
+                duration: 1600
+              }
+            );
+          },
+          error => {
+            console.log(error);
+            this.isSubmitting = false;
+          }
+        );
     } else {
       this.roleMapperService.addRoleMapper(roleMapperFormValue).subscribe(
         (roleMapper: RoleMapper) => {
@@ -120,10 +153,15 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
           const temp = this.dataSource.data;
           temp.splice(0, 0, roleMapper);
           this.dataSource.data = temp;
-          this.snackbar.open('Successfully created the roleMapper record', 'Dismiss', {
-            duration: 1600
-          });
-        }, error => {
+          this.snackbar.open(
+            "Successfully created the roleMapper record",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        },
+        error => {
           console.log(error);
           this.isSubmitting = false;
         }
@@ -131,7 +169,7 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
     }
 
     this.roleMapperForm.reset();
-    Object.keys(this.roleMapperForm.controls).forEach((name) => {
+    Object.keys(this.roleMapperForm.controls).forEach(name => {
       const control = this.roleMapperForm.controls[name];
       control.setErrors(null);
     });
@@ -143,19 +181,22 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
   }
 
   onRemove(roleMapper: RoleMapper) {
-    const retVal = confirm('Are you sure you want to delete?');
+    const retVal = confirm("Are you sure you want to delete?");
     if (retVal == true) {
-      this.roleMapperService.deleteRoleMapper(roleMapper.id)
-        .subscribe(() => {
-          const index = this.dataSource.data.indexOf(roleMapper);
-          const temp = this.dataSource.data;
-          temp.splice(index, 1);
-          this.dataSource.data = temp;
-        });
-
-        this.snackbar.open('Successfully deleted the roleMapper record', 'Dismiss', {
-        duration: 1600
+      this.roleMapperService.deleteRoleMapper(roleMapper.id).subscribe(() => {
+        const index = this.dataSource.data.indexOf(roleMapper);
+        const temp = this.dataSource.data;
+        temp.splice(index, 1);
+        this.dataSource.data = temp;
       });
+
+      this.snackbar.open(
+        "Successfully deleted the roleMapper record",
+        "Dismiss",
+        {
+          duration: 1600
+        }
+      );
     }
   }
 
@@ -166,13 +207,13 @@ export class RoleMapperComponent implements OnInit, OnDestroy {
   }
 
   get emp_code() {
-    return this.roleMapperForm.get('emp_code');
+    return this.roleMapperForm.get("emp_code");
   }
   get project_id() {
-    return this.roleMapperForm.get('project_id');
+    return this.roleMapperForm.get("project_id");
   }
   get role() {
-    return this.roleMapperForm.get('role');
+    return this.roleMapperForm.get("role");
   }
 
   ngOnDestroy() {

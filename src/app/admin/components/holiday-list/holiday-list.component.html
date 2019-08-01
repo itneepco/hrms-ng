@@ -1,15 +1,25 @@
 <mat-card class="form">
   <mat-card-subtitle>Add new holiday for current year</mat-card-subtitle>
   <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
-    <div fxLayoutGap="20px" fxLayoutGap.md="15px" fxLayoutGap.lt-md="8px" fxLayout.lt-sm="column">
+    <div
+      fxLayoutGap="20px"
+      fxLayoutGap.md="15px"
+      fxLayoutGap.lt-md="8px"
+      fxLayout.lt-sm="column"
+    >
       <mat-form-field fxFlex="40">
-        <input matInput placeholder="Name" formControlName="name">
+        <input matInput placeholder="Name" formControlName="name" />
         <mat-error *ngIf="name.touched && name.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="20">
-        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="day">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Date"
+          formControlName="day"
+        />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="day.touched && day.errors?.required">
@@ -19,54 +29,68 @@
       <mat-form-field fxFlex="20">
         <mat-select placeholder="Type" formControlName="type">
           <mat-option *ngFor="let h_type of holiday_types" [value]="h_type">
-            {{h_type}}
+            {{ h_type }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="type.touched && type.errors?.required">
           is required
         </mat-error>
       </mat-form-field>
-      <!-- <mat-form-field fxFlex="20">
-        <mat-select placeholder="Project" formControlName="project_id">
-          <mat-option *ngFor="let project of projects" [value]="project.id">
-            {{project.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="project_id.touched && project_id.errors?.required">
-          is required
-        </mat-error>
-      </mat-form-field> -->
       <div fxFlex="20">
-        <button mat-raised-button *ngIf="_holiday.id"
-          color="primary" [disabled]="holidayForm.invalid || isSubmitting">Update</button>
-        <button mat-raised-button *ngIf="!_holiday.id"
-          color="primary" [disabled]="holidayForm.invalid || isSubmitting">Add</button>
+        <button
+          mat-raised-button
+          *ngIf="_holiday.id"
+          color="primary"
+          [disabled]="holidayForm.invalid || isSubmitting"
+        >
+          Update
+        </button>
+        <button
+          mat-raised-button
+          *ngIf="!_holiday.id"
+          color="primary"
+          [disabled]="holidayForm.invalid || isSubmitting"
+        >
+          Add
+        </button>
       </div>
     </div>
   </form>
 </mat-card>
 
-<mat-card *ngIf="dataSource && !isLoading" style="padding-top: 8px">
-  <mat-table [dataSource]="dataSource">
+<mat-card [hidden]="isLoading" style="padding-top: 8px">
+  <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
-      <mat-cell *matCellDef="let holiday; let i = index;" fxFlex="10"> 
-        {{ i + 1 + pageIndex*pageSize }} 
+      <mat-cell *matCellDef="let holiday; let i = index" fxFlex="10">
+        {{ i + 1 + pageIndex * pageSize }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef fxFlex="30"> Name </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="30"> {{holiday.name}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="30" mat-sort-header>
+        Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="30">
+        {{ holiday.name }}
+      </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef fxFlex="35"> Date </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="35"> {{holiday.day | date:'fullDate'}} </mat-cell>
+    <ng-container matColumnDef="day">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="35">
+        Date
+      </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="35">
+        {{ holiday.day | date: "fullDate" }}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Type </mat-header-cell>
-      <mat-cell *matCellDef="let holiday" fxFlex="10"> {{holiday.type}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+        Type
+      </mat-header-cell>
+      <mat-cell *matCellDef="let holiday" fxFlex="10">
+        {{ holiday.type }}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -82,20 +106,22 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+  <mat-paginator
+    [pageSizeOptions]="[15, 30, 50, 100]"
     [length]="dataLength"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
     showFirstLastButtons
-    (page)="changePage($event)">
+    (page)="changePage($event)"
+  >
   </mat-paginator>
 </mat-card>
 
 <mat-card *ngIf="errMsg">
-  <p class="errMsg">{{errMsg}}</p>
+  <p class="errMsg">{{ errMsg }}</p>
 </mat-card>
 
 <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
