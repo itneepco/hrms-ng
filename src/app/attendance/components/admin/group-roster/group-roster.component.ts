@@ -55,14 +55,17 @@ export class GroupRosterComponent implements OnInit {
       )
       .pipe(
         switchMap(rosters => {
-          // console.log(rosters);
-          this.shiftRosters = rosters;
+          this.shiftRosters = rosters.map(roster => {
+            roster.group_shifts.sort((a, b) => a.group_id - b.group_id); // sort by group id asc
+            return roster;
+          });
+          console.log(this.shiftRosters);
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
-        this.groups = groups;
-        // console.log(groups);
+        this.groups = groups.sort((a, b) => a.id - b.id); // sort by group id asc
+        console.log(this.groups);
         this.initForm();
       });
   }

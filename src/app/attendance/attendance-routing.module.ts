@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/services/auth-guard';
 import { TimeOfficeGuard } from '../auth/services/time-office-guard';
+import { AbsentDtlComponent } from './components/admin/absent-dtl/absent-dtl.component';
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
 import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
 import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
@@ -14,48 +15,53 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: AttendanceComponent,
     canActivateChild: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: "dashboard", component: DashboardComponent },
       {
-        path: 'shift',
+        path: "shift",
         component: ShiftComponent,
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'group',
+        path: "group",
         component: GroupComponent,
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'employee-group',
+        path: "employee-group",
         component: EmployeeGroupComponent,
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'shift-grp-roster',
+        path: "shift-grp-roster",
         component: GroupRosterComponent,
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'gen-grp-roster',
+        path: "gen-grp-roster",
         component: GenGroupRosterComponent,
         canActivate: [TimeOfficeGuard]
       },
       {
-        path: 'upload-data',
+        path: "upload-data",
         component: UploadDataComponent,
         canActivate: [TimeOfficeGuard]
       },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      {
+        path: "absent-dtl",
+        component: AbsentDtlComponent,
+        canActivate: [TimeOfficeGuard]
+      },
+      { path: "", redirectTo: "dashboard", pathMatch: "full" }
     ]
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AttendanceRoutingModule { }
+export class AttendanceRoutingModule {}

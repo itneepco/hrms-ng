@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { SharedModule } from '../shared/shared.module';
 import { AttendanceRoutingModule } from './attendance-routing.module';
+import { AbsentDtlFormComponent } from './components/admin/absent-dtl/absent-dtl-form/absent-dtl-form.component';
+import { AbsentDtlComponent } from './components/admin/absent-dtl/absent-dtl.component';
 import {
   EmployeeGroupFormComponent,
 } from './components/admin/employee-group/employee-group-form/employee-group-form.component';
@@ -13,18 +16,13 @@ import { GroupFormComponent } from './components/admin/group/group-form/group-fo
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftFormComponent } from './components/admin/shift/shift-form/shift-form.component';
 import { ShiftComponent } from './components/admin/shift/shift.component';
+import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
 import { WageMonthFormComponent } from './components/admin/wage-month-form/wage-month-form.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
-import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    AttendanceRoutingModule,
-    FileUploadModule
-  ],
+  imports: [SharedModule, AttendanceRoutingModule, FileUploadModule],
   declarations: [
     AttendanceComponent,
     DashboardComponent,
@@ -39,13 +37,16 @@ import { FileUploadModule } from 'ng2-file-upload';
     GenGroupRosterComponent,
     ChangeTimingComponent,
     UploadDataComponent,
+    AbsentDtlComponent,
+    AbsentDtlFormComponent
   ],
   entryComponents: [
     ShiftFormComponent,
     GroupFormComponent,
     WageMonthFormComponent,
     EmployeeGroupFormComponent,
-    ChangeTimingComponent
-  ],
+    ChangeTimingComponent,
+    AbsentDtlFormComponent
+  ]
 })
 export class AttendanceModule {}
