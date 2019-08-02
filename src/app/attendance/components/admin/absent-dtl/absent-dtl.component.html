@@ -1,16 +1,34 @@
 <div class="main-container">
   <mat-card class="search">
-    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="30px"
+      fxLayoutGap.xs="10px"
+    >
       <mat-form-field fxFlex>
-        <input matInput placeholder="6 Digit Employee Code" [formControl]="emp_code" pattern="[0-9]{6}" [matAutocomplete]="auto">
+        <input
+          matInput
+          placeholder="6 Digit Employee Code"
+          [formControl]="emp_code"
+          pattern="[0-9]{6}"
+          [matAutocomplete]="auto"
+        />
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
           <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
             {{ getFullName(item) | titlecase }}
           </mat-option>
         </mat-autocomplete>
-        <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
+        <mat-hint *ngIf="emp_code.invalid"
+          >Employee Code should be 6 digit</mat-hint
+        >
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="emp_code.invalid">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSearch()"
+        [disabled]="emp_code.invalid || this.searchResult.length < 1"
+      >
         <mat-icon>search</mat-icon>Search
       </button>
     </div>
@@ -24,31 +42,45 @@
 
       <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="position">
-          <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl. No. </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="10">
+            Sl. No.
+          </mat-header-cell>
           <mat-cell *matCellDef="let absent; let i = index" fxFlex="10">
             {{ i + 1 + pageIndex * pageSize }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="leave_type">
-          <mat-header-cell *matHeaderCellDef fxFlex="30"> Leave Type </mat-header-cell>
-          <mat-cell *matCellDef="let absent" fxFlex="30"> {{absent.leave_type_id}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="30">
+            Leave Type
+          </mat-header-cell>
+          <mat-cell *matCellDef="let absent" fxFlex="30">
+            {{ absent.leave_type_id }}
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="from_date">
-          <mat-header-cell *matHeaderCellDef fxFlex="20"> From Date </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="20">
+            From Date
+          </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            {{absent.from_date}}
+            {{ absent.from_date }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="to_date">
-          <mat-header-cell *matHeaderCellDef fxFlex="20"> To Date </mat-header-cell>
-          <mat-cell *matCellDef="let absent" fxFlex="20"> {{absent.to_date}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="20">
+            To Date
+          </mat-header-cell>
+          <mat-cell *matCellDef="let absent" fxFlex="20">
+            {{ absent.to_date }}
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef fxFlex="20"> Actions </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="20">
+            Actions
+          </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
             <button mat-icon-button (click)="onEdit(absent)" color="acceent">
               <mat-icon>edit</mat-icon>
@@ -60,7 +92,7 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
     </mat-card>
   </ng-container>
@@ -68,7 +100,7 @@
   <ng-template #spinner>
     <mat-spinner diameter="60" *ngIf="isSearching"></mat-spinner>
     <mat-card *ngIf="errMsg">
-      <p class="errMsg">{{errMsg}}</p>
+      <p class="errMsg">{{ errMsg }}</p>
     </mat-card>
   </ng-template>
 </div>
@@ -83,4 +115,3 @@
 >
   <mat-icon>add</mat-icon>
 </button>
-

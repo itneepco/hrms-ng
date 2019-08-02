@@ -1,8 +1,9 @@
 import { JoiningReport } from './joining-report';
 
 export interface LeaveType {
+  id: number
   code: string;
-  name: string;
+  description: string;
 }
 
 export interface LeaveDetail {

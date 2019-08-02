@@ -7,10 +7,10 @@ export const HPL_CODE = '04';
 export const HD_CL_CODE = '05';
 
 export const LEAVE_TYPES = [
-  { code: CL_CODE, name: "CL" },
-  { code: RH_CODE, name: "RH" },
-  { code: EL_CODE, name: "EL" },
-  { code: HPL_CODE, name: "HPL" }
+  { code: CL_CODE, description: "CL" },
+  { code: RH_CODE, description: "RH" },
+  { code: EL_CODE, description: "EL" },
+  { code: HPL_CODE, description: "HPL" }
 ]
 
 export const EL_HPL_ADMIN = 'RMAPEL'
@@ -30,7 +30,7 @@ export const EMPLOYEE_ROLES = [
   { name: "O&M Report Uploader", code: OM_REP_UPLOADER },
   { name: "HR Report Uploader", code: HR_REP_UPLOADER },
   { name: "Finance Report Uploader", code: FIN_REP_UPLOADER },
-  { name: "HR Leave Super Admin", code: HR_LEAVE_SUPER_ADMIN }    
+  { name: "HR Leave Super Admin", code: HR_LEAVE_SUPER_ADMIN }
 ]
 
 export const CALENDAR_COLORS = {

@@ -37,15 +37,17 @@
       >
     </mat-form-field>
 
-    <!-- <mat-form-field>
-      <mat-label>Group Name</mat-label>
-      <mat-select formControlName="group_id">
-        <mat-option *ngFor="let group of groups" [value]="group.id">
-          {{group.name}}
+    <mat-form-field>
+      <mat-label>Leave Type</mat-label>
+      <mat-select formControlName="leave_type_id">
+        <mat-option *ngFor="let lType of leaveTypes" [value]="lType.id">
+          {{ lType.description }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="group_id.errors?.required">Please select a group</mat-error>
-    </mat-form-field> -->
+      <mat-error *ngIf="leave_type_id.errors?.required"
+        >Please select leave type</mat-error
+      >
+    </mat-form-field>
   </div>
 
   <mat-dialog-actions align="end" id="buttons">

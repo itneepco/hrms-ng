@@ -31,7 +31,7 @@ export class AddLedgerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.leaveTypes = LEAVE_TYPES;
+    this.leaveTypes = LEAVE_TYPES as LeaveType[];
 
     if (this.data && this.data.ledger) {
       this.ledger = this.data.ledger;
