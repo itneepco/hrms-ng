@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupRosterComponent } from './group-roster.component';
+import { ShiftRosterComponent } from './shift-roster.component';
 
-describe('GroupRosterComponent', () => {
-  let component: GroupRosterComponent;
-  let fixture: ComponentFixture<GroupRosterComponent>;
+describe('ShiftRosterComponent', () => {
+  let component: ShiftRosterComponent;
+  let fixture: ComponentFixture<ShiftRosterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupRosterComponent ]
+      declarations: [ ShiftRosterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupRosterComponent);
+    fixture = TestBed.createComponent(ShiftRosterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

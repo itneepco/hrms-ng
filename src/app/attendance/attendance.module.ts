@@ -11,7 +11,7 @@ import {
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
 import { ChangeTimingComponent } from './components/admin/gen-group-roster/change-timing/change-timing.component';
 import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
-import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
+import { ShiftRosterComponent } from './components/admin/shift-roster/shift-roster.component';
 import { GroupFormComponent } from './components/admin/group/group-form/group-form.component';
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftFormComponent } from './components/admin/shift/shift-form/shift-form.component';
@@ -33,7 +33,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     WageMonthFormComponent,
     EmployeeGroupComponent,
     EmployeeGroupFormComponent,
-    GroupRosterComponent,
+    ShiftRosterComponent,
     GenGroupRosterComponent,
     ChangeTimingComponent,
     UploadDataComponent,

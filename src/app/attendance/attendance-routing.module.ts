@@ -6,7 +6,7 @@ import { TimeOfficeGuard } from '../auth/services/time-office-guard';
 import { AbsentDtlComponent } from './components/admin/absent-dtl/absent-dtl.component';
 import { EmployeeGroupComponent } from './components/admin/employee-group/employee-group.component';
 import { GenGroupRosterComponent } from './components/admin/gen-group-roster/gen-group-roster.component';
-import { GroupRosterComponent } from './components/admin/group-roster/group-roster.component';
+import { ShiftRosterComponent } from './components/admin/shift-roster/shift-roster.component';
 import { GroupComponent } from './components/admin/group/group.component';
 import { ShiftComponent } from './components/admin/shift/shift.component';
 import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
@@ -37,7 +37,7 @@ const routes: Routes = [
       },
       {
         path: "shift-grp-roster",
-        component: GroupRosterComponent,
+        component: ShiftRosterComponent,
         canActivate: [TimeOfficeGuard]
       },
       {

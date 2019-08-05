@@ -5,18 +5,18 @@ import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/attendance/models/group';
 import { GroupRoster } from 'src/app/attendance/models/group-wise-roster';
 import { DateService } from 'src/app/attendance/services/date.service';
-import { GroupRosterService } from 'src/app/attendance/services/group-roster.service';
+import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.service';
 import { ShiftService } from 'src/app/attendance/services/shift.service';
 
-import { Shift } from './../../../models/shift';
-import { GroupService } from './../../../services/group.service';
+import { Shift } from '../../../models/shift';
+import { GroupService } from '../../../services/group.service';
 
 @Component({
   selector: "app-group-roster",
-  templateUrl: "./group-roster.component.html",
-  styleUrls: ["./group-roster.component.scss"]
+  templateUrl: "./shift-roster.component.html",
+  styleUrls: ["./shift-roster.component.scss"]
 })
-export class GroupRosterComponent implements OnInit {
+export class ShiftRosterComponent implements OnInit {
   shifts: Shift[];
   groups: Group[];
   dates: Date[];
@@ -30,7 +30,7 @@ export class GroupRosterComponent implements OnInit {
     private shiftService: ShiftService,
     private groupService: GroupService,
     private fb: FormBuilder,
-    private grpRosterService: GroupRosterService,
+    private shiftRosterService: ShiftRosterService,
     private dateService: DateService,
     private snackbar: MatSnackBar
   ) {}
@@ -47,7 +47,7 @@ export class GroupRosterComponent implements OnInit {
         switchMap(shifts => {
           // console.log(shifts);
           this.shifts = shifts;
-          return this.grpRosterService.getShiftRoster(
+          return this.shiftRosterService.getShiftRoster(
             this.dateService.getDateYYYYMMDD(this.startDate),
             this.dateService.getDateYYYYMMDD(this.endDate)
           );
@@ -129,7 +129,7 @@ export class GroupRosterComponent implements OnInit {
     if (this.rosterForm.invalid) return;
 
     this.isSubmitting = true;
-    this.grpRosterService
+    this.shiftRosterService
       .addShiftRoster(this.rosterForm.get("rosters").value)
       .subscribe(
         () => {
