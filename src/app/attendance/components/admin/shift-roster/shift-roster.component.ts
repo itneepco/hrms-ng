@@ -3,13 +3,13 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/attendance/models/group';
-import { GroupRoster } from 'src/app/attendance/models/group-wise-roster';
+import { ShiftRoster } from 'src/app/attendance/models/shift-roster';
 import { DateService } from 'src/app/attendance/services/date.service';
 import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.service';
 import { ShiftService } from 'src/app/attendance/services/shift.service';
-
 import { Shift } from '../../../models/shift';
 import { GroupService } from '../../../services/group.service';
+
 
 @Component({
   selector: "app-group-roster",
@@ -23,7 +23,7 @@ export class ShiftRosterComponent implements OnInit {
   startDate = new Date(2019, 5, 16);
   endDate = new Date(2019, 6, 15);
   rosterForm: FormGroup;
-  shiftRosters: GroupRoster[];
+  shiftRosters: ShiftRoster[];
   isSubmitting = false;
 
   constructor(
@@ -33,7 +33,7 @@ export class ShiftRosterComponent implements OnInit {
     private shiftRosterService: ShiftRosterService,
     private dateService: DateService,
     private snackbar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dates = this.dateService.enumerateDaysBetweenDates(
@@ -59,13 +59,13 @@ export class ShiftRosterComponent implements OnInit {
             roster.group_shifts.sort((a, b) => a.group_id - b.group_id); // sort by group id asc
             return roster;
           });
-          console.log(this.shiftRosters);
+          // console.log(this.shiftRosters);
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
         this.groups = groups.sort((a, b) => a.id - b.id); // sort by group id asc
-        console.log(this.groups);
+        // console.log(this.groups);
         this.initForm();
       });
   }
@@ -132,7 +132,8 @@ export class ShiftRosterComponent implements OnInit {
     this.shiftRosterService
       .addShiftRoster(this.rosterForm.get("rosters").value)
       .subscribe(
-        () => {
+        (data) => {
+          this.shiftRosters = data
           this.isSubmitting = false;
           this.snackbar.open(
             "Successfully saved the shift group roster",
@@ -144,6 +145,22 @@ export class ShiftRosterComponent implements OnInit {
         },
         () => (this.isSubmitting = false)
       );
+  }
+
+  generateEmpWiseRoster() {
+    this.shiftRosterService.generateEmpWiseRoster(
+      this.dateService.getDateYYYYMMDD(this.startDate),
+      this.dateService.getDateYYYYMMDD(this.endDate)
+    )
+      .subscribe(() => {
+        this.snackbar.open(
+          "Successfully generated shift employees roster",
+          "Dismiss",
+          {
+            duration: 1600
+          }
+        );
+      })
   }
 
   get rosters(): FormArray {
@@ -165,11 +182,4 @@ export class ShiftRosterComponent implements OnInit {
     ) as FormArray;
     return group_shifts.controls[gs_index].get("shift_id");
   }
-
-  // initShift(day: Date, group_id: number) {
-  //   if(!this.shiftRosters) return;
-  //   this.shiftRosters.find(roster => {
-  //     return roster.day == day &&
-  //   })
-  // }
 }

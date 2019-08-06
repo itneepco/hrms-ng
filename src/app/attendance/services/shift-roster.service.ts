@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { baseURL } from 'src/app/shared/config/baseUrl';
 import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
-
 import { AuthService } from '../../auth/services/auth.service';
-import { GroupRoster } from '../models/group-wise-roster';
+import { ShiftRoster } from '../models/shift-roster';
 
 @Injectable({
   providedIn: "root"
@@ -16,7 +15,7 @@ export class ShiftRosterService {
     private http: HttpClient,
     private auth: AuthService,
     private handler: ErrorHandlerService
-  ) {}
+  ) { }
 
   getUrl() {
     return baseURL + `api/attendance/project/${this.auth.currentUser.project}`;
@@ -25,17 +24,22 @@ export class ShiftRosterService {
   getShiftRoster(
     from_date: string,
     to_date: string
-  ): Observable<GroupRoster[]> {
+  ): Observable<ShiftRoster[]> {
     return this.http
-      .get<GroupRoster[]>(
+      .get<ShiftRoster[]>(
         `${this.getUrl()}/shift-roster?from_date=${from_date}&to_date=${to_date}`
       )
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  addShiftRoster(roster: GroupRoster) {
+  addShiftRoster(roster: ShiftRoster): Observable<ShiftRoster[]> {
     return this.http
-      .post(`${this.getUrl()}/shift-roster`, roster)
+      .post<ShiftRoster[]>(`${this.getUrl()}/shift-roster`, roster)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  generateEmpWiseRoster(from_date: string, to_date: string) {
+    return this.http.get(`${this.getUrl()}/employee-wise-roster?from_date=${from_date}&to_date=${to_date}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 }

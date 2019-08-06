@@ -48,15 +48,11 @@ export class UploadDataComponent implements OnInit {
       status: any,
       headers: any
     ) => {
-      console.log("ImageUpload:uploaded:", item, status, response);
+      console.log("File upload status", item, status, response);
     };
   }
 
   goBack() {
     this.locationService.back();
-  }
-
-  insertToPuchingRec() {
-
   }
 }

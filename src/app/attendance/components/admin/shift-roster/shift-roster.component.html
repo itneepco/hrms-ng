@@ -1,11 +1,5 @@
-<form
-  [formGroup]="rosterForm"
-  *ngIf="groups; else loading"
-  (ngSubmit)="saveRoster()"
-  fxLayout="row"
-  fxLayout.lt-md="column"
-  fxLayoutGap="20px"
->
+<form [formGroup]="rosterForm" *ngIf="groups; else loading" (ngSubmit)="saveRoster()" fxLayout="row"
+  fxLayout.lt-md="column" fxLayoutGap="20px">
   <table fxFlex="75" fxFlex.lt-md>
     <thead>
       <tr>
@@ -15,32 +9,25 @@
     </thead>
 
     <tbody formArrayName="rosters">
-      <ng-container
-        *ngFor="let item of rosters.controls; let roster_index = index"
-      >
+      <ng-container *ngFor="let item of rosters.controls; let roster_index = index">
         <tr [formGroupName]="roster_index">
           <td>{{ getDay(roster_index) }}</td>
 
           <ng-container formArrayName="group_shifts">
-            <td
-              *ngFor="
+            <td *ngFor="
                 let group_shift of getGroupShifts(roster_index).controls;
                 let gs_index = index
-              "
-            >
+              ">
               <div [formGroupName]="gs_index">
                 <select formControlName="shift_id">
                   <option *ngFor="let shift of shifts" [value]="shift.id">
                     {{ shift.name }}
                   </option>
                 </select>
-                <p
-                  class="error-msg"
-                  *ngIf="
+                <p class="error-msg" *ngIf="
                     getShift(roster_index, gs_index).touched &&
                     getShift(roster_index, gs_index).errors?.required
-                  "
-                >
+                  ">
                   is required
                 </p>
               </div>
@@ -60,14 +47,14 @@
         <span>{{ endDate | date: "mediumDate" }} </span>
       </div>
       <div fxLayout="column">
-        <button
-          mat-raised-button
-          class="button"
-          color="primary"
-          type="submit"
-          [disabled]="isSubmitting || rosterForm.invalid"
-        >
+        <button mat-raised-button class="button" color="primary" type="submit"
+          [disabled]="isSubmitting || rosterForm.invalid">
           Save Group Roster
+        </button>
+
+        <button mat-raised-button class="button" color="accent" type="button"
+          *ngIf="shiftRosters.length > 0 && rosterForm.valid" (click)="generateEmpWiseRoster()">
+          Generate Employee Roster
         </button>
       </div>
     </mat-card>
