@@ -9,6 +9,8 @@ import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.ser
 import { ShiftService } from 'src/app/attendance/services/shift.service';
 import { Shift } from '../../../models/shift';
 import { GroupService } from '../../../services/group.service';
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { WageMonth } from 'src/app/attendance/models/wage-month';
 
 
 @Component({
@@ -20,11 +22,10 @@ export class ShiftRosterComponent implements OnInit {
   shifts: Shift[];
   groups: Group[];
   dates: Date[];
-  startDate = new Date(2019, 5, 16);
-  endDate = new Date(2019, 6, 15);
   rosterForm: FormGroup;
   shiftRosters: ShiftRoster[];
   isSubmitting = false;
+  activeWageMonth: WageMonth;
 
   constructor(
     private shiftService: ShiftService,
@@ -32,24 +33,28 @@ export class ShiftRosterComponent implements OnInit {
     private fb: FormBuilder,
     private shiftRosterService: ShiftRosterService,
     private dateService: DateService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private wageMonthService: WageMonthService
   ) { }
 
   ngOnInit() {
-    this.dates = this.dateService.enumerateDaysBetweenDates(
-      this.startDate,
-      this.endDate
-    );
+    this.shiftService.getShiftPunchings()
+      .subscribe(shifts => this.shifts = shifts)
 
-    this.shiftService
-      .getShiftPunchings()
+    this.wageMonthService.getActiveWageMonth()
       .pipe(
-        switchMap(shifts => {
-          // console.log(shifts);
-          this.shifts = shifts;
+        switchMap(wageMonth => {
+          this.activeWageMonth = wageMonth
+          if (!this.activeWageMonth) return [];
+
+          this.dates = this.dateService.enumerateDaysBetweenDates(
+            this.activeWageMonth.from_date,
+            this.activeWageMonth.to_date
+          );
+
           return this.shiftRosterService.getShiftRoster(
-            this.dateService.getDateYYYYMMDD(this.startDate),
-            this.dateService.getDateYYYYMMDD(this.endDate)
+            this.dateService.getDateYYYYMMDD(this.activeWageMonth.to_date),
+            this.dateService.getDateYYYYMMDD(this.activeWageMonth.from_date)
           );
         })
       )
@@ -59,13 +64,11 @@ export class ShiftRosterComponent implements OnInit {
             roster.group_shifts.sort((a, b) => a.group_id - b.group_id); // sort by group id asc
             return roster;
           });
-          // console.log(this.shiftRosters);
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
         this.groups = groups.sort((a, b) => a.id - b.id); // sort by group id asc
-        // console.log(this.groups);
         this.initForm();
       });
   }
@@ -149,8 +152,8 @@ export class ShiftRosterComponent implements OnInit {
 
   generateEmpWiseRoster() {
     this.shiftRosterService.generateEmpWiseRoster(
-      this.dateService.getDateYYYYMMDD(this.startDate),
-      this.dateService.getDateYYYYMMDD(this.endDate)
+      this.dateService.getDateYYYYMMDD(this.activeWageMonth.from_date),
+      this.dateService.getDateYYYYMMDD(this.activeWageMonth.to_date)
     )
       .subscribe(() => {
         this.snackbar.open(

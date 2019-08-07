@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 
-import { AuthService } from './../../../../auth/services/auth.service';
 
 @Component({
   selector: "app-wage-month-form",
@@ -14,8 +15,9 @@ export class WageMonthFormComponent implements OnInit {
   isSubmitting = false;
 
   constructor(private fb: FormBuilder,
-    private auth: AuthService,
-    public dialogRef: MatDialogRef<WageMonthFormComponent>) {}
+    private wageMonthService: WageMonthService,
+    private snackbar: MatSnackBar,
+    public dialogRef: MatDialogRef<WageMonthFormComponent>) { }
 
   ngOnInit() {
     this.initForm();
@@ -23,23 +25,21 @@ export class WageMonthFormComponent implements OnInit {
 
   initForm() {
     this.wageMonthForm = this.fb.group({
-      project_id: this.auth.currentUser.project,
-      wage_month: ["", Validators.required],
       from_date: ["", Validators.required],
       to_date: ["", Validators.required],
     });
   }
 
   onSubmit() {
-    if(this.wageMonthForm.invalid) {
-      return;
-    }
+    if (this.wageMonthForm.invalid) return;
 
-    console.log(this.wageMonthForm.value);
-  }
-
-  get wage_month() {
-    return this.wageMonthForm.get('wage_month')
+    this.wageMonthService.initWageMonth(this.wageMonthForm.value)
+      .subscribe(data => {
+        console.log(data)
+        this.snackbar.open("Successfully edited the shift record", "Dismiss", {
+          duration: 1600
+        });
+      })
   }
 
   get from_date() {

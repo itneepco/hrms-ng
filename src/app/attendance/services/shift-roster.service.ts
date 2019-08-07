@@ -39,7 +39,7 @@ export class ShiftRosterService {
   }
 
   generateEmpWiseRoster(from_date: string, to_date: string) {
-    return this.http.get(`${this.getUrl()}/employee-wise-roster?from_date=${from_date}&to_date=${to_date}`)
+    return this.http.get(`${this.getUrl()}/emp-wise-roster/shift?from_date=${from_date}&to_date=${to_date}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 }

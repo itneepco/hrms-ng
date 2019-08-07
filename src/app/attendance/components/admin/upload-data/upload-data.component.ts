@@ -1,8 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileUploader } from 'ng2-file-upload';
-import { AttendanceDataService } from 'src/app/attendance/services/attendance-data.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { baseURL } from 'src/app/shared/config/baseUrl';
 
@@ -16,8 +14,6 @@ export class UploadDataComponent implements OnInit {
 
   constructor(
     private locationService: Location,
-    private snackbar: MatSnackBar,
-    private attendanceData: AttendanceDataService,
     private auth: AuthService
   ) {}
 

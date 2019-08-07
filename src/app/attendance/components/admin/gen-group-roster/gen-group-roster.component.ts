@@ -14,6 +14,8 @@ import { GeneralRosterService } from "./../../../services/general-roster.service
 import { ShiftService } from "./../../../services/shift.service";
 import { WorkingDayService } from "./../../../services/working-day.service";
 import { ChangeTimingComponent } from "./change-timing/change-timing.component";
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { WageMonth } from 'src/app/attendance/models/wage-month';
 
 @Component({
   selector: "app-gen-group-roster",
@@ -21,13 +23,14 @@ import { ChangeTimingComponent } from "./change-timing/change-timing.component";
   styleUrls: ["./gen-group-roster.component.scss"]
 })
 export class GenGroupRosterComponent implements OnInit {
-  startDate = new Date(2019, 5, 16);
-  endDate = new Date(2019, 6, 15);
   weekends: Date[];
   workDays: WorkingDay[];
   genRosters: GeneralRoster[];
   genGroups: Group[];
   shifts: Shift[];
+  activeWageMonth: WageMonth
+  startDate: Date;
+  endDate: Date;
 
   constructor(
     private dateService: DateService,
@@ -37,19 +40,25 @@ export class GenGroupRosterComponent implements OnInit {
     private groupService: GroupService,
     private shiftService: ShiftService,
     private dialog: MatDialog,
-    private snackbar: MatSnackBar
-  ) {}
+    private snackbar: MatSnackBar,
+    private wageMonthService: WageMonthService,
+  ) { }
 
   ngOnInit() {
-    this.weekends = this.dateService
-      .enumerateDaysBetweenDates(this.startDate, this.endDate)
-      .filter(date => this.dateService.isSundaySaturday(date));
+    this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
+      this.activeWageMonth = wageMonth
+      if (!this.activeWageMonth) return
+
+      this.startDate = this.activeWageMonth.from_date
+      this.endDate = this.activeWageMonth.to_date
+      this.enumerateDays()
+    })
 
     this.genRosterService
       .getGenRosters()
       .pipe(
         switchMap(genRosters => {
-          console.log(genRosters);
+          // console.log(genRosters);
           this.genRosters = genRosters;
           return this.workDayService.getWorkingDays();
         })
@@ -65,9 +74,15 @@ export class GenGroupRosterComponent implements OnInit {
         })
       )
       .subscribe(shifts => {
-        console.log(shifts);
+        // console.log(shifts);
         this.shifts = shifts;
       });
+  }
+
+  enumerateDays() {
+    this.weekends = this.dateService
+      .enumerateDaysBetweenDates(this.startDate, this.endDate)
+      .filter(date => this.dateService.isSundaySaturday(date));
   }
 
   formatDate(date: Date) {
@@ -136,5 +151,32 @@ export class GenGroupRosterComponent implements OnInit {
 
     const shift = this.shifts.find(shift => shift.id == roster.shift_id);
     return shift ? shift.name : "Not Defined";
+  }
+
+  genEmpWiseRoster() {
+    this.genRosterService.generateEmpWiseRoster(
+      this.dateService.getDateYYYYMMDD(this.startDate),
+      this.dateService.getDateYYYYMMDD(this.endDate)
+    )
+      .subscribe(() => {
+        this.snackbar.open(
+          "Successfully generated regular employees roster",
+          "Dismiss",
+          {
+            duration: 1600
+          }
+        );
+      })
+  }
+
+  nextWageMonth() {
+    this.startDate = this.dateService.increaseDateByMonth(this.startDate, 1)
+    this.endDate = this.dateService.increaseDateByMonth(this.endDate, 1)
+    this.enumerateDays();
+  }
+
+  currWageMonth() {
+    this.startDate = this.activeWageMonth.from_date
+    this.endDate = this.activeWageMonth.to_date
   }
 }

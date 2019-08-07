@@ -51,4 +51,9 @@ export class GeneralRosterService {
       .get<GeneralRoster>(`${this.getUrl()}/general-roster/${id}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
+
+  generateEmpWiseRoster(from_date: string, to_date: string) {
+    return this.http.get(`${this.getUrl()}/emp-wise-roster/general?from_date=${from_date}&to_date=${to_date}`)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
 }

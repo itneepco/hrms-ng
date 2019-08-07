@@ -1,10 +1,12 @@
 <div class="main-container">
-  <mat-card>
-    <div fxLayoutAlign="space-between center" id="head-info">
-      <span
-        >Wage Period: {{ startDate | date: "mediumDate" }} to
-        {{ endDate | date: "mediumDate" }}</span
-      >
+  <mat-card *ngIf="activeWageMonth; else noWageMonth">
+    <div fxLayout="row" fxLayoutAlign="space-between center" id="head-info">
+      <div>
+        <span>Wage Period: {{ startDate | date: "mediumDate" }} to
+        {{ endDate | date: "mediumDate" }}</span>
+        <button (click)="nextWageMonth()">Next</button>
+        <button (click)="currWageMonth()">Current</button>
+      </div>
       <button mat-icon-button (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
@@ -17,18 +19,10 @@
         <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
           <div fxFlex="60">{{ formatDate(weekend) }}</div>
           <div fxFlex="40">
-            <button
-              class="btn"
-              (click)="markWorkDay(weekend)"
-              *ngIf="!workingDay(weekend)"
-            >
+            <button class="btn" (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
               Mark Work Day
             </button>
-            <button
-              class="btn"
-              (click)="unmarkWorkDay(workingDay(weekend))"
-              *ngIf="workingDay(weekend)"
-            >
+            <button class="btn" (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
               Remove Work Day
             </button>
           </div>
@@ -55,7 +49,18 @@
             </tr>
           </table>
         </div>
+        <div id="gen-btn" *ngIf="genRosters && genRosters.length > 0">
+          <button mat-raised-button color="primary" (click)="genEmpWiseRoster()">
+            Generate Employee Roster
+          </button>
+        </div>
       </div>
     </section>
   </mat-card>
+
+  <ng-template #noWageMonth>
+    <mat-card>
+      Please define wage month period first!!!
+    </mat-card>
+  </ng-template>
 </div>

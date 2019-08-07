@@ -2,11 +2,6 @@
 
 <form [formGroup]="wageMonthForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column">
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Group Name" formControlName="wage_month">
-      <mat-error *ngIf="wage_month.errors?.required">Group name is required</mat-error>
-    </mat-form-field>
-
     <mat-form-field>
       <input matInput [matDatepicker]="fromDate" placeholder="From Date" formControlName="from_date">
       <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
