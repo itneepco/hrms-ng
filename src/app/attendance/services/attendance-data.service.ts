@@ -13,7 +13,7 @@ export class AttendanceDataService {
     private http: HttpClient,
     private auth: AuthService,
     private handler: ErrorHandlerService
-  ) {}
+  ) { }
 
   getUrl() {
     return (
@@ -22,9 +22,9 @@ export class AttendanceDataService {
     );
   }
 
-  insertPunchingRec(filenames: string[]) {
+  processPunchingData(day: Date) {
     return this.http
-      .post(`${this.getUrl()}/insert`, filenames)
+      .get(`${this.getUrl()}/process?day=${day}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 }

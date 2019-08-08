@@ -12,6 +12,7 @@ import { ShiftComponent } from './components/admin/shift/shift.component';
 import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProcessAttendanceComponent } from './components/admin/process-attendance/process-attendance.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,11 @@ const routes: Routes = [
         component: AbsentDtlComponent,
         canActivate: [TimeOfficeGuard]
       },
+      {
+        path: "process-data",
+        component: ProcessAttendanceComponent,
+        canActivate: [TimeOfficeGuard]
+      },
       { path: "", redirectTo: "dashboard", pathMatch: "full" }
     ]
   }
@@ -64,4 +70,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AttendanceRoutingModule {}
+export class AttendanceRoutingModule { }

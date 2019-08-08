@@ -1,0 +1,4 @@
+<div *ngFor="let day of dates">
+  {{day | date:'mediumDate'}}
+  <button (click)="processData(day)">Process Data</button>
+</div>
