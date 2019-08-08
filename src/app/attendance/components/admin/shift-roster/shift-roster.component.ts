@@ -4,13 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/attendance/models/group';
 import { ShiftRoster } from 'src/app/attendance/models/shift-roster';
+import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { DateService } from 'src/app/attendance/services/date.service';
 import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.service';
 import { ShiftService } from 'src/app/attendance/services/shift.service';
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 import { Shift } from '../../../models/shift';
 import { GroupService } from '../../../services/group.service';
-import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
-import { WageMonth } from 'src/app/attendance/models/wage-month';
 
 
 @Component({
@@ -26,6 +26,8 @@ export class ShiftRosterComponent implements OnInit {
   shiftRosters: ShiftRoster[];
   isSubmitting = false;
   activeWageMonth: WageMonth;
+  startDate: Date;
+  endDate: Date
 
   constructor(
     private shiftService: ShiftService,
@@ -45,32 +47,39 @@ export class ShiftRosterComponent implements OnInit {
       .pipe(
         switchMap(wageMonth => {
           this.activeWageMonth = wageMonth
+          console.log(wageMonth)
           if (!this.activeWageMonth) return [];
 
-          this.dates = this.dateService.enumerateDaysBetweenDates(
-            this.activeWageMonth.from_date,
-            this.activeWageMonth.to_date
-          );
+          this.startDate = this.activeWageMonth.from_date
+          this.endDate = this.activeWageMonth.to_date
 
-          return this.shiftRosterService.getShiftRoster(
-            this.dateService.getDateYYYYMMDD(this.activeWageMonth.to_date),
-            this.dateService.getDateYYYYMMDD(this.activeWageMonth.from_date)
-          );
-        })
-      )
-      .pipe(
-        switchMap(rosters => {
-          this.shiftRosters = rosters.map(roster => {
-            roster.group_shifts.sort((a, b) => a.group_id - b.group_id); // sort by group id asc
-            return roster;
-          });
+          this.enumerateDays();
           return this.groupService.getShiftGroups();
         })
       )
       .subscribe(groups => {
         this.groups = groups.sort((a, b) => a.id - b.id); // sort by group id asc
-        this.initForm();
+        // console.log("Groups", groups)
+        this.fetchRosterAndInitForm();
       });
+  }
+
+  enumerateDays() {
+    this.dates = this.dateService.enumerateDaysBetweenDates(this.startDate, this.endDate);
+  }
+
+  fetchRosterAndInitForm() {
+    this.shiftRosterService.getShiftRoster(
+      this.dateService.getDateYYYYMMDD(this.startDate),
+      this.dateService.getDateYYYYMMDD(this.endDate)
+    )
+      .subscribe(rosters => {
+        this.shiftRosters = rosters.map(roster => {
+          roster.group_shifts.sort((a, b) => a.group_id - b.group_id); // sort by group id asc
+          return roster;
+        });
+        this.initForm();
+      })
   }
 
   initForm() {
@@ -151,10 +160,10 @@ export class ShiftRosterComponent implements OnInit {
   }
 
   generateEmpWiseRoster() {
-    this.shiftRosterService.generateEmpWiseRoster(
-      this.dateService.getDateYYYYMMDD(this.activeWageMonth.from_date),
-      this.dateService.getDateYYYYMMDD(this.activeWageMonth.to_date)
-    )
+    let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
+    let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+
+    this.shiftRosterService.generateEmpWiseRoster(fromDate, toDate)
       .subscribe(() => {
         this.snackbar.open(
           "Successfully generated shift employees roster",
@@ -184,5 +193,27 @@ export class ShiftRosterComponent implements OnInit {
       "group_shifts"
     ) as FormArray;
     return group_shifts.controls[gs_index].get("shift_id");
+  }
+
+  nextWageMonth() {
+    this.startDate = this.dateService.increaseDateByMonth(this.activeWageMonth.from_date, 1)
+    this.endDate = this.dateService.increaseDateByMonth(this.activeWageMonth.to_date, 1)
+    this.enumerateDays();
+    this.fetchRosterAndInitForm();
+  }
+
+  currWageMonth() {
+    this.startDate = this.activeWageMonth.from_date
+    this.endDate = this.activeWageMonth.to_date
+    this.enumerateDays();
+    this.fetchRosterAndInitForm();
+  }
+
+  isActiveWageMonth() {
+    return this.startDate === this.activeWageMonth.from_date
+  }
+
+  isActiveMonthDefined() {
+    return typeof this.activeWageMonth  !== 'undefined'
   }
 }

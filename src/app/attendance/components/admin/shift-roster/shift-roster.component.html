@@ -1,69 +1,81 @@
-<div *ngIf="activeWageMonth; else noWageMonth">
-  <form [formGroup]="rosterForm" (ngSubmit)="saveRoster()"
-    *ngIf="groups && groups.length < 1; else loading"
-    fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+<ng-container *ngIf="isActiveMonthDefined(); else loading">
+  <ng-container *ngIf="activeWageMonth; else noWageMonth">
+    <form [formGroup]="rosterForm" (ngSubmit)="saveRoster()" 
+      *ngIf="shiftRosters; else loading"
+      fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
 
-    <table fxFlex="75" fxFlex.lt-md>
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th *ngFor="let group of groups">{{ group.name }}</th>
-        </tr>
-      </thead>
-
-      <tbody formArrayName="rosters">
-        <ng-container *ngFor="let item of rosters.controls; let roster_index = index">
-          <tr [formGroupName]="roster_index">
-            <td>{{ getDay(roster_index) }}</td>
-
-            <ng-container formArrayName="group_shifts">
-              <td *ngFor="
-                  let group_shift of getGroupShifts(roster_index).controls;
-                  let gs_index = index
-                ">
-                <div [formGroupName]="gs_index">
-                  <select formControlName="shift_id">
-                    <option *ngFor="let shift of shifts" [value]="shift.id">
-                      {{ shift.name }}
-                    </option>
-                  </select>
-                  <p class="error-msg" *ngIf="
-                      getShift(roster_index, gs_index).touched &&
-                      getShift(roster_index, gs_index).errors?.required
-                    ">
-                    is required
-                  </p>
-                </div>
-              </td>
-            </ng-container>
+      <table fxFlex="75" fxFlex.lt-md>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th *ngFor="let group of groups">{{ group.name }}</th>
           </tr>
-        </ng-container>
-      </tbody>
-    </table>
+        </thead>
 
-    <div fxFlex="25">
-      <mat-card>
-        <div class="title">Wage period:</div>
-        <div>
-          <span>{{ activeWageMonth.from_date | date: "mediumDate" }} </span>
-          <span>to </span>
-          <span>{{ activeWageMonth.to_date | date: "mediumDate" }} </span>
-        </div>
-        <div fxLayout="column">
-          <button mat-raised-button class="button" color="primary" type="submit"
-            [disabled]="isSubmitting || rosterForm.invalid">
-            Save Group Roster
-          </button>
+        <tbody formArrayName="rosters">
+          <ng-container *ngFor="let item of rosters.controls; let roster_index = index">
+            <tr [formGroupName]="roster_index">
+              <td>{{ getDay(roster_index) }}</td>
 
-          <button mat-raised-button class="button" color="accent" type="button"
-            *ngIf="shiftRosters.length > 0 && rosterForm.valid" (click)="generateEmpWiseRoster()">
-            Generate Employee Roster
-          </button>
-        </div>
-      </mat-card>
-    </div>
-  </form>
-</div>
+              <ng-container formArrayName="group_shifts">
+                <td *ngFor="
+                    let group_shift of getGroupShifts(roster_index).controls;
+                    let gs_index = index
+                  ">
+                  <div [formGroupName]="gs_index">
+                    <select formControlName="shift_id">
+                      <option *ngFor="let shift of shifts" [value]="shift.id">
+                        {{ shift.name }}
+                      </option>
+                    </select>
+                    <p class="error-msg" *ngIf="
+                        getShift(roster_index, gs_index).touched &&
+                        getShift(roster_index, gs_index).errors?.required
+                      ">
+                      is required
+                    </p>
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+      <div fxFlex="25">
+        <mat-card class="title">
+          <div>Wage period:</div>
+          <div>
+            <span>{{ startDate | date: "mediumDate" }} </span>
+            <span>to </span>
+            <span>{{ endDate | date: "mediumDate" }} </span>
+          </div>
+
+          <div fxLayout="column" style="margin-top: 10px">
+            <button (click)="nextWageMonth()" class="wm-btn" mat-raised-button color="primary" type="button"
+              *ngIf="isActiveWageMonth(); else activeMonth">Next Wage Month
+            </button>
+            <ng-template #activeMonth>
+              <button (click)="currWageMonth()" class="wm-btn" mat-raised-button color="primary" type="button">
+                Current Wage Month
+              </button>
+            </ng-template>
+
+            <button mat-raised-button class="button" color="primary" type="submit"
+              [disabled]="isSubmitting || rosterForm.invalid">
+              Save Group Roster
+            </button>
+
+            <button mat-raised-button class="button" color="accent" type="button"
+              *ngIf="shiftRosters.length > 0 && rosterForm.valid" (click)="generateEmpWiseRoster()">
+              Generate Employee Roster
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </form>
+  </ng-container>
+</ng-container>
 
 <ng-template #loading>
   <div fxLayoutAlign="center center">

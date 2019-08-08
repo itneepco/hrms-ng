@@ -1,66 +1,80 @@
 <div class="main-container">
-  <mat-card *ngIf="activeWageMonth; else noWageMonth">
-    <div fxLayout="row" fxLayoutAlign="space-between center" id="head-info">
-      <div>
-        <span>Wage Period: {{ startDate | date: "mediumDate" }} to
-        {{ endDate | date: "mediumDate" }}</span>
-        <button (click)="nextWageMonth()">Next</button>
-        <button (click)="currWageMonth()">Current</button>
-      </div>
-      <button mat-icon-button (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-
-    <mat-divider></mat-divider>
-
-    <section fxLayout="row" fxLayout.lt-md="column">
-      <div *ngIf="workDays" fxFlex class="box">
-        <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
-          <div fxFlex="60">{{ formatDate(weekend) }}</div>
-          <div fxFlex="40">
-            <button class="btn" (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
-              Mark Work Day
+  <ng-container *ngIf="isActiveMonthDefined(); else loading">
+    <mat-card *ngIf="activeWageMonth; else noWageMonth">
+      <div fxLayout="row" fxLayoutAlign="space-between center" id="head-info">
+        <div>
+          <span>Wage Period: {{ startDate | date: "mediumDate" }} to
+            {{ endDate | date: "mediumDate" }}</span>
+          <button (click)="nextWageMonth()" class="wm-btn" mat-raised-button color="primary"
+            *ngIf="isActiveWageMonth(); else activeMonth">Next Wage Month
+          </button>
+          <ng-template #activeMonth>
+            <button (click)="currWageMonth()" class="wm-btn" mat-raised-button color="primary">
+              Current Wage Month
             </button>
-            <button class="btn" (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
-              Remove Work Day
+          </ng-template>
+        </div>
+        <button mat-icon-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <section fxLayout="row" fxLayout.lt-md="column">
+        <div *ngIf="workDays" fxFlex class="box">
+          <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
+            <div fxFlex="60">{{ formatDate(weekend) }}</div>
+            <div fxFlex="40">
+              <button class="btn" (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
+                Mark Work Day
+              </button>
+              <button class="btn" (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
+                Remove Work Day
+              </button>
+            </div>
+          </div>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div fxFlex class="box" *ngIf="genRosters && shifts">
+          <h3 class="title">List of regular groups</h3>
+          <div>
+            <table fxFlex>
+              <tr>
+                <th fxFlex="32">Group</th>
+                <th fxFlex="32">Shift Timing</th>
+                <th fxFlex="34">Action</th>
+              </tr>
+              <tr *ngFor="let group of genGroups">
+                <td fxFlex="32" fxLayoutAlign="start center">{{ group.name }}</td>
+                <td fxFlex="32" fxLayoutAlign="start center">{{ getShiftName(group) }}</td>
+                <td fxFlex="34" fxLayoutAlign="start center">
+                  <button class="btn" (click)="changeTiming(group)">
+                    Change Timing
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div id="gen-btn" *ngIf="genRosters && genRosters.length > 0">
+            <button mat-raised-button color="accent" (click)="genEmpWiseRoster()">
+              Generate Employee Roster
             </button>
           </div>
         </div>
-      </div>
-      <mat-divider [vertical]="true"></mat-divider>
-      <div fxFlex class="box" *ngIf="genRosters && shifts">
-        <h3 class="title">List of regular groups</h3>
-        <div>
-          <table fxFlex>
-            <tr>
-              <th fxFlex="32">Group</th>
-              <th fxFlex="32">Shift Timing</th>
-              <th fxFlex="34">Action</th>
-            </tr>
-            <tr *ngFor="let group of genGroups">
-              <td fxFlex="32" fxLayoutAlign="start center">{{ group.name }}</td>
-              <td fxFlex="32" fxLayoutAlign="start center">{{ getShiftName(group) }}</td>
-              <td fxFlex="34" fxLayoutAlign="start center">
-                <button class="btn" (click)="changeTiming(group)">
-                  Change Timing
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div id="gen-btn" *ngIf="genRosters && genRosters.length > 0">
-          <button mat-raised-button color="primary" (click)="genEmpWiseRoster()">
-            Generate Employee Roster
-          </button>
-        </div>
-      </div>
-    </section>
-  </mat-card>
+      </section>
+    </mat-card>
+  </ng-container>
 
   <ng-template #noWageMonth>
     <mat-card>
       Please define wage month period first!!!
     </mat-card>
+  </ng-template>
+
+  <ng-template #loading>
+    <div fxLayoutAlign="center center">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
   </ng-template>
 </div>

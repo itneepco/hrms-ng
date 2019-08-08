@@ -154,13 +154,13 @@ export class GenGroupRosterComponent implements OnInit {
   }
 
   genEmpWiseRoster() {
-    this.genRosterService.generateEmpWiseRoster(
-      this.dateService.getDateYYYYMMDD(this.startDate),
-      this.dateService.getDateYYYYMMDD(this.endDate)
-    )
+    let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
+    let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+
+    this.genRosterService.generateEmpWiseRoster(fromDate, toDate)
       .subscribe(() => {
         this.snackbar.open(
-          "Successfully generated regular employees roster",
+          `Successfully generated general roster from ${fromDate} to ${toDate}`,
           "Dismiss",
           {
             duration: 1600
@@ -170,13 +170,22 @@ export class GenGroupRosterComponent implements OnInit {
   }
 
   nextWageMonth() {
-    this.startDate = this.dateService.increaseDateByMonth(this.startDate, 1)
-    this.endDate = this.dateService.increaseDateByMonth(this.endDate, 1)
+    this.startDate = this.dateService.increaseDateByMonth(this.activeWageMonth.from_date, 1)
+    this.endDate = this.dateService.increaseDateByMonth(this.activeWageMonth.to_date, 1)
     this.enumerateDays();
   }
 
   currWageMonth() {
     this.startDate = this.activeWageMonth.from_date
     this.endDate = this.activeWageMonth.to_date
+    this.enumerateDays()
+  }
+
+  isActiveWageMonth() {
+    return this.startDate === this.activeWageMonth.from_date
+  }
+
+  isActiveMonthDefined() {
+    return typeof this.activeWageMonth  !== 'undefined'
   }
 }
