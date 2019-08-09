@@ -1,0 +1,16 @@
+<table style="width:100%">
+  <tr>
+    <th>Day</th>
+    <th>Emp Code</th>
+    <th>In time</th> 
+    <th>Out time</th>
+    <th>Status</th>
+  </tr>
+  <tr *ngFor="let attend of attendance">
+    <td>{{attend.day | date:'mediumDate'}}</td>
+    <td>{{attend.emp_code}}</td>
+    <td>{{attend.in_time}}</td>
+    <td>{{attend.out_time}}</td>
+    <td>{{getAttendanceStatus(attend.attendance_status)}}</td>
+  </tr>
+</table>

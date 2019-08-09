@@ -13,6 +13,7 @@ import { UploadDataComponent } from './components/admin/upload-data/upload-data.
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProcessAttendanceComponent } from './components/admin/process-attendance/process-attendance.component';
+import { AttendanceStatusComponent } from './components/attendance-status/attendance-status.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,10 @@ const routes: Routes = [
         path: "process-data",
         component: ProcessAttendanceComponent,
         canActivate: [TimeOfficeGuard]
+      },
+      {
+        path: "status",
+        component: AttendanceStatusComponent
       },
       { path: "", redirectTo: "dashboard", pathMatch: "full" }
     ]

@@ -27,4 +27,11 @@ export class AttendanceDataService {
       .get(`${this.getUrl()}/process?day=${day}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
+
+  getFileUploadedStatus(fromDate: Date, toDate: Date) { 
+    return this.http
+      .get(`${this.getUrl()}/upload/status?from_date=${fromDate}&to_date=${toDate}`)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
 }
