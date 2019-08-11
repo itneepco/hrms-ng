@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -49,7 +49,7 @@ export class AbsentDtlComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.emp_code = new FormControl();
+    this.emp_code = new FormControl('', Validators.required);
 
     this.empCodeSubs = this.emp_code.valueChanges
       .pipe(debounceTime(500))
@@ -77,6 +77,7 @@ export class AbsentDtlComponent implements OnInit {
       .getAbsentDtls(this.emp_code.value, this.pageIndex, this.pageSize)
       .subscribe(
         data => {
+          console.log(data)
           this.dataLength = data["count"];
           this.dataSource = new MatTableDataSource<AbsentDetail>(data["rows"]);
           this.dataSource.sort = this.sort;

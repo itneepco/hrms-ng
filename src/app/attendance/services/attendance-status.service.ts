@@ -22,11 +22,11 @@ export class AttendanceStatusService {
     return baseURL + `api/attendance/project/${this.auth.currentUser.project}`;
   }
 
-  getMyAttendanceStatus(fromDate: Date, toDate: Date): Observable<EmployeeWiseRoster[]> {
-    const empCode = this.auth.currentUser.emp_code
+  getEmpAttendanceStatus(fromDate: Date, toDate: Date, empCode?: string): Observable<EmployeeWiseRoster[]> {
+    const emp_code = empCode ? empCode : this.auth.currentUser.emp_code
 
     return this.http
-      .get<EmployeeWiseRoster[]>(`${this.getUrl()}/attendance-status/employee/${empCode}?from_date=${fromDate}&to_date=${toDate}`)
+      .get<EmployeeWiseRoster[]>(`${this.getUrl()}/attendance-status/employee/${emp_code}?from_date=${fromDate}&to_date=${toDate}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 

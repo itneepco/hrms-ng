@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AbsentDetailService } from 'src/app/attendance/services/absent-detail.service';
 import { LeaveTypeService } from 'src/app/shared/services/leave-type.service';
-
 import { AbsentDetail } from './../../../../models/absent-dtl';
+
 
 @Component({
   selector: "app-absent-dtl-form",
@@ -24,7 +24,7 @@ export class AbsentDtlFormComponent implements OnInit {
     private absentService: AbsentDetailService,
     private leaveTypeService: LeaveTypeService,
     public dialogRef: MatDialogRef<AbsentDtlFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.empCode = this.data.emp_code;
@@ -40,9 +40,9 @@ export class AbsentDtlFormComponent implements OnInit {
   initForm() {
     this.absentForm = this.fb.group({
       emp_code: [this.empCode],
-      from_date: ["", Validators.required],
-      to_date: ["", Validators.required],
-      leave_type_id: ["", Validators.required]
+      from_date: [this.absentDetail ? this.absentDetail.from_date : "", Validators.required],
+      to_date: [this.absentDetail ? this.absentDetail.to_date : "", Validators.required],
+      leave_type_id: [this.absentDetail ? this.absentDetail.leave_type.id : "", Validators.required]
     });
   }
 

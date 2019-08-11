@@ -55,7 +55,7 @@
             Leave Type
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="30">
-            {{ absent.leave_type_id }}
+            {{ absent.leave_type.description }}
           </mat-cell>
         </ng-container>
 
@@ -82,7 +82,7 @@
             Actions
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            <button mat-icon-button (click)="onEdit(absent)" color="acceent">
+            <button mat-icon-button (click)="onEdit(absent)" color="accent">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button (click)="onDelete(absent)" color="warn">
@@ -106,7 +106,7 @@
 </div>
 
 <button
-  mat-fab
+  mat-fab *ngIf="emp_code.valid && dataSource"
   class="fab-bottom-right"
   matTooltip="Add absent detail"
   matTooltipPosition="left"
