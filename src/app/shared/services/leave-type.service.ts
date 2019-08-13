@@ -5,15 +5,14 @@ import { catchError } from 'rxjs/operators';
 import { baseURL } from 'src/app/shared/config/baseUrl';
 
 import { CL_CODE, EL_CODE, HD_CL_CODE, HPL_CODE, RH_CODE } from '../models/global-codes';
-import { LeaveApplication, LeaveDetail } from '../models/leave';
-import { LeaveType } from './../../attendance/models/absent-dtl';
+import { LeaveApplication, LeaveDetail, LeaveType } from '../models/leave';
 import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: "root"
 })
 export class LeaveTypeService {
-  constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
+  constructor(private http: HttpClient, private handler: ErrorHandlerService) { }
 
   getUrl() {
     return baseURL + `api/leave-types`;

@@ -1,10 +1,37 @@
+mat-card {
+  padding: 0px;
+}
+
+#content {
+  padding: 0px !important;
+  margin-top: 10px
+}
+
 table {
   width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+  width: 100%;
+
   tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     padding: 5px;
   }
+  td {
+    padding-left: 12px;
+    line-height: 42px;
+    overflow: hidden;
+  }
+}
+
+thead {
+  background-color: #582c4f;
+  opacity: 0.9;
+  color: #fff !important;
   th {
+    font-size: 13px;
+    font-weight: 400;
     text-align: left;
+    padding: 12px;
   }
 }

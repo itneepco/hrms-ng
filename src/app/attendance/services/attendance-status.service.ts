@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
-import { baseURL } from 'src/app/shared/config/baseUrl';
-import { AuthService } from 'src/app/auth/services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EmployeeWiseRoster } from '../models/employee-wise-roster';
-import { ATTENDANCE_PRESENT, ATTENDANCE_ABSENT, ATTENDANCE_HALF_DAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY } from '../models/attendance-codes';
+import { catchError } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { baseURL } from 'src/app/shared/config/baseUrl';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
+import { ATTENDANCE_ABSENT, ATTENDANCE_HALF_DAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY, ATTENDANCE_PRESENT } from '../models/attendance-codes';
+import { AttendanceStatus } from '../models/employee-wise-roster';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,11 @@ export class AttendanceStatusService {
     return baseURL + `api/attendance/project/${this.auth.currentUser.project}`;
   }
 
-  getEmpAttendanceStatus(fromDate: Date, toDate: Date, empCode?: string): Observable<EmployeeWiseRoster[]> {
+  getEmpAttendanceStatus(fromDate: Date, toDate: Date, empCode?: string): Observable<AttendanceStatus[]> {
     const emp_code = empCode ? empCode : this.auth.currentUser.emp_code
 
     return this.http
-      .get<EmployeeWiseRoster[]>(`${this.getUrl()}/attendance-status/employee/${emp_code}?from_date=${fromDate}&to_date=${toDate}`)
+      .get<AttendanceStatus[]>(`${this.getUrl()}/attendance-status/employee/${emp_code}?from_date=${fromDate}&to_date=${toDate}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 

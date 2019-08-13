@@ -1,13 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AttendanceStatusService } from '../../services/attendance-status.service';
-import { EmployeeWiseRoster } from '../../models/employee-wise-roster';
-import { WageMonthService } from '../../services/wage-month.service';
-import { WageMonth } from '../../models/wage-month';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { EmployeeService } from 'src/app/shared/services/employee.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { EmployeeService } from 'src/app/shared/services/employee.service';
+import { ATTENDANCE_PRESENT } from '../../models/attendance-codes';
+import { AttendanceStatus } from '../../models/employee-wise-roster';
+import { WageMonth } from '../../models/wage-month';
+import { AttendanceStatusService } from '../../services/attendance-status.service';
+import { WageMonthService } from '../../services/wage-month.service';
+import { ChangeStatusComponent } from './change-status/change-status.component';
 
 @Component({
   selector: 'app-attendance-status',
@@ -15,15 +19,18 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./attendance-status.component.scss']
 })
 export class AttendanceStatusComponent implements OnInit, OnDestroy {
-  attendance: EmployeeWiseRoster[];
+  attendance: AttendanceStatus[];
   activeWageMonth: WageMonth;
   emp_code: FormControl;
   searchResult = [];
   empCodeSubs: Subscription;
+  presentStatus = ATTENDANCE_PRESENT;
 
   constructor(
     private wageMonthService: WageMonthService,
     public auth: AuthService,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,
     private employeeService: EmployeeService,
     private attendStatusService: AttendanceStatusService) { }
 
@@ -64,6 +71,27 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
         // console.log(result)
         this.attendance = result
       })
+  }
+
+  onEdit(attend: AttendanceStatus) {
+    const dialogRef = this.dialog.open(ChangeStatusComponent, {
+      panelClass: "detail-dialog",
+      width: '550px',
+      height: '450px',
+      data: attend
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.snackbar.open("Successfully modified the attendance status", "Dismiss", {
+        duration: 1600
+      });
+      const index = this.attendance.indexOf(attend);
+      this.attendance[index] = result;
+      this.attendance = [...this.attendance]
+    });
   }
 
   getFullName(item) {

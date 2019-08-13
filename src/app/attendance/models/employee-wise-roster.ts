@@ -14,3 +14,20 @@ export interface EmployeeWiseRoster {
   created_at: string;
   updated_at: string;
 }
+
+export interface AttendanceStatus {
+  id: number;
+  emp_code: string;
+  day: Date;
+  is_holiday: boolean;
+  shift: {
+    id: number,
+    name: string,
+    is_general: boolean
+  };
+  in_time: string;
+  out_time: string;
+  attendance_status: number;
+  modified_status: number;
+  remarks: string;
+}

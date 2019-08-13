@@ -1,18 +1,32 @@
-<table style="width:100%">
-  <tr>
-    <th>Day</th>
-    <th>Machine IDs</th> 
-    <th>No of Files</th>
-    <th>Action</th>
-  </tr>
-  <tr *ngFor="let status of biometricFileStatus">
-    <td>{{status.punch_day | date:'mediumDate'}}</td>
-    <td>
-      <span *ngFor="let machineId of status.machine_ids">
-        {{machineId}}
-      </span>
-    </td> 
-    <td>{{status.machine_ids.length}}</td>
-    <td><button (click)="processData(status.punch_day)">Process Data</button></td>
-  </tr>
-</table>
+<div class="main-container">
+  <mat-card *ngIf="biometricFileStatus; else loading">
+    <table style="width:100%">
+      <thead>
+        <th>Day</th>
+        <th>Machine IDs</th>
+        <th>No of Files</th>
+        <th>Action</th>
+      </thead>
+      <tr *ngFor="let status of biometricFileStatus">
+        <td>{{status.punch_day | date:'mediumDate'}}</td>
+        <td>
+          <span *ngFor="let machineId of status.machine_ids">
+            {{machineId}}
+          </span>
+        </td>
+        <td>{{status.machine_ids.length}}</td>
+        <td>
+          <button mat-raised-button color="accent" (click)="processData(status.punch_day)">
+            Process
+          </button>
+        </td>
+      </tr>
+    </table>
+  </mat-card>
+
+  <ng-template #loading>
+    <div fxLayoutAlign="center center">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </ng-template>
+</div>

@@ -6,15 +6,18 @@ import { baseURL } from "src/app/shared/config/baseUrl";
 import { ErrorHandlerService } from "src/app/shared/services/error-handler.service";
 
 import { AbsentDetail } from "./../models/absent-dtl";
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
   providedIn: "root"
 })
 export class AbsentDetailService {
-  constructor(private http: HttpClient, private handler: ErrorHandlerService) {}
+  constructor(private http: HttpClient,
+    private auth: AuthService,
+    private handler: ErrorHandlerService) { }
 
   getUrl() {
-    return baseURL + `api/attendance/employee`;
+    return baseURL + `api/attendance/project/${this.auth.currentUser.project}/employee`;
   }
 
   getAbsentDtls(

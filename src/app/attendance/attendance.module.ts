@@ -22,6 +22,7 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProcessAttendanceComponent } from './components/admin/process-attendance/process-attendance.component';
 import { AttendanceStatusComponent } from './components/attendance-status/attendance-status.component';
+import { ChangeStatusComponent } from './components/attendance-status/change-status/change-status.component';
 
 @NgModule({
   imports: [SharedModule, AttendanceRoutingModule, FileUploadModule],
@@ -42,7 +43,8 @@ import { AttendanceStatusComponent } from './components/attendance-status/attend
     AbsentDtlComponent,
     AbsentDtlFormComponent,
     ProcessAttendanceComponent,
-    AttendanceStatusComponent
+    AttendanceStatusComponent,
+    ChangeStatusComponent
   ],
   entryComponents: [
     ShiftFormComponent,
@@ -50,7 +52,8 @@ import { AttendanceStatusComponent } from './components/attendance-status/attend
     WageMonthFormComponent,
     EmployeeGroupFormComponent,
     ChangeTimingComponent,
-    AbsentDtlFormComponent
+    AbsentDtlFormComponent,
+    ChangeStatusComponent
   ]
 })
-export class AttendanceModule {}
+export class AttendanceModule { }
