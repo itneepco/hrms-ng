@@ -23,7 +23,7 @@ export class ShiftComponent implements OnInit {
     "out_time_start",
     "out_time_end",
     "late_time",
-    "half_time",
+    "working_hours",
     "actions"
   ];
 

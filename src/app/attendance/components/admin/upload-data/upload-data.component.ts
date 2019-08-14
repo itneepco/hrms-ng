@@ -15,7 +15,7 @@ export class UploadDataComponent implements OnInit {
   constructor(
     private locationService: Location,
     private auth: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const projectId = this.auth.currentUser.project;

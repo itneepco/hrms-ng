@@ -46,9 +46,9 @@
 
     <div fxLayout="row" fxLayoutGap="10px">
       <mat-form-field appearance="outline" fxFlex>
-        <mat-label>Half time</mat-label>
-        <input matInput [ngxTimepicker]="halfTime" [format]="24" placeholder="Half time" formControlName="half_time"/>
-        <mat-error *ngIf="half_time.errors?.required">Half Time is required</mat-error>
+        <mat-label>Working hours</mat-label>
+        <input matInput placeholder="Working hours" formControlName="working_hours"/>
+        <mat-error *ngIf="working_hours.errors?.required">Working hours is required</mat-error>
       </mat-form-field>
       <ngx-material-timepicker #halfTime></ngx-material-timepicker>
 

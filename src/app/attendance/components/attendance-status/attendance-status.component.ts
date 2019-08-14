@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
-import { ATTENDANCE_ON_LEAVE, ATTENDANCE_PRESENT } from '../../models/attendance-codes';
+import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_PRESENT } from '../../models/attendance-codes';
 import { AttendanceStatus } from '../../models/employee-wise-roster';
 import { WageMonth } from '../../models/wage-month';
 import { AttendanceStatusService } from '../../services/attendance-status.service';
@@ -25,7 +25,8 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   searchResult = [];
   empCodeSubs: Subscription;
   presentStatus = ATTENDANCE_PRESENT;
-  onLeaveStatus = ATTENDANCE_ON_LEAVE;
+  officialAbsentStatus = ATTENDANCE_ABSENT_OFFICIALLY;
+  onAbsentStatus = ATTENDANCE_ABSENT;
   startDate: Date;
   endDate: Date;
 

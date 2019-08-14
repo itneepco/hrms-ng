@@ -49,7 +49,7 @@ export class ShiftFormComponent implements OnInit {
         Validators.required
       ],
       late_time: [this.shift ? this.shift.late_time : "", Validators.required],
-      half_time: [this.shift ? this.shift.half_time : "", Validators.required],
+      working_hours: [this.shift ? this.shift.working_hours : "", Validators.required],
       is_night_shift: [this.shift ? this.shift.is_night_shift : false],
       is_general: [this.shift ? this.shift.is_general : false]
     });
@@ -113,8 +113,8 @@ export class ShiftFormComponent implements OnInit {
     return this.shiftForm.get("late_time");
   }
 
-  get half_time() {
-    return this.shiftForm.get("half_time");
+  get working_hours() {
+    return this.shiftForm.get("working_hours");
   }
 
   get is_night_shift() {

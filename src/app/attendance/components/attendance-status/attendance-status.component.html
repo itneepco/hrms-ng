@@ -31,7 +31,7 @@
           <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
         </tr>
       </thead>
-      <tr *ngFor="let attend of attendance">
+      <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus}">
         <td>{{attend.day | date:'mediumDate'}}</td>
         <td>{{attend.shift.name}}</td>
         <td>{{attend.in_time}}</td>
@@ -42,7 +42,7 @@
         <td *ngIf="auth.isTimeOfficeAdmin()">
           <ng-container *ngIf="attend.attendance_status && 
               !(attend.attendance_status == presentStatus ||
-              attend.attendance_status == onLeaveStatus)">
+              attend.attendance_status == officialAbsentStatus)">
 
             <button mat-icon-button (click)="onEdit(attend)" color="primary">
               <mat-icon>edit</mat-icon>
@@ -62,17 +62,13 @@
 
 <div id="action-btn">
   <div class="fab">
-    <button mat-fab (click)="nextWageMonth()"
-        matTooltip="Next Wage Month" 
-        matTooltipPosition="left" color="accent">
+    <button mat-fab (click)="nextWageMonth()" matTooltip="Next Wage Month" matTooltipPosition="left" color="accent">
       <mat-icon>fast_forward</mat-icon>
     </button>
   </div>
 
   <div class="fab">
-    <button mat-fab (click)="prevWageMonth()"
-        matTooltip="Previous Wage Month" 
-        matTooltipPosition="left" color="accent">
+    <button mat-fab (click)="prevWageMonth()" matTooltip="Previous Wage Month" matTooltipPosition="left" color="accent">
       <mat-icon>fast_rewind</mat-icon>
     </button>
   </div>

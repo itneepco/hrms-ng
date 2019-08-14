@@ -7,7 +7,7 @@ export interface Shift {
   out_time_start: string;
   out_time_end: string;
   late_time: string;
-  half_time: string;
+  working_hours: number;
   is_night_shift: boolean;
   is_general: boolean;
   created_by: string;
