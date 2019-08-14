@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
-import { ATTENDANCE_PRESENT } from '../../models/attendance-codes';
+import { ATTENDANCE_ON_LEAVE, ATTENDANCE_PRESENT } from '../../models/attendance-codes';
 import { AttendanceStatus } from '../../models/employee-wise-roster';
 import { WageMonth } from '../../models/wage-month';
 import { AttendanceStatusService } from '../../services/attendance-status.service';
@@ -25,6 +25,9 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   searchResult = [];
   empCodeSubs: Subscription;
   presentStatus = ATTENDANCE_PRESENT;
+  onLeaveStatus = ATTENDANCE_ON_LEAVE;
+  startDate: Date;
+  endDate: Date;
 
   constructor(
     private wageMonthService: WageMonthService,
@@ -52,6 +55,8 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       this.activeWageMonth = wageMonth
       if (!this.activeWageMonth) return
 
+      this.startDate = this.activeWageMonth.from_date
+      this.endDate = this.activeWageMonth.to_date
       this.fetchAttendance();
     });
   }
@@ -63,8 +68,8 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
 
   fetchAttendance() {
     this.attendStatusService.getEmpAttendanceStatus(
-      this.activeWageMonth.from_date,
-      this.activeWageMonth.to_date,
+      this.startDate,
+      this.endDate,
       this.emp_code.value
     )
       .subscribe(result => {
@@ -98,6 +103,18 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     return `${item.first_name} ${item.middle_name} ${item.last_name}, ${
       item.designation
       }`;
+  }
+
+  modifiedStatus(attend: AttendanceStatus) {
+    return attend.modified_status ? "MARKED PRESENT" : ''
+  }
+
+  prevWageMonth() {
+
+  }
+
+  nextWageMonth() {
+
   }
 
   ngOnDestroy() {

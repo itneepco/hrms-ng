@@ -17,12 +17,12 @@
     </div>
   </mat-card>
 
-  <mat-card class="table" id="content" 
-      *ngIf="attendance && attendance.length > 0; else loading">
+  <mat-card class="table" id="content" *ngIf="attendance; else loading">
     <table style="width:100%">
       <thead>
         <tr>
           <th>Day</th>
+          <th>Shift</th>
           <th>In time</th>
           <th>Out time</th>
           <th>Status</th>
@@ -33,13 +33,17 @@
       </thead>
       <tr *ngFor="let attend of attendance">
         <td>{{attend.day | date:'mediumDate'}}</td>
+        <td>{{attend.shift.name}}</td>
         <td>{{attend.in_time}}</td>
         <td>{{attend.out_time}}</td>
         <td>{{getAttendanceStatus(attend.attendance_status)}}</td>
-        <td></td>
+        <td>{{modifiedStatus(attend)}}</td>
         <td>{{attend.remarks}}</td>
         <td *ngIf="auth.isTimeOfficeAdmin()">
-          <ng-container *ngIf="attend.attendance_status != presentStatus">
+          <ng-container *ngIf="attend.attendance_status && 
+              !(attend.attendance_status == presentStatus ||
+              attend.attendance_status == onLeaveStatus)">
+
             <button mat-icon-button (click)="onEdit(attend)" color="primary">
               <mat-icon>edit</mat-icon>
             </button>
@@ -54,4 +58,22 @@
       <mat-spinner diameter="80"></mat-spinner>
     </div>
   </ng-template>
+</div>
+
+<div id="action-btn">
+  <div class="fab">
+    <button mat-fab (click)="nextWageMonth()"
+        matTooltip="Next Wage Month" 
+        matTooltipPosition="left" color="accent">
+      <mat-icon>fast_forward</mat-icon>
+    </button>
+  </div>
+
+  <div class="fab">
+    <button mat-fab (click)="prevWageMonth()"
+        matTooltip="Previous Wage Month" 
+        matTooltipPosition="left" color="accent">
+      <mat-icon>fast_rewind</mat-icon>
+    </button>
+  </div>
 </div>

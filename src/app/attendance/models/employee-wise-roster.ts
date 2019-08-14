@@ -6,7 +6,7 @@ export interface EmployeeWiseRoster {
   shift_id: number;
   in_time: string;
   out_time: string;
-  attendance_status: number;
+  attendance_status: string;
   modified_status: number;
   remarks: string;
   created_by: string;
@@ -27,7 +27,7 @@ export interface AttendanceStatus {
   };
   in_time: string;
   out_time: string;
-  attendance_status: number;
+  attendance_status: string;
   modified_status: number;
   remarks: string;
 }

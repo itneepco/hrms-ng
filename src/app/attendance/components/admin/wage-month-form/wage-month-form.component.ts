@@ -37,7 +37,7 @@ export class WageMonthFormComponent implements OnInit {
       .subscribe(data => {
         console.log(data)
         this.dialogRef.close();
-        this.snackbar.open("Successfully edited the shift record", "Dismiss", {
+        this.snackbar.open("Successfully initialized wage month", "Dismiss", {
           duration: 1600
         });
       })

@@ -30,7 +30,6 @@ export class ProcessAttendanceComponent implements OnInit {
 
       this.attendanceDataService.getFileUploadedStatus(this.startDate, this.endDate)
         .subscribe(result => {
-          // console.log(result)
           this.biometricFileStatus = result
         })
     })
@@ -39,9 +38,9 @@ export class ProcessAttendanceComponent implements OnInit {
   processData(day: Date) {
     this.attendanceDataService.processPunchingData(day)
       .subscribe(data => {
-        console.log(data) 
+        // console.log(data)
         this.snackbar.open(
-          `Successfully processed attendance data for the day ${day}`,
+          data.message,
           "Dismiss",
           {
             duration: 2000

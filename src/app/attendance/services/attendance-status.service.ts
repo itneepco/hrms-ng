@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { baseURL } from 'src/app/shared/config/baseUrl';
 import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
-import { ATTENDANCE_ABSENT, ATTENDANCE_HALF_DAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY, ATTENDANCE_PRESENT } from '../models/attendance-codes';
+import { ATTENDANCE_ABSENT, ATTENDANCE_HALF_DAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY, ATTENDANCE_PRESENT, ATTENDANCE_HOLIDAY, ATTENDANCE_ON_LEAVE } from '../models/attendance-codes';
 import { AttendanceStatus } from '../models/employee-wise-roster';
 
 @Injectable({
@@ -46,6 +46,12 @@ export class AttendanceStatusService {
       }
       case ATTENDANCE_OFF_DAY: {
         return "OFF";
+      }
+      case ATTENDANCE_HOLIDAY: {
+        return "HOLIDAY"
+      }
+      case ATTENDANCE_ON_LEAVE: {
+        return "ON LEAVE"
       }
     }
   }
