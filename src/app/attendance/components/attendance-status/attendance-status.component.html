@@ -18,7 +18,7 @@
   </mat-card>
 
   <mat-card class="table" id="content" *ngIf="attendance; else loading">
-    <table style="width:100%">
+    <table style="width:100%" *ngIf="attendance.length > 0; else noData">
       <thead>
         <tr>
           <th>Day</th>
@@ -42,6 +42,7 @@
         <td *ngIf="auth.isTimeOfficeAdmin()">
           <ng-container *ngIf="attend.attendance_status && 
               !(attend.attendance_status == presentStatus ||
+              attend.attendance_status == onHolidayStatus ||
               attend.attendance_status == officialAbsentStatus)">
 
             <button mat-icon-button (click)="onEdit(attend)" color="primary">
@@ -56,6 +57,13 @@
   <ng-template #loading>
     <div fxLayoutAlign="center center">
       <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #noData>
+    <div style="padding: 25px">
+      There are no attendance data available corresponding to the period
+      {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }} 
     </div>
   </ng-template>
 </div>

@@ -16,7 +16,12 @@ export class DashboardComponent implements OnInit {
     private wageMonthService: WageMonthService) { }
 
   ngOnInit() {
-    this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => this.activeWageMonth = wageMonth)
+    this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
+      this.activeWageMonth = wageMonth 
+      if(!this.activeWageMonth) {
+        this.openWageMonth()
+      }
+    })
   }
 
   openWageMonth() {

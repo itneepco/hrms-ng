@@ -1,4 +1,4 @@
-<div class="buttons">
+<!-- <div class="buttons">
   <button mat-raised-button [routerLink]="['/attendance/shift']">Shift</button>
 </div>
 <div class="buttons">
@@ -18,4 +18,106 @@
 </div>
 <div class="buttons" *ngIf="!activeWageMonth">
   <button mat-raised-button (click)="openWageMonth()">Wage Month</button>
+</div> -->
+
+
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" id="leave-dashboard">
+  <mat-card fxFlex="60">
+
+  </mat-card>
+  
+  <div fxFlex="40" fxLayout="column" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/time.png">
+            <h3 matLine> Shift Timings </h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-flat-button [routerLink]="['/attendance/shift']">
+            View
+          </button>
+        </div>
+      </mat-card>
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/absent.png">
+            <h3 matLine>Absent Detail</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button [routerLink]="['/attendance/absent-dtl']">
+            View
+          </button>
+        </div>
+      </mat-card>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/group.png">
+            <h3 matLine>Groups</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button [routerLink]="['/attendance/group']">
+            View
+          </button>
+        </div>
+      </mat-card>
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/emp-group.png">
+            <h3 matLine>Employee Group</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button [routerLink]="['/attendance/employee-group']">
+            View
+          </button>
+        </div>
+      </mat-card>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/upload.png">
+            <h3 matLine>Upload Data</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button [routerLink]="['/attendance/upload-data']">
+            View
+          </button>
+        </div>
+      </mat-card>
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/process.png">
+            <h3 matLine>Process Data</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block" fxLayoutAlign="end">
+          <button mat-button [routerLink]="['/attendance/process-data']">
+            View
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
 </div>

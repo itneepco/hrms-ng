@@ -6,10 +6,11 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
-import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_PRESENT } from '../../models/attendance-codes';
+import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_PRESENT, ATTENDANCE_HOLIDAY } from '../../models/attendance-codes';
 import { AttendanceStatus } from '../../models/employee-wise-roster';
 import { WageMonth } from '../../models/wage-month';
 import { AttendanceStatusService } from '../../services/attendance-status.service';
+import { DateService } from '../../services/date.service';
 import { WageMonthService } from '../../services/wage-month.service';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 
@@ -21,12 +22,15 @@ import { ChangeStatusComponent } from './change-status/change-status.component';
 export class AttendanceStatusComponent implements OnInit, OnDestroy {
   attendance: AttendanceStatus[];
   activeWageMonth: WageMonth;
-  emp_code: FormControl;
+  emp_code = new FormControl();
   searchResult = [];
   empCodeSubs: Subscription;
+
   presentStatus = ATTENDANCE_PRESENT;
   officialAbsentStatus = ATTENDANCE_ABSENT_OFFICIALLY;
   onAbsentStatus = ATTENDANCE_ABSENT;
+  onHolidayStatus = ATTENDANCE_HOLIDAY;
+  
   startDate: Date;
   endDate: Date;
 
@@ -36,10 +40,11 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
     private employeeService: EmployeeService,
+    private dateService: DateService,
     private attendStatusService: AttendanceStatusService) { }
 
   ngOnInit() {
-    this.emp_code = new FormControl()
+    this.emp_code.setValue(this.auth.currentUser.emp_code)
 
     this.empCodeSubs = this.emp_code.valueChanges
       .pipe(debounceTime(500))
@@ -65,7 +70,6 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   getAttendanceStatus(code: string) {
     return this.attendStatusService.status(code)
   }
-
 
   fetchAttendance() {
     this.attendStatusService.getEmpAttendanceStatus(
@@ -111,11 +115,17 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   }
 
   prevWageMonth() {
-
+    this.attendance = null
+    this.startDate = this.dateService.decreaseDateByMonth(this.startDate, 1)
+    this.endDate = this.dateService.decreaseDateByMonth(this.endDate, 1)
+    this.fetchAttendance()
   }
 
   nextWageMonth() {
-
+    this.attendance = null
+    this.startDate = this.dateService.increaseDateByMonth(this.startDate, 1)
+    this.endDate = this.dateService.increaseDateByMonth(this.endDate, 1)
+    this.fetchAttendance()
   }
 
   ngOnDestroy() {

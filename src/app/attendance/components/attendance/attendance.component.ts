@@ -8,20 +8,20 @@ import { NavObject } from "src/app/shared/models/nav-object";
   styleUrls: ["./attendance.component.scss"]
 })
 export class AttendanceComponent implements OnInit {
-  navObj: NavObject[] = [{ 
-    name: "Dashboard", 
-    path: "dashboard" 
-  }, 
-  {
+  navObj: NavObject[] = [{
     name: "Attendance",
     path: '/attendance/status'
-  }
-];
+  }];
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
     if (this.auth.isTimeOfficeAdmin() || this.auth.isItAdmin()) {
+      this.navObj.unshift({
+        name: "Dashboard",
+        path: "dashboard"
+      })
+
       this.navObj.push({
         name: "Shift Roster",
         path: "/attendance/shift-grp-roster"

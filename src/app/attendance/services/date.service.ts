@@ -42,4 +42,8 @@ export class DateService {
   increaseDateByMonth(day: Date, month: number) {
     return moment(day).add(month, 'month').toDate()
   }
+
+  decreaseDateByMonth(day: Date, month: number) {
+    return moment(day).subtract(month, 'month').toDate()
+  }
 }
