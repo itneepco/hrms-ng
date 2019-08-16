@@ -10,7 +10,7 @@ export class TimeOfficeGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private auth: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.auth.isTimeOfficeAdmin() || this.auth.isItAdmin()) return true
+    if(this.auth.isTimeOfficeAdmin()) return true
 
     this.router.navigate(['/attendance']);
     return false;

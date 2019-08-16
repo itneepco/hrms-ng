@@ -27,7 +27,7 @@
           Emp Name
         </mat-header-cell>
         <mat-cell *matCellDef="let absentee" fxFlex="15">
-          <div>{{ absentee.name }}</div>
+          <div>{{ absentee.name | titlecase }}</div>
         </mat-cell>
       </ng-container>
 

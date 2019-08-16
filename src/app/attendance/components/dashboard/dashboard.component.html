@@ -1,5 +1,4 @@
-<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
-  *ngIf="auth.isTimeOfficeAdmin() || auth.isItAdmin(); else employeeView">
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" *ngIf="auth.isTimeOfficeAdmin(); else employeeView">
 
   <mat-card fxFlex="60">
     <div>
@@ -101,13 +100,13 @@
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/report.png">
-            <h3 matLine>Today's Data</h3>
+            <h3 matLine>Month End</h3>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button (click)="downloadAbsentee()">
-            Download
+          <button mat-button (click)="processMonthEnd()">
+            Process
           </button>
         </div>
       </mat-card>
@@ -125,31 +124,77 @@
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
-      <div class="apply-block" fxLayoutAlign="end">
+      <div class="apply-block">
+        <div *ngFor="let punchTiming of punchTimings">
+          <h2 class="title">{{punchTiming.name | uppercase}} TIMING</h2>
+          <div class="item">
+            <div>In Time</div>
+            <div fxLayout="row" fxLayoutGap="10px">
+              <div fxFlex>Start:
+                <span class="left-margin">{{punchTiming.in_time_start}}</span>
+              </div>
+              <div fxFlex>End:
+                <span class="left-margin">{{punchTiming.in_time_end}}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="item">
+            <div>Out Time</div>
+            <div fxLayout="row" fxLayoutGap="10px">
+              <div fxFlex>Start:
+                <span class="left-margin">{{punchTiming.out_time_start}}</span>
+              </div>
+              <div fxFlex>End:
+                <span class="left-margin">{{punchTiming.out_time_end}}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="item">Late time:
+            <span class="left-margin">{{punchTiming.late_time}}</span>
+          </div>
+        </div>
       </div>
     </mat-card>
 
     <mat-card fxFlex class="card-block">
       <mat-list>
         <mat-list-item>
-          <img matListAvatar src="assets/icons/time.png">
+          <img matListAvatar src="assets/icons/today.png">
           <h3 matLine> Today's Punching </h3>
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
-      <div class="apply-block" fxLayoutAlign="end">
+      <div class="apply-block">
+        <h2 class="title">NO OF PUNCHINGS:
+          <span style="margin-left: 10px">{{todaysPunchings.length}}</span>
+        </h2>
+        <ul>
+          <li *ngFor="let punch of todaysPunchings">
+            {{ punch }}
+          </li>
+        </ul>
       </div>
     </mat-card>
 
     <mat-card fxFlex class="card-block">
       <mat-list>
         <mat-list-item>
-          <img matListAvatar src="assets/icons/time.png">
+          <img matListAvatar src="assets/icons/late.png">
           <h3 matLine> Late punchings </h3>
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
-      <div class="apply-block" fxLayoutAlign="end">
+      <div class="apply-block">
+        <h2 class="title">NO OF DAYS:
+          <span style="margin-left: 10px">{{latePunchings.length}}</span>
+        </h2>
+        <ul>
+          <li *ngFor="let day of latePunchings">
+            {{ day | date:'mediumDate' }}
+          </li>
+        </ul>
       </div>
     </mat-card>
   </div>

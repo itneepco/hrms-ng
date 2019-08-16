@@ -216,4 +216,11 @@ export class ShiftRosterComponent implements OnInit {
   isActiveMonthDefined() {
     return typeof this.activeWageMonth  !== 'undefined'
   }
+
+  prePopulateShiftRoster() {
+    let nextMonthRoster = []
+    if(this.shiftRosters && this.shiftRosters.length > 0) {
+      
+    }
+  }
 }

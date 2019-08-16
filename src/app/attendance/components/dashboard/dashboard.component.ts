@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { WageMonth } from '../../models/wage-month';
+import { EmployeeDashboardService } from '../../services/employee-dashboard.service';
 import { WageMonthService } from '../../services/wage-month.service';
 import { WageMonthFormComponent } from '../admin/wage-month-form/wage-month-form.component';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class DashboardComponent implements OnInit {
   activeWageMonth: WageMonth;
+  punchTimings = [];
+  latePunchings = [];
+  todaysPunchings = []
   // Pie
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -68,6 +72,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
     public auth: AuthService,
+    private empDashboardService: EmployeeDashboardService,
     private wageMonthService: WageMonthService) { }
 
   ngOnInit() {
@@ -77,6 +82,21 @@ export class DashboardComponent implements OnInit {
         this.openWageMonth()
       }
     })
+
+    if (!this.auth.isTimeOfficeAdmin()) {
+      this.empDashboardService.getShiftTimings().subscribe(data => {
+        // console.log(data)
+        this.punchTimings = data
+      })
+      this.empDashboardService.getLatePunchings().subscribe(data => {
+        console.log(data)
+        this.latePunchings = data
+      })
+      this.empDashboardService.getTodaysPunching().subscribe(data => {
+        console.log(data)
+        this.todaysPunchings = data
+      })
+    }
   }
 
   // events
@@ -95,7 +115,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  downloadAbsentee() {
+  processMonthEnd() {
 
   }
 }

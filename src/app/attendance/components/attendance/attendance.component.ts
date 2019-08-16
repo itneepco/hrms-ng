@@ -21,7 +21,7 @@ export class AttendanceComponent implements OnInit {
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
-    if (this.auth.isTimeOfficeAdmin() || this.auth.isItAdmin()) {
+    if (this.auth.isTimeOfficeAdmin()) {
       this.navObj.push({
         name: "Shift Roster",
         path: "/attendance/shift-grp-roster"
