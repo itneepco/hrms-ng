@@ -6,10 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ChartsModule } from 'ng2-charts';
+import { FileUploadModule } from 'ng2-file-upload';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SubheaderComponent } from './components/subheader/subheader.component';
+
 
 @NgModule({
   imports: [
@@ -20,6 +22,8 @@ import { SubheaderComponent } from './components/subheader/subheader.component';
     FlexLayoutModule,
     HttpClientModule,
     RouterModule,
+    ChartsModule,
+    FileUploadModule,
     NgxMaterialTimepickerModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -35,7 +39,9 @@ import { SubheaderComponent } from './components/subheader/subheader.component';
     HttpClientModule,
     SubheaderComponent,
     CalendarModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    ChartsModule,
+    FileUploadModule
   ],
   declarations: [
     SubheaderComponent,

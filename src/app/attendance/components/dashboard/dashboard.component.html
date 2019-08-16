@@ -1,34 +1,27 @@
-<!-- <div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/shift']">Shift</button>
-</div>
-<div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/group']">Group</button>
-</div>
-<div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/employee-group']">Employee Group</button>
-</div>
-<div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/absent-dtl']">Absent Detail</button>
-</div>
-<div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/process-data']">Process Attendance Data</button>
-</div>
-<div class="buttons">
-  <button mat-raised-button [routerLink]="['/attendance/upload-data']">Upload Attendance Data</button>
-</div>
-<div class="buttons" *ngIf="!activeWageMonth">
-  <button mat-raised-button (click)="openWageMonth()">Wage Month</button>
-</div> -->
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+  *ngIf="auth.isTimeOfficeAdmin() || auth.isItAdmin(); else employeeView">
 
-
-<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" id="leave-dashboard">
   <mat-card fxFlex="60">
+    <div>
+      <div>
+        <div class="chart">
+          <canvas height="120" baseChart [data]="inTimeData" [labels]="inTimeLabels" [chartType]="pieChartType"
+            [options]="pieChartOptions" [colors]="inTimeColors" [legend]="pieChartLegend">
+          </canvas>
+        </div>
 
+        <div class="chart" style="margin-top: 12px;">
+          <canvas height="120" baseChart [data]="outTimeData" [labels]="outTimeLabels" [chartType]="pieChartType"
+            [options]="pieChartOptions" [colors]="outTimeColors" [legend]="pieChartLegend">
+          </canvas>
+        </div>
+      </div>
+    </div>
   </mat-card>
-  
-  <div fxFlex="40" fxLayout="column" fxLayoutGap="20px">
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-card fxFlex class="card-block">
+
+  <div fxFlex="40" fxLayout="column" fxLayoutGap="16px">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/time.png">
@@ -42,7 +35,7 @@
           </button>
         </div>
       </mat-card>
-      <mat-card fxFlex class="card-block">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/absent.png">
@@ -58,8 +51,8 @@
       </mat-card>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-card fxFlex class="card-block">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/group.png">
@@ -73,7 +66,7 @@
           </button>
         </div>
       </mat-card>
-      <mat-card fxFlex class="card-block">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/emp-group.png">
@@ -89,8 +82,8 @@
       </mat-card>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-card fxFlex class="card-block">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
             <img matListAvatar src="assets/icons/upload.png">
@@ -104,20 +97,60 @@
           </button>
         </div>
       </mat-card>
-      <mat-card fxFlex class="card-block">
+      <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/process.png">
-            <h3 matLine>Process Data</h3>
+            <img matListAvatar src="assets/icons/report.png">
+            <h3 matLine>Today's Data</h3>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button [routerLink]="['/attendance/process-data']">
-            View
+          <button mat-button (click)="downloadAbsentee()">
+            Download
           </button>
         </div>
       </mat-card>
     </div>
   </div>
 </div>
+
+<ng-template #employeeView>
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-card fxFlex class="card-block">
+      <mat-list>
+        <mat-list-item>
+          <img matListAvatar src="assets/icons/time.png">
+          <h3 matLine> Punching Timings </h3>
+        </mat-list-item>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <div class="apply-block" fxLayoutAlign="end">
+      </div>
+    </mat-card>
+
+    <mat-card fxFlex class="card-block">
+      <mat-list>
+        <mat-list-item>
+          <img matListAvatar src="assets/icons/time.png">
+          <h3 matLine> Today's Punching </h3>
+        </mat-list-item>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <div class="apply-block" fxLayoutAlign="end">
+      </div>
+    </mat-card>
+
+    <mat-card fxFlex class="card-block">
+      <mat-list>
+        <mat-list-item>
+          <img matListAvatar src="assets/icons/time.png">
+          <h3 matLine> Late punchings </h3>
+        </mat-list-item>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <div class="apply-block" fxLayoutAlign="end">
+      </div>
+    </mat-card>
+  </div>
+</ng-template>

@@ -8,20 +8,20 @@ import { NavObject } from "src/app/shared/models/nav-object";
   styleUrls: ["./attendance.component.scss"]
 })
 export class AttendanceComponent implements OnInit {
-  navObj: NavObject[] = [{
-    name: "Attendance",
-    path: '/attendance/status'
-  }];
+  navObj: NavObject[] = [
+    {
+      name: "Dashboard",
+      path: "dashboard"
+    },
+    {
+      name: "Attendance",
+      path: '/attendance/status'
+    }];
 
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
     if (this.auth.isTimeOfficeAdmin() || this.auth.isItAdmin()) {
-      this.navObj.unshift({
-        name: "Dashboard",
-        path: "dashboard"
-      })
-
       this.navObj.push({
         name: "Shift Roster",
         path: "/attendance/shift-grp-roster"
@@ -31,6 +31,16 @@ export class AttendanceComponent implements OnInit {
         name: "General Roster",
         path: "/attendance/gen-grp-roster"
       });
+
+      this.navObj.push({
+        name: 'Process Attendance',
+        path: '/attendance/process-data',
+      })
+
+      this.navObj.push({
+        name: 'Absentee Statement',
+        path: '/attendance/absentee-statement',
+      })
     }
   }
 }

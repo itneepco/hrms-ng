@@ -1,0 +1,104 @@
+<div class="main-container">
+  <mat-card class="table content">
+    <div fxLayoutAlign="space-between center">
+      <span class="heading">
+        Absentee Statement for the current wage month from
+        {{activeWageMonth.from_date | date:'mediumDate'}} to
+        {{activeWageMonth.to_date | date:'mediumDate'}}
+      </span>
+      <button mat-icon-button (click)="download()">
+        <mat-icon>print</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-table [dataSource]="dataSource" matSort style="margin-top: 10px;">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef fxFlex="7">
+          Sl. No.
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee; let i = index" fxFlex="7">
+          {{ i + 1 }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15">
+          Emp Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="15">
+          <div>{{ absentee.name }}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="emp_code">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12">
+          Emp Code
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="12">
+          <div>{{ absentee.emp_code }}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
+          Department
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="20">
+          <div>{{ absentee.department }}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="absent_days">
+        <mat-header-cell *matHeaderCellDef fxFlex="18">
+          Absent Days
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="18">
+          <div fxLayout="column">
+            <div *ngFor="let day of absentee.absent_days">
+              {{ day | date:'mediumDate' }}
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="half_days">
+        <mat-header-cell *matHeaderCellDef fxFlex="15">
+          Half Days
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="15">
+          <div fxLayout="column">
+            <div *ngFor="let day of absentee.half_days">
+              {{ day | date:'mediumDate' }}
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="late_days">
+        <mat-header-cell *matHeaderCellDef fxFlex="15">
+          Late Days
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="15">
+          <div fxLayout="column">
+            <div *ngFor="let day of absentee.late_days">
+              {{ day | date:'mediumDate' }}
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="absent_days_count">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="8">
+          No Absent Days
+        </mat-header-cell>
+        <mat-cell *matCellDef="let absentee" fxFlex="8">
+          {{ absentee.absent_days_count }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </mat-card>
+</div>
