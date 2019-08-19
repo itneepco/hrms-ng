@@ -5,6 +5,7 @@ import { AuthService } from "src/app/auth/services/auth.service";
 import { ErrorHandlerService } from "src/app/shared/services/error-handler.service";
 import { baseURL } from "./../../shared/config/baseUrl";
 import { Observable } from 'rxjs';
+import { AttendanceFileStatus } from '../models/attendance-file-status';
 
 @Injectable({
   providedIn: "root"
@@ -23,9 +24,9 @@ export class AttendanceDataService {
     );
   }
 
-  getFileUploadedStatus(fromDate: Date, toDate: Date) { 
+  getFileUploadedStatus(fromDate: Date, toDate: Date): Observable<AttendanceFileStatus[]> {
     return this.http
-      .get(`${this.getUrl()}/upload/status?from_date=${fromDate}&to_date=${toDate}`)
+      .get<AttendanceFileStatus[]>(`${this.getUrl()}/upload/status?from_date=${fromDate}&to_date=${toDate}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 

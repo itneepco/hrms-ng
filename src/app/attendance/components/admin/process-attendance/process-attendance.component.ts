@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AttendanceFileStatus } from 'src/app/attendance/models/attendance-file-status';
 import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { AttendanceDataService } from 'src/app/attendance/services/attendance-data.service';
+import { DateService } from 'src/app/attendance/services/date.service';
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 
 @Component({
@@ -14,10 +16,11 @@ export class ProcessAttendanceComponent implements OnInit {
   startDate: Date;
   endDate: Date;
   dates: Date[];
-  biometricFileStatus;
+  biometricFileStatus: AttendanceFileStatus[];
 
   constructor(private wageMonthService: WageMonthService,
     private snackbar: MatSnackBar,
+    private dateService: DateService,
     private attendanceDataService: AttendanceDataService) { }
 
   ngOnInit() {
@@ -26,17 +29,18 @@ export class ProcessAttendanceComponent implements OnInit {
       if (!this.activeWageMonth) return
 
       this.startDate = this.activeWageMonth.from_date
-      this.endDate = this.activeWageMonth.to_date
+      this.endDate = this.dateService.increaseDateByMonth(this.activeWageMonth.to_date, 1)
 
       this.attendanceDataService.getFileUploadedStatus(this.startDate, this.endDate)
         .subscribe(result => {
+          console.log(result)
           this.biometricFileStatus = result
         })
     })
   }
 
-  processData(day: Date) {
-    this.attendanceDataService.processPunchingData(day)
+  processData(status: AttendanceFileStatus) {
+    this.attendanceDataService.processPunchingData(status.punch_day)
       .subscribe(data => {
         // console.log(data)
         this.snackbar.open(
@@ -46,7 +50,7 @@ export class ProcessAttendanceComponent implements OnInit {
             duration: 2000
           }
         );
+        status.is_processed = true;
       })
   }
-
 }

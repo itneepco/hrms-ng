@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Group } from './../../../models/group';
 import { GroupService } from './../../../services/group.service';
 import { GroupFormComponent } from './group-form/group-form.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: "app-group",
@@ -18,14 +19,14 @@ export class GroupComponent implements OnInit {
   displayedColumns = ["position", "name", "is_general", "actions"];
 
   dataSource: MatTableDataSource<Group>;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private location: Location,
     private groupService: GroupService,
     private snackbar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.groupService.getGroups().subscribe(data => {
@@ -76,8 +77,17 @@ export class GroupComponent implements OnInit {
   }
 
   onRemove(group: Group) {
-    const retVal = confirm("Are you sure you want to delete?");
-    if (retVal === true) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to delete the record?"
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+
       this.groupService.deleteGroup(group.id).subscribe(
         () => {
           const index = this.dataSource.data.indexOf(group);
@@ -97,13 +107,11 @@ export class GroupComponent implements OnInit {
           this.snackbar.open(
             "Cannot delete group record. Its being referenced by other table",
             "Dismiss",
-            {
-              duration: 2500
-            }
+            { duration: 2500 }
           );
         }
       );
-    }
+    });
   }
 
   goBack() {

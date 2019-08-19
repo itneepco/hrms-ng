@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" fxLayout="column">
   <mat-card *ngIf="biometricFileStatus; else loading">
     <table style="width:100%">
       <thead>
@@ -16,8 +16,11 @@
         </td>
         <td>{{status.machine_ids.length}}</td>
         <td>
-          <button mat-icon-button color="accent" (click)="processData(status.punch_day)">
-            <mat-icon>cached</mat-icon>
+          <button mat-icon-button color="primary" *ngIf="status.is_processed" (click)="processData(status)">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" *ngIf="!status.is_processed" (click)="processData(status)">
+            <mat-icon>check_circle_outline</mat-icon>
           </button>
         </td>
       </tr>

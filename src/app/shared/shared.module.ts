@@ -11,6 +11,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SubheaderComponent } from './components/subheader/subheader.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -45,6 +46,10 @@ import { SubheaderComponent } from './components/subheader/subheader.component';
   ],
   declarations: [
     SubheaderComponent,
+    ConfirmDialogComponent,
+  ],
+  entryComponents: [
+    ConfirmDialogComponent
   ]
 })
 export class SharedModule { }

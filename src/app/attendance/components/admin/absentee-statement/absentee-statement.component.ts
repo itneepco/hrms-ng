@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbsenteeStatementService } from 'src/app/attendance/services/absentee-statement.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { DateService } from 'src/app/attendance/services/date.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
-import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { WageMonth } from 'src/app/attendance/models/wage-month';
+import { AbsenteeStatementService } from 'src/app/attendance/services/absentee-statement.service';
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-absentee-statement',
@@ -27,7 +29,9 @@ export class AbsenteeStatementComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private absenteeStmtService: AbsenteeStatementService,
+  constructor(private snackbar: MatSnackBar,
+    private dialog: MatDialog,
+    private absenteeStmtService: AbsenteeStatementService,
     private wageMonthService: WageMonthService) { }
 
   ngOnInit() {
@@ -36,7 +40,7 @@ export class AbsenteeStatementComponent implements OnInit {
 
     this.absenteeStmtService.getAbsenteeStatement()
       .subscribe(result => {
-        console.log(result)
+        // console.log(result)
         this.dataSource = new MatTableDataSource(result['data'])
         this.dataSource.sort = this.sort
       })
@@ -44,5 +48,21 @@ export class AbsenteeStatementComponent implements OnInit {
 
   download() {
 
+  }
+
+  processMonthEnd() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to do month end?"
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(data => {
+      if(!data) return;
+
+      
+    })
   }
 }

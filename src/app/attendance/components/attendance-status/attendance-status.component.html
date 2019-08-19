@@ -17,55 +17,44 @@
     </div>
   </mat-card>
 
-  <mat-card class="table" id="content" *ngIf="attendance; else loading">
-    <table style="width:100%" *ngIf="attendance.length > 0; else noData">
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th>Shift</th>
-          <th>In time</th>
-          <th>Out time</th>
-          <th>Status</th>
-          <th>Modified Status</th>
-          <th>Remarks</th>
-          <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
+  <ng-container *ngIf="activeWageMonth; else noWageMonth">
+    <mat-card class="table" id="content" *ngIf="attendance; else loading">
+      <table style="width:100%" *ngIf="attendance.length > 0; else noData">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Shift</th>
+            <th>In time</th>
+            <th>Out time</th>
+            <th>Status</th>
+            <th>Modified Status</th>
+            <th>Remarks</th>
+            <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus}">
+          <td>{{attend.day | date:'mediumDate'}}</td>
+          <td>{{attend.shift.name}}</td>
+          <td>{{attend.in_time}}</td>
+          <td>{{attend.out_time}}</td>
+          <td>{{getAttendanceStatus(attend.attendance_status)}}</td>
+          <td>{{modifiedStatus(attend)}}</td>
+          <td>{{attend.remarks}}</td>
+          <td *ngIf="auth.isTimeOfficeAdmin()">
+            <ng-container *ngIf="attend.attendance_status && 
+                !(attend.attendance_status == presentStatus ||
+                attend.attendance_status == onHolidayStatus ||
+                attend.attendance_status == officialAbsentStatus)">
+
+              <button mat-icon-button (click)="onEdit(attend)" color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-container>
+          </td>
         </tr>
-      </thead>
-      <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus}">
-        <td>{{attend.day | date:'mediumDate'}}</td>
-        <td>{{attend.shift.name}}</td>
-        <td>{{attend.in_time}}</td>
-        <td>{{attend.out_time}}</td>
-        <td>{{getAttendanceStatus(attend.attendance_status)}}</td>
-        <td>{{modifiedStatus(attend)}}</td>
-        <td>{{attend.remarks}}</td>
-        <td *ngIf="auth.isTimeOfficeAdmin()">
-          <ng-container *ngIf="attend.attendance_status && 
-              !(attend.attendance_status == presentStatus ||
-              attend.attendance_status == onHolidayStatus ||
-              attend.attendance_status == officialAbsentStatus)">
-
-            <button mat-icon-button (click)="onEdit(attend)" color="primary">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </ng-container>
-        </td>
-      </tr>
-    </table>
-  </mat-card>
-
-  <ng-template #loading>
-    <div fxLayoutAlign="center center">
-      <mat-spinner diameter="80"></mat-spinner>
-    </div>
-  </ng-template>
-
-  <ng-template #noData>
-    <div style="padding: 25px">
-      There are no attendance data available corresponding to the period
-      {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }} 
-    </div>
-  </ng-template>
+      </table>
+    </mat-card>
+  </ng-container>
 </div>
 
 <div id="action-btn">
@@ -81,3 +70,22 @@
     </button>
   </div>
 </div>
+
+<ng-template #noWageMonth>
+  <div class="main-container">
+    <mat-card>Please define wage month period first!!!</mat-card>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div fxLayoutAlign="center center" class="main-container">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noData>
+  <div style="padding: 25px" class="main-container">
+    There are no attendance data available corresponding to the period
+    {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }}
+  </div>
+</ng-template>

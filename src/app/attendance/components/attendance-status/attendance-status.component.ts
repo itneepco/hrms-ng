@@ -77,10 +77,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       this.endDate,
       this.emp_code.value
     )
-      .subscribe(result => {
-        // console.log(result)
-        this.attendance = result
-      })
+    .subscribe(result => {
+      // console.log(result)
+      this.attendance = result
+    })
   }
 
   onEdit(attend: AttendanceStatus) {

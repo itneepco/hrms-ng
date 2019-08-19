@@ -1,11 +1,11 @@
 <mat-toolbar class="mat-elevation-z6">
-    <button mat-icon-button fxHide.gt-md (click)="toggleMenu()">
-      <mat-icon>menu</mat-icon>
-    </button>
+  <button mat-icon-button fxHide.gt-md (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-    <div class="flex-spacer"></div>
+  <div class="flex-spacer"></div>
 
-    <!-- <button mat-button class="user-profile notification" [matMenuTriggerFor]="notification">
+  <!-- <button mat-button class="user-profile notification" [matMenuTriggerFor]="notification">
       <mat-icon>notifications</mat-icon>
     </button>
 
@@ -16,21 +16,21 @@
       <button mat-menu-item>Notification 4</button>
     </mat-menu> -->
 
-    <button mat-button class="user-profile" [matMenuTriggerFor]="appMenu">
-      <mat-icon>account_circle</mat-icon>&nbsp;
-      <span class="name" *ngIf="auth.currentUser">{{ auth.currentUser.name | titlecase }}</span>
-      <mat-icon>keyboard_arrow_down</mat-icon>
+  <button mat-button class="user-profile" [matMenuTriggerFor]="appMenu">
+    <mat-icon>account_circle</mat-icon>&nbsp;
+    <span class="name" *ngIf="auth.currentUser">{{ auth.currentUser.name | titlecase }}</span>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+  <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item>
+      <mat-icon>face</mat-icon>Profile
     </button>
-    <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
-      <button mat-menu-item>
-        <mat-icon>face</mat-icon>Profile
-      </button>
-      <button mat-menu-item (click)="changePassword()">
-        <mat-icon>settings</mat-icon>Change Password
-      </button>
-      <button mat-menu-item (click)="onLogout()">
-        <mat-icon>exit_to_app</mat-icon>Logout
-      </button>
-    </mat-menu>
+    <button mat-menu-item (click)="changePassword()">
+      <mat-icon>settings</mat-icon>Change Password
+    </button>
+    <button mat-menu-item (click)="onLogout()">
+      <mat-icon>exit_to_app</mat-icon>Logout
+    </button>
+  </mat-menu>
 
-  </mat-toolbar>
+</mat-toolbar>

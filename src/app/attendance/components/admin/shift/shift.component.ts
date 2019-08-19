@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Shift } from './../../../models/shift';
 import { ShiftService } from './../../../services/shift.service';
 import { ShiftFormComponent } from './shift-form/shift-form.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: "app-shift",
@@ -28,14 +29,14 @@ export class ShiftComponent implements OnInit {
   ];
 
   dataSource: MatTableDataSource<Shift>;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private location: Location,
     private shiftService: ShiftService,
     private snackbar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.shiftService.getShifts().subscribe(data => {
@@ -86,32 +87,39 @@ export class ShiftComponent implements OnInit {
   }
 
   onRemove(shift: Shift) {
-    const retVal = confirm("Are you sure you want to delete?");
-    if (retVal != true) {
-      return;
-    }
-
-    this.shiftService.deleteShift(shift.id).subscribe(
-      () => {
-        const temp = this.dataSource.data;
-        const index = temp.indexOf(shift);
-        temp.splice(index, 1);
-        this.dataSource.data = temp;
-        this.snackbar.open("Successfully deleted the shift record", "Dismiss", {
-          duration: 1600
-        });
-      },
-      error => {
-        console.log(error);
-        this.snackbar.open(
-          "Cannot delete shift record. Its being referenced by other table",
-          "Dismiss",
-          {
-            duration: 2500
-          }
-        );
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to delete the record?"
       }
-    );
+    })
+
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+
+      this.shiftService.deleteShift(shift.id).subscribe(
+        () => {
+          const temp = this.dataSource.data;
+          const index = temp.indexOf(shift);
+          temp.splice(index, 1);
+          this.dataSource.data = temp;
+          this.snackbar.open("Successfully deleted the shift record", "Dismiss", {
+            duration: 1600
+          });
+        },
+        error => {
+          console.log(error);
+          this.snackbar.open(
+            "Cannot delete shift record. Its being referenced by other table",
+            "Dismiss",
+            {
+              duration: 2500
+            }
+          );
+        }
+      );
+    })
   }
 
   goBack() {

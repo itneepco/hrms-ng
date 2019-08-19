@@ -114,8 +114,4 @@ export class DashboardComponent implements OnInit {
       height: '380px'
     });
   }
-
-  processMonthEnd() {
-
-  }
 }

@@ -99,13 +99,13 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/report.png">
+            <img matListAvatar src="assets/icons/process.png">
             <h3 matLine>Month End</h3>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
         <div class="apply-block" fxLayoutAlign="end">
-          <button mat-button (click)="processMonthEnd()">
+          <button mat-button [routerLink]="['/attendance/absentee-statement']">
             Process
           </button>
         </div>

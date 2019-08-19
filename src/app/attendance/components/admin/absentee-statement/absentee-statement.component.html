@@ -3,8 +3,10 @@
     <div fxLayoutAlign="space-between center">
       <span class="heading">
         Absentee Statement for the current wage month from
-        {{activeWageMonth.from_date | date:'mediumDate'}} to
-        {{activeWageMonth.to_date | date:'mediumDate'}}
+        <span *ngIf="activeWageMonth">
+          {{activeWageMonth.from_date | date:'mediumDate'}} to
+          {{activeWageMonth.to_date | date:'mediumDate'}}
+        </span>
       </span>
       <button mat-icon-button (click)="download()">
         <mat-icon>print</mat-icon>
@@ -101,4 +103,16 @@
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
   </mat-card>
+</div>
+
+<div id="action-btn">
+  <div class="fab">
+    <button mat-fab 
+        (click)="processMonthEnd()" 
+        matTooltip="Process Month End"
+        matTooltipPosition="left" 
+        color="accent">
+      <mat-icon>build</mat-icon>
+    </button>
+  </div>
 </div>
