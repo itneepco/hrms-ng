@@ -60,9 +60,14 @@ export class AbsenteeStatementComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(data => {
-      if(!data) return;
+      if (!data) return;
 
-      
+      this.absenteeStmtService.processMonthEnd().subscribe((data) => {
+        console.log(data)
+        this.snackbar.open("Successfully performed the month end", "Dismiss", {
+          duration: 1600
+        });
+      })
     })
   }
 }

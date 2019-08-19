@@ -55,6 +55,23 @@
       </table>
     </mat-card>
   </ng-container>
+
+  <ng-template #noWageMonth>
+    <mat-card>No current wage month available!!!</mat-card>
+  </ng-template>
+
+  <ng-template #loading>
+    <div fxLayoutAlign="center center">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #noData>
+    <div style="padding: 25px">
+      There are no attendance data available corresponding to the period
+      {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }}
+    </div>
+  </ng-template>
 </div>
 
 <div id="action-btn">
@@ -70,22 +87,3 @@
     </button>
   </div>
 </div>
-
-<ng-template #noWageMonth>
-  <div class="main-container">
-    <mat-card>Please define wage month period first!!!</mat-card>
-  </div>
-</ng-template>
-
-<ng-template #loading>
-  <div fxLayoutAlign="center center" class="main-container">
-    <mat-spinner diameter="80"></mat-spinner>
-  </div>
-</ng-template>
-
-<ng-template #noData>
-  <div style="padding: 25px" class="main-container">
-    There are no attendance data available corresponding to the period
-    {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }}
-  </div>
-</ng-template>

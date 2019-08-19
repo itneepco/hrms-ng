@@ -7,6 +7,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
 
 import { EmployeeGroup } from '../models/employee-group';
 import { EmployeeGroupDtl, EmployeeGroupForm } from './../models/employee-group';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,12 @@ import { EmployeeGroupDtl, EmployeeGroupForm } from './../models/employee-group'
 export class EmployeeGroupService {
 
   constructor(private http: HttpClient,
+    private auth: AuthService,
     private handler: ErrorHandlerService) {
   }
 
   getUrl() {
-    return baseURL + 'api/attendance/group'
+    return baseURL + `api/attendance/project/${this.auth.currentUser.project}/group`
   }
 
   getEmployeeGroups(groupId: number): Observable<EmployeeGroupDtl[]> {

@@ -29,4 +29,10 @@ export class AbsenteeStatementService {
       .get<any[]>(`${this.getUrl()}/absentee-statement`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
+
+  processMonthEnd(): Observable<any> {
+    return this.http
+      .get<any>(`${this.getUrl()}/close`)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
 }

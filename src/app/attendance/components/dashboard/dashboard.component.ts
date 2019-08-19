@@ -89,11 +89,11 @@ export class DashboardComponent implements OnInit {
         this.punchTimings = data
       })
       this.empDashboardService.getLatePunchings().subscribe(data => {
-        console.log(data)
+        // console.log(data)
         this.latePunchings = data
       })
       this.empDashboardService.getTodaysPunching().subscribe(data => {
-        console.log(data)
+        // console.log(data)
         this.todaysPunchings = data
       })
     }
