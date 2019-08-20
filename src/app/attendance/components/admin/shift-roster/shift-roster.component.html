@@ -66,7 +66,7 @@
               Save Group Roster
             </button>
 
-            <button mat-raised-button class="button" color="accent" type="button"
+            <button mat-raised-button class="button" color="accent" type="button" [disabled]="isGenerating"
               *ngIf="shiftRosters.length > 0 && rosterForm.valid" (click)="generateEmpWiseRoster()">
               Generate Employee Roster
             </button>

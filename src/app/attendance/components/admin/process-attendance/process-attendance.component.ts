@@ -25,15 +25,15 @@ export class ProcessAttendanceComponent implements OnInit {
 
   ngOnInit() {
     this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
-      this.activeWageMonth = wageMonth
-      if (!this.activeWageMonth) return
+      if (!wageMonth) return
 
+      this.activeWageMonth = wageMonth
       this.startDate = this.activeWageMonth.from_date
       this.endDate = this.dateService.increaseDateByMonth(this.activeWageMonth.to_date, 1)
 
       this.attendanceDataService.getFileUploadedStatus(this.startDate, this.endDate)
         .subscribe(result => {
-          console.log(result)
+          // console.log(result)
           this.biometricFileStatus = result
         })
     })

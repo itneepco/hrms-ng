@@ -7,6 +7,7 @@ import { AbsenteeStatementService } from 'src/app/attendance/services/absentee-s
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { DateService } from 'src/app/attendance/services/date.service';
 
 @Component({
   selector: 'app-absentee-statement',
@@ -25,29 +26,44 @@ export class AbsenteeStatementComponent implements OnInit {
     "absent_days_count",
   ];
   activeWageMonth: WageMonth;
+  startDate: Date;
+  endDate: Date;
 
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private snackbar: MatSnackBar,
     private dialog: MatDialog,
+    private dateService: DateService,
     private absenteeStmtService: AbsenteeStatementService,
     private wageMonthService: WageMonthService) { }
 
   ngOnInit() {
     this.wageMonthService.getActiveWageMonth()
-      .subscribe(wageMonth => this.activeWageMonth = wageMonth)
+      .subscribe(wageMonth => {
+        if(!wageMonth) return 
+        
+        this.activeWageMonth = wageMonth
+        this.startDate = this.activeWageMonth.from_date
+        this.endDate = this.activeWageMonth.to_date
 
-    this.absenteeStmtService.getAbsenteeStatement()
-      .subscribe(result => {
-        // console.log(result)
-        this.dataSource = new MatTableDataSource(result['data'])
-        this.dataSource.sort = this.sort
+        this.fetchAbsenteeStmt()
       })
   }
 
   download() {
 
+  }
+
+  fetchAbsenteeStmt() {
+    this.absenteeStmtService.getAbsenteeStatement(
+      this.startDate,
+      this.endDate
+    )
+    .subscribe(result => {
+      this.dataSource = new MatTableDataSource(result['data'])
+      this.dataSource.sort = this.sort
+    })
   }
 
   processMonthEnd() {
@@ -64,10 +80,28 @@ export class AbsenteeStatementComponent implements OnInit {
 
       this.absenteeStmtService.processMonthEnd().subscribe((data) => {
         console.log(data)
-        this.snackbar.open("Successfully performed the month end", "Dismiss", {
+        this.snackbar.open(data.message, "Dismiss", {
           duration: 1600
         });
       })
     })
+  }
+
+  prevWageMonth() {
+    this.dataSource = null
+    this.startDate = this.dateService.decreaseDateByMonth(this.startDate, 1)
+    this.endDate = this.dateService.decreaseDateByMonth(this.endDate, 1)
+    this.fetchAbsenteeStmt()
+  }
+
+  nextWageMonth() {
+    this.dataSource = null
+    this.startDate = this.dateService.increaseDateByMonth(this.startDate, 1)
+    this.endDate = this.dateService.increaseDateByMonth(this.endDate, 1)
+    this.fetchAbsenteeStmt()
+  }
+
+  isActiveWageMonth() {
+    return this.dateService.compareDates(this.activeWageMonth.from_date, this.startDate)
   }
 }

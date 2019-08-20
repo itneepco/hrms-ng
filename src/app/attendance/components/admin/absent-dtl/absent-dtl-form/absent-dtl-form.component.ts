@@ -42,7 +42,7 @@ export class AbsentDtlFormComponent implements OnInit {
       emp_code: [this.empCode],
       from_date: [this.absentDetail ? this.absentDetail.from_date : "", Validators.required],
       to_date: [this.absentDetail ? this.absentDetail.to_date : "", Validators.required],
-      leave_type_id: [this.absentDetail ? this.absentDetail.leave_type.id : "", Validators.required]
+      leave_code: [this.absentDetail ? this.absentDetail.leaveType.code : "", Validators.required]
     });
   }
 
@@ -85,7 +85,7 @@ export class AbsentDtlFormComponent implements OnInit {
     return this.absentForm.get("to_date");
   }
 
-  get leave_type_id() {
-    return this.absentForm.get("leave_type_id");
+  get leave_code() {
+    return this.absentForm.get("leave_code");
   }
 }

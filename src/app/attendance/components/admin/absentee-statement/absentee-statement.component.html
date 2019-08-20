@@ -1,11 +1,11 @@
 <div class="main-container">
-  <mat-card class="table content">
+  <mat-card class="table content" *ngIf="activeWageMonth; else noWageMonth">
     <div fxLayoutAlign="space-between center">
       <span class="heading">
         Absentee Statement for the current wage month from
         <span *ngIf="activeWageMonth">
-          {{activeWageMonth.from_date | date:'mediumDate'}} to
-          {{activeWageMonth.to_date | date:'mediumDate'}}
+          {{startDate | date:'mediumDate'}} to
+          {{endDate | date:'mediumDate'}}
         </span>
       </span>
       <button mat-icon-button (click)="download()">
@@ -103,16 +103,31 @@
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
   </mat-card>
+
+  <ng-template #noWageMonth>
+    <mat-card>
+      Please define wage month period first!!!
+    </mat-card>
+  </ng-template>
 </div>
 
-<div id="action-btn">
+<div id="action-btn" *ngIf="activeWageMonth">
   <div class="fab">
-    <button mat-fab 
-        (click)="processMonthEnd()" 
-        matTooltip="Process Month End"
-        matTooltipPosition="left" 
-        color="accent">
+    <button mat-fab *ngIf="isActiveWageMonth()" (click)="processMonthEnd()" matTooltip="Process Month End"
+      matTooltipPosition="left" color="primary">
       <mat-icon>build</mat-icon>
+    </button>
+  </div>
+
+  <div class="fab">
+    <button mat-fab (click)="nextWageMonth()" matTooltip="Next Wage Month" matTooltipPosition="left" color="accent">
+      <mat-icon>fast_forward</mat-icon>
+    </button>
+  </div>
+
+  <div class="fab">
+    <button mat-fab (click)="prevWageMonth()" matTooltip="Previous Wage Month" matTooltipPosition="left" color="accent">
+      <mat-icon>fast_rewind</mat-icon>
     </button>
   </div>
 </div>

@@ -31,6 +31,7 @@ export class GenGroupRosterComponent implements OnInit {
   activeWageMonth: WageMonth
   startDate: Date;
   endDate: Date;
+  isGenerating = false;
 
   constructor(
     private dateService: DateService,
@@ -157,8 +158,10 @@ export class GenGroupRosterComponent implements OnInit {
     let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
     let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
 
+    this.isGenerating = true
     this.genRosterService.generateEmpWiseRoster(fromDate, toDate)
       .subscribe(() => {
+        this.isGenerating = false;
         this.snackbar.open(
           `Successfully generated general roster from ${fromDate} to ${toDate}`,
           "Dismiss",
@@ -166,7 +169,7 @@ export class GenGroupRosterComponent implements OnInit {
             duration: 1600
           }
         );
-      })
+      }, () => this.isGenerating = false)
   }
 
   nextWageMonth() {

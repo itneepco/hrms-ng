@@ -32,7 +32,7 @@
             <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
           </tr>
         </thead>
-        <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus}">
+        <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus && !attend.modified_status}">
           <td>{{attend.day | date:'mediumDate'}}</td>
           <td>{{attend.shift.name}}</td>
           <td>{{attend.in_time}}</td>

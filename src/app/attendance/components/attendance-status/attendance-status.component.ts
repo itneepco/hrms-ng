@@ -30,7 +30,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   officialAbsentStatus = ATTENDANCE_ABSENT_OFFICIALLY;
   onAbsentStatus = ATTENDANCE_ABSENT;
   onHolidayStatus = ATTENDANCE_HOLIDAY;
-  
+
   startDate: Date;
   endDate: Date;
 
@@ -58,9 +58,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       });
 
     this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
-      this.activeWageMonth = wageMonth
-      if (!this.activeWageMonth) return
+      console.log(wageMonth)
+      if (!wageMonth) return
 
+      this.activeWageMonth = wageMonth
       this.startDate = this.activeWageMonth.from_date
       this.endDate = this.activeWageMonth.to_date
       this.fetchAttendance();
@@ -77,10 +78,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       this.endDate,
       this.emp_code.value
     )
-    .subscribe(result => {
-      // console.log(result)
-      this.attendance = result
-    })
+      .subscribe(result => {
+        console.log(result)
+        this.attendance = result
+      })
   }
 
   onEdit(attend: AttendanceStatus) {
@@ -118,6 +119,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     this.attendance = null
     this.startDate = this.dateService.decreaseDateByMonth(this.startDate, 1)
     this.endDate = this.dateService.decreaseDateByMonth(this.endDate, 1)
+    console.log(this.startDate, this.endDate)
     this.fetchAttendance()
   }
 
@@ -125,6 +127,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     this.attendance = null
     this.startDate = this.dateService.increaseDateByMonth(this.startDate, 1)
     this.endDate = this.dateService.increaseDateByMonth(this.endDate, 1)
+    console.log(this.startDate, this.endDate)
     this.fetchAttendance()
   }
 

@@ -28,6 +28,7 @@ export class ShiftRosterComponent implements OnInit {
   activeWageMonth: WageMonth;
   startDate: Date;
   endDate: Date
+  isGenerating = false;
 
   constructor(
     private shiftService: ShiftService,
@@ -163,8 +164,10 @@ export class ShiftRosterComponent implements OnInit {
     let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
     let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
 
+    this.isGenerating = true;
     this.shiftRosterService.generateEmpWiseRoster(fromDate, toDate)
       .subscribe(() => {
+        this.isGenerating = false;
         this.snackbar.open(
           "Successfully generated shift employees roster",
           "Dismiss",
@@ -172,7 +175,7 @@ export class ShiftRosterComponent implements OnInit {
             duration: 1600
           }
         );
-      })
+      }, () => this.isGenerating = false)
   }
 
   get rosters(): FormArray {
@@ -214,13 +217,13 @@ export class ShiftRosterComponent implements OnInit {
   }
 
   isActiveMonthDefined() {
-    return typeof this.activeWageMonth  !== 'undefined'
+    return typeof this.activeWageMonth !== 'undefined'
   }
 
   prePopulateShiftRoster() {
     let nextMonthRoster = []
-    if(this.shiftRosters && this.shiftRosters.length > 0) {
-      
+    if (this.shiftRosters && this.shiftRosters.length > 0) {
+
     }
   }
 }

@@ -57,7 +57,7 @@
             </table>
           </div>
           <div id="gen-btn" *ngIf="genRosters && genRosters.length > 0">
-            <button mat-raised-button color="accent" (click)="genEmpWiseRoster()">
+            <button mat-raised-button color="accent" (click)="genEmpWiseRoster()" [disabled]="isGenerating">
               Generate Employee Roster
             </button>
           </div>

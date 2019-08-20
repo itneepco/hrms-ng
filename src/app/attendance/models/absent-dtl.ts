@@ -5,7 +5,7 @@ export interface AbsentDetail {
   emp_code: string;
   from_date: Date;
   to_date: Date;
-  leave_type: LeaveType;
+  leaveType: LeaveType;
   created_at: string;
   updated_at: string;
 }

@@ -24,9 +24,9 @@ export class AbsenteeStatementService {
     );
   }
 
-  getAbsenteeStatement(): Observable<any[]> {
+  getAbsenteeStatement(fromDate: Date, toDate: Date): Observable<any[]> {
     return this.http
-      .get<any[]>(`${this.getUrl()}/absentee-statement`)
+      .get<any[]>(`${this.getUrl()}/absentee-statement?from_date=${fromDate}&to_date=${toDate}`)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
