@@ -82,13 +82,13 @@ export class LeaveTableComponent implements OnInit {
         return;
       }
 
+      this.pendingReqService.changeState();
       if (this.pageNo === LEAVE_REQUEST_PAGE) {
         this.pendingReqService.changeState();
         const temp = this.dataSource.data;
         temp.splice(index, 1);
         this.dataSource.data = temp;
       } else {
-        this.pendingReqService.changeState();
         this.onAction.emit();
       }
     });

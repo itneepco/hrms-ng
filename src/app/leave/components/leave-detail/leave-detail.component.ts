@@ -1,57 +1,41 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
-
-import { AuthService } from '../../../auth/services/auth.service';
-import { Addressee } from '../../../shared/models/adressee';
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatTableDataSource } from "@angular/material/table";
+import { Subscription } from "rxjs";
+import { AuthService } from "../../../auth/services/auth.service";
+import { Addressee } from "../../../shared/models/adressee";
 import {
   CL_CODE,
   EL_CODE,
-  EL_HPL_ADMIN,
   HPL_CODE,
-  HR_LEAVE_SUPER_ADMIN,
-  RH_CODE,
-} from '../../../shared/models/global-codes';
-import { LeaveDetail } from '../../../shared/models/leave';
-import { LeaveTypeService } from '../../../shared/services/leave-type.service';
+  RH_CODE
+} from "../../../shared/models/global-codes";
+import { LeaveDetail } from "../../../shared/models/leave";
+import { LeaveTypeService } from "../../../shared/services/leave-type.service";
 import {
-  APPROVE_ACTION_TYPES,
-  CALLBACK_ACTION_TYPES,
-  EL_HPL_ACTION_TYPES,
   JR_ACCEPTED,
   JR_PENDING,
   LEAVE_APPLIED,
   LEAVE_APPROVED,
   LEAVE_CALLBACKED,
-  LEAVE_CANCEL_ACTION_TYPES,
-  LEAVE_CANCEL_EL_HPL_ACTION_TYPES,
-  LEAVE_CANCEL_INITIATION,
-  LEAVE_CANCEL_NOT_RECOMMENDED,
-  LEAVE_CANCEL_PROCESS_ACTION_TYPES,
-  LEAVE_CANCEL_RECOMMENDED,
   LEAVE_CANCELLED,
-  LEAVE_NOT_RECOMMENDED,
+  LEAVE_CANCEL_INITIATION,
+  LEAVE_CANCEL_RECOMMENDED,
   LEAVE_PROCESSED_PAGE,
   LEAVE_RECOMMENDED,
   LEAVE_REQUEST_PAGE,
-  PROCESS_ACTION_TYPES,
-  TRANSACTION_PAGE,
-} from '../../models/leave.codes';
-import { LeaveCtrlOfficerService } from '../../services/leave-ctrl-officer.service';
-import { LedgerService } from '../../services/ledger.service';
-import { WorkflowActionService } from '../../services/workflow-action.service';
-import { HD_CL_CODE } from './../../../shared/models/global-codes';
-import { LeaveApplication } from './../../../shared/models/leave';
-import { LeaveStatus } from './../../models/leave-status';
-import {
-  LEAVE_CANCEL_CALLBACK_ACTION_TYPES,
-  LEAVE_CANCEL_CALLBACKED,
-  LEAVE_CANCEL_INITIATION_ACTION_TYPES,
-} from './../../models/leave.codes';
-import { JoiningReportService } from './../../services/joining-report.service';
+  TRANSACTION_PAGE
+} from "../../models/leave.codes";
+import { LeaveCtrlOfficerService } from "../../services/leave-ctrl-officer.service";
+import { LedgerService } from "../../services/ledger.service";
+import { WorkflowActionService } from "../../services/workflow-action.service";
+import { HD_CL_CODE } from "./../../../shared/models/global-codes";
+import { LeaveApplication } from "./../../../shared/models/leave";
+import { LeaveStatus } from "./../../models/leave-status";
+import { JoiningReportService } from "./../../services/joining-report.service";
+import { UserActionService } from "./../../services/user-action.service";
 
 @Component({
   selector: "app-leave-detail",
@@ -76,6 +60,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   leaveStatuses: LeaveStatus[] = [];
   subscription: Subscription;
   leaveApp: LeaveApplication;
+  pageNo: string;
   isLoading = false;
 
   // Leave type codes
@@ -109,7 +94,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     public wActionService: WorkflowActionService,
     private ledgerService: LedgerService,
-    private auth: AuthService,
+    private userActionService: UserActionService,
     private joiningService: JoiningReportService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data
@@ -117,15 +102,21 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.leaveApp = this.data.leave;
+    this.pageNo = this.data.pageNo;
+    this.actions = this.userActionService.getActions(
+      this.leaveApp,
+      this.pageNo
+    );
+
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails);
     this.initForm();
-    this.actions = this.getActions();
 
     // Leave role mapper is not required on transaction page
     let leaveRoleMapper = true;
     if (this.data.pageNo === TRANSACTION_PAGE) {
       leaveRoleMapper = false;
     }
+
     // Fetch leave application forwarding authority
     this.leaveCtrlOfficer
       .getLeaveCtrlOfficers(
@@ -199,114 +190,15 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       error => {
         console.log(error);
         this.isLoading = false;
+        this.snackbar.open(
+          "An error occured!! Please try again later!!",
+          "Dismiss",
+          {
+            duration: 1600
+          }
+        );
       }
     );
-  }
-
-  // Find the leave workflow action types
-  getActions() {
-    const status = this.leaveApp.status;
-    const addressedTo = this.leaveApp.addressee;
-
-    // check if leave request page
-    if (this.data.pageNo === LEAVE_REQUEST_PAGE) {
-      if (
-        status === LEAVE_CANCEL_INITIATION ||
-        status === LEAVE_CANCEL_RECOMMENDED ||
-        status === LEAVE_CANCEL_CALLBACKED
-      ) {
-        if (
-          this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) ||
-          this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)
-        ) {
-          // check if cancellation of EL or HPL application has been already recommended and forwarded to EL HPL Admin
-          if (
-            status === LEAVE_CANCEL_RECOMMENDED &&
-            (addressedTo === EL_HPL_ADMIN ||
-              addressedTo === HR_LEAVE_SUPER_ADMIN) &&
-            (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())
-          ) {
-            return LEAVE_CANCEL_ACTION_TYPES;
-          }
-          // if if cancellation of EL or HPL application has not been forwarded to EL HPL Admin yet
-          return LEAVE_CANCEL_EL_HPL_ACTION_TYPES;
-        }
-        // For other types of leaves other than EL or HPL
-        return LEAVE_CANCEL_PROCESS_ACTION_TYPES;
-      }
-
-      if (
-        status === LEAVE_APPLIED ||
-        status === LEAVE_RECOMMENDED ||
-        status === LEAVE_CALLBACKED
-      ) {
-        // check if the leave is earned leave or half pay leave
-        if (
-          this.leaveType.isEarnedLeave(this.leaveApp.leaveDetails) ||
-          this.leaveType.isHalfPayLeave(this.leaveApp.leaveDetails)
-        ) {
-          // check if EL or ML has been already recommended and forwarded to EL HPL Admin
-          if (
-            status === LEAVE_RECOMMENDED &&
-            (addressedTo === EL_HPL_ADMIN ||
-              addressedTo === HR_LEAVE_SUPER_ADMIN) &&
-            (this.auth.isElHplAdmin() || this.auth.isHrLeaveSuperAdmin())
-          ) {
-            return APPROVE_ACTION_TYPES;
-          }
-          // if EL or ML has not been forwarded to EL HPL Admin yet
-          return EL_HPL_ACTION_TYPES;
-        }
-        // if leave is not EL or HPL
-        return PROCESS_ACTION_TYPES;
-      }
-      // else actions will be empty
-      return [];
-    }
-
-    if (this.data.pageNo === TRANSACTION_PAGE) {
-      const joiningReport = this.leaveApp.joiningReport;
-      // if leave is applied, recommended, the leave application can be callbacked by applied user
-      if (status == LEAVE_APPLIED || status == LEAVE_RECOMMENDED) {
-        return CALLBACK_ACTION_TYPES;
-      }
-      // If leave is approved then the employee can initiate leave cancellation and joining report is not accepted
-      if (status == LEAVE_APPROVED) {
-        if (joiningReport && joiningReport.status == JR_ACCEPTED) {
-          return [];
-        }
-
-        return LEAVE_CANCEL_INITIATION_ACTION_TYPES;
-      }
-      // If leave is cancellation is initialized then the employee can callback
-      if (status === LEAVE_CANCEL_INITIATION) {
-        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES;
-      }
-      if (status === LEAVE_CANCEL_CALLBACKED) {
-        if (this.leaveApp.addressee.length < 1) {
-          return LEAVE_CANCEL_INITIATION_ACTION_TYPES;
-        }
-        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES;
-      }
-      // else actions will be empty
-      return [];
-    }
-
-    if (this.data.pageNo === LEAVE_PROCESSED_PAGE) {
-      // if leave is recommended or not recommended, the leave application can be callbacked by controlling user
-      if (status === LEAVE_RECOMMENDED || status === LEAVE_NOT_RECOMMENDED) {
-        return CALLBACK_ACTION_TYPES;
-      }
-      // if leave cancellation is recommended or not recommended, the leave application can be callbacked by controlling user
-      if (
-        status === LEAVE_CANCEL_RECOMMENDED ||
-        status === LEAVE_CANCEL_NOT_RECOMMENDED
-      ) {
-        return LEAVE_CANCEL_CALLBACK_ACTION_TYPES;
-      }
-      // else actions will be empty
-      return [];
-    }
   }
 
   get addressee() {
