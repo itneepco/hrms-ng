@@ -1,44 +1,28 @@
 import { Injectable } from "@angular/core";
-import {
-  EL_HPL_ADMIN,
-  HR_LEAVE_SUPER_ADMIN
-} from "src/app/shared/models/global-codes";
+import { EL_HPL_ADMIN, HR_LEAVE_SUPER_ADMIN } from "src/app/shared/models/global-codes";
 import { LeaveApplication } from "src/app/shared/models/leave";
+import { DateService } from "src/app/shared/services/date.service";
 import { LeaveTypeService } from "src/app/shared/services/leave-type.service";
+import { WageMonth } from "./../../attendance/models/wage-month";
 import { AuthService } from "./../../auth/services/auth.service";
-import {
-  APPROVE_ACTION_TYPES,
-  CALLBACK_ACTION_TYPES,
-  EL_HPL_ACTION_TYPES,
-  JR_ACCEPTED,
-  LEAVE_APPLIED,
-  LEAVE_APPROVED,
-  LEAVE_CALLBACKED,
-  LEAVE_CANCEL_ACTION_TYPES,
-  LEAVE_CANCEL_CALLBACKED,
-  LEAVE_CANCEL_CALLBACK_ACTION_TYPES,
-  LEAVE_CANCEL_EL_HPL_ACTION_TYPES,
-  LEAVE_CANCEL_INITIATION,
-  LEAVE_CANCEL_INITIATION_ACTION_TYPES,
-  LEAVE_CANCEL_NOT_RECOMMENDED,
-  LEAVE_CANCEL_PROCESS_ACTION_TYPES,
-  LEAVE_CANCEL_RECOMMENDED,
-  LEAVE_NOT_RECOMMENDED,
-  LEAVE_PROCESSED_PAGE,
-  LEAVE_RECOMMENDED,
-  LEAVE_REQUEST_PAGE,
-  PROCESS_ACTION_TYPES,
-  TRANSACTION_PAGE
-} from "./../models/leave.codes";
+import { APPROVE_ACTION_TYPES, CALLBACK_ACTION_TYPES, EL_HPL_ACTION_TYPES, JR_ACCEPTED, LEAVE_APPLIED, LEAVE_APPROVED, LEAVE_CALLBACKED, LEAVE_CANCEL_ACTION_TYPES, LEAVE_CANCEL_CALLBACKED, LEAVE_CANCEL_CALLBACK_ACTION_TYPES, LEAVE_CANCEL_EL_HPL_ACTION_TYPES, LEAVE_CANCEL_INITIATION, LEAVE_CANCEL_INITIATION_ACTION_TYPES, LEAVE_CANCEL_NOT_RECOMMENDED, LEAVE_CANCEL_PROCESS_ACTION_TYPES, LEAVE_CANCEL_RECOMMENDED, LEAVE_NOT_RECOMMENDED, LEAVE_PROCESSED_PAGE, LEAVE_RECOMMENDED, LEAVE_REQUEST_PAGE, PROCESS_ACTION_TYPES, TRANSACTION_PAGE } from "./../models/leave.codes";
 
 @Injectable({
   providedIn: "root"
 })
 export class UserActionService {
-  constructor(private auth: AuthService, private leaveType: LeaveTypeService) {}
+  constructor(
+    private auth: AuthService,
+    private dateService: DateService,
+    private leaveType: LeaveTypeService
+  ) {}
 
   // Find the leave workflow action types
-  getActions(leaveApp: LeaveApplication, pageNo: string): any {
+  getActions(
+    leaveApp: LeaveApplication,
+    pageNo: string,
+    currWageMonth: WageMonth
+  ): any {
     const status = leaveApp.status;
     const addressedTo = leaveApp.addressee;
 
@@ -100,11 +84,24 @@ export class UserActionService {
       return [];
     }
 
-
     /***********************************************************************
      ************** check if leave transaction page ******************
      **********************************************************************/
     if (pageNo === TRANSACTION_PAGE) {
+      const leaveDtls = leaveApp.leaveDetails;
+      // Iterate over each leaves
+      for (let i = 0; i < leaveDtls.length; i++) {
+        let from_date = this.dateService.datesDiff(
+          leaveDtls[i].from_date,
+          currWageMonth.from_date
+        );
+        // if leave taken is before active wage month start, employee cannot cancel it
+        // i.e after month end leave cancellation is not allowed
+        if (from_date < 0) {
+          return [];
+        }
+      }
+
       const joiningReport = leaveApp.joiningReport;
       // if leave is applied, recommended, the leave application can be callbacked by applied user
       if (status == LEAVE_APPLIED || status == LEAVE_RECOMMENDED) {
@@ -131,7 +128,6 @@ export class UserActionService {
       // else actions will be empty
       return [];
     }
-
 
     /***********************************************************************
      ************** Check is leave processed page ******************

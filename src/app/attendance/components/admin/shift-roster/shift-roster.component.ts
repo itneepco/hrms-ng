@@ -5,10 +5,10 @@ import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/attendance/models/group';
 import { ShiftRoster } from 'src/app/attendance/models/shift-roster';
 import { WageMonth } from 'src/app/attendance/models/wage-month';
-import { DateService } from 'src/app/attendance/services/date.service';
 import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.service';
 import { ShiftService } from 'src/app/attendance/services/shift.service';
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { DateService } from 'src/app/shared/services/date.service';
 import { Shift } from '../../../models/shift';
 import { GroupService } from '../../../services/group.service';
 

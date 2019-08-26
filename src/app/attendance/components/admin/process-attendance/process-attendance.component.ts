@@ -3,8 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AttendanceFileStatus } from 'src/app/attendance/models/attendance-file-status';
 import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { AttendanceDataService } from 'src/app/attendance/services/attendance-data.service';
-import { DateService } from 'src/app/attendance/services/date.service';
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { DateService } from 'src/app/shared/services/date.service';
 
 @Component({
   selector: 'app-process-attendance',

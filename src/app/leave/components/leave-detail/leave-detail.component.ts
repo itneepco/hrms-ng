@@ -4,30 +4,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTableDataSource } from "@angular/material/table";
 import { Subscription } from "rxjs";
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 import { AuthService } from "../../../auth/services/auth.service";
 import { Addressee } from "../../../shared/models/adressee";
-import {
-  CL_CODE,
-  EL_CODE,
-  HPL_CODE,
-  RH_CODE
-} from "../../../shared/models/global-codes";
+import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from "../../../shared/models/global-codes";
 import { LeaveDetail } from "../../../shared/models/leave";
 import { LeaveTypeService } from "../../../shared/services/leave-type.service";
-import {
-  JR_ACCEPTED,
-  JR_PENDING,
-  LEAVE_APPLIED,
-  LEAVE_APPROVED,
-  LEAVE_CALLBACKED,
-  LEAVE_CANCELLED,
-  LEAVE_CANCEL_INITIATION,
-  LEAVE_CANCEL_RECOMMENDED,
-  LEAVE_PROCESSED_PAGE,
-  LEAVE_RECOMMENDED,
-  LEAVE_REQUEST_PAGE,
-  TRANSACTION_PAGE
-} from "../../models/leave.codes";
+import { JR_ACCEPTED, JR_PENDING, LEAVE_APPLIED, LEAVE_APPROVED, LEAVE_CALLBACKED, LEAVE_CANCELLED, LEAVE_CANCEL_INITIATION, LEAVE_CANCEL_RECOMMENDED, LEAVE_PROCESSED_PAGE, LEAVE_RECOMMENDED, LEAVE_REQUEST_PAGE, TRANSACTION_PAGE } from "../../models/leave.codes";
 import { LeaveCtrlOfficerService } from "../../services/leave-ctrl-officer.service";
 import { LedgerService } from "../../services/ledger.service";
 import { WorkflowActionService } from "../../services/workflow-action.service";
@@ -96,6 +79,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     private ledgerService: LedgerService,
     private userActionService: UserActionService,
     private joiningService: JoiningReportService,
+    private wageMonthService: WageMonthService,
     public dialogRef: MatDialogRef<LeaveDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
@@ -103,10 +87,14 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.leaveApp = this.data.leave;
     this.pageNo = this.data.pageNo;
-    this.actions = this.userActionService.getActions(
-      this.leaveApp,
-      this.pageNo
-    );
+
+    this.wageMonthService.getActiveWageMonth().subscribe(activeWageMonth => {
+      this.actions = this.userActionService.getActions(
+        this.leaveApp,
+        this.pageNo,
+        activeWageMonth
+      );
+    })
 
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails);
     this.initForm();

@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { AbsenteeStatementService } from 'src/app/attendance/services/absentee-statement.service';
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
-import { DateService } from 'src/app/attendance/services/date.service';
+import { DateService } from 'src/app/shared/services/date.service';
 
 @Component({
   selector: 'app-absentee-statement',
@@ -41,8 +41,8 @@ export class AbsenteeStatementComponent implements OnInit {
   ngOnInit() {
     this.wageMonthService.getActiveWageMonth()
       .subscribe(wageMonth => {
-        if(!wageMonth) return 
-        
+        if(!wageMonth) return
+
         this.activeWageMonth = wageMonth
         this.startDate = this.activeWageMonth.from_date
         this.endDate = this.activeWageMonth.to_date

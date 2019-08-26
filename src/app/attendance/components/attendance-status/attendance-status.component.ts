@@ -10,7 +10,7 @@ import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_PRESENT, AT
 import { AttendanceStatus } from '../../models/employee-wise-roster';
 import { WageMonth } from '../../models/wage-month';
 import { AttendanceStatusService } from '../../services/attendance-status.service';
-import { DateService } from '../../services/date.service';
+import { DateService } from '../../../shared/services/date.service';
 import { WageMonthService } from '../../services/wage-month.service';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 
@@ -58,7 +58,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       });
 
     this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
-      console.log(wageMonth)
+      // console.log(wageMonth)
       if (!wageMonth) return
 
       this.activeWageMonth = wageMonth
@@ -79,7 +79,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       this.emp_code.value
     )
       .subscribe(result => {
-        console.log(result)
+        // console.log(result)
         this.attendance = result
       })
   }

@@ -35,6 +35,10 @@ export class DateService {
     return moment(first).diff(moment(second), 'days') === 0
   }
 
+  datesDiff(first: Date, second: Date) {
+    return moment(first).diff(moment(second), 'days')
+  }
+
   getDateYYYYMMDD(day: Date) {
     return moment(day).format("YYYY-MM-DD")
   }

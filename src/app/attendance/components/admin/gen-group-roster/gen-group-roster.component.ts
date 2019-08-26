@@ -5,17 +5,17 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { switchMap } from "rxjs/operators";
 import { Group } from "src/app/attendance/models/group";
 import { Shift } from "src/app/attendance/models/shift";
-import { DateService } from "src/app/attendance/services/date.service";
+import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { GroupService } from "src/app/attendance/services/group.service";
-
+import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { DateService } from 'src/app/shared/services/date.service';
 import { GeneralRoster } from "./../../../models/general-roster";
 import { WorkingDay } from "./../../../models/working-day";
 import { GeneralRosterService } from "./../../../services/general-roster.service";
 import { ShiftService } from "./../../../services/shift.service";
 import { WorkingDayService } from "./../../../services/working-day.service";
 import { ChangeTimingComponent } from "./change-timing/change-timing.component";
-import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
-import { WageMonth } from 'src/app/attendance/models/wage-month';
+
 
 @Component({
   selector: "app-gen-group-roster",
