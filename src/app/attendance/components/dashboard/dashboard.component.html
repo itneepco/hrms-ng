@@ -1,21 +1,60 @@
-<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" *ngIf="auth.isTimeOfficeAdmin(); else employeeView">
-
+<div
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  fxLayoutGap="20px"
+  *ngIf="auth.isTimeOfficeAdmin(); else employeeView"
+>
   <mat-card fxFlex="60">
-    <div>
+    <div *ngIf="attendance; else noData">
+      <div id="head">
+        <span
+          >Attendance status for {{ current_shift }} shift on
+          {{ attendance.day | date: "mediumDate" }}</span
+        >
+      </div>
       <div>
         <div class="chart">
-          <canvas height="120" baseChart [data]="inTimeData" [labels]="inTimeLabels" [chartType]="pieChartType"
-            [options]="pieChartOptions" [colors]="inTimeColors" [legend]="pieChartLegend">
+          <canvas
+            height="100"
+            baseChart
+            [data]="inTimeData"
+            [labels]="inTimeLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [colors]="inTimeColors"
+            [legend]="pieChartLegend"
+          >
           </canvas>
         </div>
-
-        <div class="chart" style="margin-top: 12px;">
-          <canvas height="120" baseChart [data]="outTimeData" [labels]="outTimeLabels" [chartType]="pieChartType"
-            [options]="pieChartOptions" [colors]="outTimeColors" [legend]="pieChartLegend">
+        <mat-divider></mat-divider>
+        <div class="chart">
+          <canvas
+            height="100"
+            baseChart
+            [data]="outTimeData"
+            [labels]="outTimeLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [colors]="outTimeColors"
+            [legend]="pieChartLegend"
+          >
           </canvas>
         </div>
       </div>
+      <div id="shifts" fxLayoutAlign="center center">
+        <mat-button-toggle-group>
+          <mat-button-toggle
+            *ngFor="let status of attendance.stats; let i = index"
+            (click)="onChange(i)"
+            value="i"
+            >{{ status.shift }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </div>
     </div>
+    <ng-template #noData>
+      Insufficient data to display pie chart. Pie chart will load when data are available
+    </ng-template>
   </mat-card>
 
   <div fxFlex="40" fxLayout="column" fxLayoutGap="16px">
@@ -23,8 +62,8 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/time.png">
-            <h3 matLine> Shift Timings </h3>
+            <img matListAvatar src="assets/icons/time.png" />
+            <h3 matLine>Shift Timings</h3>
           </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
@@ -37,7 +76,7 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/absent.png">
+            <img matListAvatar src="assets/icons/absent.png" />
             <h3 matLine>Absent Detail</h3>
           </mat-list-item>
         </mat-list>
@@ -54,7 +93,7 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/group.png">
+            <img matListAvatar src="assets/icons/group.png" />
             <h3 matLine>Groups</h3>
           </mat-list-item>
         </mat-list>
@@ -68,7 +107,7 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/emp-group.png">
+            <img matListAvatar src="assets/icons/emp-group.png" />
             <h3 matLine>Employee Group</h3>
           </mat-list-item>
         </mat-list>
@@ -85,7 +124,7 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/upload.png">
+            <img matListAvatar src="assets/icons/upload.png" />
             <h3 matLine>Upload Data</h3>
           </mat-list-item>
         </mat-list>
@@ -99,7 +138,7 @@
       <mat-card fxFlex class="card-block" fxFlex="49">
         <mat-list>
           <mat-list-item>
-            <img matListAvatar src="assets/icons/process.png">
+            <img matListAvatar src="assets/icons/process.png" />
             <h3 matLine>Month End</h3>
           </mat-list-item>
         </mat-list>
@@ -119,22 +158,24 @@
     <mat-card fxFlex class="card-block">
       <mat-list>
         <mat-list-item>
-          <img matListAvatar src="assets/icons/time.png">
-          <h3 matLine> Punching Timings </h3>
+          <img matListAvatar src="assets/icons/time.png" />
+          <h3 matLine>Punching Timings</h3>
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
       <div class="apply-block">
         <div *ngFor="let punchTiming of punchTimings">
-          <h2 class="title">{{punchTiming.name | uppercase}} TIMING</h2>
+          <h2 class="title">{{ punchTiming.name | uppercase }} TIMING</h2>
           <div class="item">
             <div>In Time</div>
             <div fxLayout="row" fxLayoutGap="10px">
-              <div fxFlex>Start:
-                <span class="left-margin">{{punchTiming.in_time_start}}</span>
+              <div fxFlex>
+                Start:
+                <span class="left-margin">{{ punchTiming.in_time_start }}</span>
               </div>
-              <div fxFlex>End:
-                <span class="left-margin">{{punchTiming.in_time_end}}</span>
+              <div fxFlex>
+                End:
+                <span class="left-margin">{{ punchTiming.in_time_end }}</span>
               </div>
             </div>
           </div>
@@ -142,17 +183,22 @@
           <div class="item">
             <div>Out Time</div>
             <div fxLayout="row" fxLayoutGap="10px">
-              <div fxFlex>Start:
-                <span class="left-margin">{{punchTiming.out_time_start}}</span>
+              <div fxFlex>
+                Start:
+                <span class="left-margin">{{
+                  punchTiming.out_time_start
+                }}</span>
               </div>
-              <div fxFlex>End:
-                <span class="left-margin">{{punchTiming.out_time_end}}</span>
+              <div fxFlex>
+                End:
+                <span class="left-margin">{{ punchTiming.out_time_end }}</span>
               </div>
             </div>
           </div>
           <mat-divider></mat-divider>
-          <div class="item">Late time:
-            <span class="left-margin">{{punchTiming.late_time}}</span>
+          <div class="item">
+            Late time:
+            <span class="left-margin">{{ punchTiming.late_time }}</span>
           </div>
         </div>
       </div>
@@ -161,14 +207,15 @@
     <mat-card fxFlex class="card-block">
       <mat-list>
         <mat-list-item>
-          <img matListAvatar src="assets/icons/today.png">
-          <h3 matLine> Today's Punching </h3>
+          <img matListAvatar src="assets/icons/today.png" />
+          <h3 matLine>Today's Punching</h3>
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
       <div class="apply-block">
-        <h2 class="title">NO OF PUNCHINGS:
-          <span style="margin-left: 10px">{{todaysPunchings.length}}</span>
+        <h2 class="title">
+          NO OF PUNCHINGS:
+          <span style="margin-left: 10px">{{ todaysPunchings.length }}</span>
         </h2>
         <ul>
           <li *ngFor="let punch of todaysPunchings">
@@ -181,18 +228,19 @@
     <mat-card fxFlex class="card-block">
       <mat-list>
         <mat-list-item>
-          <img matListAvatar src="assets/icons/late.png">
-          <h3 matLine> Late punchings </h3>
+          <img matListAvatar src="assets/icons/late.png" />
+          <h3 matLine>Late punchings</h3>
         </mat-list-item>
       </mat-list>
       <mat-divider></mat-divider>
       <div class="apply-block">
-        <h2 class="title">NO OF DAYS:
-          <span style="margin-left: 10px">{{latePunchings.length}}</span>
+        <h2 class="title">
+          NO OF DAYS:
+          <span style="margin-left: 10px">{{ latePunchings.length }}</span>
         </h2>
         <ul>
           <li *ngFor="let day of latePunchings">
-            {{ day | date:'mediumDate' }}
+            {{ day | date: "mediumDate" }}
           </li>
         </ul>
       </div>

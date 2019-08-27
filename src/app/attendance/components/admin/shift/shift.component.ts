@@ -40,7 +40,7 @@ export class ShiftComponent implements OnInit {
 
   ngOnInit() {
     this.shiftService.getShifts().subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.dataSource = new MatTableDataSource<Shift>(data);
       this.dataSource.sort = this.sort;
     });

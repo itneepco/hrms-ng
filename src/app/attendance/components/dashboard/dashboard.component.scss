@@ -1,14 +1,28 @@
+#head {
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+#shifts {
+  margin-top: 16px;
+}
+
+.chart {
+  padding: 10px;
+}
+
 .buttons {
   margin: 20px;
 }
 
 .card-block {
-  padding: 0px;    
+  padding: 0px;
 }
 
 .apply-block {
   padding: 10px;
-  font-size: 13px;        
+  font-size: 13px;
 }
 
 .item {
@@ -26,7 +40,8 @@
   font-size: 14px;
 }
 
-ul, li {
+ul,
+li {
   padding: 0px;
   margin-left: 10px;
 }

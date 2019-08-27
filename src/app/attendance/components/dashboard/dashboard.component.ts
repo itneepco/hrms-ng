@@ -1,117 +1,148 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { WageMonth } from '../../models/wage-month';
-import { EmployeeDashboardService } from '../../services/employee-dashboard.service';
-import { WageMonthService } from '../../services/wage-month.service';
-import { WageMonthFormComponent } from '../admin/wage-month-form/wage-month-form.component';
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { ChartOptions, ChartType } from "chart.js";
+import { Label } from "ng2-charts";
+import { AuthService } from "src/app/auth/services/auth.service";
+import { WageMonth } from "../../models/wage-month";
+import { EmployeeDashboardService } from "../../services/employee-dashboard.service";
+import { GraphDashboardService } from "../../services/graph-dashboard.service";
+import { WageMonthService } from "../../services/wage-month.service";
+import { WageMonthFormComponent } from "../admin/wage-month-form/wage-month-form.component";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"]
 })
 export class DashboardComponent implements OnInit {
   activeWageMonth: WageMonth;
   punchTimings = [];
   latePunchings = [];
-  todaysPunchings = []
+  todaysPunchings = [];
+  attendance;
+  current_shift;
   // Pie
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
-      position: 'left', // or top
+      position: "left" // or top
     },
     plugins: {
       datalabels: {
         formatter: (value, ctx) => {
           const label = ctx.chart.data.labels[ctx.dataIndex];
           return label;
-        },
-      },
+        }
+      }
     }
   };
 
-  public pieChartType: ChartType = 'pie';
+  public pieChartType: ChartType = "pie";
   public pieChartLegend = true;
 
-  public inTimeLabels: Label[] = [
-    'In time - 9:00 am to 10:00 am',
-    'In time - 10:00 am to 10:15 am',
-    'In time - After 10:15 am',
-  ];
-  public outTimeLabels: Label[] = [
-    'Out time - Before 5:00 pm',
-    'Out time - 5:00 pm to 6 pm',
-    'Out time - After 6 pm',
-  ]
+  public inTimeLabels: Label[] = [];
+  public outTimeLabels: Label[] = [];
 
-  public inTimeData: number[] = [300, 150, 50];
-  public outTimeData: number[] = [20, 400, 70];
+  public inTimeData: number[] = [];
+  public outTimeData: number[] = [];
 
   public inTimeColors = [
     {
       backgroundColor: [
-        'rgba(255,0,0,0.4)',
-        'rgba(0,255,0,0.4)',
-        'rgba(0,0,255,0.4)',
-      ],
-    },
+        "rgba(51, 204, 51, 0.5)",
+        "rgba(204, 102, 255, 0.5)",
+        "rgba(255, 0, 0, 0.5)"
+      ]
+    }
   ];
   public outTimeColors = [
     {
       backgroundColor: [
-        'rgba(255,0,255,0.4)',
-        'rgba(205,180,100,0.4)',
-        'rgba(0,255,255,0.4)',
-      ],
-    },
+        "rgba(255, 0, 0, 0.5)",
+        "rgba(0, 102, 204, 0.5)",
+        "rgba(255, 0, 255, 0.5)"
+      ]
+    }
   ];
 
-  constructor(private dialog: MatDialog,
+  constructor(
+    private dialog: MatDialog,
     public auth: AuthService,
+    private graphService: GraphDashboardService,
     private empDashboardService: EmployeeDashboardService,
-    private wageMonthService: WageMonthService) { }
+    private wageMonthService: WageMonthService
+  ) {}
 
   ngOnInit() {
     this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
-      this.activeWageMonth = wageMonth
+      this.activeWageMonth = wageMonth;
       if (!this.activeWageMonth) {
-        this.openWageMonth()
+        this.openWageMonth();
       }
-    })
+    });
 
     if (!this.auth.isTimeOfficeAdmin()) {
       this.empDashboardService.getShiftTimings().subscribe(data => {
         // console.log(data)
-        this.punchTimings = data
-      })
+        this.punchTimings = data;
+      });
       this.empDashboardService.getLatePunchings().subscribe(data => {
         // console.log(data)
-        this.latePunchings = data
-      })
+        this.latePunchings = data;
+      });
       this.empDashboardService.getTodaysPunching().subscribe(data => {
         // console.log(data)
-        this.todaysPunchings = data
-      })
+        this.todaysPunchings = data;
+      });
+    } else {
+      this.graphService.getAttendanceStats().subscribe(result => {
+        const data = result.data;
+        if (!data || data.length < 1) return;
+
+        this.attendance = data;
+
+        this.current_shift = this.attendance.stats[0].shift;
+        this.inTimeLabels = this.attendance.stats[0].in_time_labels;
+        this.inTimeData = this.attendance.stats[0].in_time_data;
+        this.outTimeLabels = this.attendance.stats[0].out_time_labels;
+        this.outTimeData = this.attendance.stats[0].out_time_data;
+      });
     }
   }
 
+  public onChange(index: number) {
+    this.current_shift = this.attendance.stats[index].shift;
+    this.inTimeLabels = this.attendance.stats[index].in_time_labels;
+    this.inTimeData = this.attendance.stats[index].in_time_data;
+    this.outTimeLabels = this.attendance.stats[index].out_time_labels;
+    this.outTimeData = this.attendance.stats[index].out_time_data;
+  }
+
   // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  public chartClicked({
+    event,
+    active
+  }: {
+    event: MouseEvent;
+    active: {}[];
+  }): void {
     console.log(event, active);
   }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  public chartHovered({
+    event,
+    active
+  }: {
+    event: MouseEvent;
+    active: {}[];
+  }): void {
     console.log(event, active);
   }
 
   openWageMonth() {
     this.dialog.open(WageMonthFormComponent, {
-      width: '520px',
-      height: '380px'
+      width: "520px",
+      height: "380px"
     });
   }
 }

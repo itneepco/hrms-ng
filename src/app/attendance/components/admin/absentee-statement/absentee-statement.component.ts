@@ -30,7 +30,7 @@ export class AbsenteeStatementComponent implements OnInit {
   endDate: Date;
 
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private snackbar: MatSnackBar,
     private dialog: MatDialog,
