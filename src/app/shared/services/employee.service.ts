@@ -33,4 +33,11 @@ export class EmployeeService {
       item.emp_code
     }, ${item.designation}`;
   }
+
+  getAllEmployees(projectId: number): Observable<Employee[]> {
+    return this.http.get<Employee[]>(baseURL + 'api/employees/search?project=' + projectId)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
 }

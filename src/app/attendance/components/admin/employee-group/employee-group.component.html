@@ -10,7 +10,7 @@
     <mat-expansion-panel *ngFor="let group of groups">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ group.name }}
+          {{ group.name | uppercase }}
         </mat-panel-title>
         <mat-panel-description>
           List of employees in this group
@@ -35,11 +35,66 @@
             <td fxFlex="15" fxLayoutAlign="start center">
               {{ empGroup.employee.last_name | titlecase }}
             </td>
-            <td fxFlex="15" fxLayoutAlign="start center">{{ empGroup.employee.emp_code }}</td>
-            <td fxFlex="25" fxLayoutAlign="start center">{{ empGroup.employee.designation }}</td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ empGroup.employee.emp_code }}
+            </td>
+            <td fxFlex="25" fxLayoutAlign="start center">
+              {{ empGroup.employee.designation }}
+            </td>
             <td fxFlex="20" fxLayoutAlign="start center">
-              <mat-icon (click)="onEdit(empGroup)" class="btn" color="primary">edit</mat-icon>
-              <mat-icon (click)="onDelete(empGroup)" class="btn" color="accent">delete</mat-icon>
+              <mat-icon (click)="onEdit(empGroup)" class="btn" color="primary"
+                >edit</mat-icon
+              >
+              <mat-icon (click)="onDelete(empGroup)" class="btn" color="accent"
+                >delete</mat-icon
+              >
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="employees">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          EXEMPTED GROUP
+        </mat-panel-title>
+        <mat-panel-description>
+          List of exempted employees
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div>
+        <table fxFlex matSort>
+          <tr>
+            <th fxFlex="10">Sl. No</th>
+            <th fxFlex="15">First Name</th>
+            <th fxFlex="15">Last Name</th>
+            <th fxFlex="15">Emp Code</th>
+            <th fxFlex="25">Designation</th>
+            <th fxFlex="20">Actions</th>
+          </tr>
+          <tr *ngFor="let employee of employees; let i = index">
+            <td fxFlex="10" fxLayoutAlign="start center">{{ i + 1 }}</td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ employee.first_name | titlecase }}
+            </td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ employee.last_name | titlecase }}
+            </td>
+            <td fxFlex="15" fxLayoutAlign="start center">
+              {{ employee.emp_code }}
+            </td>
+            <td fxFlex="25" fxLayoutAlign="start center">
+              {{ employee.designation }}
+            </td>
+            <td fxFlex="20" fxLayoutAlign="start center">
+              <mat-icon
+                (click)="addEmpToGroup(employee)"
+                class="btn"
+                color="accent"
+                >edit</mat-icon
+              >
             </td>
           </tr>
         </table>
@@ -50,7 +105,7 @@
 
 <button
   mat-fab
-  class="fab-bottom-right"
+  id="fab"
   matTooltip="Add employee to group"
   matTooltipPosition="left"
   (click)="addEmpToGroup()"

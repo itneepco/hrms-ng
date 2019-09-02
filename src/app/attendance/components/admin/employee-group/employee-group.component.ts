@@ -5,7 +5,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Sort } from "@angular/material/sort";
 import { EmployeeGroupService } from "src/app/attendance/services/employee-group.service";
 import { GroupService } from "src/app/attendance/services/group.service";
-
+import { Employee } from "./../../../../shared/models/employee";
 import { EmployeeGroupDtl } from "./../../../models/employee-group";
 import { Group } from "./../../../models/group";
 import { EmployeeGroupFormComponent } from "./employee-group-form/employee-group-form.component";
@@ -18,6 +18,7 @@ import { EmployeeGroupFormComponent } from "./employee-group-form/employee-group
 export class EmployeeGroupComponent implements OnInit {
   groups: Group[];
   empGroupDtls: EmployeeGroupDtl[][] = []; // Array of EmployeeGroupDtl array
+  employees: Employee[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -39,19 +40,33 @@ export class EmployeeGroupComponent implements OnInit {
           });
       });
     });
+
+    this.empGroupService
+      .getExemptedEmployees()
+      .subscribe(employees => (this.employees = employees));
   }
 
-  addEmpToGroup() {
+  addEmpToGroup(employee?: Employee) {
+    let empGroup;
+    if (employee) {
+      empGroup = {} as EmployeeGroupDtl;
+      empGroup.employee = employee;
+    }
+
     const dialogRef = this.dialog.open(EmployeeGroupFormComponent, {
       width: "520px",
-      height: "320px"
+      height: "320px",
+      data: { empGroup }
     });
 
-    dialogRef.afterClosed().subscribe(newData => {
+    dialogRef.afterClosed().subscribe((newData: EmployeeGroupDtl) => {
       if (!newData) return;
 
       console.log(newData);
       this.empGroupDtls[newData.group_id].push(newData);
+      this.employees = this.employees.filter(
+        employee => employee.emp_code != newData.employee.emp_code
+      );
 
       this.snackbar.open(
         "Successfully added employee to the group",
@@ -67,7 +82,7 @@ export class EmployeeGroupComponent implements OnInit {
     const dialogRef = this.dialog.open(EmployeeGroupFormComponent, {
       width: "520px",
       height: "320px",
-      data: empGroup
+      data: { empGroup }
     });
 
     dialogRef.afterClosed().subscribe(newData => {
@@ -77,6 +92,7 @@ export class EmployeeGroupComponent implements OnInit {
       const index = this.empGroupDtls[empGroup.group_id].findIndex(
         data => data.id === empGroup.id
       );
+
       this.empGroupDtls[empGroup.group_id].splice(index, 1);
       this.empGroupDtls[newData.group_id].push(newData);
 
@@ -94,15 +110,13 @@ export class EmployeeGroupComponent implements OnInit {
     const retVal = confirm("Are you sure you want to delete?");
     if (retVal != true) return;
 
-    this.empGroupService
-      .deleteEmployeeGroup(empGroup.group_id, empGroup.id)
-      .subscribe(() => {
-        const index = this.empGroupDtls[empGroup.group_id].findIndex(
-          data => data.id === empGroup.id
-        );
-        this.empGroupDtls[empGroup.group_id].splice(index, 1);
-        this.empGroupDtls = [...this.empGroupDtls];
-      });
+    this.empGroupService.deleteEmployeeGroup(empGroup.id).subscribe(() => {
+      const index = this.empGroupDtls[empGroup.group_id].findIndex(
+        data => data.id === empGroup.id
+      );
+      this.empGroupDtls[empGroup.group_id].splice(index, 1);
+      this.empGroupDtls = [...this.empGroupDtls];
+    });
   }
 
   goBack() {
