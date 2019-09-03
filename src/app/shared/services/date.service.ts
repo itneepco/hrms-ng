@@ -51,4 +51,11 @@ export class DateService {
     return moment(day).subtract(month, 'month').toDate()
   }
 
+  increaseByOneDay(date: Date | string, day: number) {
+    return moment(date).add(day, 'day').toDate()
+  }
+
+  decreaseByOneDay(date: Date | string, day: number) {
+    return moment(date).subtract(day, 'day').toDate()
+  }
 }

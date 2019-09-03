@@ -6,11 +6,15 @@
 >
   <mat-card fxFlex="60">
     <div *ngIf="attendance; else noData">
-      <div id="head">
+      <div id="head" fxLayout="row" fxLayoutAlign="space-between center">
         <span
           >Attendance status for {{ current_shift }} shift on
           {{ attendance.day | date: "mediumDate" }}</span
         >
+        <mat-button-toggle-group>
+          <mat-button-toggle (click)="prevDay()">Prev Day</mat-button-toggle>
+          <mat-button-toggle (click)="nextDay()">Next Day</mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
       <div>
         <div class="chart">
@@ -53,7 +57,8 @@
       </div>
     </div>
     <ng-template #noData>
-      Insufficient data to display pie chart. Pie chart will load when data are available
+      Insufficient data to display pie chart. Pie chart will load when data are
+      available
     </ng-template>
   </mat-card>
 

@@ -1,18 +1,20 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { MediaChange, MediaObserver } from "@angular/flex-layout";
 import { MatSidenav } from "@angular/material/sidenav";
-
+import { Subscription } from "rxjs";
 import { MenuService } from "./core/services/menu.service";
+
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav, { static: false }) private sidenav: MatSidenav;
   opened = true;
   mode = "side";
+  subscription: Subscription;
 
   constructor(
     private mediaObserver: MediaObserver,
@@ -20,16 +22,18 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.mediaObserver.media$.subscribe((change: MediaChange) => {
-      const screenSize = change.mqAlias;
-      if (screenSize === "xs" || screenSize === "sm" || screenSize === "md") {
-        this.opened = false;
-        this.mode = "over";
-      } else {
-        this.opened = true;
-        this.mode = "side";
+    this.subscription = this.mediaObserver.media$.subscribe(
+      (change: MediaChange) => {
+        const screenSize = change.mqAlias;
+        if (screenSize === "xs" || screenSize === "sm" || screenSize === "md") {
+          this.opened = false;
+          this.mode = "over";
+        } else {
+          this.opened = true;
+          this.mode = "side";
+        }
       }
-    });
+    );
 
     this.menuService.menutToggled$.subscribe((data: boolean) => {
       if (data) {
@@ -48,5 +52,9 @@ export class AppComponent implements OnInit {
 
   isLoginPath() {
     return window.location.pathname === "/login";
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

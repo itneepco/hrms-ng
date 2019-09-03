@@ -24,8 +24,11 @@ export class GraphDashboardService {
   }
 
   getAttendanceStats(day?: string): Observable<any> {
-    return this.http
-      .get<any>(`${this.getUrl()}/status?day=${day}`)
+    let url = `${this.getUrl()}/status`;
+    if (day) {
+      url = `${this.getUrl()}/status?day=${day}`;
+    }
+    return this.http.get<any>(url)
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 }

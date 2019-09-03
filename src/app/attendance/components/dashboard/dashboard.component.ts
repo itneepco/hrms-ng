@@ -8,6 +8,7 @@ import { EmployeeDashboardService } from "../../services/employee-dashboard.serv
 import { GraphDashboardService } from "../../services/graph-dashboard.service";
 import { WageMonthService } from "../../services/wage-month.service";
 import { WageMonthFormComponent } from "../admin/wage-month-form/wage-month-form.component";
+import { DateService } from "./../../../shared/services/date.service";
 
 @Component({
   selector: "app-dashboard",
@@ -21,7 +22,9 @@ export class DashboardComponent implements OnInit {
   todaysPunchings = [];
   attendance;
   current_shift;
-  // Pie
+  curr_day: string;
+
+  // Pie chart option
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -68,6 +71,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     public auth: AuthService,
+    private dateService: DateService,
     private graphService: GraphDashboardService,
     private empDashboardService: EmployeeDashboardService,
     private wageMonthService: WageMonthService
@@ -95,19 +99,25 @@ export class DashboardComponent implements OnInit {
         this.todaysPunchings = data;
       });
     } else {
-      this.graphService.getAttendanceStats().subscribe(result => {
-        const data = result.data;
-        if (!data || data.length < 1) return;
-
-        this.attendance = data;
-
-        this.current_shift = this.attendance.stats[0].shift;
-        this.inTimeLabels = this.attendance.stats[0].in_time_labels;
-        this.inTimeData = this.attendance.stats[0].in_time_data;
-        this.outTimeLabels = this.attendance.stats[0].out_time_labels;
-        this.outTimeData = this.attendance.stats[0].out_time_data;
-      });
+      this.fetchAttendanceStatus();
     }
+  }
+
+  fetchAttendanceStatus(day?: string) {
+    this.graphService.getAttendanceStats(day).subscribe(result => {
+      const data = result.data;
+      if (!data || data.length < 1) return;
+
+      console.log(data)
+      this.attendance = data;
+      this.curr_day = data.day;
+
+      this.current_shift = this.attendance.stats[0].shift;
+      this.inTimeLabels = this.attendance.stats[0].in_time_labels;
+      this.inTimeData = this.attendance.stats[0].in_time_data;
+      this.outTimeLabels = this.attendance.stats[0].out_time_labels;
+      this.outTimeData = this.attendance.stats[0].out_time_data;
+    });
   }
 
   public onChange(index: number) {
@@ -144,5 +154,17 @@ export class DashboardComponent implements OnInit {
       width: "520px",
       height: "380px"
     });
+  }
+
+  prevDay() {
+    const prevDay = this.dateService.decreaseByOneDay(this.curr_day, 1);
+    console.log(prevDay)
+    this.fetchAttendanceStatus(this.dateService.getDateYYYYMMDD(prevDay));
+  }
+
+  nextDay() {
+    const nextDay = this.dateService.increaseByOneDay(this.curr_day, 1);
+    console.log(nextDay)
+    this.fetchAttendanceStatus(this.dateService.getDateYYYYMMDD(nextDay));
   }
 }
