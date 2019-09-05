@@ -43,6 +43,10 @@ export class DateService {
     return moment(day).format("YYYY-MM-DD")
   }
 
+  getDateDDMMMYYYY(day: Date) {
+    return moment(day).format("DD MMM, YYYY")
+  }
+
   increaseDateByMonth(day: Date, month: number) {
     return moment(day).add(month, 'month').toDate()
   }

@@ -1,14 +1,24 @@
 <div class="main-container">
   <mat-card class="table content" *ngIf="activeWageMonth; else noWageMonth">
-    <div fxLayoutAlign="space-between center">
-      <span class="heading">
-        Absentee Statement for the current wage month from
+    <div fxLayoutAlign="start center" fxLayoutGap="20px">
+      <mat-form-field *ngIf="departments">
+        <mat-label>Select department</mat-label>
+        <mat-select (selectionChange)="onChangeDept()" [formControl]="selected">
+          <mat-option value="all">All departments</mat-option>
+          <mat-option *ngFor="let dept of departments" [value]="dept">
+            {{ dept }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="heading" fxFlex>
+        Absentee Statement from
         <span *ngIf="activeWageMonth">
           {{ startDate | date: "mediumDate" }} to
           {{ endDate | date: "mediumDate" }}
         </span>
       </span>
-      <button mat-icon-button (click)="generatePDF()">
+      <button mat-icon-button (click)="generatePDF()" *ngIf="dataSource">
         <mat-icon>print</mat-icon>
       </button>
     </div>
