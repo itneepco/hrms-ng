@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
       this.activeWageMonth = wageMonth;
-      if (!this.activeWageMonth) {
+      if (!this.activeWageMonth && this.auth.isTimeOfficeAdmin()) {
         this.openWageMonth();
       }
     });

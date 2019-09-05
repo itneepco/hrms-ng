@@ -4,18 +4,23 @@
       <span class="heading">
         Absentee Statement for the current wage month from
         <span *ngIf="activeWageMonth">
-          {{startDate | date:'mediumDate'}} to
-          {{endDate | date:'mediumDate'}}
+          {{ startDate | date: "mediumDate" }} to
+          {{ endDate | date: "mediumDate" }}
         </span>
       </span>
-      <button mat-icon-button (click)="download()">
+      <button mat-icon-button (click)="generatePDF()">
         <mat-icon>print</mat-icon>
       </button>
     </div>
 
     <mat-divider></mat-divider>
 
-    <mat-table [dataSource]="dataSource" matSort style="margin-top: 10px;">
+    <mat-table
+      *ngIf="dataSource; else loading"
+      [dataSource]="dataSource"
+      matSort
+      style="margin-top: 10px;"
+    >
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef fxFlex="7">
           Sl. No.
@@ -58,7 +63,7 @@
         <mat-cell *matCellDef="let absentee" fxFlex="18">
           <div fxLayout="column">
             <div *ngFor="let day of absentee.absent_days">
-              {{ day | date:'mediumDate' }}
+              {{ day | date: "mediumDate" }}
             </div>
           </div>
         </mat-cell>
@@ -71,7 +76,7 @@
         <mat-cell *matCellDef="let absentee" fxFlex="15">
           <div fxLayout="column">
             <div *ngFor="let day of absentee.half_days">
-              {{ day | date:'mediumDate' }}
+              {{ day | date: "mediumDate" }}
             </div>
           </div>
         </mat-cell>
@@ -84,7 +89,7 @@
         <mat-cell *matCellDef="let absentee" fxFlex="15">
           <div fxLayout="column">
             <div *ngFor="let day of absentee.late_days">
-              {{ day | date:'mediumDate' }}
+              {{ day | date: "mediumDate" }}
             </div>
           </div>
         </mat-cell>
@@ -104,6 +109,12 @@
     </mat-table>
   </mat-card>
 
+  <ng-template #loading>
+    <div fxLayoutAlign="center center" id="loader">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </ng-template>
+
   <ng-template #noWageMonth>
     <mat-card>
       Please define wage month period first!!!
@@ -113,20 +124,38 @@
 
 <div id="action-btn" *ngIf="activeWageMonth">
   <div class="fab">
-    <button mat-fab *ngIf="isActiveWageMonth()" (click)="processMonthEnd()" matTooltip="Process Month End"
-      matTooltipPosition="left" color="primary">
+    <button
+      mat-fab
+      *ngIf="isActiveWageMonth()"
+      (click)="processMonthEnd()"
+      matTooltip="Process Month End"
+      matTooltipPosition="left"
+      color="primary"
+    >
       <mat-icon>build</mat-icon>
     </button>
   </div>
 
   <div class="fab">
-    <button mat-fab (click)="nextWageMonth()" matTooltip="Next Wage Month" matTooltipPosition="left" color="accent">
+    <button
+      mat-fab
+      (click)="nextWageMonth()"
+      matTooltip="Next Wage Month"
+      matTooltipPosition="left"
+      color="accent"
+    >
       <mat-icon>fast_forward</mat-icon>
     </button>
   </div>
 
   <div class="fab">
-    <button mat-fab (click)="prevWageMonth()" matTooltip="Previous Wage Month" matTooltipPosition="left" color="accent">
+    <button
+      mat-fab
+      (click)="prevWageMonth()"
+      matTooltip="Previous Wage Month"
+      matTooltipPosition="left"
+      color="accent"
+    >
       <mat-icon>fast_rewind</mat-icon>
     </button>
   </div>

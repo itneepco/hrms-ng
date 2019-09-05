@@ -8,6 +8,7 @@ import { AbsenteeStatementService } from 'src/app/attendance/services/absentee-s
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { DateService } from 'src/app/shared/services/date.service';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-absentee-statement',
@@ -49,10 +50,6 @@ export class AbsenteeStatementComponent implements OnInit {
 
         this.fetchAbsenteeStmt()
       })
-  }
-
-  download() {
-
   }
 
   fetchAbsenteeStmt() {
@@ -103,5 +100,14 @@ export class AbsenteeStatementComponent implements OnInit {
 
   isActiveWageMonth() {
     return this.dateService.compareDates(this.activeWageMonth.from_date, this.startDate)
+  }
+
+  generatePDF() {
+    var doc = new jsPDF()
+    doc.text(20, 20, 'Hello world!')
+    doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.')
+    doc.addPage()
+    doc.text(20, 20, 'Do you like that?')
+    doc.save('a4.pdf')
   }
 }
