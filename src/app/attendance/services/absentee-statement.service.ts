@@ -19,7 +19,7 @@ export class AbsenteeStatementService {
     private auth: AuthService,
     private dateService: DateService,
     private handler: ErrorHandlerService
-  ) {}
+  ) { }
 
   getUrl() {
     return (
@@ -49,7 +49,7 @@ export class AbsenteeStatementService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  generatePDF(wageMonth: WageMonth, dataSource: any[]) {
+  generatePDF(wageMonth: WageMonth, dataSource: any[], deptName: string) {
     const from_date = this.dateService.getDateDDMMMYYYY(wageMonth.from_date);
     const to_date = this.dateService.getDateDDMMMYYYY(wageMonth.to_date);
 
@@ -59,9 +59,9 @@ export class AbsenteeStatementService {
         "Name",
         "Emp Code",
         "Department",
-        "Absent Days On",
-        "Half Day On",
-        "Late Days On",
+        "Absent Days (Date)",
+        "Half Day (Date)",
+        "Late Days (Date)",
         "Absent Day Count"
       ]
     ];
@@ -69,9 +69,9 @@ export class AbsenteeStatementService {
     const data = dataSource.map((row, index) => {
       return [
         index + 1,
-        this.capitalize(row.name),
+        row.name.toUpperCase(),
         row.emp_code,
-        this.capitalize(row.department),
+        row.department.toUpperCase(),
         row.absent_days.map(day => day.split("-")[2]),
         row.half_days.map(day => day.split("-")[2]),
         row.late_days.map(day => day.split("-")[2]),
@@ -104,13 +104,7 @@ export class AbsenteeStatementService {
         cellPadding: 2
       }
     });
-    doc.save("absentee_statement.pdf");
-  }
-
-  // Capitalize string
-  private capitalize(string) {
-    console.log(string);
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    doc.save(`${deptName}_absentee.pdf`);
   }
 
   // Sorting array based on multiple fields

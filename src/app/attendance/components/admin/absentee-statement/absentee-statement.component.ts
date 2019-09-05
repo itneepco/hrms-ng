@@ -113,7 +113,8 @@ export class AbsenteeStatementComponent implements OnInit {
   generatePDF() {
     this.absenteeStmtService.generatePDF(
       this.activeWageMonth,
-      this.dataSource.data
+      this.dataSource.data,
+      this.selected.value
     );
   }
 
