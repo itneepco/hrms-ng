@@ -15,7 +15,7 @@ export class UserActionService {
     private auth: AuthService,
     private dateService: DateService,
     private leaveType: LeaveTypeService
-  ) {}
+  ) { }
 
   // Find the leave workflow action types
   getActions(
@@ -88,17 +88,20 @@ export class UserActionService {
      ************** check if leave transaction page ******************
      **********************************************************************/
     if (pageNo === TRANSACTION_PAGE) {
-      const leaveDtls = leaveApp.leaveDetails;
-      // Iterate over each leaves
-      for (let i = 0; i < leaveDtls.length; i++) {
-        let from_date = this.dateService.datesDiff(
-          leaveDtls[i].from_date,
-          currWageMonth.from_date
-        );
-        // if leave taken is before active wage month start, employee cannot cancel it
-        // i.e after month end leave cancellation is not allowed
-        if (from_date < 0) {
-          return [];
+      // If current wage month is defined
+      if (currWageMonth) {
+        const leaveDtls = leaveApp.leaveDetails;
+        // Iterate over each leaves
+        for (let i = 0; i < leaveDtls.length; i++) {
+          let from_date = this.dateService.datesDiff(
+            leaveDtls[i].from_date,
+            currWageMonth.from_date
+          );
+          // if leave taken is before active wage month start, employee cannot cancel it
+          // i.e after month end leave cancellation is not allowed
+          if (from_date < 0) {
+            return [];
+          }
         }
       }
 
