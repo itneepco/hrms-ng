@@ -64,7 +64,7 @@
             From Date
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            {{ absent.from_date }}
+            {{ absent.from_date | date:'mediumDate' }}
           </mat-cell>
         </ng-container>
 
@@ -73,7 +73,7 @@
             To Date
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            {{ absent.to_date }}
+            {{ absent.to_date | date:'mediumDate' }}
           </mat-cell>
         </ng-container>
 

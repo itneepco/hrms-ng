@@ -74,20 +74,22 @@
                 attend.attendance_status != officialAbsentStatus
               "
             >
-              <ng-container
+              <button
+                *ngIf="attend.attendance_status != presentStatus"
+                mat-icon-button
+                (click)="onEdit(attend)"
+                color="accent"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
                 *ngIf="
                   !(
-                    attend.attendance_status == presentStatus ||
+                    attend.shift.is_general &&
                     attend.attendance_status == onHolidayStatus
                   )
                 "
-              >
-                <button mat-icon-button (click)="onEdit(attend)" color="accent">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </ng-container>
-
-              <button
                 mat-icon-button
                 (click)="reProcessAttendance(attend)"
                 color="primary"
