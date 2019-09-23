@@ -5,12 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
-import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_PRESENT, ATTENDANCE_HOLIDAY } from '../../models/attendance-codes';
+import { DateService } from '../../../shared/services/date.service';
+import { ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_HOLIDAY, ATTENDANCE_PRESENT } from '../../models/attendance-codes';
 import { AttendanceStatus } from '../../models/employee-wise-roster';
 import { WageMonth } from '../../models/wage-month';
+import { AttendanceDataService } from '../../services/attendance-data.service';
 import { AttendanceStatusService } from '../../services/attendance-status.service';
-import { DateService } from '../../../shared/services/date.service';
 import { WageMonthService } from '../../services/wage-month.service';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 
@@ -41,6 +43,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private employeeService: EmployeeService,
     private dateService: DateService,
+    private attenDataService: AttendanceDataService,
     private attendStatusService: AttendanceStatusService) { }
 
   ngOnInit() {
@@ -84,6 +87,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       })
   }
 
+  // On edit, open change status dialog
   onEdit(attend: AttendanceStatus) {
     const dialogRef = this.dialog.open(ChangeStatusComponent, {
       panelClass: "detail-dialog",
@@ -93,22 +97,55 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
-        return;
-      }
-      this.snackbar.open("Successfully modified the attendance status", "Dismiss", {
-        duration: 1600
-      });
-      const index = this.attendance.indexOf(attend);
-      this.attendance[index] = result;
-      this.attendance = [...this.attendance]
+      this.updateData(attend, result)
     });
   }
 
+  // Reprocess the attendance data for the specified attendance record
+  reProcessAttendance(attend: AttendanceStatus) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to reprocess the attendance data?"
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(dialogData => {
+      if (!dialogData) return;
+
+      const data = {
+        id: attend.id,
+        shift_id: attend.shift.id
+      }
+      this.attenDataService.changeShiftTiming(data).subscribe(result => {
+        this.updateData(attend, result)
+      })
+    })
+  }
+
+  // Update the data to reflect on the view
+  private updateData(attend, result) {
+    if (!result) return;
+
+    if (result.data) {
+      this.snackbar.open("Successfully updated the attendance record", "Dismiss", {
+        duration: 1600
+      });
+      const index = this.attendance.indexOf(attend);
+      this.attendance[index] = result.data;
+      this.attendance = [...this.attendance]
+    }
+    else {
+      this.snackbar.open(result.message, "Dismiss", {
+        duration: 1600
+      });
+    }
+  }
+
+
   getFullName(item) {
-    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${
-      item.designation
-      }`;
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}`;
   }
 
   modifiedStatus(attend: AttendanceStatus) {

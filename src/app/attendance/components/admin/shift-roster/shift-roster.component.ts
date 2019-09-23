@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/attendance/models/group';
@@ -8,6 +9,7 @@ import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { ShiftRosterService } from 'src/app/attendance/services/shift-roster.service';
 import { ShiftService } from 'src/app/attendance/services/shift.service';
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { DateService } from 'src/app/shared/services/date.service';
 import { Shift } from '../../../models/shift';
 import { GroupService } from '../../../services/group.service';
@@ -37,6 +39,7 @@ export class ShiftRosterComponent implements OnInit {
     private shiftRosterService: ShiftRosterService,
     private dateService: DateService,
     private snackbar: MatSnackBar,
+    private dialog: MatDialog,
     private wageMonthService: WageMonthService
   ) { }
 
@@ -161,21 +164,33 @@ export class ShiftRosterComponent implements OnInit {
   }
 
   generateEmpWiseRoster() {
-    let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
-    let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to generate employee wise roster?"
+      }
+    })
 
-    this.isGenerating = true;
-    this.shiftRosterService.generateEmpWiseRoster(fromDate, toDate)
-      .subscribe(() => {
-        this.isGenerating = false;
-        this.snackbar.open(
-          "Successfully generated shift employees roster",
-          "Dismiss",
-          {
-            duration: 1600
-          }
-        );
-      }, () => this.isGenerating = false)
+    dialogRef.afterClosed().subscribe(dialogData => {
+      if (!dialogData) return;
+      
+      let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
+      let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+
+      this.isGenerating = true;
+      this.shiftRosterService.generateEmpWiseRoster(fromDate, toDate)
+        .subscribe(() => {
+          this.isGenerating = false;
+          this.snackbar.open(
+            "Successfully generated shift employees roster",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        }, () => this.isGenerating = false)
+    })
   }
 
   get rosters(): FormArray {

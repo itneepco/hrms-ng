@@ -1,17 +1,37 @@
 <div class="main-container">
   <mat-card class="search" *ngIf="auth.isTimeOfficeAdmin()">
-    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="30px"
+      fxLayoutGap.xs="10px"
+    >
       <mat-form-field fxFlex>
-        <input matInput placeholder="6 Digit Employee Code" [formControl]="emp_code" pattern="[0-9]{6}"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="fetchAttendance()">
+        <input
+          matInput
+          placeholder="6 Digit Employee Code"
+          [formControl]="emp_code"
+          pattern="[0-9]{6}"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="fetchAttendance()"
+        >
           <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
             {{ getFullName(item) | titlecase }}
           </mat-option>
         </mat-autocomplete>
-        <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
+        <mat-hint *ngIf="emp_code.invalid"
+          >Employee Code should be 6 digit</mat-hint
+        >
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="fetchAttendance()" [disabled]="emp_code.invalid">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="fetchAttendance()"
+        [disabled]="emp_code.invalid"
+      >
         <mat-icon>search</mat-icon>Search
       </button>
     </div>
@@ -32,22 +52,47 @@
             <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
           </tr>
         </thead>
-        <tr *ngFor="let attend of attendance" [ngClass]="{'absent': attend.attendance_status == onAbsentStatus && !attend.modified_status}">
-          <td>{{attend.day | date:'mediumDate'}}</td>
-          <td>{{attend.shift.name}}</td>
-          <td>{{attend.in_time}}</td>
-          <td>{{attend.out_time}}</td>
-          <td>{{getAttendanceStatus(attend.attendance_status)}}</td>
-          <td>{{modifiedStatus(attend)}}</td>
-          <td>{{attend.remarks}}</td>
+        <tr
+          *ngFor="let attend of attendance"
+          [ngClass]="{
+            absent:
+              attend.attendance_status == onAbsentStatus &&
+              !attend.modified_status
+          }"
+        >
+          <td>{{ attend.day | date: "mediumDate" }}</td>
+          <td>{{ attend.shift.name }}</td>
+          <td>{{ attend.in_time }}</td>
+          <td>{{ attend.out_time }}</td>
+          <td>{{ getAttendanceStatus(attend.attendance_status) }}</td>
+          <td>{{ modifiedStatus(attend) }}</td>
+          <td>{{ attend.remarks }}</td>
           <td *ngIf="auth.isTimeOfficeAdmin()">
-            <ng-container *ngIf="attend.attendance_status && 
-                !(attend.attendance_status == presentStatus ||
-                attend.attendance_status == onHolidayStatus ||
-                attend.attendance_status == officialAbsentStatus)">
+            <ng-container
+              *ngIf="
+                attend.attendance_status &&
+                attend.attendance_status != officialAbsentStatus
+              "
+            >
+              <ng-container
+                *ngIf="
+                  !(
+                    attend.attendance_status == presentStatus ||
+                    attend.attendance_status == onHolidayStatus
+                  )
+                "
+              >
+                <button mat-icon-button (click)="onEdit(attend)" color="accent">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </ng-container>
 
-              <button mat-icon-button (click)="onEdit(attend)" color="primary">
-                <mat-icon>edit</mat-icon>
+              <button
+                mat-icon-button
+                (click)="reProcessAttendance(attend)"
+                color="primary"
+              >
+                <mat-icon>sync</mat-icon>
               </button>
             </ng-container>
           </td>
@@ -69,20 +114,32 @@
   <ng-template #noData>
     <div style="padding: 25px">
       There are no attendance data available corresponding to the period
-      {{ startDate | date:'mediumDate' }} to {{ endDate | date:'mediumDate' }}
+      {{ startDate | date: "mediumDate" }} to {{ endDate | date: "mediumDate" }}
     </div>
   </ng-template>
 </div>
 
 <div id="action-btn">
   <div class="fab">
-    <button mat-fab (click)="nextWageMonth()" matTooltip="Next Wage Month" matTooltipPosition="left" color="accent">
+    <button
+      mat-fab
+      (click)="nextWageMonth()"
+      matTooltip="Next Wage Month"
+      matTooltipPosition="left"
+      color="accent"
+    >
       <mat-icon>fast_forward</mat-icon>
     </button>
   </div>
 
   <div class="fab">
-    <button mat-fab (click)="prevWageMonth()" matTooltip="Previous Wage Month" matTooltipPosition="left" color="accent">
+    <button
+      mat-fab
+      (click)="prevWageMonth()"
+      matTooltip="Previous Wage Month"
+      matTooltipPosition="left"
+      color="accent"
+    >
       <mat-icon>fast_rewind</mat-icon>
     </button>
   </div>

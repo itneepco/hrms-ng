@@ -32,7 +32,7 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
     this.attendance = this.data
     console.log(this.attendance)
 
-    this.shiftService.getShiftPunchings().subscribe(shifts => {
+    this.shiftService.getShifts().subscribe(shifts => {
       // console.log(shifts)
       this.shifts = shifts
     })
@@ -73,7 +73,7 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
       }
       this.attenDataService.markAsPresent(data)
         .subscribe(data => {
-          console.log(data)
+          // console.log(data)
           this.dialogRef.close(data)
         })
     }

@@ -42,7 +42,7 @@ export class AttendanceDataService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  changeShiftTiming(status) {
+  changeShiftTiming(status): Observable<any> {
     return this.http
       .post(`${this.getUrl()}/modify/shift`, status)
       .pipe(catchError(err => this.handler.handleError(err)));

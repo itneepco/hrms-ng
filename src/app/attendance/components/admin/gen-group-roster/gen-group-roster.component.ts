@@ -8,6 +8,7 @@ import { Shift } from "src/app/attendance/models/shift";
 import { WageMonth } from 'src/app/attendance/models/wage-month';
 import { GroupService } from "src/app/attendance/services/group.service";
 import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { DateService } from 'src/app/shared/services/date.service';
 import { GeneralRoster } from "./../../../models/general-roster";
 import { WorkingDay } from "./../../../models/working-day";
@@ -155,21 +156,33 @@ export class GenGroupRosterComponent implements OnInit {
   }
 
   genEmpWiseRoster() {
-    let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
-    let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to generate employee wise roster?"
+      }
+    })
 
-    this.isGenerating = true
-    this.genRosterService.generateEmpWiseRoster(fromDate, toDate)
-      .subscribe(() => {
-        this.isGenerating = false;
-        this.snackbar.open(
-          `Successfully generated general roster from ${fromDate} to ${toDate}`,
-          "Dismiss",
-          {
-            duration: 1600
-          }
-        );
-      }, () => this.isGenerating = false)
+    dialogRef.afterClosed().subscribe(dialogData => {
+      if (!dialogData) return;
+
+      let fromDate = this.dateService.getDateYYYYMMDD(this.startDate)
+      let toDate = this.dateService.getDateYYYYMMDD(this.endDate)
+
+      this.isGenerating = true
+      this.genRosterService.generateEmpWiseRoster(fromDate, toDate)
+        .subscribe(() => {
+          this.isGenerating = false;
+          this.snackbar.open(
+            `Successfully generated general roster from ${fromDate} to ${toDate}`,
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        }, () => this.isGenerating = false)
+    })
   }
 
   nextWageMonth() {
@@ -189,6 +202,6 @@ export class GenGroupRosterComponent implements OnInit {
   }
 
   isActiveMonthDefined() {
-    return typeof this.activeWageMonth  !== 'undefined'
+    return typeof this.activeWageMonth !== 'undefined'
   }
 }

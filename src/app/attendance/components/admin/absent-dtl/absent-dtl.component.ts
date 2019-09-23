@@ -7,10 +7,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AbsentDetailService } from 'src/app/attendance/services/absent-detail.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
-
 import { AbsentDetail } from './../../../models/absent-dtl';
 import { AbsentDtlFormComponent } from './absent-dtl-form/absent-dtl-form.component';
+
 
 
 @Component({
@@ -46,7 +47,7 @@ export class AbsentDtlComponent implements OnInit {
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
     private absentService: AbsentDetailService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.emp_code = new FormControl('', Validators.required);
@@ -111,23 +112,31 @@ export class AbsentDtlComponent implements OnInit {
   }
 
   onDelete(absent: AbsentDetail) {
-    const retVal = confirm("Are you sure you want to delete?");
-    if (retVal != true) return;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      height: '200px',
+      data: {
+        message: "Are you sure you want to delete the record?"
+      }
+    })
 
-    this.absentService
-      .deleteAbsentDtl(absent.emp_code, absent.id)
-      .subscribe(() => {
-        const index = this.dataSource.data.indexOf(absent);
-        this.dataSource.data.splice(index, 1);
-        this.dataSource.data = [...this.dataSource.data];
-        this.snackbar.open(
-          "Successfully deleted the absent detail record",
-          "Dismiss",
-          {
-            duration: 1600
-          }
-        );
-      });
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+
+      this.absentService.deleteAbsentDtl(absent.emp_code, absent.id)
+        .subscribe(() => {
+          const index = this.dataSource.data.indexOf(absent);
+          this.dataSource.data.splice(index, 1);
+          this.dataSource.data = [...this.dataSource.data];
+          this.snackbar.open(
+            "Successfully deleted the absent detail record",
+            "Dismiss",
+            {
+              duration: 1600
+            }
+          );
+        });
+    })
   }
 
   onEdit(absentDtl: AbsentDetail) {
@@ -159,7 +168,7 @@ export class AbsentDtlComponent implements OnInit {
   getFullName(item) {
     return `${item.first_name} ${item.middle_name} ${item.last_name}, ${
       item.designation
-    }`;
+      }`;
   }
 
   ngOnDestroy() {
