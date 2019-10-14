@@ -1,35 +1,40 @@
 <mat-card *ngIf="dataSource">
   <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
-      <mat-cell *matCellDef="let leave; let i=index" fxFlex="10"> 
+      <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let leave; let i=index" fxFlex="8"> 
         {{ i + 1 + pageIndex*pageSize }} 
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef fxFlex="12"> Application ID </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="12"> {{leave.id}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef fxFlex="14"> Leave Type </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="14"> {{getLeaveType(leave)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="13"> Leave Type </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="13"> {{getLeaveType(leave)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="applied_on">
-      <mat-header-cell *matHeaderCellDef fxFlex="18"> Applied on </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="18"> {{leave.created_at | date:'mediumDate'}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="13"> Applied on </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="13"> {{leave.created_at | date:'mediumDate'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef fxFlex="23"> Status </mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="23"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="20"> Status </mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="20"> {{wActionService.getWorkflowAction(leave.status)}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="with" *ngIf="pageNo == transactionPage">
-      <mat-header-cell *matHeaderCellDef fxFlex="25">Application With</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="25"> {{leave.addressee}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="24">Application With</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="24"> {{leave.addressee}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name" *ngIf="pageNo != transactionPage">
-      <mat-header-cell *matHeaderCellDef fxFlex="25"> Employee Name</mat-header-cell>
-      <mat-cell *matCellDef="let leave" fxFlex="25">
+      <mat-header-cell *matHeaderCellDef fxFlex="24"> Employee Name</mat-header-cell>
+      <mat-cell *matCellDef="let leave" fxFlex="24">
         {{ leave.first_name | titlecase }} {{ leave.last_name | titlecase }}
       </mat-cell>
     </ng-container>

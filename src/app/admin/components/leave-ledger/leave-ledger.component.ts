@@ -12,6 +12,7 @@ import { LedgerService } from "../../../leave/services/ledger.service";
 import { LeaveLedger } from "../../../shared/models/ledger";
 import { AddLedgerComponent } from "./add-ledger/add-ledger.component";
 import { EmployeeService } from "./../../../shared/services/employee.service";
+import { ConditionalExpr } from '@angular/compiler';
 
 @Component({
   selector: "app-ledger",
@@ -27,6 +28,7 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
     "db_cr_flag",
     "no_of_days",
     "leave_type",
+    "remarks",
     "actions"
   ];
   dataSource: MatTableDataSource<LeaveLedger>;
@@ -86,6 +88,7 @@ export class LeaveLedgerComponent implements OnInit, OnDestroy {
           this.dataLength = data["count"];
           this.dataSource = new MatTableDataSource<LeaveLedger>(data["rows"]);
           this.isLoading = false;
+          console.log(data["rows"])
         },
         errMsg => {
           this.errMsg = errMsg;

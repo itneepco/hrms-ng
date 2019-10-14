@@ -46,6 +46,7 @@ export class LeaveTableComponent implements OnInit {
     if (this.pageNo === TRANSACTION_PAGE) {
       this.displayedColumns = [
         "position",
+        "id",
         "type",
         "applied_on",
         "status",

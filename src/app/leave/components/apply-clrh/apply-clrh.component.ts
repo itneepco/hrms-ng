@@ -84,12 +84,13 @@ export class ApplyCLRHComponent implements OnInit {
     const events = event.day.events;
     // Check if the date is CL or RH or if the date has been applied for leave
     if (events.length > 0) {
-      if (events.find(el => el.type == "CH")) {
-        return;
-      }
+      // if (events.find(el => el.type == "CH")) {
+      //   return;
+      // }
       if (events.find(el => el.type == "RH") && events.length > 1) {
         return;
       }
+      // if leave has already been applied on a particular date
       if (events.filter(el => el.type != "CH" && el.type != "RH").length > 0) {
         return;
       }
@@ -147,7 +148,8 @@ export class ApplyCLRHComponent implements OnInit {
       officer_emp_code: ["", Validators.required],
       purpose: ["", Validators.required],
       address: ["", Validators.required],
-      contact_no: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
+      // contact_no: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
+      contact_no: [""],
       remarks: ""
     });
   }

@@ -20,36 +20,43 @@
   <mat-card *ngIf="dataSource && !isLoading">
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Sl No </mat-header-cell>
-        <mat-cell *matCellDef="let ledger; let i=index" fxFlex="10">
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Sl No </mat-header-cell>
+        <mat-cell *matCellDef="let ledger; let i=index" fxFlex="7">
           {{ i + 1 + pageIndex*pageSize }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="emp_code">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee Code </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.emp_code}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="10"> Employee Code </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="10"> {{ledger.emp_code}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="cal_year">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> Year </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.cal_year}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="8"> Year </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="8"> {{ledger.cal_year}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="db_cr_flag">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"> Flag </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="10"> {{ledger.db_cr_flag}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="7"> Flag </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="7"> {{ledger.db_cr_flag}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="no_of_days">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> No of Days </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15"> {{ledger.no_of_days}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef fxFlex="8"> No of Days </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="8"> {{ledger.no_of_days}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="leave_type">
-        <mat-header-cell *matHeaderCellDef fxFlex="15"> Leave Type </mat-header-cell>
-        <mat-cell *matCellDef="let ledger" fxFlex="15">
+        <mat-header-cell *matHeaderCellDef fxFlex="14"> Leave Type </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="14">
           {{leaveTypeService.getLeaveType(ledger.leave_type)}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="remarks">
+        <mat-header-cell *matHeaderCellDef fxFlex="26"> Remarks </mat-header-cell>
+        <mat-cell *matCellDef="let ledger" fxFlex="26">
+          {{ledger.remarks}}
         </mat-cell>
       </ng-container>
 
