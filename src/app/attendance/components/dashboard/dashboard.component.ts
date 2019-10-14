@@ -94,13 +94,15 @@ export class DashboardComponent implements OnInit {
         // console.log(data)
         this.latePunchings = data;
       });
-      this.empDashboardService.getTodaysPunching().subscribe(data => {
-        // console.log(data)
-        this.todaysPunchings = data;
-      });
     } else {
       this.fetchAttendanceStatus();
     }
+
+    // Fetch today's punching data
+    this.empDashboardService.getTodaysPunching().subscribe(data => {
+      // console.log(data)
+      this.todaysPunchings = data;
+    });
   }
 
   fetchAttendanceStatus(day?: string) {

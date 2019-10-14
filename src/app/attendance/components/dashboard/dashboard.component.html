@@ -155,6 +155,29 @@
         </div>
       </mat-card>
     </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-card fxFlex class="card-block">
+        <mat-list>
+          <mat-list-item>
+            <img matListAvatar src="assets/icons/today.png" />
+            <h3 matLine>Today's Punching</h3>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <div class="apply-block">
+          <h3 class="title">
+            NO OF PUNCHINGS:
+            <span style="margin-left: 10px">{{ todaysPunchings.length }}</span>
+          </h3>
+          <ul>
+            <li *ngFor="let punch of todaysPunchings">
+              {{ punch }}
+            </li>
+          </ul>
+        </div>
+      </mat-card>
+    </div>
   </div>
 </div>
 
