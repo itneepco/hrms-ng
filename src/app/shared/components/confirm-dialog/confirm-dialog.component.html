@@ -1,10 +1,12 @@
 <h2 mat-dialog-title>Confirm Dialog</h2>
 
-<p class="content">{{message}}</p>
+<p class="content">{{ message }}</p>
 
 <mat-divider></mat-divider>
 
 <mat-dialog-actions align="end" id="buttons">
-  <button mat-raised-button color="accent" (click)="dialogRef.close()">NO</button>
   <button mat-raised-button color="primary" (click)="onYes()">YES</button>
+  <button mat-raised-button color="accent" (click)="dialogRef.close()">
+    NO
+  </button>
 </mat-dialog-actions>

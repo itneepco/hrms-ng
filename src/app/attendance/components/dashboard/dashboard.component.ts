@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
       const data = result.data;
       if (!data || data.length < 1) return;
 
-      console.log(data)
+      // console.log(data)
       this.attendance = data;
       this.curr_day = data.day;
 

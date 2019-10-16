@@ -1,22 +1,34 @@
 <div class="main-container">
   <ng-container *ngIf="isActiveMonthDefined(); else loading">
     <mat-card *ngIf="activeWageMonth; else noWageMonth">
-      <div fxLayout="row" fxLayoutAlign="space-between center" id="head-info">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" id="head-info">
         <div>
-          <span>Wage Period: {{ startDate | date: "mediumDate" }} to
-            {{ endDate | date: "mediumDate" }}</span>
-          <button (click)="nextWageMonth()" class="wm-btn" mat-raised-button color="primary"
-            *ngIf="isActiveWageMonth(); else activeMonth">Next Wage Month
+          <img src="assets/icons/calendar.png" width="50" height="50" />
+        </div>
+        <div>
+          <span>Wage Period:  {{ startDate | date: "mediumDate" }}</span>
+          <span> - </span>
+          <span>{{ endDate | date: "mediumDate" }}</span>
+          <button
+            (click)="nextWageMonth()"
+            class="wm-btn"
+            mat-raised-button
+            color="primary"
+            *ngIf="isActiveWageMonth(); else activeMonth"
+          >
+            <mat-icon>arrow_forward</mat-icon> Next Wage Month
           </button>
           <ng-template #activeMonth>
-            <button (click)="currWageMonth()" class="wm-btn" mat-raised-button color="primary">
-              Current Wage Month
+            <button
+              (click)="currWageMonth()"
+              class="wm-btn"
+              mat-raised-button
+              color="primary"
+            >
+              <mat-icon>arrow_back</mat-icon> Previous Wage Month
             </button>
           </ng-template>
         </div>
-        <!-- <button mat-icon-button (click)="goBack()">
-          <mat-icon>arrow_back</mat-icon>
-        </button> -->
       </div>
 
       <mat-divider></mat-divider>
@@ -26,10 +38,18 @@
           <div *ngFor="let weekend of weekends" fxLayout="row" class="row">
             <div fxFlex="60">{{ formatDate(weekend) }}</div>
             <div fxFlex="40">
-              <button class="btn" (click)="markWorkDay(weekend)" *ngIf="!workingDay(weekend)">
+              <button
+                class="btn"
+                (click)="markWorkDay(weekend)"
+                *ngIf="!workingDay(weekend)"
+              >
                 Mark Work Day
               </button>
-              <button class="btn" (click)="unmarkWorkDay(workingDay(weekend))" *ngIf="workingDay(weekend)">
+              <button
+                class="btn"
+                (click)="unmarkWorkDay(workingDay(weekend))"
+                *ngIf="workingDay(weekend)"
+              >
                 Remove Work Day
               </button>
             </div>
@@ -46,8 +66,12 @@
                 <th fxFlex="34">Action</th>
               </tr>
               <tr *ngFor="let group of genGroups">
-                <td fxFlex="32" fxLayoutAlign="start center">{{ group.name }}</td>
-                <td fxFlex="32" fxLayoutAlign="start center">{{ getShiftName(group) }}</td>
+                <td fxFlex="32" fxLayoutAlign="start center">
+                  {{ group.name }}
+                </td>
+                <td fxFlex="32" fxLayoutAlign="start center">
+                  {{ getShiftName(group) }}
+                </td>
                 <td fxFlex="34" fxLayoutAlign="start center">
                   <button class="btn" (click)="changeTiming(group)">
                     Change Timing
@@ -57,7 +81,12 @@
             </table>
           </div>
           <div id="gen-btn" *ngIf="genRosters && genRosters.length > 0">
-            <button mat-raised-button color="accent" (click)="genEmpWiseRoster()" [disabled]="isGenerating">
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="genEmpWiseRoster()"
+              [disabled]="isGenerating"
+            >
               Generate Employee Roster
             </button>
           </div>

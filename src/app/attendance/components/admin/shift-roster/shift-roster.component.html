@@ -1,9 +1,13 @@
 <ng-container *ngIf="isActiveMonthDefined(); else loading">
   <ng-container *ngIf="activeWageMonth; else noWageMonth">
-    <form [formGroup]="rosterForm" (ngSubmit)="saveRoster()" 
+    <form
+      [formGroup]="rosterForm"
+      (ngSubmit)="saveRoster()"
       *ngIf="shiftRosters; else loading"
-      fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-
+      fxLayout="row"
+      fxLayout.lt-md="column"
+      fxLayoutGap="20px"
+    >
       <table fxFlex="75" fxFlex.lt-md>
         <thead>
           <tr>
@@ -13,25 +17,32 @@
         </thead>
 
         <tbody formArrayName="rosters">
-          <ng-container *ngFor="let item of rosters.controls; let roster_index = index">
+          <ng-container
+            *ngFor="let item of rosters.controls; let roster_index = index"
+          >
             <tr [formGroupName]="roster_index">
               <td>{{ getDay(roster_index) }}</td>
 
               <ng-container formArrayName="group_shifts">
-                <td *ngFor="
+                <td
+                  *ngFor="
                     let group_shift of getGroupShifts(roster_index).controls;
                     let gs_index = index
-                  ">
+                  "
+                >
                   <div [formGroupName]="gs_index">
                     <select formControlName="shift_id">
                       <option *ngFor="let shift of shifts" [value]="shift.id">
                         {{ shift.name }}
                       </option>
                     </select>
-                    <p class="error-msg" *ngIf="
+                    <p
+                      class="error-msg"
+                      *ngIf="
                         getShift(roster_index, gs_index).touched &&
                         getShift(roster_index, gs_index).errors?.required
-                      ">
+                      "
+                    >
                       is required
                     </p>
                   </div>
@@ -42,32 +53,68 @@
         </tbody>
       </table>
 
-      <div fxFlex="25">
-        <mat-card class="title">
-          <div>Wage period:</div>
-          <div>
-            <span>{{ startDate | date: "mediumDate" }} </span>
-            <span>to </span>
-            <span>{{ endDate | date: "mediumDate" }} </span>
-          </div>
+      <div fxFlex="25" fxLayout="column" fxLayoutGap="20px">
+        <mat-card class="card-block">
+          <mat-list>
+            <mat-list-item>
+              <img matListAvatar src="assets/icons/calendar.png" />
+              <h2 matLine>Wage period</h2>
+            </mat-list-item>
+          </mat-list>
+          <mat-divider></mat-divider>
+          <p class="date-info">
+            <span>{{ startDate | date: "mediumDate" }}</span>
+            <span> - </span>
+            <span>{{ endDate | date: "mediumDate" }}</span>
+          </p>
 
-          <div fxLayout="column" style="margin-top: 10px">
-            <button (click)="nextWageMonth()" class="wm-btn" mat-raised-button color="primary" type="button"
-              *ngIf="isActiveWageMonth(); else activeMonth">Next Wage Month
+          <div style="margin: 12px" fxLayoutAlign="end">
+            <button
+              (click)="nextWageMonth()"
+              class="wm-btn"
+              mat-raised-button
+              color="primary"
+              type="button"
+              *ngIf="isActiveWageMonth(); else activeMonth"
+            >
+              <mat-icon>arrow_forward</mat-icon> Next Wage Month
             </button>
             <ng-template #activeMonth>
-              <button (click)="currWageMonth()" class="wm-btn" mat-raised-button color="primary" type="button">
-                Current Wage Month
+              <button
+                (click)="currWageMonth()"
+                class="wm-btn"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                <mat-icon>arrow_backward</mat-icon> Previous Wage Month
               </button>
             </ng-template>
+          </div>
+        </mat-card>
 
-            <button mat-raised-button class="button" color="primary" type="submit"
-              [disabled]="isSubmitting || rosterForm.invalid">
+        <mat-card>
+          <h3 class="title">Actions to be performed</h3>
+          <div fxLayout="column">
+            <button
+              mat-raised-button
+              class="button"
+              color="primary"
+              type="submit"
+              [disabled]="isSubmitting || rosterForm.invalid"
+            >
               Save Group Roster
             </button>
 
-            <button mat-raised-button class="button" color="accent" type="button" [disabled]="isGenerating"
-              *ngIf="shiftRosters.length > 0 && rosterForm.valid" (click)="generateEmpWiseRoster()">
+            <button
+              mat-raised-button
+              class="button"
+              color="accent"
+              type="button"
+              [disabled]="isGenerating"
+              *ngIf="shiftRosters.length > 0 && rosterForm.valid"
+              (click)="generateEmpWiseRoster()"
+            >
               Generate Employee Roster
             </button>
           </div>
