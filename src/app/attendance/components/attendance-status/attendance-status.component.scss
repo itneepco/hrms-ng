@@ -14,8 +14,8 @@ table {
     padding: 5px;
   }
   td {
-    padding-left: 12px;
-    line-height: 42px;
+    padding: 3px 0px 3px 12px;
+    height: 40px;
   }
 }
 
@@ -43,4 +43,8 @@ thead {
 
 .absent {
   color: #C2153E
+}
+
+.half-day {
+  color: #1eb00b;
 }

@@ -42,22 +42,25 @@
       <table style="width:100%" *ngIf="attendance.length > 0; else noData">
         <thead>
           <tr>
-            <th>Day</th>
-            <th>Shift</th>
-            <th>In time</th>
-            <th>Out time</th>
-            <th>Status</th>
-            <th>Modified Status</th>
-            <th>Remarks</th>
-            <th *ngIf="auth.isTimeOfficeAdmin()">Action</th>
+            <th width="12%">Day</th>
+            <th width="10%">Shift</th>
+            <th width="9%">In time</th>
+            <th width="9%">Out time</th>
+            <th width="10%">Status</th>
+            <th width="10%">Modified Status</th>
+            <th width="25%">Remarks</th>
+            <th *ngIf="auth.isTimeOfficeAdmin()" width="15%">Action</th>
           </tr>
         </thead>
         <tr
           *ngFor="let attend of attendance"
           [ngClass]="{
-            absent:
+            'absent':
               attend.attendance_status == onAbsentStatus &&
-              !attend.modified_status
+              !attend.modified_status,
+              
+            'half-day': attend.attendance_status == onHalfDayStatus &&
+              !attend.modified_status  
           }"
         >
           <td>{{ attend.day | date: "mediumDate" }}</td>
