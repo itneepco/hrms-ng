@@ -30,7 +30,7 @@ export class RoleMapperService {
   getRoleName(code: string) {
     switch(code) {
       case EL_HPL_ADMIN: {
-        return "Earned Leave Admin"
+        return "Site Leave Admin"
       }
       case TIME_OFFICE_ADMIN: {
         return "Time Office Admin"
@@ -51,7 +51,7 @@ export class RoleMapperService {
         return "Finance Report Uploader"
       }
       case HR_LEAVE_SUPER_ADMIN: {
-        return "HR Leave Super Admin"
+        return "Coporate Leave Admin"
       }
     }
   }

@@ -23,14 +23,14 @@ export const FIN_REP_UPLOADER = 'RMARFN'
 export const HR_LEAVE_SUPER_ADMIN = 'RMASHR'
 
 export const EMPLOYEE_ROLES = [
-  { name: "EL HPL Admin", code: EL_HPL_ADMIN },
-  { name: "Time Office Admin", code: TIME_OFFICE_ADMIN } ,
+  { name: "Site Leave Admin", code: EL_HPL_ADMIN },
+  { name: "Time Office Admin", code: TIME_OFFICE_ADMIN },
   { name: "Vehicle Admin", code: VEHICLE_ADMIN },
   { name: "Training Admin", code: TRAINING_ADMIN },
   { name: "O&M Report Uploader", code: OM_REP_UPLOADER },
   { name: "HR Report Uploader", code: HR_REP_UPLOADER },
   { name: "Finance Report Uploader", code: FIN_REP_UPLOADER },
-  { name: "HR Leave Super Admin", code: HR_LEAVE_SUPER_ADMIN }
+  { name: "Corporate Leave Admin", code: HR_LEAVE_SUPER_ADMIN }
 ]
 
 export const CALENDAR_COLORS = {
