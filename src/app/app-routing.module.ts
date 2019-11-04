@@ -32,7 +32,7 @@ const routes: Routes = [
     path: "training",
     canActivate: [AuthGuard],
     loadChildren: () =>
-      import("./training/training.module").then(m => m.TrainingModule)
+      import("./training-module/training.module").then(m => m.TrainingModule)
   },
   {
     path: "attendance",
@@ -48,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
