@@ -29,12 +29,6 @@ const routes: Routes = [
     loadChildren: () => import("./leave/leave.module").then(m => m.LeaveModule)
   },
   {
-    path: "training",
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./training/training.module").then(m => m.TrainingModule)
-  },
-  {
     path: "attendance",
     canActivate: [AuthGuard],
     loadChildren: () =>
