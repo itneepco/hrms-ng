@@ -47,7 +47,7 @@ export class ApplyCLRHComponent implements OnInit {
     private snackbar: MatSnackBar,
     private leaveTypeService: LeaveTypeService,
     private bottomSheet: MatBottomSheet
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.holidayService
@@ -201,12 +201,11 @@ export class ApplyCLRHComponent implements OnInit {
     this.leaveService.applyLeave(leavApplication).subscribe(
       result => {
         console.log(result);
-        this.isLoading = false;
         this.router.navigateByUrl("leave/leave-transaction");
+        this.isLoading = false;
       },
       (responseError: HttpErrorResponse) => {
         console.log(responseError);
-        this.isLoading = false;
         if (responseError.status == 409) {
           const msg = responseError.error.message
             ? responseError.error.message
@@ -215,6 +214,7 @@ export class ApplyCLRHComponent implements OnInit {
             duration: 2000
           });
         }
+        this.isLoading = false;
       }
     );
   }
