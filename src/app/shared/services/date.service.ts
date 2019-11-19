@@ -23,7 +23,7 @@ export class DateService {
   }
 
   formatDate(date: Date) {
-    return moment(date).format("dddd, Do MMMM, YYYY");
+    return moment(date).format("dddd, Do MMM, YYYY");
   }
 
   isSundaySaturday(date: Date) {
