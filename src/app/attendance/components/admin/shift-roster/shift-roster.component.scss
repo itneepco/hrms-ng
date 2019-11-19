@@ -18,6 +18,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   font-size: 14px;
+  width: 100%;
 }
 th,
 td {
@@ -43,7 +44,7 @@ td:first-child {
 }
 
 select {
-  padding: 3px 0px;
+  padding: 4px 2px;
   border-radius: 5px;
   text-transform: uppercase;
   width: 100%;

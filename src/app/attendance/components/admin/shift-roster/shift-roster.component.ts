@@ -54,7 +54,7 @@ export class ShiftRosterComponent implements OnInit {
       .pipe(
         switchMap(wageMonth => {
           this.activeWageMonth = wageMonth;
-          console.log(wageMonth);
+          // console.log(wageMonth);
           if (!this.activeWageMonth) return [];
 
           this.startDate = this.activeWageMonth.from_date;

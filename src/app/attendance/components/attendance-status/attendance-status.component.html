@@ -37,73 +37,76 @@
     </div>
   </mat-card>
 
-  <ng-container *ngIf="activeWageMonth; else noWageMonth">
-    <mat-card class="table" id="content" *ngIf="attendance; else loading">
-      <table style="width:100%" *ngIf="attendance.length > 0; else noData">
-        <thead>
-          <tr>
-            <th width="12%">Day</th>
-            <th width="10%">Shift</th>
-            <th width="9%">In time</th>
-            <th width="9%">Out time</th>
-            <th width="10%">Status</th>
-            <th width="10%">Modified Status</th>
-            <th width="25%">Remarks</th>
-            <th *ngIf="auth.isTimeOfficeAdmin()" width="15%">Action</th>
-          </tr>
-        </thead>
-        <tr
-          *ngFor="let attend of attendance"
-          [ngClass]="{
-            'absent':
-              attend.attendance_status == onAbsentStatus &&
-              !attend.modified_status,
-              
-            'half-day': attend.attendance_status == onHalfDayStatus &&
-              !attend.modified_status  
-          }"
-        >
-          <td>{{ attend.day | date: "mediumDate" }}</td>
-          <td>{{ attend.shift.name }}</td>
-          <td>{{ attend.in_time }}</td>
-          <td>{{ attend.out_time }}</td>
-          <td>{{ getAttendanceStatus(attend.attendance_status) }}</td>
-          <td>{{ modifiedStatus(attend) }}</td>
-          <td>{{ attend.remarks }}</td>
-          <td *ngIf="auth.isTimeOfficeAdmin()">
-            <ng-container
-              *ngIf="
-                attend.attendance_status &&
-                attend.attendance_status != officialAbsentStatus
-              "
-            >
-              <button
-                *ngIf="attend.attendance_status != presentStatus"
-                mat-icon-button
-                (click)="onEdit(attend)"
-                color="accent"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="activeWageMonth; else noWageMonth">
+      <mat-card class="table" id="content" *ngIf="attendance; else loading">
+        <table style="width:100%" *ngIf="attendance.length > 0; else noData">
+          <thead>
+            <tr>
+              <th width="12%">Day</th>
+              <th width="10%">Shift</th>
+              <th width="9%">In time</th>
+              <th width="9%">Out time</th>
+              <th width="10%">Status</th>
+              <th width="10%">Modified Status</th>
+              <th width="25%">Remarks</th>
+              <th *ngIf="auth.isTimeOfficeAdmin()" width="15%">Action</th>
+            </tr>
+          </thead>
+          <tr
+            *ngFor="let attend of attendance"
+            [ngClass]="{
+              absent:
+                attend.attendance_status == onAbsentStatus &&
+                !attend.modified_status,
 
-              <button
+              'half-day':
+                attend.attendance_status == onHalfDayStatus &&
+                !attend.modified_status
+            }"
+          >
+            <td>{{ attend.day | date: "mediumDate" }}</td>
+            <td>{{ attend.shift.name }}</td>
+            <td>{{ attend.in_time }}</td>
+            <td>{{ attend.out_time }}</td>
+            <td>{{ getAttendanceStatus(attend.attendance_status) }}</td>
+            <td>{{ modifiedStatus(attend) }}</td>
+            <td>{{ attend.remarks }}</td>
+            <td *ngIf="auth.isTimeOfficeAdmin()">
+              <ng-container
                 *ngIf="
-                  !(
-                    attend.shift.is_general &&
-                    attend.attendance_status == onHolidayStatus
-                  )
+                  attend.attendance_status &&
+                  attend.attendance_status != officialAbsentStatus
                 "
-                mat-icon-button
-                (click)="reProcessAttendance(attend)"
-                color="primary"
               >
-                <mat-icon>sync</mat-icon>
-              </button>
-            </ng-container>
-          </td>
-        </tr>
-      </table>
-    </mat-card>
+                <button
+                  *ngIf="attend.attendance_status != presentStatus"
+                  mat-icon-button
+                  (click)="onEdit(attend)"
+                  color="accent"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  *ngIf="
+                    !(
+                      attend.shift.is_general &&
+                      attend.attendance_status == onHolidayStatus
+                    )
+                  "
+                  mat-icon-button
+                  (click)="reProcessAttendance(attend)"
+                  color="primary"
+                >
+                  <mat-icon>sync</mat-icon>
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </table>
+      </mat-card>
+    </ng-container>
   </ng-container>
 
   <ng-template #noWageMonth>
