@@ -2,25 +2,42 @@
   <mat-card fxFlex="60">
     <div fxLayout="row" fxLayoutAlign="space-between center" id="header">
       <mat-button-toggle-group color="primary">
-        <mat-button-toggle mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">Previous
+        <mat-button-toggle
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          >Previous
         </mat-button-toggle>
 
-        <mat-button-toggle mwlCalendarToday checked="true" [(viewDate)]="viewDate">Today
+        <mat-button-toggle
+          mwlCalendarToday
+          checked="true"
+          [(viewDate)]="viewDate"
+          >Today
         </mat-button-toggle>
 
-        <mat-button-toggle class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">Next
+        <mat-button-toggle
+          class="btn btn-primary"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          >Next
         </mat-button-toggle>
       </mat-button-toggle-group>
 
       <div>
-        <h3 class="month">{{ viewDate | calendarDate:(view + 'ViewTitle') }}</h3>
+        <!-- <h3 class="month">{{ viewDate | calendarDate: view + "ViewTitle" }}</h3> -->
       </div>
     </div>
 
     <mat-divider></mat-divider>
 
     <div [ngSwitch]="view" id="calendar">
-      <div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 10px">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        style="margin-bottom: 10px"
+      >
         <div fxLayout="row" fxLayoutGap="5px">
           <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
             <div class="circle blue"></div>
@@ -37,24 +54,24 @@
           </div>
         </div>
       </div>
-      
-      <mwl-calendar-month-view 
+
+      <mwl-calendar-month-view
         *ngSwitchCase="'month'"
-        [viewDate]="viewDate" 
-        (dayClicked)="onDayClick($event)" 
-        [refresh]="refresh" 
-        [events]="events">
-      </mwl-calendar-month-view>
+        [viewDate]="viewDate"
+        (dayClicked)="onDayClick($event)"
+        [refresh]="refresh"
+        [events]="events"
+      ></mwl-calendar-month-view>
     </div>
   </mat-card>
 
-  <div fxFlex="40" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px" >
+  <div fxFlex="40" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px">
     <mat-card class="leave-balance">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px">
         <div class="title">Leave Balance:</div>
         <div fxFlex fxLayoutGap="8px">
           <span *ngFor="let status of leaveStatuses">
-            {{status.leave_type}}: {{status.balance}}
+            {{ status.leave_type }}: {{ status.balance }}
           </span>
         </div>
       </div>
@@ -62,41 +79,84 @@
     <mat-card fxFlex>
       <form [formGroup]="leaveForm" fxLayout="column" (ngSubmit)="applyLeave()">
         <mat-form-field>
-          <mat-select placeholder="Forward to" formControlName="officer_emp_code">
-            <mat-option *ngFor="let officer of ctrlOfficers" [value]="officer.emp_code"> 
-              {{officer.first_name | titlecase}} {{officer.last_name | titlecase}}, {{officer.designation}}
+          <mat-select
+            placeholder="Forward to"
+            formControlName="officer_emp_code"
+          >
+            <mat-option
+              *ngFor="let officer of ctrlOfficers"
+              [value]="officer.emp_code"
+            >
+              {{ officer.first_name | titlecase }}
+              {{ officer.last_name | titlecase }}, {{ officer.designation }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="officer_emp_code.errors?.required">Forwarding officer is required</mat-error>
+          <mat-error *ngIf="officer_emp_code.errors?.required"
+            >Forwarding officer is required</mat-error
+          >
         </mat-form-field>
         <mat-form-field>
-          <textarea rows="1" matInput placeholder="Purpose" formControlName="purpose"></textarea>
-          <mat-error *ngIf="purpose.errors?.required">Purpose is required</mat-error>
+          <textarea
+            rows="1"
+            matInput
+            placeholder="Purpose"
+            formControlName="purpose"
+          ></textarea>
+          <mat-error *ngIf="purpose.errors?.required"
+            >Purpose is required</mat-error
+          >
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Contact no" formControlName="contact_no">
-          <mat-error *ngIf="contact_no.errors?.required">Mobile number is required</mat-error>
-          <mat-error *ngIf="contact_no.errors?.pattern">Mobile number should be 10 digits</mat-error>
+          <input
+            matInput
+            placeholder="Contact no"
+            formControlName="contact_no"
+          />
+          <mat-error *ngIf="contact_no.errors?.required"
+            >Mobile number is required</mat-error
+          >
+          <mat-error *ngIf="contact_no.errors?.pattern"
+            >Mobile number should be 10 digits</mat-error
+          >
         </mat-form-field>
         <mat-form-field>
-          <textarea rows="1" matInput placeholder="Address during leave" formControlName="address"></textarea>
-          <mat-error *ngIf="address.errors?.required">Address is required</mat-error>
+          <textarea
+            rows="1"
+            matInput
+            placeholder="Address during leave"
+            formControlName="address"
+          ></textarea>
+          <mat-error *ngIf="address.errors?.required"
+            >Address is required</mat-error
+          >
         </mat-form-field>
         <mat-form-field>
-          <textarea rows="1" matInput placeholder="Remarks (if any prefix, suffix, holidays etc)" formControlName="remarks"></textarea>
+          <textarea
+            rows="1"
+            matInput
+            placeholder="Remarks (if any prefix, suffix, holidays etc)"
+            formControlName="remarks"
+          ></textarea>
         </mat-form-field>
 
         <div id="leave-info" *ngIf="leaveDetails.length > 0">
-          <div *ngFor="let leaveDetail of leaveDetails; let i=index">
+          <div *ngFor="let leaveDetail of leaveDetails; let i = index">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <div fxFlex="10">{{i+1}}.</div> 
-              <div fxFlex="15">{{leaveDetail.status.leave_type}}</div>
-              <div fxFlex="30">{{leaveDetail.date | date:'mediumDate'}}</div>
+              <div fxFlex="10">{{ i + 1 }}.</div>
+              <div fxFlex="15">{{ leaveDetail.status.leave_type }}</div>
+              <div fxFlex="30">{{ leaveDetail.date | date: "mediumDate" }}</div>
               <div fxFlex="35">
-                <mat-checkbox (change)="onToggle($event, i)">Station Leave</mat-checkbox>
+                <mat-checkbox (change)="onToggle($event, i)"
+                  >Station Leave</mat-checkbox
+                >
               </div>
               <div fxFlex="10">
-                <button mat-icon-button color="accent" type="button" (click)="removeLeave(leaveDetail, i)">
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  (click)="removeLeave(leaveDetail, i)"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -104,7 +164,13 @@
             <mat-divider></mat-divider>
           </div>
         </div>
-        <button mat-raised-button color="primary" [disabled]="isLoading || leaveForm.invalid || leaveDetails.length < 1">Apply Leave</button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="isLoading || leaveForm.invalid || leaveDetails.length < 1"
+        >
+          Apply Leave
+        </button>
       </form>
     </mat-card>
   </div>

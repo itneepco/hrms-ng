@@ -14,11 +14,13 @@ import { LeaveTransactionComponent } from './components/leave-transaction/leave-
 import { LeaveComponent } from './components/leave/leave.component';
 import { ProcessedRequestComponent } from './components/processed-request/processed-request.component';
 import { LeaveRoutingModule } from './leave-routing.module';
+import { CalendarModule } from 'angular-calendar';
 
 @NgModule({
   imports: [
     SharedModule,
     LeaveRoutingModule,
+    CalendarModule
   ],
   declarations: [
     LeaveTransactionComponent,
