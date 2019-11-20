@@ -89,6 +89,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     this.attendStatusService
       .getEmpAttendanceStatus(this.startDate, this.endDate, this.emp_code.value)
       .subscribe(result => {
+        // If there are no attendance data for the active wage month
         if (
           result.length == 0 &&
           this.dateService.compareDates(
@@ -96,15 +97,17 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
             this.startDate
           )
         ) {
-          
+          // Increase from_date by one month
           this.startDate = this.dateService.increaseDateByMonth(
             this.activeWageMonth.from_date,
             1
           );
+          // Increase to_date by one month
           this.endDate = this.dateService.increaseDateByMonth(
             this.activeWageMonth.to_date,
             1
           );
+          // Fetch attendance status
           this.attendStatusService
             .getEmpAttendanceStatus(
               this.startDate,
@@ -204,5 +207,14 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.empCodeSubs.unsubscribe();
+  }
+
+  printAttendance() {
+    this.attendStatusService.generatePdf(
+      this.startDate,
+      this.endDate,
+      this.attendance,
+      this.emp_code.value
+    )
   }
 }
