@@ -71,7 +71,7 @@ export class AttendanceStatusService {
         row.shift.name,
         row.in_time,
         row.out_time,
-        this.status(row.attendance_status).trim(),
+        this.status(row.attendance_status),
         row.modified_status ? "MARKED PRESENT" : "",
         row.remarks ? row.remarks.trim() : null
       ];
