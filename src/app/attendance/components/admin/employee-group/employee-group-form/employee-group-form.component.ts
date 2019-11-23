@@ -70,9 +70,12 @@ export class EmployeeGroupFormComponent implements OnInit, OnDestroy {
     if (this.empGroupForm.invalid) return;
 
     const full_info = this.emp_name.value.split(",");
-    const emp_code = full_info[1].trim();
+    const emp_code = full_info[1] ? full_info[1].trim() : null;
 
-    if (!emp_code) return;
+    if (!emp_code) {
+      this.emp_name.setErrors({"invalidData": true})
+      return;
+    }
 
     const requestData = {
       emp_code: emp_code,
