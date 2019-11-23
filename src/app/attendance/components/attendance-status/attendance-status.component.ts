@@ -13,7 +13,8 @@ import {
   ATTENDANCE_ABSENT_OFFICIALLY,
   ATTENDANCE_HOLIDAY,
   ATTENDANCE_PRESENT,
-  ATTENDANCE_HALF_DAY
+  ATTENDANCE_HALF_DAY,
+  ATTENDANCE_LATE
 } from "../../models/attendance-codes";
 import { AttendanceStatus } from "../../models/employee-wise-roster";
 import { WageMonth } from "../../models/wage-month";
@@ -69,16 +70,19 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.isLoading = true
-    this.wageMonthService.getActiveWageMonth().subscribe(wageMonth => {
-      this.isLoading = false
-      if (!wageMonth) return;
+    this.isLoading = true;
+    this.wageMonthService.getActiveWageMonth().subscribe(
+      wageMonth => {
+        this.isLoading = false;
+        if (!wageMonth) return;
 
-      this.activeWageMonth = wageMonth;
-      this.startDate = this.activeWageMonth.from_date;
-      this.endDate = this.activeWageMonth.to_date;
-      this.fetchAttendance();
-    }, () => this.isLoading = false);
+        this.activeWageMonth = wageMonth;
+        this.startDate = this.activeWageMonth.from_date;
+        this.endDate = this.activeWageMonth.to_date;
+        this.fetchAttendance();
+      },
+      () => (this.isLoading = false)
+    );
   }
 
   getAttendanceStatus(code: string) {
@@ -115,8 +119,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
               this.emp_code.value
             )
             .subscribe(nextMonth => (this.attendance = nextMonth));
-        }
-        else {
+        } else {
           this.attendance = result;
         }
       });
@@ -186,7 +189,20 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   }
 
   modifiedStatus(attend: AttendanceStatus) {
-    return attend.modified_status ? "MARKED PRESENT" : "";
+    const status = attend.attendance_status;
+    let modified_status = "";
+
+    if (
+      attend.modified_status &&
+      (status == ATTENDANCE_LATE ||
+        status == ATTENDANCE_HALF_DAY ||
+        status == ATTENDANCE_ABSENT)
+    ) {
+      const status_word = this.attendStatusService.status(status);
+      modified_status = `REMOVED ${status_word}`;
+    }
+
+    return modified_status;
   }
 
   prevWageMonth() {
@@ -215,6 +231,6 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       this.endDate,
       this.attendance,
       this.emp_code.value
-    )
+    );
   }
 }
