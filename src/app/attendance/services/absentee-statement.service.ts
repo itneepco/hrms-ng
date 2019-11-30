@@ -49,9 +49,9 @@ export class AbsenteeStatementService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  generatePDF(wageMonth: WageMonth, dataSource: any[], deptName: string) {
-    const from_date = this.dateService.getDateDDMMMYYYY(wageMonth.from_date);
-    const to_date = this.dateService.getDateDDMMMYYYY(wageMonth.to_date);
+  generatePDF(startDate: Date, endDate: Date, dataSource: any[], deptName: string) {
+    const from_date = this.dateService.getDateDDMMMYYYY(startDate);
+    const to_date = this.dateService.getDateDDMMMYYYY(endDate);
 
     const head = [
       [
