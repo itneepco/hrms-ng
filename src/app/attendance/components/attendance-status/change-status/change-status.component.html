@@ -36,11 +36,14 @@
         aria-label="Select an option"
         formControlName="action"
       >
-        <mat-radio-button value="1">Mark as Present</mat-radio-button>
         <mat-radio-button
-          value="2"
-          style="margin-left: 30px"
+          value="1"
+          class="action-label"
+          *ngIf="!isHolidayPresentOff"
         >
+          Remove {{ getStatus(attendance.attendance_status) }}
+        </mat-radio-button>
+        <mat-radio-button value="2" class="action-label">
           Change Shift Duty
         </mat-radio-button>
       </mat-radio-group>
@@ -54,7 +57,7 @@
         <mat-error *ngIf="shift.errors?.required">Shift is required</mat-error>
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field fxFlex *ngIf="action.value">
         <input matInput placeholder="Remarks" formControlName="remarks" />
         <mat-error *ngIf="remarks.errors?.required"
           >Remarks is required</mat-error
