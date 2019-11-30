@@ -104,7 +104,8 @@ export class AbsenteeStatementService {
         cellPadding: 2
       }
     });
-    doc.save(`${deptName}_absentee.pdf`);
+    const department = deptName ? deptName : "all"
+    doc.save(`${department}_absentee.pdf`);
   }
 
   // Sorting array based on multiple fields

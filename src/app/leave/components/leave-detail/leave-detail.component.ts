@@ -165,7 +165,6 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     const formValue = this.actionForm.value;
     this.wActionService.processLeave(formValue).subscribe(
       result => {
-        this.isLoading = false;
         this.dialogRef.close("processed");
         this.snackbar.open(
           "Successfully processed the leave request",
@@ -174,10 +173,10 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
             duration: 1600
           }
         );
+        this.isLoading = false;
       },
       error => {
         console.log(error);
-        this.isLoading = false;
         this.snackbar.open(
           "An error occured!! Please try again later!!",
           "Dismiss",
@@ -185,6 +184,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
             duration: 1600
           }
         );
+        this.isLoading = false;
       }
     );
   }

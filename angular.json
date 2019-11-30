@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss",
               "src/theme.scss"
             ],
@@ -89,6 +90,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss",
               "src/styles.scss"
             ],
@@ -121,6 +123,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "hrms-ng"
 }

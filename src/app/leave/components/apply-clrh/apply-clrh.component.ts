@@ -1,16 +1,15 @@
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatBottomSheet } from "@angular/material/bottom-sheet";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { CalendarEvent } from "angular-calendar";
+import { CalendarEvent, CalendarView } from "angular-calendar";
 import { Subject } from "rxjs";
 import { switchMap } from "rxjs/operators";
-
-import { HierarchyService } from "../../../shared/services/hierarchy.service";
 import { AuthService } from "../../../auth/services/auth.service";
 import { CL_CODE, HD_CL_CODE } from "../../../shared/models/global-codes";
+import { HierarchyService } from "../../../shared/services/hierarchy.service";
 import { HolidayService } from "../../../shared/services/holiday.service";
 import { LeaveTypeService } from "../../../shared/services/leave-type.service";
 import { LeaveService } from "../../services/leave.service";
@@ -26,9 +25,14 @@ import { LeaveStatus } from "./../../models/leave-status";
   styleUrls: ["./apply-clrh.component.scss"]
 })
 export class ApplyCLRHComponent implements OnInit {
-  view = "month";
+  // view = "month";
+  // viewDate: Date = new Date();
+  // events: CalendarEvent[] = [];
+
+  view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
+
   leaveForm: FormGroup;
   leaveDetails = [];
   refresh: Subject<any> = new Subject();
@@ -201,12 +205,11 @@ export class ApplyCLRHComponent implements OnInit {
     this.leaveService.applyLeave(leavApplication).subscribe(
       result => {
         console.log(result);
-        this.isLoading = false;
         this.router.navigateByUrl("leave/leave-transaction");
+        this.isLoading = false;
       },
       (responseError: HttpErrorResponse) => {
         console.log(responseError);
-        this.isLoading = false;
         if (responseError.status == 409) {
           const msg = responseError.error.message
             ? responseError.error.message
@@ -215,6 +218,7 @@ export class ApplyCLRHComponent implements OnInit {
             duration: 2000
           });
         }
+        this.isLoading = false;
       }
     );
   }
