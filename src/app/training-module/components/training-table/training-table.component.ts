@@ -78,7 +78,7 @@ export class TrainingTableComponent implements OnInit {
       panelClass: "detail-dialog",
       minWidth: "56vw",
       minHeight: "80vh",
-      maxWidth: "70vw",
+      maxWidth: "84vw",
       maxHeight: "100vh",
       data: {
         training,
@@ -91,9 +91,10 @@ export class TrainingTableComponent implements OnInit {
   // Open the training feedback form
   openFeedbackForm(training: TrainingInfo) {
     this.dialog.open(FeedbackFormComponent, {
-      minWidth: "660px",
-      minHeight: "580px",
-      maxWidth: "70vw",
+      panelClass: "detail-dialog",
+      minWidth: "56vw",
+      minHeight: "80vh",
+      maxWidth: "80vw",
       maxHeight: "100vh",
       data: training
     });

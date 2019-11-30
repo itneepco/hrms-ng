@@ -190,7 +190,7 @@
           <ng-container *ngIf="isAdminPage &&
               (training.status == training_published || training.status == training_completed)">
             <button mat-raised-button color="primary" (click)="markAsPresent()" class="btn"
-              [disabled]="attendance.length < 1">Save Attendance</button>
+              [disabled]="attendance.length < 1">Mark Attendance</button>
 
             <button mat-raised-button color="primary" (click)="markTrainingCompleted()" class="btn"
               *ngIf="training.status != training_completed">Mark Training Completed</button>

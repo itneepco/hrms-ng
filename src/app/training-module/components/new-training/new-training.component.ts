@@ -22,7 +22,7 @@ import { TrainingParticipantService } from './../../services/training-participan
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
-  styleUrls: ['./new-training.component.css']
+  styleUrls: ['./new-training.component.scss']
 })
 export class NewTrainingComponent implements OnInit, OnDestroy {
   trngInfoForm: FormGroup;

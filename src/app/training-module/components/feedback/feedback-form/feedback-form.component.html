@@ -1,25 +1,34 @@
-<h2 id="header">Training Feeback Form</h2>
-<form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
-  <mat-dialog-content>
+<mat-toolbar color="primary" id="header">
+  <div fxFlex>Training Feeback Form</div>
+  <div class="flex-spacer"></div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div id="container">
+  <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
     <div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div id="general-info">
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Title</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70" class="info">{{training.course_title}}</div>
+          <div fxFlex="70" class="info">{{ training.course_title }}</div>
         </div>
 
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Venue</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70" class="info">{{training.venue}}</div>
+          <div fxFlex="70" class="info">{{ training.venue }}</div>
         </div>
 
         <div fxLayout="row" class="row">
           <div fxFlex="25" class="title">Programme Date</div>
           <div fxFlex="5">:</div>
-          <div fxFlex="70" class="info">From {{training.from_date | date:'mediumDate'}} to
-            {{training.to_date | date:'mediumDate'}}</div>
+          <div fxFlex="70" class="info">
+            From {{ training.from_date | date: "mediumDate" }} to
+            {{ training.to_date | date: "mediumDate" }}
+          </div>
         </div>
       </div>
 
@@ -31,14 +40,20 @@
           <div fxLayout="row" class="row">
             <div fxFlex="25" class="title">Resource Person</div>
             <div fxFlex="25" class="title">Topic Session</div>
-            <div fxFlex="50" class="rating-header">Unstatisfactory ------> Excellent</div>
+            <div fxFlex="50" class="rating-header">
+              Unstatisfactory ------> Excellent
+            </div>
           </div>
 
           <div formArrayName="topic_ratings">
-            <div *ngFor="let item of topic_ratings.controls; let i=index">
+            <div *ngFor="let item of topic_ratings.controls; let i = index">
               <div [formGroupName]="i" fxLayout="row" class="row">
-                <div fxFlex="25">{{training.training_topics[i].faculty_name}}</div>
-                <div fxFlex="25">{{training.training_topics[i].topic_name}}</div>
+                <div fxFlex="25">
+                  {{ training.training_topics[i].faculty_name }}
+                </div>
+                <div fxFlex="25">
+                  {{ training.training_topics[i].topic_name }}
+                </div>
                 <div fxFlex="50">
                   <mat-radio-group formControlName="rating">
                     <mat-radio-button value="1">1</mat-radio-button>
@@ -58,7 +73,9 @@
 
       <div fxLayout="row" class="row">
         <div fxFlex="50"></div>
-        <div fxFlex="50" class="rating-header">Unstatisfactory ------> Excellent</div>
+        <div fxFlex="50" class="rating-header">
+          Unstatisfactory ------> Excellent
+        </div>
       </div>
 
       <div fxLayout="row" class="row">
@@ -139,19 +156,38 @@
       <mat-divider class="divider"></mat-divider>
 
       <mat-form-field *ngIf="isExternalTraining">
-        <input matInput formControlName="ta_da_incurred" placeholder="Tentative DA/TA expenses incurred during the programme">
+        <input
+          matInput
+          formControlName="ta_da_incurred"
+          placeholder="Tentative DA/TA expenses incurred during the programme"
+        />
       </mat-form-field>
 
       <mat-form-field>
-        <textarea matInput placeholder="Leave a comment" rows="3" formControlName="comments"></textarea>
-        <mat-error *ngIf="comments.errors?.required">Please leave a comment or suggestions</mat-error>
+        <textarea
+          matInput
+          placeholder="Leave a comment"
+          rows="3"
+          formControlName="comments"
+        ></textarea>
+        <mat-error *ngIf="comments.errors?.required"
+          >Please leave a comment or suggestions</mat-error
+        >
       </mat-form-field>
     </div>
-  </mat-dialog-content>
 
-  <mat-dialog-actions align="end" id="buttons">
-    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit"
-      [disabled]="feedbackForm.invalid || isLoading">Save</button>
-  </mat-dialog-actions>
-</form>
+    <mat-dialog-actions align="end" id="buttons">
+      <button mat-button type="button" (click)="dialogRef.close()">
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="feedbackForm.invalid || isLoading"
+      >
+        Save
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

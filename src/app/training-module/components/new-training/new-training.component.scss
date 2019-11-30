@@ -7,11 +7,14 @@
   margin-right: 20px;
 }
 
-.buttons {
+#action-btn {
   margin-top: 25px;
-  margin-right: 12px;
+  margin-right: 15px;
   display: flex;
-  flex-direction: row-reverse
+  flex-direction: row-reverse;
+  button {
+    margin-left: 6px;
+  }
 }
 
 .mat-card-title {

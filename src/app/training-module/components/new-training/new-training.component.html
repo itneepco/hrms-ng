@@ -61,7 +61,7 @@
               </mat-form-field>
             </div>
 
-            <div class="buttons">
+            <div id="action-btn">
               <ng-container *ngIf="_trainingInfo && !isEdited; else saveButton">
                 <button mat-raised-button type="button" color="primary" matStepperNext>Next</button>
               </ng-container>
@@ -89,7 +89,7 @@
             </div>
           </div>
 
-          <div class="buttons">
+          <div id="action-btn">
             <button mat-raised-button color="primary" matStepperNext>Next</button>
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>
@@ -154,7 +154,7 @@
             </mat-table>
           </div>
 
-          <div class="buttons">
+          <div id="action-btn">
             <button mat-raised-button color="primary" matStepperNext>Next</button>
             <button mat-raised-button matStepperPrevious>Prev</button>
           </div>
@@ -230,7 +230,7 @@
             </mat-table>
           </div>
 
-          <div class="buttons">
+          <div id="action-btn">
             <button mat-raised-button color="primary" (click)="publishTraining()"
               *ngIf="_trainingInfo?.status == training_created"
               [disabled]="!_trainingInfo || participants.data.length < 1">Publish</button>

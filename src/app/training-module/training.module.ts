@@ -1,39 +1,33 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 
-import { SharedModule } from '../shared/shared.module';
-import { AdminTrainingComponent } from './components/admin-training/admin-training.component';
-import { FeedbackFormComponent } from './components/feedback/feedback-form/feedback-form.component';
-import { FeedbackComponent } from './components/feedback/feedback.component';
-import { ManageTrainingComponent } from './components/manage-training/manage-training.component';
-import { MyTrainingComponent } from './components/my-training/my-training.component';
-import { NewTrainingComponent } from './components/new-training/new-training.component';
-import { PendingRequestComponent } from './components/pending-request/pending-request.component';
-import { TrainingDashboardComponent } from './components/training-dashboard/training-dashboard.component';
-import {
-  TrainingInstituteFormComponent,
-} from './components/training-institute/training-institute-form/training-institute-form.component';
-import { TrainingInstituteComponent } from './components/training-institute/training-institute.component';
-import { TrainingLabelComponent } from './components/training-label/training-label.component';
-import {
-  ExecutiveNeedsFormComponent,
-} from './components/training-needs/executive-needs/executive-needs-form/executive-needs-form.component';
-import { ExecutiveNeedsComponent } from './components/training-needs/executive-needs/executive-needs.component';
-import { RemarksComponent } from './components/training-needs/executive-needs/remarks/remarks.component';
-import { NonexecutiveNeedsComponent } from './components/training-needs/nonexecutive-needs/nonexecutive-needs.component';
-import { TrainingNeedsComponent } from './components/training-needs/training-needs.component';
-import { WorkflowComponent } from './components/training-needs/workflow/workflow.component';
-import { TrainingProfileComponent } from './components/training-profile/training-profile.component';
-import { TrainingDetailComponent } from './components/training-table/training-detail/training-detail.component';
-import { TrainingTableComponent } from './components/training-table/training-table.component';
-import { TrainingComponent } from './components/training/training.component';
-import { NeedsInfoResolver } from './services/training-needs-info.resolver';
-import { TrainingRoutingModule } from './training-routing.module';
+import { SharedModule } from "../shared/shared.module";
+import { AdminTrainingComponent } from "./components/admin-training/admin-training.component";
+import { FeedbackFormComponent } from "./components/feedback/feedback-form/feedback-form.component";
+import { FeedbackComponent } from "./components/feedback/feedback.component";
+import { ManageTrainingComponent } from "./components/manage-training/manage-training.component";
+import { MyTrainingComponent } from "./components/my-training/my-training.component";
+import { NewTrainingComponent } from "./components/new-training/new-training.component";
+import { PendingRequestComponent } from "./components/pending-request/pending-request.component";
+import { TrainingDashboardComponent } from "./components/training-dashboard/training-dashboard.component";
+import { TrainingInstituteFormComponent } from "./components/training-institute/training-institute-form/training-institute-form.component";
+import { TrainingInstituteComponent } from "./components/training-institute/training-institute.component";
+import { TrainingLabelComponent } from "./components/training-label/training-label.component";
+import { ExecutiveNeedsFormComponent } from "./components/training-needs/executive-needs/executive-needs-form/executive-needs-form.component";
+import { ExecutiveNeedsComponent } from "./components/training-needs/executive-needs/executive-needs.component";
+import { RemarksComponent } from "./components/training-needs/executive-needs/remarks/remarks.component";
+import { NonexecutiveNeedsComponent } from "./components/training-needs/nonexecutive-needs/nonexecutive-needs.component";
+import { TrainingNeedsComponent } from "./components/training-needs/training-needs.component";
+import { WorkflowComponent } from "./components/training-needs/workflow/workflow.component";
+import { TrainingProfileComponent } from "./components/training-profile/training-profile.component";
+import { TrainingDetailComponent } from "./components/training-table/training-detail/training-detail.component";
+import { TrainingTableComponent } from "./components/training-table/training-table.component";
+import { TrainingComponent } from "./components/training/training.component";
+import { NeedsInfoResolver } from "./services/training-needs-info.resolver";
+import { TrainingRoutingModule } from "./training-routing.module";
+import { CalendarModule } from "angular-calendar";
 
 @NgModule({
-  imports: [
-    SharedModule,
-    TrainingRoutingModule
-  ],
+  imports: [SharedModule, TrainingRoutingModule, CalendarModule],
   declarations: [
     TrainingComponent,
     FeedbackComponent,
@@ -55,7 +49,7 @@ import { TrainingRoutingModule } from './training-routing.module';
     PendingRequestComponent,
     AdminTrainingComponent,
     TrainingLabelComponent,
-    RemarksComponent,
+    RemarksComponent
   ],
   entryComponents: [
     TrainingDetailComponent,
@@ -66,4 +60,4 @@ import { TrainingRoutingModule } from './training-routing.module';
   ],
   providers: [NeedsInfoResolver]
 })
-export class TrainingModule { }
+export class TrainingModule {}

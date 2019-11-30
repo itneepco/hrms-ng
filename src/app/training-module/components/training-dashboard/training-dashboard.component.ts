@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject } from 'rxjs';
 
 import { TrainingCalendarService } from './../../services/training-calendar.service';
@@ -26,16 +25,16 @@ export class TrainingDashboardComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      this.viewDate = date;
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-    }
+    // if (isSameMonth(date, this.viewDate)) {
+    //   this.viewDate = date;
+    //   if (
+    //     (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+    //     events.length === 0
+    //   ) {
+    //     this.activeDayIsOpen = false;
+    //   } else {
+    //     this.activeDayIsOpen = true;
+    //   }
+    // }
   }
 }

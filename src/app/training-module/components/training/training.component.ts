@@ -31,7 +31,7 @@ export class TrainingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.auth.isTrainingAdmin()) {
-      this.nav.push({ name: 'Training Admin', path: '/training/admin-training' });
+      this.nav.push({ name: 'Admin Section', path: '/training/admin-training' });
     }
     this.getPendingFeedbackCount();
     this.getPendingTrgNeedsCount();
