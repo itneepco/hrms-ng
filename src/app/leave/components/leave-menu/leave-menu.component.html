@@ -1,15 +1,3 @@
-<!-- <mat-nav-list>
-  <ng-container *ngFor="let status of data.leaveStatuses">
-    <ng-container *ngIf="status.balance > 0">
-      <a mat-list-item (click)="onSelect($event, status)" 
-          *ngIf="(status.leave_code != rh_code) || (data.isRH && status.leave_code == rh_code)">
-        <span mat-line>{{leaveTypeService.getLeaveType(status.leave_code)}}</span>
-        <span mat-line>Apply for {{leaveTypeService.getLeaveType(status.leave_code)}}</span>
-      </a>
-    </ng-container>
-  </ng-container>
-</mat-nav-list> -->
-
 <mat-nav-list>
   <div *ngIf="cl_status && cl_status.balance >= 1">
     <a mat-list-item (click)="onSelect($event, cl_status)">
@@ -29,6 +17,12 @@
     <a mat-list-item (click)="onSelect($event, cl_status, true)">
       <span mat-line>{{ leaveTypeService.getLeaveType(hd_cl_code) }}</span>
       <span mat-line>Apply for {{ leaveTypeService.getLeaveType(hd_cl_code) }}</span>
+    </a>
+  </div>
+
+  <div *ngIf="rh_status.balance < 1 && cl_status.balance < 0.5">
+    <a mat-list-item (click)="bottomSheetRef.dismiss()">
+      <span mat-line>You dont have any CL and RH for the year. Dismiss</span>
     </a>
   </div>
 </mat-nav-list>

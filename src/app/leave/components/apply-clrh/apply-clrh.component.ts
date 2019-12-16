@@ -17,7 +17,7 @@ import { LedgerService } from "../../services/ledger.service";
 import { LeaveMenuComponent } from "../leave-menu/leave-menu.component";
 import { CALENDAR_COLORS } from "./../../../shared/models/global-codes";
 import { LeaveAppForm } from "./../../models/leave-app-form";
-import { LeaveStatus } from "./../../models/leave-status";
+import { LeaveRegister, LeaveStatus } from "./../../models/leave-status";
 
 @Component({
   selector: "app-apply-leave",
@@ -25,10 +25,6 @@ import { LeaveStatus } from "./../../models/leave-status";
   styleUrls: ["./apply-clrh.component.scss"]
 })
 export class ApplyCLRHComponent implements OnInit {
-  // view = "month";
-  // viewDate: Date = new Date();
-  // events: CalendarEvent[] = [];
-
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
@@ -37,6 +33,10 @@ export class ApplyCLRHComponent implements OnInit {
   leaveDetails = [];
   refresh: Subject<any> = new Subject();
   leaveStatuses: LeaveStatus[] = [];
+  prevYearRegister: LeaveRegister;
+  currYearRegister: LeaveRegister;
+  nextYearRegister: LeaveRegister;
+  isSubmitting = false;
   isLoading = false;
   ctrlOfficers;
 
@@ -70,9 +70,11 @@ export class ApplyCLRHComponent implements OnInit {
       });
 
     this.ledgerService
-      .getLeaveStatus(this.auth.currentUser.emp_code)
-      .subscribe((status: LeaveStatus[]) => {
-        this.leaveStatuses = status;
+      .getCurrYearBal(this.auth.currentUser.emp_code)
+      .subscribe((register: LeaveRegister) => {
+        this.currYearRegister = register;
+        this.leaveStatuses = register.status;
+        // console.log("Current Year", register)
       });
 
     this.hierarchyService
@@ -82,6 +84,33 @@ export class ApplyCLRHComponent implements OnInit {
       });
 
     this.initializeForm();
+  }
+
+  viewDateClick(event) {
+    const viewDate = new Date(event);
+    const viewYear = viewDate.getFullYear();
+
+    if (viewYear == this.currYearRegister.year) {
+      this.leaveStatuses = this.currYearRegister.status;
+    }
+    if (viewYear > this.currYearRegister.year) {
+      this.isLoading = true;
+      this.ledgerService
+        .getNextYearBal(this.auth.currentUser.emp_code)
+        .subscribe((register: LeaveRegister) => {
+          this.isLoading = false;
+          this.leaveStatuses = register.status;
+        }, () => this.isLoading = false);
+    }
+    if (viewYear < this.currYearRegister.year) {
+      this.isLoading = true;
+      this.ledgerService
+        .getPrevYearBal(this.auth.currentUser.emp_code)
+        .subscribe((register: LeaveRegister) => {
+          this.isLoading = false
+          this.leaveStatuses = register.status;
+        }, () => this.isLoading = false);
+    }
   }
 
   onDayClick(event) {
@@ -152,8 +181,7 @@ export class ApplyCLRHComponent implements OnInit {
       officer_emp_code: ["", Validators.required],
       purpose: ["", Validators.required],
       address: ["", Validators.required],
-      // contact_no: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
-      contact_no: [""],
+      contact_no: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
       remarks: ""
     });
   }
@@ -201,12 +229,12 @@ export class ApplyCLRHComponent implements OnInit {
     });
 
     // console.log(leavApplication)
-    this.isLoading = true;
+    this.isSubmitting = true;
     this.leaveService.applyLeave(leavApplication).subscribe(
       result => {
         console.log(result);
         this.router.navigateByUrl("leave/leave-transaction");
-        this.isLoading = false;
+        this.isSubmitting = false;
       },
       (responseError: HttpErrorResponse) => {
         console.log(responseError);
@@ -218,7 +246,7 @@ export class ApplyCLRHComponent implements OnInit {
             duration: 2000
           });
         }
-        this.isLoading = false;
+        this.isSubmitting = false;
       }
     );
   }

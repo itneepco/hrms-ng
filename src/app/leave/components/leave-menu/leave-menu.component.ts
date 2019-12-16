@@ -13,7 +13,7 @@ import { LeaveStatus } from './../../models/leave-status';
 export class LeaveMenuComponent {
   hd_cl_code = HD_CL_CODE
   
-  constructor(private bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
+  constructor(public bottomSheetRef: MatBottomSheetRef<LeaveMenuComponent>,
     public leaveTypeService: LeaveTypeService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {}
 

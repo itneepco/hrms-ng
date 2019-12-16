@@ -6,6 +6,7 @@ import { baseURL } from '../../shared/config/baseUrl';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { LeaveLedger } from '../../shared/models/ledger';
 import { Observable, of } from 'rxjs';
+import { LeaveRegister } from '../models/leave-status';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +45,22 @@ export class LedgerService {
       )
   }
 
-  getLeaveStatus(empCode: string): Observable<any> {
-    return this.http.get(baseURL + "api/leave/status/" + `${empCode}`)
+  getCurrYearBal(empCode: string): Observable<LeaveRegister> {
+    return this.http.get<LeaveRegister>(baseURL + "api/leave/balance/" + `${empCode}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  getPrevYearBal(empCode: string): Observable<LeaveRegister> {
+    return this.http.get<LeaveRegister>(baseURL + "api/leave/prev-year/balance/" + `${empCode}`)
+      .pipe(
+        catchError(err => this.handler.handleError(err))
+      )
+  }
+
+  getNextYearBal(empCode: string): Observable<LeaveRegister> {
+    return this.http.get<LeaveRegister>(baseURL + "api/leave/next-year/balance/" + `${empCode}`)
       .pipe(
         catchError(err => this.handler.handleError(err))
       )

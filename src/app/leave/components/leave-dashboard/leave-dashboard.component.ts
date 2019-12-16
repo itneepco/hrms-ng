@@ -6,7 +6,7 @@ import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from '../../../shared/models/glob
 import { LeaveJoiningReport } from '../../../shared/models/joining-report';
 import { LeaveTypeService } from '../../../shared/services/leave-type.service';
 import { LedgerService } from '../../services/ledger.service';
-import { LeaveStatus } from './../../models/leave-status';
+import { LeaveStatus, LeaveRegister } from './../../models/leave-status';
 import { JR_CALLBACKED, JR_PENDING, JR_RECOMMENDED, JR_SUBMITTED } from './../../models/leave.codes';
 import { JoiningReportService } from './../../services/joining-report.service';
 import { JoiningReportComponent } from './../joining-report/joining-report.component';
@@ -39,9 +39,9 @@ export class LeaveDashboardComponent implements OnInit {
   ){ }
 
   ngOnInit() {
-    this.ledgerService.getLeaveStatus(this.authService.currentUser.emp_code)
-      .subscribe((status: LeaveStatus[]) => {
-        this.leaveStatuses = status
+    this.ledgerService.getCurrYearBal(this.authService.currentUser.emp_code)
+      .subscribe((register: LeaveRegister) => {
+        this.leaveStatuses = register.status
       }) 
     this.fetchJoiningReports()
   }

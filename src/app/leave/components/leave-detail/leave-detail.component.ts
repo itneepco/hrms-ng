@@ -16,7 +16,7 @@ import { LedgerService } from "../../services/ledger.service";
 import { WorkflowActionService } from "../../services/workflow-action.service";
 import { HD_CL_CODE } from "./../../../shared/models/global-codes";
 import { LeaveApplication } from "./../../../shared/models/leave";
-import { LeaveStatus } from "./../../models/leave-status";
+import { LeaveStatus, LeaveRegister } from "./../../models/leave-status";
 import { JoiningReportService } from "./../../services/joining-report.service";
 import { UserActionService } from "./../../services/user-action.service";
 
@@ -117,9 +117,9 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       });
 
     this.ledgerService
-      .getLeaveStatus(this.leaveApp.emp_code)
-      .subscribe((status: LeaveStatus[]) => {
-        this.leaveStatuses = status;
+      .getCurrYearBal(this.leaveApp.emp_code)
+      .subscribe((register: LeaveRegister) => {
+        this.leaveStatuses = register.status;
       });
 
     this.subscription = this.workflow_action.valueChanges.subscribe(data => {

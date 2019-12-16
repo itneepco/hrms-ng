@@ -6,6 +6,7 @@
           mwlCalendarPreviousView
           [view]="view"
           [(viewDate)]="viewDate"
+          (viewDateChange)="viewDateClick($event)"
           >Previous
         </mat-button-toggle>
 
@@ -13,6 +14,7 @@
           mwlCalendarToday
           checked="true"
           [(viewDate)]="viewDate"
+          (viewDateChange)="viewDateClick($event)"
           >Today
         </mat-button-toggle>
 
@@ -21,6 +23,7 @@
           mwlCalendarNextView
           [view]="view"
           [(viewDate)]="viewDate"
+          (viewDateChange)="viewDateClick($event)"
           >Next
         </mat-button-toggle>
       </mat-button-toggle-group>
@@ -32,7 +35,7 @@
 
     <mat-divider></mat-divider>
 
-    <div [ngSwitch]="view" id="calendar">
+    <div [ngSwitch]="view" id="calendar" *ngIf="!isLoading; else loading">
       <div
         fxLayout="row"
         fxLayoutAlign="end center"
@@ -63,6 +66,12 @@
         [events]="events"
       ></mwl-calendar-month-view>
     </div>
+
+    <ng-template #loading>
+      <div fxLayoutAlign="center center">
+        <mat-spinner diameter="80"></mat-spinner>
+      </div>
+    </ng-template>
   </mat-card>
 
   <div fxFlex="40" fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="15px">
@@ -167,7 +176,9 @@
         <button
           mat-raised-button
           color="primary"
-          [disabled]="isLoading || leaveForm.invalid || leaveDetails.length < 1"
+          [disabled]="
+            isSubmitting || leaveForm.invalid || leaveDetails.length < 1
+          "
         >
           Apply Leave
         </button>
