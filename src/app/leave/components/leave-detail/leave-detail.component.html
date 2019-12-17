@@ -15,28 +15,32 @@
       </mat-expansion-panel-header>
 
       <div fxLayout="column">
-        <div fxLayout="row">
-          <div class="info" fxFlex>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
             <span class="title">Leave Application ID: </span>
             {{leaveApp.id}}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Emp Code: </span>
+            {{leaveApp.emp_code}}
           </div>
         </div>
         
         <div fxLayout="row" fxLayoutGap="20px">
-          <div class="info" fxFlex>
+          <div class="info" fxFlex="50">
             <span class="title">Emp Name: </span>
             {{leaveApp.first_name | titlecase}}
             {{leaveApp.last_name | titlecase}}</div>
-          <div class="info" fxFlex>
+          <div class="info" fxFlex="50">
             <span class="title">Contact: </span>
             {{leaveApp.contact_no}}</div>
         </div>
 
         <div fxLayout="row" fxLayoutGap="20px" *ngIf="leaveApp.prefix_from">
-          <div class="info" fxFlex>
+          <div class="info" fxFlex="50">
             <span class="title">Prefix from: </span>
             {{leaveApp.prefix_from | date:'mediumDate'}}</div>
-          <div class="info" fxFlex>
+          <div class="info" fxFlex="50">
             <span class="title">Prefix to: </span>
             {{leaveApp.prefix_to | date:'mediumDate'}}</div>
         </div>
@@ -227,8 +231,8 @@
               <input matInput placeholder="Remarks" formControlName="remarks">
             </mat-form-field>
 
-            <div fxLayoutAlign="end start">
-              <button mat-raised-button color="primary" [disabled]="isLoading">Submit</button>
+            <div fxLayoutAlign="end start" *ngIf="leaveStatuses.length > 0">
+              <button mat-raised-button color="primary" [disabled]="isSubmitting">Submit</button>
             </div>
           </form>
         </ng-template>

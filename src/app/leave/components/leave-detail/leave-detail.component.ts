@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTableDataSource } from "@angular/material/table";
-import { Subscription } from "rxjs";
-import { WageMonthService } from 'src/app/attendance/services/wage-month.service';
+import { of, Subscription } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { WageMonthService } from "src/app/attendance/services/wage-month.service";
 import { AuthService } from "../../../auth/services/auth.service";
 import { Addressee } from "../../../shared/models/adressee";
 import { CL_CODE, EL_CODE, HPL_CODE, RH_CODE } from "../../../shared/models/global-codes";
@@ -16,7 +17,7 @@ import { LedgerService } from "../../services/ledger.service";
 import { WorkflowActionService } from "../../services/workflow-action.service";
 import { HD_CL_CODE } from "./../../../shared/models/global-codes";
 import { LeaveApplication } from "./../../../shared/models/leave";
-import { LeaveStatus, LeaveRegister } from "./../../models/leave-status";
+import { LeaveRegister, LeaveStatus } from "./../../models/leave-status";
 import { JoiningReportService } from "./../../services/joining-report.service";
 import { UserActionService } from "./../../services/user-action.service";
 
@@ -44,7 +45,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   leaveApp: LeaveApplication;
   pageNo: string;
-  isLoading = false;
+  isSubmitting = false;
 
   // Leave type codes
   cl_code = CL_CODE;
@@ -70,7 +71,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
   leaveRequestPage = LEAVE_REQUEST_PAGE;
 
   constructor(
-    private authService: AuthService,
+    private auth: AuthService,
     private leaveCtrlOfficer: LeaveCtrlOfficerService,
     public leaveType: LeaveTypeService,
     private fb: FormBuilder,
@@ -88,13 +89,22 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     this.leaveApp = this.data.leave;
     this.pageNo = this.data.pageNo;
 
-    this.wageMonthService.getActiveWageMonth().subscribe(activeWageMonth => {
-      this.actions = this.userActionService.getActions(
-        this.leaveApp,
-        this.pageNo,
-        activeWageMonth
-      );
-    })
+    this.wageMonthService.getActiveWageMonth().subscribe(
+      activeWageMonth => {
+        this.actions = this.userActionService.getActions(
+          this.leaveApp,
+          this.pageNo,
+          activeWageMonth
+        );
+      },
+      error => {
+        this.actions = this.userActionService.getActions(
+          this.leaveApp,
+          this.pageNo,
+          null
+        );
+      }
+    );
 
     this.leaveDetailSource = new MatTableDataSource(this.leaveApp.leaveDetails);
     this.initForm();
@@ -108,7 +118,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
     // Fetch leave application forwarding authority
     this.leaveCtrlOfficer
       .getLeaveCtrlOfficers(
-        this.authService.currentUser.emp_code,
+        this.auth.currentUser.emp_code,
         this.leaveApp.leaveDetails,
         leaveRoleMapper
       )
@@ -118,6 +128,20 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
 
     this.ledgerService
       .getCurrYearBal(this.leaveApp.emp_code)
+      .pipe(
+        switchMap((currYearRegister: LeaveRegister) => {
+          let leave_app_date = this.leaveApp.leaveDetails[0].from_date;
+          let leave_app_year = new Date(leave_app_date).getFullYear();
+
+          if (currYearRegister.year < leave_app_year) {
+            return this.ledgerService.getNextYearBal(this.leaveApp.emp_code);
+          } else if (currYearRegister.year > leave_app_year) {
+            return this.ledgerService.getPrevYearBal(this.leaveApp.emp_code);
+          } else {
+            return of(currYearRegister);
+          }
+        })
+      )
       .subscribe((register: LeaveRegister) => {
         this.leaveStatuses = register.status;
       });
@@ -142,7 +166,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       workflow_action: ["", Validators.required],
       remarks: "",
       addressee: "",
-      officer_emp_code: this.authService.currentUser.emp_code,
+      officer_emp_code: this.auth.currentUser.emp_code,
       leave_application_id: this.leaveApp.id
     });
   }
@@ -161,7 +185,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    this.isSubmitting = true;
     const formValue = this.actionForm.value;
     this.wActionService.processLeave(formValue).subscribe(
       result => {
@@ -173,7 +197,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
             duration: 1600
           }
         );
-        this.isLoading = false;
+        this.isSubmitting = false;
       },
       error => {
         console.log(error);
@@ -184,7 +208,7 @@ export class LeaveDetailComponent implements OnInit, OnDestroy {
             duration: 1600
           }
         );
-        this.isLoading = false;
+        this.isSubmitting = false;
       }
     );
   }

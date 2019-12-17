@@ -88,6 +88,7 @@ export class UserActionService {
      ************** check if leave transaction page ******************
      **********************************************************************/
     if (pageNo === TRANSACTION_PAGE) {
+      console.log("wage month", currWageMonth)
       // If current wage month is defined
       if (currWageMonth) {
         const leaveDtls = leaveApp.leaveDetails;

@@ -12,12 +12,18 @@ import { CL_CODE, HD_CL_CODE } from "../../../shared/models/global-codes";
 import { HierarchyService } from "../../../shared/services/hierarchy.service";
 import { HolidayService } from "../../../shared/services/holiday.service";
 import { LeaveTypeService } from "../../../shared/services/leave-type.service";
+import { LeaveEvent } from "../../models/leave-event";
 import { LeaveService } from "../../services/leave.service";
 import { LedgerService } from "../../services/ledger.service";
 import { LeaveMenuComponent } from "../leave-menu/leave-menu.component";
 import { CALENDAR_COLORS } from "./../../../shared/models/global-codes";
 import { LeaveAppForm } from "./../../models/leave-app-form";
 import { LeaveRegister, LeaveStatus } from "./../../models/leave-status";
+
+interface LeaveDetail extends LeaveEvent {
+  event: CalendarEvent;
+  station_leave: boolean;
+}
 
 @Component({
   selector: "app-apply-leave",
@@ -30,7 +36,7 @@ export class ApplyCLRHComponent implements OnInit {
   events: CalendarEvent[] = [];
 
   leaveForm: FormGroup;
-  leaveDetails = [];
+  leaveDetails: LeaveDetail[] = [];
   refresh: Subject<any> = new Subject();
   leaveStatuses: LeaveStatus[] = [];
   prevYearRegister: LeaveRegister;
@@ -64,17 +70,13 @@ export class ApplyCLRHComponent implements OnInit {
           );
         })
       )
-      .subscribe(data => {
-        this.events = this.events.concat(data);
-        // console.log(this.events)
-      });
+      .subscribe(data => (this.events = this.events.concat(data)));
 
     this.ledgerService
       .getCurrYearBal(this.auth.currentUser.emp_code)
       .subscribe((register: LeaveRegister) => {
         this.currYearRegister = register;
         this.leaveStatuses = register.status;
-        // console.log("Current Year", register)
       });
 
     this.hierarchyService
@@ -93,23 +95,33 @@ export class ApplyCLRHComponent implements OnInit {
     if (viewYear == this.currYearRegister.year) {
       this.leaveStatuses = this.currYearRegister.status;
     }
+
     if (viewYear > this.currYearRegister.year) {
       this.isLoading = true;
       this.ledgerService
         .getNextYearBal(this.auth.currentUser.emp_code)
-        .subscribe((register: LeaveRegister) => {
-          this.isLoading = false;
-          this.leaveStatuses = register.status;
-        }, () => this.isLoading = false);
+        .subscribe(
+          (register: LeaveRegister) => {
+            console.log(register)
+            this.isLoading = false;
+            this.leaveStatuses = register.status;
+          },
+          () => (this.isLoading = false)
+        );
     }
+
     if (viewYear < this.currYearRegister.year) {
       this.isLoading = true;
       this.ledgerService
         .getPrevYearBal(this.auth.currentUser.emp_code)
-        .subscribe((register: LeaveRegister) => {
-          this.isLoading = false
-          this.leaveStatuses = register.status;
-        }, () => this.isLoading = false);
+        .subscribe(
+          (register: LeaveRegister) => {
+            console.log(register)
+            this.isLoading = false;
+            this.leaveStatuses = register.status;
+          },
+          () => (this.isLoading = false)
+        );
     }
   }
 
@@ -117,9 +129,8 @@ export class ApplyCLRHComponent implements OnInit {
     const events = event.day.events;
     // Check if the date is CL or RH or if the date has been applied for leave
     if (events.length > 0) {
-      // if (events.find(el => el.type == "CH")) {
-      //   return;
-      // }
+      // if (events.find(el => el.type == "CH")) return;
+
       if (events.find(el => el.type == "RH") && events.length > 1) {
         return;
       }
@@ -137,45 +148,55 @@ export class ApplyCLRHComponent implements OnInit {
       }
     });
 
-    bottomSheetRef
-      .afterDismissed()
-      .subscribe((data: { status: LeaveStatus; date: Date }) => {
-        if (!data) {
-          return;
-        }
-        console.log(data);
+    bottomSheetRef.afterDismissed().subscribe((leaveEvent: LeaveEvent) => {
+      if (!leaveEvent) return;
 
-        if (data.status.leave_code == HD_CL_CODE) {
-          // If half day CL reduce the total balance of CL by 0.5
-          const cl = this.leaveStatuses.find(
-            status => status.leave_code == CL_CODE
+      // Prevent dates from different years to be clubbed together in one leave application
+      let leave = this.leaveDetails.length > 0 ? this.leaveDetails[0] : null;
+      if (leave) {
+        let year = new Date(leave.date).getFullYear();
+        if (leaveEvent.date.getFullYear() != year) {
+          this.snackbar.open(
+            "You cannot apply two dates from different year in the same leave application",
+            "Dismiss",
+            { duration: 2000 }
           );
-          if (cl) {
-            cl.balance -= 0.5;
-          }
-        } else {
-          data.status.balance -= 1;
+          return; // Return from the function
         }
+      }
 
-        // Create a calendar event
-        const event = {
-          title:
-            "Applied for " +
-            this.leaveTypeService.getLeaveType(data.status.leave_code),
-          start: data.date,
-          end: data.date,
-          color: CALENDAR_COLORS.green
-        };
-
-        this.events.push(event);
-        // make station leave default value to false
-        this.leaveDetails.push(
-          Object.assign({ event: event, station_leave: false }, data)
+      if (leaveEvent.status.leave_code == HD_CL_CODE) {
+        // If half day CL reduce the total balance of CL by 0.5
+        const cl = this.leaveStatuses.find(
+          status => status.leave_code == CL_CODE
         );
-        this.refresh.next();
-      });
+        if (cl) {
+          cl.balance -= 0.5;
+        }
+      } else {
+        leaveEvent.status.balance -= 1;
+      }
+
+      // Create a calendar event
+      const event = {
+        title:
+          "Applied for " +
+          this.leaveTypeService.getLeaveType(leaveEvent.status.leave_code),
+        start: leaveEvent.date,
+        end: leaveEvent.date,
+        color: CALENDAR_COLORS.green
+      };
+
+      this.events.push(event);
+      // make station leave default value to false
+      this.leaveDetails.push(
+        Object.assign({ event: event, station_leave: false }, leaveEvent)
+      );
+      this.refresh.next();
+    });
   }
 
+  // Initialize the leave application form
   initializeForm() {
     this.leaveForm = this.fb.group({
       officer_emp_code: ["", Validators.required],
@@ -251,6 +272,7 @@ export class ApplyCLRHComponent implements OnInit {
     );
   }
 
+  // Getters for leave application form
   get officer_emp_code() {
     return this.leaveForm.get("officer_emp_code");
   }
