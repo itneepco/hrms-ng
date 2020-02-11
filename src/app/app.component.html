@@ -1,12 +1,12 @@
 <div id="main" fxLayout="column">
   <mat-sidenav-container fxFlex>
-    <mat-sidenav class="mat-elevation-z5" [mode]="mode" [opened]="opened" *ngIf="!isLoginPath()">
+    <mat-sidenav class="mat-elevation-z5" [mode]="mode" [opened]="opened" *ngIf="!hideSidebar()">
       <app-sidenav fxFlex fxLayout="column"></app-sidenav>
     </mat-sidenav>
     
     <mat-sidenav-content fxLayout="column" id="wrapper">
-      <app-header *ngIf="!isLoginPath()"></app-header>
-      <div fxFlex [class.page]="!isLoginPath()">
+      <app-header *ngIf="!hideSidebar()"></app-header>
+      <div fxFlex [class.page]="!hideSidebar()">
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 import { EmployeeService } from 'src/app/shared/services/employee.service';
 import { AbsentDetail } from './../../../models/absent-dtl';
 import { AbsentDtlFormComponent } from './absent-dtl-form/absent-dtl-form.component';
+import { PageEvent } from '@angular/material/paginator';
 
 
 
@@ -39,8 +40,8 @@ export class AbsentDtlComponent implements OnInit {
     "to_date",
     "actions"
   ];
+
   dataSource: MatTableDataSource<AbsentDetail>;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private employeeService: EmployeeService,
@@ -81,7 +82,6 @@ export class AbsentDtlComponent implements OnInit {
           console.log(data)
           this.dataLength = data["count"];
           this.dataSource = new MatTableDataSource<AbsentDetail>(data["rows"]);
-          this.dataSource.sort = this.sort;
           this.isSearching = false;
         },
         errMsg => {
@@ -89,6 +89,12 @@ export class AbsentDtlComponent implements OnInit {
           this.isSearching = false;
         }
       );
+  }
+
+  changePage(pageEvent: PageEvent) {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.onSearch();
   }
 
   addAbsentDtl() {

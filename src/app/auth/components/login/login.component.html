@@ -9,7 +9,7 @@
 
       <mat-form-field>
         <input matInput type="text" placeholder=" 6 Digit Employee Code" formControlName="emp_code">
-        <mat-error *ngIf="emp_code.dirty && emp_code.errors?.required">
+        <mat-error *ngIf="emp_code.errors?.required">
           Employee Code is required
         </mat-error>
         <mat-error *ngIf="emp_code.dirty && emp_code.errors?.pattern">
@@ -19,7 +19,7 @@
       
       <mat-form-field>
         <input matInput type="password" placeholder="Password" formControlName="password">
-        <mat-error *ngIf="password.dirty && password.errors?.required">
+        <mat-error *ngIf="password.errors?.required">
           Password is required
         </mat-error>
       </mat-form-field>
@@ -29,6 +29,9 @@
           <mat-icon>exit_to_app</mat-icon>&nbsp;Login
         </button>
       </div>  
+      <p id="forgot-password">Forgot Password? 
+        <a routerLink="/forgot-password">Click here</a>
+      </p>
     </form>
   </mat-card>
 </div>

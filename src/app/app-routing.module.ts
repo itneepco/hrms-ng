@@ -1,10 +1,11 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-
+import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
 import { LoginComponent } from "./auth/components/login/login.component";
 import { AdminGuard } from "./auth/services/admin-guard";
 import { AuthGuard } from "./auth/services/auth-guard";
 import { LoginGuard } from "./auth/services/login-guard";
+
 
 const routes: Routes = [
   {
@@ -21,6 +22,11 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent,
+    canActivate: [LoginGuard]
+  },
+  {
+    path: "forgot-password",
+    component: ForgotPasswordComponent,
     canActivate: [LoginGuard]
   },
   {

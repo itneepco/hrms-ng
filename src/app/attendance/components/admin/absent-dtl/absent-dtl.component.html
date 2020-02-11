@@ -35,7 +35,7 @@
   </mat-card>
 
   <ng-container *ngIf="dataSource; else spinner">
-    <mat-card id="subordinates">
+    <mat-card>
       <mat-card-header>
         <h4>List of absent days</h4>
       </mat-card-header>
@@ -64,7 +64,7 @@
             From Date
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            {{ absent.from_date | date:'mediumDate' }}
+            {{ absent.from_date | date: "mediumDate" }}
           </mat-cell>
         </ng-container>
 
@@ -73,7 +73,7 @@
             To Date
           </mat-header-cell>
           <mat-cell *matCellDef="let absent" fxFlex="20">
-            {{ absent.to_date | date:'mediumDate' }}
+            {{ absent.to_date | date: "mediumDate" }}
           </mat-cell>
         </ng-container>
 
@@ -94,6 +94,16 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
+
+      <mat-paginator
+        [pageSizeOptions]="[10, 15, 30, 50, 100]"
+        [length]="dataLength"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        showFirstLastButtons
+        (page)="changePage($event)"
+      >
+      </mat-paginator>
     </mat-card>
   </ng-container>
 
@@ -106,7 +116,8 @@
 </div>
 
 <button
-  mat-fab *ngIf="emp_code.valid && dataSource"
+  mat-fab
+  *ngIf="emp_code.valid && dataSource"
   class="fab-bottom-right"
   matTooltip="Add absent detail"
   matTooltipPosition="left"

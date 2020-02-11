@@ -50,8 +50,9 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  isLoginPath() {
-    return window.location.pathname === "/login";
+  hideSidebar() {
+    const path = window.location.pathname
+    return path === "/login" || path === "/" || path == '/forgot-password';
   }
 
   ngOnDestroy() {

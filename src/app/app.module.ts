@@ -23,6 +23,7 @@ import { LeaveModule } from "./leave/leave.module";
 import { baseURL } from "./shared/config/baseUrl";
 import { SharedModule } from "./shared/shared.module";
 import { StatementModule } from "./statement/statement.module";
+import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -34,7 +35,8 @@ export function momentAdapterFactory() {
     HeaderComponent,
     SidenavComponent,
     FooterComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserAnimationsModule,
