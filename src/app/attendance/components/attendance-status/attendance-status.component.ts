@@ -8,14 +8,7 @@ import { AuthService } from "src/app/auth/services/auth.service";
 import { ConfirmDialogComponent } from "src/app/shared/components/confirm-dialog/confirm-dialog.component";
 import { EmployeeService } from "src/app/shared/services/employee.service";
 import { DateService } from "../../../shared/services/date.service";
-import {
-  ATTENDANCE_ABSENT,
-  ATTENDANCE_ABSENT_OFFICIALLY,
-  ATTENDANCE_HOLIDAY,
-  ATTENDANCE_PRESENT,
-  ATTENDANCE_HALF_DAY,
-  ATTENDANCE_LATE
-} from "../../models/attendance-codes";
+import { ATTENDANCE_5D_LATE, ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_HALF_DAY, ATTENDANCE_HOLIDAY, ATTENDANCE_LATE, ATTENDANCE_PRESENT } from "../../models/attendance-codes";
 import { AttendanceStatus } from "../../models/employee-wise-roster";
 import { WageMonth } from "../../models/wage-month";
 import { AttendanceDataService } from "../../services/attendance-data.service";
@@ -41,6 +34,7 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   onAbsentStatus = ATTENDANCE_ABSENT;
   onHolidayStatus = ATTENDANCE_HOLIDAY;
   onHalfDayStatus = ATTENDANCE_HALF_DAY;
+  on5DLateStatus = ATTENDANCE_5D_LATE;
 
   startDate: Date;
   endDate: Date;

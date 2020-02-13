@@ -12,7 +12,8 @@ import {
   ATTENDANCE_HOLIDAY,
   ATTENDANCE_LATE,
   ATTENDANCE_OFF_DAY,
-  ATTENDANCE_PRESENT
+  ATTENDANCE_PRESENT,
+  ATTENDANCE_5D_LATE
 } from "../models/attendance-codes";
 import { AttendanceStatus } from "../models/employee-wise-roster";
 import { WageMonth } from "../models/wage-month";
@@ -119,6 +120,9 @@ export class AttendanceStatusService {
       }
       case ATTENDANCE_LATE: {
         return "LATE";
+      }
+      case ATTENDANCE_5D_LATE: {
+        return "5D LATE";
       }
       case ATTENDANCE_OFF_DAY: {
         return "OFF";

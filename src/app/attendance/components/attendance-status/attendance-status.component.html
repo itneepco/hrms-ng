@@ -57,7 +57,7 @@
             *ngFor="let attend of attendance"
             [ngClass]="{
               absent:
-                attend.attendance_status == onAbsentStatus &&
+                (attend.attendance_status == onAbsentStatus || attend.attendance_status == on5DLateStatus) &&
                 !attend.modified_status,
 
               'half-day':

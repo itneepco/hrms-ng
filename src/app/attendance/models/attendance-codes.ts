@@ -5,4 +5,6 @@ export const ATTENDANCE_LATE = '04';
 export const ATTENDANCE_OFF_DAY = '05';
 export const ATTENDANCE_HOLIDAY = '06';
 export const ATTENDANCE_ABSENT_OFFICIALLY = '07';
+export const ATTENDANCE_EXEMPTED = '08';
+export const ATTENDANCE_5D_LATE = '09';
 
