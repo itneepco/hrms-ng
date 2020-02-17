@@ -75,7 +75,7 @@ export class AbsenteeStatementService {
         row.absent_days.map(day => day.split("-")[2]),
         row.half_days.map(day => day.split("-")[2]),
         row.late_days.map(day => day.split("-")[2]),
-        row.absent_days_count
+        row.total_absent_days_count
       ];
     });
 
