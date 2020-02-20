@@ -8,13 +8,14 @@ import { AuthService } from "src/app/auth/services/auth.service";
 import { ConfirmDialogComponent } from "src/app/shared/components/confirm-dialog/confirm-dialog.component";
 import { EmployeeService } from "src/app/shared/services/employee.service";
 import { DateService } from "../../../shared/services/date.service";
-import { ATTENDANCE_5D_LATE, ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_HALF_DAY, ATTENDANCE_HOLIDAY, ATTENDANCE_LATE, ATTENDANCE_PRESENT } from "../../models/attendance-codes";
+import { ATTENDANCE_5D_LATE, ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_HALF_DAY, ATTENDANCE_HOLIDAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY, ATTENDANCE_PRESENT } from "../../models/attendance-codes";
 import { AttendanceStatus } from "../../models/employee-wise-roster";
 import { WageMonth } from "../../models/wage-month";
 import { AttendanceDataService } from "../../services/attendance-data.service";
 import { AttendanceStatusService } from "../../services/attendance-status.service";
 import { WageMonthService } from "../../services/wage-month.service";
-import { ChangeStatusComponent } from "./change-status/change-status.component";
+import { ChangeShiftComponent } from './change-shift/change-shift.component';
+import { PunchRegularizeComponent } from './punch-regularize/punch-regularize.component';
 
 @Component({
   selector: "app-attendance-status",
@@ -31,8 +32,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
 
   presentStatus = ATTENDANCE_PRESENT;
   officialAbsentStatus = ATTENDANCE_ABSENT_OFFICIALLY;
-  onAbsentStatus = ATTENDANCE_ABSENT;
   onHolidayStatus = ATTENDANCE_HOLIDAY;
+  onOffDayStatus = ATTENDANCE_OFF_DAY;
+
+  onAbsentStatus = ATTENDANCE_ABSENT;
   onHalfDayStatus = ATTENDANCE_HALF_DAY;
   on5DLateStatus = ATTENDANCE_5D_LATE;
 
@@ -120,8 +123,8 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
   }
 
   // On edit, open change status dialog
-  onEdit(attend: AttendanceStatus) {
-    const dialogRef = this.dialog.open(ChangeStatusComponent, {
+  changeShift(attend: AttendanceStatus) {
+    const dialogRef = this.dialog.open(ChangeShiftComponent, {
       panelClass: "detail-dialog",
       width: "550px",
       height: "450px",
@@ -130,6 +133,19 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       this.updateData(attend, result);
+    });
+  }
+
+  openRegForm(attend: AttendanceStatus) {
+    const dialogRef = this.dialog.open(PunchRegularizeComponent, {
+      panelClass: "detail-dialog",
+      width: "550px",
+      height: "450px",
+      data: attend
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
     });
   }
 

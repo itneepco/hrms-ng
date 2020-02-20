@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { CalendarEvent, CalendarView } from "angular-calendar";
 import { Subject } from "rxjs";
 import { switchMap } from "rxjs/operators";
+import { CtrlOfficer } from "src/app/shared/models/adressee";
 import { AuthService } from "../../../auth/services/auth.service";
 import { CL_CODE, HD_CL_CODE } from "../../../shared/models/global-codes";
 import { HierarchyService } from "../../../shared/services/hierarchy.service";
@@ -44,7 +45,7 @@ export class ApplyCLRHComponent implements OnInit {
   nextYearRegister: LeaveRegister;
   isSubmitting = false;
   isLoading = false;
-  ctrlOfficers;
+  ctrlOfficers: CtrlOfficer[];
 
   constructor(
     private holidayService: HolidayService,
@@ -102,7 +103,7 @@ export class ApplyCLRHComponent implements OnInit {
         .getNextYearBal(this.auth.currentUser.emp_code)
         .subscribe(
           (register: LeaveRegister) => {
-            console.log(register)
+            console.log(register);
             this.isLoading = false;
             this.leaveStatuses = register.status;
           },
@@ -116,7 +117,7 @@ export class ApplyCLRHComponent implements OnInit {
         .getPrevYearBal(this.auth.currentUser.emp_code)
         .subscribe(
           (register: LeaveRegister) => {
-            console.log(register)
+            console.log(register);
             this.isLoading = false;
             this.leaveStatuses = register.status;
           },

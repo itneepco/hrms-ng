@@ -12,6 +12,7 @@ export class ForgotPasswordComponent implements OnInit {
   resetForm: FormGroup;
   errorMsg: string;
   infoMsg: string;
+  isLoading = false;
 
   constructor(private fb: FormBuilder, private auth: AuthService) {}
 
@@ -28,6 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.errorMsg = null;
     this.infoMsg = null;
+    this.isLoading = true;
 
     this.auth
       .resetPassword(this.emp_code.value, this.email.value)
@@ -38,11 +40,13 @@ export class ForgotPasswordComponent implements OnInit {
           const control = this.resetForm.controls[name];
           control.setErrors(null);
         });
+        this.isLoading = false;
       })
       .catch((response: HttpErrorResponse) => {
         console.log(response);
         if (response.status == 404) this.errorMsg = response.error.message;
         else this.errorMsg = response.error.message;
+        this.isLoading = false;
       });
   }
 

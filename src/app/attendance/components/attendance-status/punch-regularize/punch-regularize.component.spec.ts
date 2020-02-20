@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChangeStatusComponent } from './change-status.component';
+import { PunchRegularizeComponent } from './punch-regularize.component';
 
-describe('ChangeStatusComponent', () => {
-  let component: ChangeStatusComponent;
-  let fixture: ComponentFixture<ChangeStatusComponent>;
+describe('PunchRegularizeComponent', () => {
+  let component: PunchRegularizeComponent;
+  let fixture: ComponentFixture<PunchRegularizeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangeStatusComponent ]
+      declarations: [ PunchRegularizeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeStatusComponent);
+    fixture = TestBed.createComponent(PunchRegularizeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

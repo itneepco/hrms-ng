@@ -1,0 +1,74 @@
+<mat-toolbar color="primary" id="header">
+  <div fxFlex>Punching Exemption / Regularization</div>
+  <div class="flex-spacer"></div>
+</mat-toolbar>
+
+<section id="content">
+  <div id="info" style="margin-bottom: 12px">
+    <div class="row">
+      <span fxFlex="50">Shift: </span>
+      <span fxFlex="50">{{ attendance.shift.name }}</span>
+    </div>
+    <div class="row">
+      <span fxFlex="50">Attendance Status: </span>
+      <span fxFlex="50">{{ getStatus(attendance.attendance_status) }}</span>
+    </div>
+    <div class="row">
+      <span fxFlex="50">In Time: </span>
+      <span fxFlex="50">{{ attendance.in_time }}</span>
+    </div>
+    <div class="row">
+      <span fxFlex="50">Out Time: </span>
+      <span fxFlex="50">{{ attendance.out_time }}</span>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <form fxLayout="column" style="margin-top: 15px">
+    <mat-radio-group aria-label="Select an option" class="radio-group">
+      <mat-radio-button value="1" class="radio-button">Early/Late/Forgot Punch</mat-radio-button>
+      <mat-radio-button value="2" class="radio-button">Official Local Duty</mat-radio-button>
+      <mat-radio-button *ngIf="!attendance.shift.is_general"
+          value="3" class="radio-button">
+        Mutual Duty(Shift)
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field>
+      <mat-select placeholder="Forward to">
+        <mat-option
+          *ngFor="let officer of ctrlOfficers"
+          [value]="officer.emp_code"
+        >
+          {{ officer.first_name | titlecase }}
+          {{ officer.last_name | titlecase }}, {{ officer.designation }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>Reason</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-dialog-actions align="end" id="buttons">
+      <button
+        mat-raised-button
+        type="button"
+        color="accent"
+        (click)="dialogRef.close()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+</section>

@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" id="header">
-  <div fxFlex>Change Attendance Status</div>
+  <div fxFlex>Change Shift Duty</div>
   <div class="flex-spacer"></div>
 </mat-toolbar>
 
@@ -36,13 +36,14 @@
         aria-label="Select an option"
         formControlName="action"
       >
-        <mat-radio-button
+        <!-- <mat-radio-button
           value="1"
           class="action-label"
           *ngIf="!isHolidayPresentOff"
         >
           Remove {{ getStatus(attendance.attendance_status) }}
-        </mat-radio-button>
+        </mat-radio-button> -->
+        
         <mat-radio-button value="2" class="action-label">
           Change Shift Duty
         </mat-radio-button>

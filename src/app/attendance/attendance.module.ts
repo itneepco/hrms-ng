@@ -16,10 +16,11 @@ import { ShiftComponent } from './components/admin/shift/shift.component';
 import { UploadDataComponent } from './components/admin/upload-data/upload-data.component';
 import { WageMonthFormComponent } from './components/admin/wage-month-form/wage-month-form.component';
 import { AttendanceStatusComponent } from './components/attendance-status/attendance-status.component';
-import { ChangeStatusComponent } from './components/attendance-status/change-status/change-status.component';
+import { ChangeShiftComponent } from './components/attendance-status/change-shift/change-shift.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AbsenteeStatementComponent } from './components/admin/absentee-statement/absentee-statement.component';
+import { PunchRegularizeComponent } from './components/attendance-status/punch-regularize/punch-regularize.component';
 
 
 @NgModule({
@@ -42,8 +43,9 @@ import { AbsenteeStatementComponent } from './components/admin/absentee-statemen
     AbsentDtlFormComponent,
     ProcessAttendanceComponent,
     AttendanceStatusComponent,
-    ChangeStatusComponent,
-    AbsenteeStatementComponent
+    ChangeShiftComponent,
+    AbsenteeStatementComponent,
+    PunchRegularizeComponent
   ],
   entryComponents: [
     ShiftFormComponent,
@@ -52,7 +54,8 @@ import { AbsenteeStatementComponent } from './components/admin/absentee-statemen
     EmployeeGroupFormComponent,
     ChangeTimingComponent,
     AbsentDtlFormComponent,
-    ChangeStatusComponent
+    ChangeShiftComponent,
+    PunchRegularizeComponent
   ]
 })
 export class AttendanceModule { }

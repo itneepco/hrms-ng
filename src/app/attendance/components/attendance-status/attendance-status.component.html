@@ -50,14 +50,15 @@
               <th width="10%">Status</th>
               <th width="10%">Modified Status</th>
               <th width="25%">Remarks</th>
-              <th *ngIf="auth.isTimeOfficeAdmin()" width="15%">Action</th>
+              <th width="15%">Action</th>
             </tr>
           </thead>
           <tr
             *ngFor="let attend of attendance"
             [ngClass]="{
               absent:
-                (attend.attendance_status == onAbsentStatus || attend.attendance_status == on5DLateStatus) &&
+                (attend.attendance_status == onAbsentStatus ||
+                  attend.attendance_status == on5DLateStatus) &&
                 !attend.modified_status,
 
               'half-day':
@@ -72,36 +73,52 @@
             <td>{{ getAttendanceStatus(attend.attendance_status) }}</td>
             <td>{{ modifiedStatus(attend) }}</td>
             <td>{{ attend.remarks }}</td>
-            <td *ngIf="auth.isTimeOfficeAdmin()">
-              <ng-container
-                *ngIf="
-                  attend.attendance_status &&
-                  attend.attendance_status != officialAbsentStatus
-                "
-              >
+            <td>
+              <!-- For time officer, reprocessing attendance and 
+                changing shift will be possible -->
+              <ng-container *ngIf="auth.isTimeOfficeAdmin()">
                 <button
                   *ngIf="attend.attendance_status != presentStatus"
                   mat-icon-button
-                  (click)="onEdit(attend)"
+                  (click)="changeShift(attend)"
                   color="accent"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
 
-                <button
+                <!-- <button
                   *ngIf="
-                    !(
-                      attend.shift.is_general &&
-                      attend.attendance_status == onHolidayStatus
-                    )
+                    (attend.shift.is_general &&
+                      attend.attendance_status != onHolidayStatus) ||
+                    (!attend.shift.is_general &&
+                      attend.attendance_status != onOffDayStatus)
                   "
                   mat-icon-button
                   (click)="reProcessAttendance(attend)"
                   color="primary"
                 >
                   <mat-icon>sync</mat-icon>
-                </button>
+                </button> -->
               </ng-container>
+
+              <!-- For normal employees this button will be visible -->
+              <button
+                *ngIf="
+                  attend.attendance_status &&
+                  !attend.modified_status &&
+                  !(
+                    attend.attendance_status == officialAbsentStatus ||
+                    attend.attendance_status == presentStatus ||
+                    attend.attendance_status == onHolidayStatus ||
+                    attend.attendance_status == onOffDayStatus
+                  )
+                "
+                mat-icon-button
+                (click)="openRegForm(attend)"
+                color="warn"
+              >
+                <mat-icon>warning</mat-icon>
+              </button>
             </td>
           </tr>
         </table>

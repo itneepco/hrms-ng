@@ -14,11 +14,11 @@ import {
 } from "src/app/attendance/models/attendance-codes";
 
 @Component({
-  selector: "app-change-status",
-  templateUrl: "./change-status.component.html",
-  styleUrls: ["./change-status.component.scss"]
+  selector: "app-change-shift",
+  templateUrl: "./change-shift.component.html",
+  styleUrls: ["./change-shift.component.scss"]
 })
-export class ChangeStatusComponent implements OnInit, OnDestroy {
+export class ChangeShiftComponent implements OnInit, OnDestroy {
   attendance: AttendanceStatus;
   shifts: Shift[] = [];
   isSubmitting = false;
@@ -27,7 +27,7 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
   changeShift = false;
 
   constructor(
-    public dialogRef: MatDialogRef<ChangeStatusComponent>,
+    public dialogRef: MatDialogRef<ChangeShiftComponent>,
     private shiftService: ShiftService,
     private fb: FormBuilder,
     private attenDataService: AttendanceDataService,
@@ -41,7 +41,7 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
 
     this.shiftService.getShifts().subscribe(shifts => {
       // console.log(shifts)
-      this.shifts = shifts;
+      this.shifts = shifts.filter(shift => shift.working_hours > 0);
     });
 
     this.initForm();
@@ -67,10 +67,6 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
         Validators.required
       ]
     });
-  }
-
-  getStatus(code: string) {
-    return this.attendStatusService.status(code);
   }
 
   onSave() {
@@ -100,6 +96,10 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
     }
   }
 
+  getStatus(code: string) {
+    return this.attendStatusService.status(code);
+  }
+  
   getShiftName(shiftId: number) {
     const shift = this.shifts.find(shift => shift.id == shiftId);
     return shift ? shift.name : "";
@@ -117,14 +117,14 @@ export class ChangeStatusComponent implements OnInit, OnDestroy {
     return this.statusForm.get("shift");
   }
 
-  get isHolidayPresentOff(): boolean {
-    const status = this.attendance.attendance_status;
-    return (
-      status == ATTENDANCE_HOLIDAY ||
-      status == ATTENDANCE_PRESENT ||
-      status == ATTENDANCE_OFF_DAY
-    );
-  }
+  // get isHolidayPresentOff(): boolean {
+  //   const status = this.attendance.attendance_status;
+  //   return (
+  //     status == ATTENDANCE_HOLIDAY ||
+  //     status == ATTENDANCE_PRESENT ||
+  //     status == ATTENDANCE_OFF_DAY
+  //   );
+  // }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
