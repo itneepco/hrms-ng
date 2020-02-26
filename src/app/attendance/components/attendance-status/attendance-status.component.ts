@@ -144,9 +144,9 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       data: attend
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(result)
+    // });
   }
 
   // Reprocess the attendance data for the specified attendance record

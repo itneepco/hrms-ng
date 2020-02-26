@@ -1,0 +1,23 @@
+<mat-tab-group>
+  <mat-tab label="Pending Request">
+    <app-attend-table
+      [dataSource]="pendingRequests"
+      [dataLength]="pendingDataLength"
+      [pageSize]="pendingPageSize"
+      [pageIndex]="pendingPageIndex"
+      (pageChange)="pendingChangePage($event)"
+      (onAction)="pendingRefreshPage()"
+    ></app-attend-table>
+  </mat-tab>
+
+  <mat-tab label="Processed Request">
+    <app-attend-table
+      [dataSource]="processedRequests"
+      [dataLength]="processedDataLength"
+      [pageSize]="processedPageSize"
+      [pageIndex]="processedPageIndex"
+      (pageChange)="processedChangePage($event)"
+      (onAction)="processedRefreshPage()"
+    ></app-attend-table>
+  </mat-tab>
+</mat-tab-group>

@@ -16,7 +16,12 @@ export class AttendanceComponent implements OnInit {
     {
       name: "Attendance",
       path: '/attendance/status'
-    }];
+    },
+    {
+      name: "Regularization Workflow",
+      path: '/attendance/reg-workflow'
+    },
+  ];
 
   constructor(private auth: AuthService) { }
 
@@ -32,10 +37,10 @@ export class AttendanceComponent implements OnInit {
         path: "/attendance/gen-grp-roster"
       });
 
-      this.navObj.push({
-        name: 'Process Attendance',
-        path: '/attendance/process-data',
-      })
+      // this.navObj.push({
+      //   name: 'Process Attendance',
+      //   path: '/attendance/process-data',
+      // })
 
       this.navObj.push({
         name: 'Absentee Statement',

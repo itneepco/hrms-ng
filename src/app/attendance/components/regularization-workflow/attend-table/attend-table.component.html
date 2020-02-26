@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef fxFlex="8"> Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg; let i=index" fxFlex="8"> 
+        {{ i + 1 + pageIndex*pageSize }} 
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="day">
+      <mat-header-cell *matHeaderCellDef fxFlex="12"> Day </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg" fxFlex="12"> {{attendReg.day | date:'mediumDate'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Employee </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg" fxFlex="15"> {{attendReg.applier.full_name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="designation">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Designation </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg" fxFlex="15"> {{attendReg.applier.designation}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef fxFlex="15"> Status </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg" fxFlex="15"> {{getStatus(attendReg.status)}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reason">
+      <mat-header-cell *matHeaderCellDef fxFlex="25"> Reason </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg" fxFlex="25"> {{attendReg.reason}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="10"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let attendReg; let i=index" fxFlex="10">
+        <button mat-icon-button (click)="onShow(attendReg, i)" color="accent">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  
+  <mat-paginator [pageSizeOptions]="[10, 15, 30, 50]"
+    [length]="dataLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    showFirstLastButtons
+    (page)="changePage($event)">
+  </mat-paginator>
+</mat-card>

@@ -25,18 +25,36 @@
 
   <mat-divider></mat-divider>
 
-  <form fxLayout="column" style="margin-top: 15px">
-    <mat-radio-group aria-label="Select an option" class="radio-group">
-      <mat-radio-button value="1" class="radio-button">Early/Late/Forgot Punch</mat-radio-button>
-      <mat-radio-button value="2" class="radio-button">Official Local Duty</mat-radio-button>
-      <mat-radio-button *ngIf="!attendance.shift.is_general"
-          value="3" class="radio-button">
-        Mutual Duty(Shift)
-      </mat-radio-button>
-    </mat-radio-group>
+  <form
+    fxLayout="column"
+    [formGroup]="regularizeForm"
+    (ngSubmit)="onSumit()"
+    style="margin-top: 15px"
+  >
+    <mat-checkbox (change)="onMutual($event)" formControlName="isMutual">
+      Mutual Duty? (Only for Shift)
+    </mat-checkbox>
+
+    <mat-form-field *ngIf="isMutualFlag">
+      <input
+        matInput
+        placeholder="Emp Code of employee with whom mutual duty performed"
+        [formControl]="mutual_emp_code"
+        pattern="[0-9]{6}"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+          {{ getFullName(item) | titlecase }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-hint *ngIf="mutual_emp_code.invalid"
+        >Employee Code should be 6 digit</mat-hint
+      >
+    </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Forward to">
+      <mat-select placeholder="Forward to" formControlName="addresse">
         <mat-option
           *ngFor="let officer of ctrlOfficers"
           [value]="officer.emp_code"
@@ -45,12 +63,17 @@
           {{ officer.last_name | titlecase }}, {{ officer.designation }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="addresse.errors?.required">
+        is required
+      </mat-error>
     </mat-form-field>
-
 
     <mat-form-field>
       <mat-label>Reason</mat-label>
-      <input matInput />
+      <input matInput formControlName="reason" />
+      <mat-error *ngIf="reason.errors?.required">
+        is required
+      </mat-error>
     </mat-form-field>
 
     <mat-dialog-actions align="end" id="buttons">
@@ -66,6 +89,7 @@
         mat-raised-button
         color="primary"
         type="submit"
+        [disabled]="isSubmitting || regularizeForm.invalid"
       >
         Submit
       </button>
