@@ -1,0 +1,56 @@
+#header {
+  .flex-spacer {
+    flex: 1;
+  }
+  font-size: 14px;
+  height: 50px;
+  opacity: 0.8;
+}
+
+#content {
+  padding: 20px 25px;
+
+  .info {
+    margin-bottom: 8px;
+  }
+
+  .title {
+    margin-right: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+mat-list-item {
+  height: 54px !important;
+  .info {
+    margin-bottom: 0px !important;
+    font-size: 15px !important;
+  }
+  .officer {
+    font-size: 13px !important;
+  }
+}
+
+mat-expansion-panel-header {
+  height: 52px !important;
+}
+
+mat-row {
+  min-height: 34px !important;
+  border-bottom: 0px !important;
+  .mat-cell {
+    font-size: 13px !important;
+  }
+}
+
+mat-header-row {
+  min-height: 34px !important;
+}
+
+.list {
+  // margin: 5px 0px 0px 34px;
+  margin: 0px;
+  padding: 0px;
+}

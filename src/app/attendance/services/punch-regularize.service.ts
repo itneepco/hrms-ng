@@ -1,50 +1,13 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { AuthService } from "src/app/auth/services/auth.service";
-import { ErrorHandlerService } from "src/app/shared/services/error-handler.service";
-import { baseURL } from "src/app/shared/config/baseUrl";
-import {
-  AttendRegForm,
-  AttendRegApplication
-} from "../models/attendance-regularize";
-import { catchError } from "rxjs/operators";
+import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import {
-  CALLBACK,
-  REJECTED,
-  NOT_RECOMMENDED,
-  APPROVED,
-  RECOMMENDED,
-  APPLIED
-} from "../models/attendance-codes";
-
-const data = [
-  {
-    id: 1,
-    day: "2020-02-10",
-    status: "01",
-    applier: {
-      emp_code: "006584",
-      full_name: "Biplab Bharali",
-      designation: "Assistant I"
-    },
-    isMutual: true,
-    applicationHistory: [
-      {
-        id: 1,
-        officer: {
-          emp_code: "006368",
-          full_name: "Nepuni Pfotte",
-          designation: "Deputy Manager"
-        },
-        workflow_action: "01",
-        remarks: "Applied",
-        updated_at: ""
-      }
-    ],
-    reason: "Forgot to punch"
-  }
-];
+import { catchError } from "rxjs/operators";
+import { AuthService } from "src/app/auth/services/auth.service";
+import { baseURL } from "src/app/shared/config/baseUrl";
+import { ErrorHandlerService } from "src/app/shared/services/error-handler.service";
+import { APPLIED, APPROVED, CALLBACK, NOT_RECOMMENDED, RECOMMENDED, REJECTED } from "../models/attendance-codes";
+import { AttendRegApplication, AttendRegForm, EmployeeAttendance } from "../models/attendance-regularize";
+import { data, my_punchings, mutual_punchings } from "./data";
 
 @Injectable({
   providedIn: "root"
@@ -83,20 +46,30 @@ export class PunchRegularizeService {
     return of(data);
   }
 
+  getMyPunchings(empCode: string, day?: Date): Observable<EmployeeAttendance> {
+    return of(my_punchings);
+  }
+
+  getMutualPunchings(empCode: string, day?: Date) {
+    return of(mutual_punchings)
+  }
+
+  processWorkflow() {}
+
   getStatus(status) {
     switch (status) {
       case APPLIED:
-        return "Applied"
+        return "Applied";
       case RECOMMENDED:
-        return "Recommended"
+        return "Recommended";
       case APPROVED:
-        return "Approved"
+        return "Approved";
       case NOT_RECOMMENDED:
-        return "Not Recommended"
+        return "Not Recommended";
       case REJECTED:
-        return "Rejected"
+        return "Rejected";
       case CALLBACK:
-        return "Callbacked"
+        return "Callbacked";
     }
   }
 }

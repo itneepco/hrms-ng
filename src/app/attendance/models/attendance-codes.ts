@@ -15,3 +15,15 @@ export const APPROVED = "03";
 export const NOT_RECOMMENDED = "04";
 export const REJECTED = "05";
 export const CALLBACK = "06";
+
+// For controlling officer
+export const ATTEND_REG_CO_ACTIONS = [
+  { name: "Recommend punching regularization", value: RECOMMENDED },
+  { name: "Not recommended for regularization", value: RECOMMENDED }
+]
+
+// For time officer
+export const ATTEND_REG_TIME_ACTIONS = [
+  { name: "Approve regularization", value: APPROVED },
+  { name: "Reject regularization", value: REJECTED }
+]

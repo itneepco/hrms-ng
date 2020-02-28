@@ -1,0 +1,222 @@
+<mat-toolbar color="primary" id="header">
+  <div fxFlex>Punching Exemption / Regularization Details</div>
+  <div class="flex-spacer"></div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+
+<section id="content">
+  <mat-accordion multi="false">
+    <mat-expansion-panel [expanded]="step == 0" (opened)="setStep(0)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>General Info</mat-panel-title>
+        <mat-panel-description>
+          Reason for punching exemption / regularization
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="column">
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
+            <span class="title">Application ID: </span>
+            {{ attendRegApp.id }}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Day: </span>
+            {{ attendRegApp.day | date: "mediumDate" }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
+            <span class="title">Employee: </span>
+            {{ attendRegApp.applier.full_name }}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Designation: </span>
+            {{ attendRegApp.applier.designation }}
+          </div>
+        </div>
+
+        <ng-container *ngIf="empAttend">
+          <div fxLayout="row" fxLayoutGap="20px">
+            <div class="info" fxFlex="50">
+              <span class="title">Shift Name: </span>
+              {{ empAttend.attendance.shift.name }}
+            </div>
+            <div class="info" fxFlex="50">
+              <span class="title">Attendance Status: </span>
+              {{ attendanceStatus(empAttend.attendance.status) }}
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="20px">
+            <div class="info" fxFlex="50">
+              <span class="title">In Time: </span>
+              {{ empAttend.attendance.in_time }}
+            </div>
+            <div class="info" fxFlex="50">
+              <span class="title">Out Time: </span>
+              {{ empAttend.attendance.out_time }}
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="20px">
+            <div class="info" fxFlex>
+              <span class="title">Reason: </span>
+              <span>{{ attendRegApp.reason }}</span>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="20px">
+            <div class="info" fxFlex="40">
+              <span class="title">List of punchings and machine nos: </span>
+            </div>
+            <div class="info" fxFlex="60">
+              <ol class="list">
+                <li *ngFor="let punch of empAttend.punchings">
+                  Punched at {{ punch.punching_time }} at machine no. {{ punch.machine_no }}
+                </li>
+              </ol>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel
+      [expanded]="step == 1"
+      (opened)="setStep(1)"
+      *ngIf="mutualAttend && attendRegApp.isMutual"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Mutual Details</mat-panel-title>
+        <mat-panel-description>
+          In-out time, attendance status in mutual case
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="column">
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
+            <span class="title">Employee: </span>
+            {{ mutualAttend.employee.full_name }}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Designation: </span>
+            {{ mutualAttend.employee.designation }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
+            <span class="title">Shift Name: </span>
+            {{ mutualAttend.attendance.shift.name }}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Attendance Status: </span>
+            {{ attendanceStatus(mutualAttend.attendance.status) }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="50">
+            <span class="title">In Time: </span>
+            {{ mutualAttend.attendance.in_time }}
+          </div>
+          <div class="info" fxFlex="50">
+            <span class="title">Out Time: </span>
+            {{ mutualAttend.attendance.out_time }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <div class="info" fxFlex="40">
+            <span class="title">List of punchings and machine nos: </span>
+          </div>
+          <div class="info" fxFlex="60">
+            <ol class="list">
+              <li *ngFor="let punch of mutualAttend.punchings">
+                Punched at {{ punch.punching_time }} at machine no. {{ punch.machine_no }}
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step == 2" (opened)="setStep(2)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>History Info</mat-panel-title>
+        <mat-panel-description
+          >Details of punching regularization history</mat-panel-description
+        >
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
+        <mat-list>
+          <mat-list-item
+            *ngFor="let hist of attendRegApp.applicationHistory; let i = index"
+          >
+            <h3 matLine class="info">
+              <span>{{ i + 1 }}.&nbsp;</span>
+              <span>{{ applicationStatus(hist.workflow_action) }}</span>
+              <span>&nbsp;on&nbsp;</span>
+              <span>{{ hist.updated_at | date: "mediumDate" }}</span>
+            </h3>
+            <p matLine class="officer">
+              <span>&nbsp;&nbsp;&nbsp;&nbsp; -- by </span>
+              <span>{{ hist.officer.full_name | titlecase }}, </span>
+              <span>{{ hist.officer.designation | titlecase }}</span>
+            </p>
+          </mat-list-item>
+        </mat-list>
+      </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step == 3" (opened)="setStep(3)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Actions</mat-panel-title>
+        <mat-panel-description>
+          Workflow actions to be performed
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent>
+        <form
+          [formGroup]="workflowForm"
+          fxLayout="column"
+          (ngSubmit)="onSubmit()"
+        >
+          <mat-form-field>
+            <mat-select
+              placeholder="Select required action"
+              formControlName="workflow_action"
+            >
+              <mat-option *ngFor="let action of actions" [value]="action.value">
+                {{ action.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="workflow_action.errors?.required">
+              Workflow action is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="Remarks" formControlName="remarks" />
+            <mat-error *ngIf="remarks.errors?.required">
+              Remarks is required
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="end start">
+            <button mat-raised-button color="primary" [disabled]="isSubmitting">
+              Submit
+            </button>
+          </div>
+        </form>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>

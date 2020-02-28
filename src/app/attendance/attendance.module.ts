@@ -23,6 +23,7 @@ import { AttendanceComponent } from "./components/attendance/attendance.componen
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { RegularizationWorkflowComponent } from "./components/regularization-workflow/regularization-workflow.component";
 import { AttendTableComponent } from './components/regularization-workflow/attend-table/attend-table.component';
+import { WorkflowDetailComponent } from './components/regularization-workflow/workflow-detail/workflow-detail.component';
 
 @NgModule({
   imports: [SharedModule, AttendanceRoutingModule],
@@ -48,7 +49,8 @@ import { AttendTableComponent } from './components/regularization-workflow/atten
     AbsenteeStatementComponent,
     PunchRegularizeComponent,
     RegularizationWorkflowComponent,
-    AttendTableComponent
+    AttendTableComponent,
+    WorkflowDetailComponent
   ],
   entryComponents: [
     ShiftFormComponent,
@@ -58,7 +60,8 @@ import { AttendTableComponent } from './components/regularization-workflow/atten
     ChangeTimingComponent,
     AbsentDtlFormComponent,
     ChangeShiftComponent,
-    PunchRegularizeComponent
+    PunchRegularizeComponent,
+    WorkflowDetailComponent
   ]
 })
 export class AttendanceModule {}

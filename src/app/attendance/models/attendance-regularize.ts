@@ -1,4 +1,3 @@
-import { PunchingRecord } from "./punching-rec";
 
 export interface AttendRegForm {
   day: string;
@@ -32,39 +31,44 @@ export interface AttendRegApplication {
     designation: string;
   };
   isMutual: boolean;
+  mutual_emp_code: string;
   applicationHistory: RegularizeHistory[];
   reason: string;
+}
 
-  // employee_attendance: {
-  //   shift: {
-  //     name: string,
-  //     is_general: boolean
-  //   };
-  //   in_time: string;
-  //   out_time: string;
-  //   attendance_status: string;
-  // }
-  // employee_punchdata: [{
-  //   punching_time: string;
-  //   machine_no: string;
-  // }];
+export interface EmployeeAttendance {
+  attendance: {
+    shift: {
+      name: string;
+      is_general: boolean;
+    };
+    in_time: string;
+    out_time: string;
+    status: string;
+  };
+  punchings: {
+    punching_time: string;
+    machine_no: string;
+  }[];
+}
 
-  // mutual_employee: {
-  //   emp_code: string;
-  //   full_name: string;
-  //   designation: string;
-  // };
-  // mutual_employee_attendance: {
-  //   shift: {
-  //     name: string,
-  //     is_general: boolean
-  //   };
-  //   in_time: string;
-  //   out_time: string;
-  //   attendance_status: string;
-  // }
-  // mutual_employee_punchdata: [{
-  //   punching_time: string;
-  //   machine_no: string;
-  // }];
+export interface MutualEmployeeAttendance {
+  employee: {
+    emp_code: string;
+    full_name: string;
+    designation: string;
+  };
+  attendance: {
+    shift: {
+      name: string,
+      is_general: boolean
+    };
+    in_time: string;
+    out_time: string;
+    status: string;
+  }
+  punchings: {
+    punching_time: string;
+    machine_no: string;
+  }[];
 }

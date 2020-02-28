@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { AttendRegApplication } from "src/app/attendance/models/attendance-regularize";
 import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
+import { WorkflowDetailComponent } from "../workflow-detail/workflow-detail.component";
 
 @Component({
   selector: "app-attend-table",
@@ -38,7 +39,14 @@ export class AttendTableComponent implements OnInit {
 
   ngOnInit() {}
 
-  onShow(attendReg: AttendRegApplication, i: number) {}
+  onShow(attendReg: AttendRegApplication, i: number) {
+    const dialogRef = this.dialog.open(WorkflowDetailComponent, {
+      panelClass: "detail-dialog",
+      width: "680px",
+      height: "580px",
+      data: attendReg
+    });
+  }
 
   getStatus(status) {
     return this.punchRegService.getStatus(status);
