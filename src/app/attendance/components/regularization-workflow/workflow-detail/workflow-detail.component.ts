@@ -33,9 +33,9 @@ export class WorkflowDetailComponent implements OnInit {
     this.initForm();
 
     this.punchRegService
-      .getMyPunchings(this.attendRegApp.applier.emp_code)
+      .getMyPunchings(this.attendRegApp.applier.emp_code, this.attendRegApp.day)
       .subscribe(data => this.empAttend = data);
-    this.punchRegService.getMutualPunchings(this.attendRegApp.mutual_emp_code)  
+    this.punchRegService.getMutualPunchings(this.attendRegApp.mutual_emp_code, this.attendRegApp.day)  
       .subscribe(data => this.mutualAttend = data);
   }
 

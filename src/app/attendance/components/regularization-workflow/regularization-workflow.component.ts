@@ -36,6 +36,7 @@ export class RegularizationWorkflowComponent implements OnInit {
     this.punchRegService
       .fetchPendingRequest(this.auth.currentUser.emp_code)
       .subscribe(pending => {
+        console.log(pending)
         this.pendingRequests = new MatTableDataSource(pending);
       });
   }

@@ -5,17 +5,17 @@ export const data = [
     status: "01",
     applier: {
       emp_code: "006584",
-      full_name: "Biplab Bharali",
+      emp_name: "Biplab Bharali",
       designation: "Assistant I"
     },
-    isMutual: false,
+    isMutual: true,
     mutual_emp_code: '006543',
     applicationHistory: [
       {
         id: 1,
         officer: {
           emp_code: "006584",
-          full_name: "Biplab Bharali",
+          emp_name: "Biplab Bharali",
           designation: "Assistant I"
         },
         workflow_action: "01",
@@ -52,7 +52,7 @@ export const my_punchings = {
 export const mutual_punchings = {
   employee: {
     emp_code: '006543',
-    full_name: "Utpal Handique",
+    emp_name: "Utpal Handique",
     designation: "Assistant I",
   },
   attendance: {

@@ -31,7 +31,7 @@
         <div fxLayout="row" fxLayoutGap="20px">
           <div class="info" fxFlex="50">
             <span class="title">Employee: </span>
-            {{ attendRegApp.applier.full_name }}
+            {{ attendRegApp.applier.emp_name }}
           </div>
           <div class="info" fxFlex="50">
             <span class="title">Designation: </span>
@@ -167,7 +167,7 @@
             </h3>
             <p matLine class="officer">
               <span>&nbsp;&nbsp;&nbsp;&nbsp; -- by </span>
-              <span>{{ hist.officer.full_name | titlecase }}, </span>
+              <span>{{ hist.officer.emp_name | titlecase }}, </span>
               <span>{{ hist.officer.designation | titlecase }}</span>
             </p>
           </mat-list-item>

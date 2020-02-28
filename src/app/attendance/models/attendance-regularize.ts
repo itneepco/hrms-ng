@@ -13,7 +13,7 @@ export interface RegularizeHistory {
   id: number;
   officer: {
     emp_code: string;
-    full_name: string;
+    emp_name: string;
     designation: string;
   };
   workflow_action: string;
@@ -27,7 +27,7 @@ export interface AttendRegApplication {
   status: string;
   applier: {
     emp_code: string;
-    full_name: string;
+    emp_name: string;
     designation: string;
   };
   isMutual: boolean;
