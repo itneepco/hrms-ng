@@ -4,6 +4,7 @@ import { AuthGuard } from "../auth/services/auth-guard";
 import { TimeOfficeGuard } from "../auth/services/time-office-guard";
 import { AbsentDtlComponent } from "./components/admin/absent-dtl/absent-dtl.component";
 import { AbsenteeStatementComponent } from "./components/admin/absentee-statement/absentee-statement.component";
+import { ApproveWorkflowComponent } from "./components/admin/approve-workflow/approve-workflow.component";
 import { EmployeeGroupComponent } from "./components/admin/employee-group/employee-group.component";
 import { GenGroupRosterComponent } from "./components/admin/gen-group-roster/gen-group-roster.component";
 import { GroupComponent } from "./components/admin/group/group.component";
@@ -75,6 +76,10 @@ const routes: Routes = [
       {
         path: "reg-workflow",
         component: RegularizationWorkflowComponent
+      },
+      {
+        path: "approve-workflow",
+        component: ApproveWorkflowComponent
       },
       { path: "", redirectTo: "dashboard", pathMatch: "full" }
     ]

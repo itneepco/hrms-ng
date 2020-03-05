@@ -19,7 +19,11 @@ export const CALLBACK = "06";
 // For controlling officer
 export const ATTEND_REG_CO_ACTIONS = [
   { name: "Recommend punching regularization", value: RECOMMENDED },
-  { name: "Not recommended for regularization", value: RECOMMENDED }
+  { name: "Not recommended for regularization", value: NOT_RECOMMENDED }
+]
+
+export const ATTEND_REG_CO_CALLBACK = [
+  { name: "Callback regularization application", value: CALLBACK }
 ]
 
 // For time officer

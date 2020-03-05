@@ -2,6 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AuthService } from "src/app/auth/services/auth.service";
+import {
+  ATTEND_REG_CO_ACTIONS,
+  ATTEND_REG_CO_CALLBACK
+} from "../../models/attendance-codes";
 import { AttendRegApplication } from "../../models/attendance-regularize";
 import { PunchRegularizeService } from "../../services/punch-regularize.service";
 
@@ -11,8 +15,14 @@ import { PunchRegularizeService } from "../../services/punch-regularize.service"
   styleUrls: ["./regularization-workflow.component.scss"]
 })
 export class RegularizationWorkflowComponent implements OnInit {
-  pendingRequests: MatTableDataSource<AttendRegApplication>;
-  processedRequests: MatTableDataSource<AttendRegApplication>;
+  pendingRequests = new MatTableDataSource<AttendRegApplication>();
+  processedRequests = new MatTableDataSource<AttendRegApplication>();
+
+  // Pending request actions for controlling officer
+  pendingActions = ATTEND_REG_CO_ACTIONS;
+
+  // Processes request actions for controlling officer
+  processedActions = ATTEND_REG_CO_CALLBACK;
 
   // Pagination variables
   pendingDataLength = 10;
@@ -34,18 +44,26 @@ export class RegularizationWorkflowComponent implements OnInit {
 
   getPendingRequests() {
     this.punchRegService
-      .fetchPendingRequest(this.auth.currentUser.emp_code)
+      .fetchPendingRequest(
+        this.auth.currentUser.emp_code,
+        this.pendingPageIndex,
+        this.pendingPageSize
+      )
       .subscribe(pending => {
-        console.log(pending)
-        this.pendingRequests = new MatTableDataSource(pending);
+        this.pendingRequests.data = pending;
       });
   }
 
   getProcessedRequests() {
     this.punchRegService
-      .fetchProcessedRequest(this.auth.currentUser.emp_code)
+      .fetchProcessedRequest(
+        this.auth.currentUser.emp_code,
+        this.processedPageIndex,
+        this.processedPageSize
+      )
       .subscribe(processed => {
-        this.processedRequests = new MatTableDataSource(processed);
+        console.log(processed);
+        this.processedRequests.data = [];
       });
   }
 
@@ -61,11 +79,16 @@ export class RegularizationWorkflowComponent implements OnInit {
     this.getProcessedRequests();
   }
 
-  pendingRefreshPage() {
-    this.getPendingRequests();
+  pendingRefreshPage(attendReg: AttendRegApplication) {
+    const index = this.pendingRequests.data.indexOf(attendReg);
+    const temp = this.pendingRequests.data;
+    temp.splice(index, 1);
+    this.pendingRequests.data = temp;
+
+    this.getProcessedRequests();
   }
 
   processedRefreshPage() {
-    this.getProcessedRequests();
+    this.getPendingRequests();
   }
 }

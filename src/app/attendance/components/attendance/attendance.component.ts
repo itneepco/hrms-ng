@@ -1,6 +1,6 @@
-import { AuthService } from "./../../../auth/services/auth.service";
 import { Component, OnInit } from "@angular/core";
 import { NavObject } from "src/app/shared/models/nav-object";
+import { AuthService } from "./../../../auth/services/auth.service";
 
 @Component({
   selector: "app-attendance",
@@ -15,18 +15,23 @@ export class AttendanceComponent implements OnInit {
     },
     {
       name: "Attendance",
-      path: '/attendance/status'
+      path: "/attendance/status"
     },
     {
       name: "Regularization Workflow",
-      path: '/attendance/reg-workflow'
-    },
+      path: "/attendance/reg-workflow"
+    }
   ];
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
     if (this.auth.isTimeOfficeAdmin()) {
+      this.navObj.push({
+        name: "Approval Workflow",
+        path: "/attendance/approve-workflow"
+      });
+
       this.navObj.push({
         name: "Shift Roster",
         path: "/attendance/shift-grp-roster"
@@ -43,9 +48,9 @@ export class AttendanceComponent implements OnInit {
       // })
 
       this.navObj.push({
-        name: 'Absentee Statement',
-        path: '/attendance/absentee-statement',
-      })
+        name: "Absentee Statement",
+        path: "/attendance/absentee-statement"
+      });
     }
   }
 }

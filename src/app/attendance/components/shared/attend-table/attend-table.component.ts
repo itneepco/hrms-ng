@@ -31,6 +31,7 @@ export class AttendTableComponent implements OnInit {
   @Input("dataLength") dataLength;
   @Input("pageSize") pageSize;
   @Input("pageIndex") pageIndex;
+  @Input("actions") actions = [];
 
   constructor(
     private punchRegService: PunchRegularizeService,
@@ -44,7 +45,16 @@ export class AttendTableComponent implements OnInit {
       panelClass: "detail-dialog",
       width: "680px",
       height: "580px",
-      data: attendReg
+      data: {
+        attendReg: attendReg,
+        actions: this.actions
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+
+      this.onAction.emit(attendReg);
     });
   }
 

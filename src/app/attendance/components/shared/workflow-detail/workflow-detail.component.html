@@ -76,7 +76,8 @@
             <div class="info" fxFlex="60">
               <ol class="list">
                 <li *ngFor="let punch of empAttend.punchings">
-                  Punched at {{ punch.punching_time }} at machine no. {{ punch.machine_no }}
+                  Punched at {{ punch.punching_time }} at machine no.
+                  {{ punch.machine_no }}
                 </li>
               </ol>
             </div>
@@ -138,7 +139,8 @@
           <div class="info" fxFlex="60">
             <ol class="list">
               <li *ngFor="let punch of mutualAttend.punchings">
-                Punched at {{ punch.punching_time }} at machine no. {{ punch.machine_no }}
+                Punched at {{ punch.punching_time }} at machine no.
+                {{ punch.machine_no }}
               </li>
             </ol>
           </div>
@@ -175,7 +177,11 @@
       </ng-template>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step == 3" (opened)="setStep(3)">
+    <mat-expansion-panel
+      [expanded]="step == 3"
+      (opened)="setStep(3)"
+      *ngIf="actions && actions.length > 0"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>Actions</mat-panel-title>
         <mat-panel-description>

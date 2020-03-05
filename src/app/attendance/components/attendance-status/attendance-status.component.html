@@ -85,33 +85,20 @@
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
-
-                <!-- <button
-                  *ngIf="
-                    (attend.shift.is_general &&
-                      attend.attendance_status != onHolidayStatus) ||
-                    (!attend.shift.is_general &&
-                      attend.attendance_status != onOffDayStatus)
-                  "
-                  mat-icon-button
-                  (click)="reProcessAttendance(attend)"
-                  color="primary"
-                >
-                  <mat-icon>sync</mat-icon>
-                </button> -->
               </ng-container>
 
               <!-- For normal employees this button will be visible -->
               <button
                 *ngIf="
                   attend.attendance_status &&
-                  !attend.modified_status &&
                   !(
-                    attend.attendance_status == officialAbsentStatus ||
+                    attend.attendance_status == onOffDayStatus ||
                     attend.attendance_status == presentStatus ||
                     attend.attendance_status == onHolidayStatus ||
-                    attend.attendance_status == onOffDayStatus
-                  )
+                    attend.attendance_status == officialAbsentStatus
+                  ) &&
+                  !attend.modified_status &&
+                  auth.currentUser.emp_code == attend.emp_code
                 "
                 mat-icon-button
                 (click)="openRegForm(attend)"

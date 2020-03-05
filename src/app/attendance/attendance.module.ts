@@ -22,8 +22,9 @@ import { PunchRegularizeComponent } from "./components/attendance-status/punch-r
 import { AttendanceComponent } from "./components/attendance/attendance.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { RegularizationWorkflowComponent } from "./components/regularization-workflow/regularization-workflow.component";
-import { AttendTableComponent } from './components/regularization-workflow/attend-table/attend-table.component';
-import { WorkflowDetailComponent } from './components/regularization-workflow/workflow-detail/workflow-detail.component';
+import { AttendTableComponent } from "./components/shared/attend-table/attend-table.component";
+import { WorkflowDetailComponent } from "./components/shared/workflow-detail/workflow-detail.component";
+import { ApproveWorkflowComponent } from './components/admin/approve-workflow/approve-workflow.component';
 
 @NgModule({
   imports: [SharedModule, AttendanceRoutingModule],
@@ -50,7 +51,8 @@ import { WorkflowDetailComponent } from './components/regularization-workflow/wo
     PunchRegularizeComponent,
     RegularizationWorkflowComponent,
     AttendTableComponent,
-    WorkflowDetailComponent
+    WorkflowDetailComponent,
+    ApproveWorkflowComponent
   ],
   entryComponents: [
     ShiftFormComponent,

@@ -1,4 +1,3 @@
-
 export interface AttendRegForm {
   day: string;
   status: string;
@@ -7,6 +6,13 @@ export interface AttendRegForm {
   isMutual: boolean;
   mutual_emp_code?: string;
   reason: string;
+}
+
+export interface WorkflowForm {
+  application_id: number;
+  emp_code: string;
+  workflow_action: string;
+  remarks: string;
 }
 
 export interface RegularizeHistory {
@@ -60,13 +66,13 @@ export interface MutualEmployeeAttendance {
   };
   attendance: {
     shift: {
-      name: string,
-      is_general: boolean
+      name: string;
+      is_general: boolean;
     };
     in_time: string;
     out_time: string;
     status: string;
-  }
+  };
   punchings: {
     punching_time: string;
     machine_no: string;
