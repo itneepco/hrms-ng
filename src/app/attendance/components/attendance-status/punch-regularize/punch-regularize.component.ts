@@ -1,15 +1,17 @@
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AttendanceStatus } from "src/app/attendance/models/employee-wise-roster";
-import { AttendanceStatusService } from "src/app/attendance/services/attendance-status.service";
-import { AuthService } from "src/app/auth/services/auth.service";
-import { CtrlOfficer } from "src/app/shared/models/adressee";
-import { HierarchyService } from "src/app/shared/services/hierarchy.service";
-import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
+import { AttendanceStatus } from "src/app/attendance/models/employee-wise-roster";
+import { AttendanceStatusService } from "src/app/attendance/services/attendance-status.service";
+import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
+import { AuthService } from "src/app/auth/services/auth.service";
+import { CtrlOfficer } from "src/app/shared/models/adressee";
 import { EmployeeService } from "src/app/shared/services/employee.service";
+import { HierarchyService } from "src/app/shared/services/hierarchy.service";
+import { APPLIED } from "src/app/attendance/models/attendance-codes";
 
 @Component({
   selector: "app-punch-regularize",
@@ -28,6 +30,7 @@ export class PunchRegularizeComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
+    private snackbar: MatSnackBar,
     private employeeService: EmployeeService,
     private punchRegService: PunchRegularizeService,
     public dialogRef: MatDialogRef<PunchRegularizeComponent>,
@@ -91,11 +94,22 @@ export class PunchRegularizeComponent implements OnInit, OnDestroy {
       .addPunchRegularize(this.regularizeForm.value)
       .subscribe(
         result => {
-          console.log(result)
           this.isSubmitting = false;
-          this.dialogRef.close();
+          this.dialogRef.close({ status: APPLIED });
+          this.snackbar.open(
+            "Successfully submitted attendance regularization application",
+            "Dismiss",
+            { duration: 2000 }
+          );
         },
-        () => (this.isSubmitting = false)
+        () => {
+          this.isSubmitting = false;
+          this.snackbar.open(
+            "An error occured!! Please try again later!!",
+            "Dismiss",
+            { duration: 2000 }
+          );
+        }
       );
   }
 

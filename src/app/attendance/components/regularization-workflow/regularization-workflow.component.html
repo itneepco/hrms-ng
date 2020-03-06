@@ -1,27 +1,39 @@
 <mat-tab-group>
   <mat-tab label="Pending Request">
     <app-attend-table
-      *ngIf="pendingRequests"
+      *ngIf="pendingRequests; else loading1"
       [dataSource]="pendingRequests"
       [dataLength]="pendingDataLength"
       [pageSize]="pendingPageSize"
       [pageIndex]="pendingPageIndex"
       [actions]="pendingActions"
       (pageChange)="pendingChangePage($event)"
-      (onAction)="pendingRefreshPage($event)"
+      (onAction)="updatePendingPage($event)"
     ></app-attend-table>
+
+    <ng-template #loading1>
+      <div fxLayoutAlign="center center">
+        <mat-spinner diameter="80"></mat-spinner>
+      </div>
+    </ng-template>
   </mat-tab>
 
   <mat-tab label="Processed Request">
     <app-attend-table
-      *ngIf="processedRequests"
+      *ngIf="processedRequests; else loading2"
       [dataSource]="processedRequests"
       [dataLength]="processedDataLength"
       [pageSize]="processedPageSize"
       [pageIndex]="processedPageIndex"
       [actions]="processedActions"
       (pageChange)="processedChangePage($event)"
-      (onAction)="processedRefreshPage()"
+      (onAction)="updateProcessedPage()"
     ></app-attend-table>
+
+    <ng-template #loading2>
+      <div fxLayoutAlign="center center">
+        <mat-spinner diameter="80"></mat-spinner>
+      </div>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>

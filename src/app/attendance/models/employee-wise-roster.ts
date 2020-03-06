@@ -30,4 +30,5 @@ export interface AttendanceStatus {
   attendance_status: string;
   modified_status: number;
   remarks: string;
+  workflow_status: string;
 }

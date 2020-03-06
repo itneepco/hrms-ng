@@ -8,14 +8,24 @@ import { AuthService } from "src/app/auth/services/auth.service";
 import { ConfirmDialogComponent } from "src/app/shared/components/confirm-dialog/confirm-dialog.component";
 import { EmployeeService } from "src/app/shared/services/employee.service";
 import { DateService } from "../../../shared/services/date.service";
-import { ATTENDANCE_5D_LATE, ATTENDANCE_ABSENT, ATTENDANCE_ABSENT_OFFICIALLY, ATTENDANCE_HALF_DAY, ATTENDANCE_HOLIDAY, ATTENDANCE_LATE, ATTENDANCE_OFF_DAY, ATTENDANCE_PRESENT } from "../../models/attendance-codes";
+import {
+  ATTENDANCE_5D_LATE,
+  ATTENDANCE_ABSENT,
+  ATTENDANCE_ABSENT_OFFICIALLY,
+  ATTENDANCE_HALF_DAY,
+  ATTENDANCE_HOLIDAY,
+  ATTENDANCE_LATE,
+  ATTENDANCE_OFF_DAY,
+  ATTENDANCE_PRESENT
+} from "../../models/attendance-codes";
 import { AttendanceStatus } from "../../models/employee-wise-roster";
 import { WageMonth } from "../../models/wage-month";
 import { AttendanceDataService } from "../../services/attendance-data.service";
 import { AttendanceStatusService } from "../../services/attendance-status.service";
 import { WageMonthService } from "../../services/wage-month.service";
-import { ChangeShiftComponent } from './change-shift/change-shift.component';
-import { PunchRegularizeComponent } from './punch-regularize/punch-regularize.component';
+import { ChangeShiftComponent } from "./change-shift/change-shift.component";
+import { PunchRegularizeComponent } from "./punch-regularize/punch-regularize.component";
+import { PunchRegularizeService } from "../../services/punch-regularize.service";
 
 @Component({
   selector: "app-attendance-status",
@@ -50,7 +60,8 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private dateService: DateService,
     private attenDataService: AttendanceDataService,
-    private attendStatusService: AttendanceStatusService
+    private attendStatusService: AttendanceStatusService,
+    private punchRegService: PunchRegularizeService
   ) {}
 
   ngOnInit() {
@@ -144,9 +155,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
       data: attend
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result)
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if(!result) return;
+      attend.workflow_status = result.status;
+    });
   }
 
   // Reprocess the attendance data for the specified attendance record
@@ -192,6 +204,10 @@ export class AttendanceStatusComponent implements OnInit, OnDestroy {
         duration: 1600
       });
     }
+  }
+
+  getWorkflowStatus(status: string) {
+    return this.punchRegService.getStatus(status);
   }
 
   getFullName(item) {

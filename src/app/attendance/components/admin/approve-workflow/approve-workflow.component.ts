@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { ATTEND_REG_TIME_ACTIONS } from "src/app/attendance/models/attendance-codes";
 import { AttendRegApplication } from "src/app/attendance/models/attendance-regularize";
+import { AttendPendingReqService } from "src/app/attendance/services/attend-pending-req.service";
 import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
-import { ATTEND_REG_TIME_ACTIONS } from 'src/app/attendance/models/attendance-codes';
 
 @Component({
   selector: "app-approve-workflow",
@@ -26,7 +27,10 @@ export class ApproveWorkflowComponent implements OnInit {
   processedPageSize = 10;
   processedPageIndex = 0;
 
-  constructor(private punchRegService: PunchRegularizeService) {}
+  constructor(
+    private pendingRequest: AttendPendingReqService,
+    private punchRegService: PunchRegularizeService
+  ) {}
 
   ngOnInit() {
     this.getApprovalRequests();
@@ -36,16 +40,18 @@ export class ApproveWorkflowComponent implements OnInit {
   getApprovalRequests() {
     this.punchRegService
       .fetchApprovalRequest(this.pendingPageIndex, this.pendingPageSize)
-      .subscribe(pending => {
-        this.approvalRequests.data = pending
+      .subscribe(result => {
+        this.approvalRequests.data = result.rows;
+        this.pendingDataLength = result.count;
       });
   }
 
   getApprovedRejected() {
     this.punchRegService
       .fetchApprovedRejected(this.processedPageIndex, this.processedPageSize)
-      .subscribe(processed => {
-        this.processedRequests.data = processed
+      .subscribe(result => {
+        this.processedRequests.data = result.rows;
+        this.processedDataLength = result.count;
       });
   }
 
@@ -61,11 +67,15 @@ export class ApproveWorkflowComponent implements OnInit {
     this.getApprovedRejected();
   }
 
-  pendingRefreshPage(attendReg: AttendRegApplication) {
+  updateApprovalPage(attendReg: AttendRegApplication) {
     const index = this.approvalRequests.data.indexOf(attendReg);
     const temp = this.approvalRequests.data;
     temp.splice(index, 1);
     this.approvalRequests.data = temp;
+
+    // Get approved reject list
     this.getApprovedRejected();
+    // Update approval pending count
+    this.pendingRequest.updateApprovalCount();
   }
 }

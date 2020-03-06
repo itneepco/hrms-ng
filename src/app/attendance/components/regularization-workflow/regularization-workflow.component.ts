@@ -8,6 +8,7 @@ import {
 } from "../../models/attendance-codes";
 import { AttendRegApplication } from "../../models/attendance-regularize";
 import { PunchRegularizeService } from "../../services/punch-regularize.service";
+import { AttendPendingReqService } from "../../services/attend-pending-req.service";
 
 @Component({
   selector: "app-regularization-workflow",
@@ -34,6 +35,7 @@ export class RegularizationWorkflowComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private pendingRequest: AttendPendingReqService,
     private punchRegService: PunchRegularizeService
   ) {}
 
@@ -49,8 +51,9 @@ export class RegularizationWorkflowComponent implements OnInit {
         this.pendingPageIndex,
         this.pendingPageSize
       )
-      .subscribe(pending => {
-        this.pendingRequests.data = pending;
+      .subscribe(result => {
+        this.pendingRequests.data = result.rows;
+        this.pendingDataLength = result.count;
       });
   }
 
@@ -61,9 +64,9 @@ export class RegularizationWorkflowComponent implements OnInit {
         this.processedPageIndex,
         this.processedPageSize
       )
-      .subscribe(processed => {
-        console.log(processed);
-        this.processedRequests.data = [];
+      .subscribe(result => {
+        this.processedRequests.data = result.rows;
+        this.processedDataLength = result.count;
       });
   }
 
@@ -79,16 +82,18 @@ export class RegularizationWorkflowComponent implements OnInit {
     this.getProcessedRequests();
   }
 
-  pendingRefreshPage(attendReg: AttendRegApplication) {
+  updatePendingPage(attendReg: AttendRegApplication) {
     const index = this.pendingRequests.data.indexOf(attendReg);
     const temp = this.pendingRequests.data;
     temp.splice(index, 1);
     this.pendingRequests.data = temp;
 
     this.getProcessedRequests();
+    // Update pending request page
+    this.pendingRequest.updatePendingCount();
   }
 
-  processedRefreshPage() {
+  updateProcessedPage() {
     this.getPendingRequests();
   }
 }

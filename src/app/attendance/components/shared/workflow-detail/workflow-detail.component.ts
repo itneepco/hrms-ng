@@ -2,8 +2,12 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ATTEND_REG_CO_ACTIONS, ATTEND_REG_TIME_ACTIONS, RECOMMENDED } from "src/app/attendance/models/attendance-codes";
-import { AttendRegApplication, EmployeeAttendance, MutualEmployeeAttendance } from "src/app/attendance/models/attendance-regularize";
+import { RECOMMENDED } from "src/app/attendance/models/attendance-codes";
+import {
+  AttendRegApplication,
+  EmployeeAttendance,
+  MutualEmployeeAttendance
+} from "src/app/attendance/models/attendance-regularize";
 import { AttendanceStatusService } from "src/app/attendance/services/attendance-status.service";
 import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
 import { AuthService } from "src/app/auth/services/auth.service";
@@ -34,6 +38,9 @@ export class WorkflowDetailComponent implements OnInit {
 
   ngOnInit() {
     this.attendRegApp = this.data.attendReg;
+    const history = this.attendRegApp.applicationHistory;
+    this.attendRegApp.applicationHistory = history.sort((a, b) => a.id - b.id);
+
     this.actions = this.data.actions;
 
     this.initForm();
@@ -72,7 +79,7 @@ export class WorkflowDetailComponent implements OnInit {
       this.auth.isTimeOfficeAdmin() &&
       this.attendRegApp.status == RECOMMENDED
     ) {
-      observable = this.punchRegService.procesApproveWorkflow(
+      observable = this.punchRegService.processApproveWorkflow(
         this.attendRegApp.id,
         this.workflowForm.value
       );

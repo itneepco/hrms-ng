@@ -25,11 +25,13 @@
 
   <mat-divider></mat-divider>
 
+  <div style="margin-top: 15px"></div>
+
   <form
+    *ngIf="!attendance.workflow_status"
     fxLayout="column"
     [formGroup]="regularizeForm"
     (ngSubmit)="onSumit()"
-    style="margin-top: 15px"
   >
     <mat-checkbox (change)="onMutual($event)" formControlName="isMutual">
       Mutual Duty? (Only for Shift)
@@ -95,4 +97,24 @@
       </button>
     </mat-dialog-actions>
   </form>
+
+  <div *ngIf="attendance.workflow_status">
+    <p>
+      Your application is under process. Once approved it will be reflected in
+      the attendance system.
+    </p>
+    <p>
+      Contact your Controlling Officer and Time Officer for further information.
+    </p>
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        type="button"
+        color="default"
+        (click)="dialogRef.close()"
+      >
+        Close
+      </button>
+    </mat-dialog-actions>
+  </div>
 </section>

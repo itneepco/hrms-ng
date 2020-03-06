@@ -21,6 +21,11 @@ import {
   WorkflowForm
 } from "../models/attendance-regularize";
 
+interface RegularizeApplication {
+  rows: AttendRegApplication[];
+  count: number;
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -32,10 +37,7 @@ export class PunchRegularizeService {
   ) {}
 
   getUrl() {
-    return (
-      baseURL +
-      `api/attendance/project/${this.auth.currentUser.project}`
-    );
+    return baseURL + `api/attendance/project/${this.auth.currentUser.project}`;
   }
 
   addPunchRegularize(attendReg: AttendRegForm) {
@@ -44,13 +46,14 @@ export class PunchRegularizeService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
+  // Controlling officer - START
   fetchPendingRequest(
     empCode: string,
     pageIndex: number,
     pageSize: number
-  ): Observable<AttendRegApplication[]> {
+  ): Observable<RegularizeApplication> {
     return this.http
-      .get<AttendRegApplication[]>(
+      .get<RegularizeApplication>(
         `${this.getUrl()}/attend-regularize/pending/${empCode}` +
           "?pageIndex=" +
           pageIndex +
@@ -60,32 +63,10 @@ export class PunchRegularizeService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
-  fetchApprovalRequest(
-    pageIndex: number,
-    pageSize: number
-  ): Observable<AttendRegApplication[]> {
+  getPendingReqCount(empCode: string): Observable<number> {
     return this.http
-      .get<AttendRegApplication[]>(
-        `${this.getUrl()}/time-officer/pending` +
-          "?pageIndex=" +
-          pageIndex +
-          "&pageSize=" +
-          pageSize
-      )
-      .pipe(catchError(err => this.handler.handleError(err)));
-  }
-
-  fetchApprovedRejected(
-    pageIndex: number,
-    pageSize: number
-  ): Observable<AttendRegApplication[]> {
-    return this.http
-      .get<AttendRegApplication[]>(
-        `${this.getUrl()}/time-officer/processed` +
-          "?pageIndex=" +
-          pageIndex +
-          "&pageSize=" +
-          pageSize
+      .get<number>(
+        `${this.getUrl()}/attend-regularize/pending/${empCode}/count`
       )
       .pipe(catchError(err => this.handler.handleError(err)));
   }
@@ -94,9 +75,9 @@ export class PunchRegularizeService {
     empCode: string,
     pageIndex: number,
     pageSize: number
-  ): Observable<AttendRegApplication[]> {
+  ): Observable<RegularizeApplication> {
     return this.http
-      .get<AttendRegApplication[]>(
+      .get<RegularizeApplication>(
         `${this.getUrl()}/attend-regularize/processed/${empCode}` +
           "?pageIndex=" +
           pageIndex +
@@ -106,6 +87,60 @@ export class PunchRegularizeService {
       .pipe(catchError(err => this.handler.handleError(err)));
   }
 
+  processRecommendWorkfow(id: number, workflow: WorkflowForm) {
+    return this.http
+      .post(`${this.getUrl()}/attend-regularize/${id}/workflow`, workflow)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  // Controlling officer - END
+
+  // Time officer - START
+  fetchApprovalRequest(
+    pageIndex: number,
+    pageSize: number
+  ): Observable<RegularizeApplication> {
+    return this.http
+      .get<RegularizeApplication>(
+        `${this.getUrl()}/time-officer/pending` +
+          "?pageIndex=" +
+          pageIndex +
+          "&pageSize=" +
+          pageSize
+      )
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  getApprovalReqCount(): Observable<number> {
+    return this.http
+      .get<number>(`${this.getUrl()}/time-officer/pending/count`)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  fetchApprovedRejected(
+    pageIndex: number,
+    pageSize: number
+  ): Observable<RegularizeApplication> {
+    return this.http
+      .get<RegularizeApplication>(
+        `${this.getUrl()}/time-officer/processed` +
+          "?pageIndex=" +
+          pageIndex +
+          "&pageSize=" +
+          pageSize
+      )
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  processApproveWorkflow(id: number, workflow: WorkflowForm) {
+    return this.http
+      .post(`${this.getUrl()}/time-officer/${id}/workflow`, workflow)
+      .pipe(catchError(err => this.handler.handleError(err)));
+  }
+
+  // Time officer - END
+
+  // Get employee punching details for a given date
   getMyPunchings(
     empCode: string,
     day?: string
@@ -115,9 +150,9 @@ export class PunchRegularizeService {
         `${this.getUrl()}/attend-regularize/my-punchings/${empCode}?day=${day}`
       )
       .pipe(catchError(err => this.handler.handleError(err)));
-    // return of(my_punchings);
   }
 
+  // Get mutual employee punching details for a given date
   getMutualPunchings(
     empCode: string,
     day?: string
@@ -127,35 +162,23 @@ export class PunchRegularizeService {
         `${this.getUrl()}/attend-regularize/mutual-punchings/${empCode}?day=${day}`
       )
       .pipe(catchError(err => this.handler.handleError(err)));
-    // return of(mutual_punchings)
   }
 
-  processRecommendWorkfow(id: number, workflow: WorkflowForm) {
-    return this.http
-      .post(`${this.getUrl()}/attend-regularize/${id}/workflow`, workflow)
-      .pipe(catchError(err => this.handler.handleError(err)));
-  }
-
-  procesApproveWorkflow(id: number, workflow: WorkflowForm) {
-    return this.http
-      .post(`${this.getUrl()}/time-officer/${id}/workflow`, workflow)
-      .pipe(catchError(err => this.handler.handleError(err)));
-  }
-
+  // Get workflow status
   getStatus(status) {
     switch (status) {
       case APPLIED:
-        return "Applied";
+        return "APPLIED";
       case RECOMMENDED:
-        return "Recommended";
+        return "RECOMMENDED";
       case APPROVED:
-        return "Approved";
+        return "APPROVED";
       case NOT_RECOMMENDED:
-        return "Not Recommended";
+        return "NOT RECOMMENDED";
       case REJECTED:
-        return "Rejected";
+        return "REJECTED";
       case CALLBACK:
-        return "Callbacked";
+        return "CALLBACKED";
     }
   }
 }
