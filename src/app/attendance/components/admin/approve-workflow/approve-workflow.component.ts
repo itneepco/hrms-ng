@@ -56,13 +56,13 @@ export class ApproveWorkflowComponent implements OnInit {
   }
 
   pendingChangePage(pageEvent: PageEvent) {
-    this.pendingDataLength = pageEvent.pageIndex;
+    this.pendingPageIndex = pageEvent.pageIndex;
     this.pendingPageSize = pageEvent.pageSize;
     this.getApprovalRequests();
   }
 
   processedChangePage(pageEvent: PageEvent) {
-    this.processedDataLength = pageEvent.pageIndex;
+    this.processedPageIndex = pageEvent.pageIndex;
     this.processedPageSize = pageEvent.pageSize;
     this.getApprovedRejected();
   }

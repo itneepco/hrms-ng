@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AttendRegApplication } from "src/app/attendance/models/attendance-regularize";
 import { PunchRegularizeService } from "src/app/attendance/services/punch-regularize.service";
 import { WorkflowDetailComponent } from "../workflow-detail/workflow-detail.component";
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: "app-attend-table",
@@ -39,6 +40,10 @@ export class AttendTableComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  changePage(pageEvent: PageEvent) {
+    this.pageChange.emit(pageEvent);
+  }
 
   onShow(attendReg: AttendRegApplication, i: number) {
     const dialogRef = this.dialog.open(WorkflowDetailComponent, {

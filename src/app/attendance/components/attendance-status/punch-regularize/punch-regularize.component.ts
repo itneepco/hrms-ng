@@ -26,6 +26,7 @@ export class PunchRegularizeComponent implements OnInit, OnDestroy {
   empCodeSubs: Subscription;
   searchResult = [];
   isSubmitting = false;
+  reg_applied = APPLIED;
 
   constructor(
     private fb: FormBuilder,
@@ -111,6 +112,10 @@ export class PunchRegularizeComponent implements OnInit, OnDestroy {
           );
         }
       );
+  }
+
+  getAttendanceStatus(code: string) {
+    return this.punchRegService.getStatus(code);
   }
 
   getFullName(item) {

@@ -100,8 +100,14 @@
 
   <div *ngIf="attendance.workflow_status">
     <p>
-      Your application is under process. Once approved it will be reflected in
-      the attendance system.
+      <span>Your application</span>
+      <span *ngIf="attendance.workflow_status == reg_applied">
+        is under process. Once approved it will be reflected in the attendance
+        system.
+      </span>
+      <span *ngIf="attendance.workflow_status != reg_applied">
+        has been {{ getAttendanceStatus(attendance.workflow_status) }}.
+      </span>
     </p>
     <p>
       Contact your Controlling Officer and Time Officer for further information.

@@ -65,20 +65,21 @@ export class RegularizationWorkflowComponent implements OnInit {
         this.processedPageSize
       )
       .subscribe(result => {
+        // console.log(result)
         this.processedRequests.data = result.rows;
         this.processedDataLength = result.count;
       });
   }
 
   pendingChangePage(pageEvent: PageEvent) {
-    this.pendingDataLength = pageEvent.pageIndex;
+    this.pendingPageIndex = pageEvent.pageIndex;
     this.pendingPageSize = pageEvent.pageSize;
     this.getPendingRequests();
   }
 
   processedChangePage(pageEvent: PageEvent) {
-    this.pendingDataLength = pageEvent.pageIndex;
-    this.pendingPageSize = pageEvent.pageSize;
+    this.processedPageIndex = pageEvent.pageIndex;
+    this.processedPageSize = pageEvent.pageSize;
     this.getProcessedRequests();
   }
 
@@ -95,5 +96,6 @@ export class RegularizationWorkflowComponent implements OnInit {
 
   updateProcessedPage() {
     this.getPendingRequests();
+    this.pendingRequest.updatePendingCount();
   }
 }
