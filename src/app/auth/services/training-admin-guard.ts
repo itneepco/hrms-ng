@@ -1,17 +1,25 @@
-import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import {
+  CanActivate,
+  CanActivateChild,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from "@angular/router";
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TrainingAdminGuard implements CanActivate, CanActivateChild {
-  constructor(private router: Router, private auth: AuthService) { }
+  constructor(private router: Router, private auth: AuthService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.auth.isTrainingAdmin() || this.auth.isItAdmin()) { return true; }
+    if (this.auth.isTrainingAdmin()) {
+      return true;
+    }
 
-    this.router.navigate(['/training']);
+    this.router.navigate(["/statement"]);
     return false;
   }
 

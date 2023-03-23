@@ -1,50 +1,70 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import html2canvas from "html2canvas";
 import * as jspdf from "jspdf";
+import { Subscription } from "rxjs";
+import { debounceTime } from "rxjs/operators";
+import { EmployeeService } from "src/app/shared/services/employee.service";
+import { PfMonthlyData } from "../../models/monthly-data";
 import { PfReport } from "../../models/pf-report";
-
-import { AuthService } from "./../../../auth/services/auth.service";
-import { PfMonthlyData } from "./../../models/monthly-data";
-import { PfReportService } from "./../../services/pf-report.service";
+import { PfReportService } from "../../services/pf-report.service";
 
 @Component({
-  selector: "app-pf-statement",
-  templateUrl: "./pf-statement.component.html",
-  styleUrls: ["./pf-statement.component.scss"],
+  selector: "app-pf-admin",
+  templateUrl: "./pf-admin.component.html",
+  styleUrls: ["./pf-admin.component.scss"],
 })
-export class PfStatementComponent implements OnInit {
-  pfReport: PfReport;
+export class PfAdminComponent implements OnInit {
+  pfAdminForm: FormGroup;
   finYears: string[];
-  selectedFinYear: string;
-  errMsg: string;
+  searchResult = [];
+  pfReport: PfReport;
   isLoading = false;
+  errMsg: string;
+
+  //Subscriptions
+  empCodeSubs: Subscription;
 
   constructor(
-    private pfReportService: PfReportService,
-    private auth: AuthService
+    private fb: FormBuilder,
+    private employeeService: EmployeeService,
+    private pfReportService: PfReportService
   ) {}
 
   ngOnInit() {
-    this.selectedFinYear = this.getCurrFinYear();
     this.finYears = this.getLast3FinYears();
-    this.fetchPfReport();
+    this.initializeForm();
+
+    this.empCodeSubs = this.emp_code.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((data) => {
+        if (!data) {
+          return;
+        }
+        if (data.length < 1) {
+          return;
+        }
+        // console.log(data)
+        this.employeeService.searchEmployee(data).subscribe((response) => {
+          // console.log(response)
+          this.searchResult = response;
+        });
+      });
   }
 
-  fetchPfReport() {
+  initializeForm() {
+    this.pfAdminForm = this.fb.group({
+      emp_code: ["", [Validators.required]],
+      fin_year: [this.getCurrFinYear(), [Validators.required]],
+    });
+  }
+
+  onSubmit() {
     this.pfReportService
-      .getStatement(this.auth.currentUser.emp_code, this.selectedFinYear)
+      .getStatement(this.emp_code.value, this.fin_year.value)
       .subscribe(
         (data) => {
           this.pfReport = data;
-          /*let length = data.monthlyData.length;
-          if (length < 12) {
-            for (var i = length; i < 12; i++) {
-              data.monthlyData.push(new PfMonthlyData());
-            }
-          }
-          this.pfReport = data;
-          //console.log(this.pfReport);
-          */
           this.isLoading = false;
         },
         (errMsg) => {
@@ -54,8 +74,37 @@ export class PfStatementComponent implements OnInit {
       );
   }
 
-  onSelectionChange() {
-    this.fetchPfReport();
+  private getLast3FinYears(): string[] {
+    let date = new Date();
+    let curr_fin_year = this.getCurrFinYear();
+    let prev_fin_year1 = `${date.getFullYear() - 1}-${date.getFullYear()}`;
+    let prev_fin_year2 = `${date.getFullYear() - 2}-${date.getFullYear() - 1}`;
+
+    return [curr_fin_year, prev_fin_year1, prev_fin_year2];
+  }
+
+  getFullName(item) {
+    return `${item.first_name} ${item.middle_name} ${item.last_name}, ${item.designation}`;
+  }
+
+  private getCurrFinYear(): string {
+    let date = new Date();
+    let curr_fin_year;
+
+    if (date.getMonth() < 3) {
+      curr_fin_year = `${date.getFullYear() - 1}-${date.getFullYear()}`;
+    } else {
+      curr_fin_year = `${date.getFullYear()}-${date.getFullYear() + 1}`;
+    }
+    return curr_fin_year;
+  }
+
+  get emp_code() {
+    return this.pfAdminForm.get("emp_code");
+  }
+
+  get fin_year() {
+    return this.pfAdminForm.get("fin_year");
   }
 
   getTotalVpfCont(): number {
@@ -90,12 +139,6 @@ export class PfStatementComponent implements OnInit {
     return total;
   }
 
-  getBalanceAmount(): number {
-    return (
-      this.pfReport.summaryData.totalPf - this.pfReport.summaryData.tdsDeducted
-    );
-  }
-
   getTotalEmpWithdrawalTaxable(): number {
     let total = 0;
     this.pfReport["monthlyData"].forEach((data) => {
@@ -103,6 +146,7 @@ export class PfStatementComponent implements OnInit {
     });
     return total;
   }
+
   getTotalEmpWithdrawalNonTaxable(): number {
     let total = 0;
     this.pfReport["monthlyData"].forEach((data) => {
@@ -110,12 +154,19 @@ export class PfStatementComponent implements OnInit {
     });
     return total;
   }
+
   getTotalEmplWithdrawal(): number {
     let total = 0;
     this.pfReport["monthlyData"].forEach((data) => {
       total += data.employerWithdrawal;
     });
     return total;
+  }
+
+  getBalanceAmount(): number {
+    return (
+      this.pfReport.summaryData.totalPf - this.pfReport.summaryData.tdsDeducted
+    );
   }
 
   captureScreen() {
@@ -139,23 +190,7 @@ export class PfStatementComponent implements OnInit {
     });
   }
 
-  private getLast3FinYears(): string[] {
-    let date = new Date();
-    let curr_fin_year = this.getCurrFinYear();
-    let prev_fin_year1 = `${date.getFullYear() - 1}-${date.getFullYear()}`;
-    let prev_fin_year2 = `${date.getFullYear() - 2}-${date.getFullYear() - 1}`;
-
-    return [curr_fin_year, prev_fin_year1, prev_fin_year2];
-  }
-
-  private getCurrFinYear(): string {
-    let date = new Date();
-    let curr_fin_year;
-    if (date.getMonth() < 3) {
-      curr_fin_year = `${date.getFullYear() - 1}-${date.getFullYear()}`;
-    } else {
-      curr_fin_year = `${date.getFullYear()}-${date.getFullYear() + 1}`;
-    }
-    return curr_fin_year;
+  ngOnDestroy() {
+    this.empCodeSubs.unsubscribe();
   }
 }

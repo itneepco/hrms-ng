@@ -1,11 +1,8 @@
 <div class="main-container">
   <mat-card class="query-form">
-    <form fxLayout="row" 
-      fxLayoutGap="20px" 
-      fxLayoutAlign="start center"
-      [formGroup]="searchForm" 
+    <form fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center" [formGroup]="searchForm"
       (ngSubmit)="onSubmit()">
-      
+
       <mat-form-field fxFlex>
         <mat-select placeholder="Month" formControlName="month">
           <mat-option *ngFor="let month of months" [value]="month.value">
@@ -14,7 +11,7 @@
         </mat-select>
         <mat-error *ngIf="month.errors?.required">Month is required</mat-error>
       </mat-form-field>
-      
+
       <mat-form-field fxFlex>
         <mat-select placeholder="Year" formControlName="year">
           <mat-option *ngFor="let year of years" [value]="year">
@@ -109,7 +106,7 @@
               <div class="rate"></div>
               <div class="amount" *ngIf="salary.grossPay">{{salary.grossPay.txn_amt | currency:'INR' }}</div>
             </div>
-  
+
             <div class="deductions">
               <div class="nti">
                 <div class="entry">
@@ -136,21 +133,19 @@
           </div>
         </div>
       </div>
+
     </div>
+
   </div>
-  
+
   <mat-card *ngIf="errMsg" class="error-info">
     <p class="errMsg">{{errMsg}}</p>
   </mat-card>
-  
-  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>  
+
+  <mat-spinner diameter="60" *ngIf="isLoading"></mat-spinner>
 </div>
 
-<button mat-fab 
-  class="fab-bottom-right"
-  matTooltip="Print Salary Slip"
-  matTooltipPosition="left"
-  color="accent" 
+<button mat-fab class="fab-bottom-right" matTooltip="Print Salary Slip" matTooltipPosition="left" color="accent"
   (click)="captureScreen()">
-    <mat-icon>print</mat-icon>
+  <mat-icon>print</mat-icon>
 </button>

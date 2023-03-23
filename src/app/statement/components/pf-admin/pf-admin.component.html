@@ -1,4 +1,159 @@
+<div class="main-container">
+  <mat-card class="search">
+    <form [formGroup]="pfAdminForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="10px">
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="6 Digit Employee Code" [formControl]="emp_code" pattern="[0-9]{6}"
+            [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let item of searchResult" [value]="item.emp_code">
+              {{ getFullName(item) | titlecase }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-hint *ngIf="emp_code.invalid">Employee Code should be 6 digit</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Financial Year" [formControl]="fin_year">
+            <mat-option *ngFor="let finYear of finYears" [value]="finYear">
+              {{finYear}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="emp_code.invalid">
+          <mat-icon>search</mat-icon>Search
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+
 <div id="contentToConvert" *ngIf="pfReport">
+  <mat-card style="margin-top: 20px;" id="detail-info">
+    <div fxLayout="row" fxLayoutAlign="start center" class="heading">
+      <div fxFlex="70">
+        <p>
+          {{pfReport.memberData.firstName | uppercase }} {{pfReport.memberData.lastName | uppercase}}'S
+          PF STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
+        </p>
+        <p>FINANCIAL YEAR {{pfReport.finYear}}</p>
+      </div>
+
+      <div fxFlex="30">
+        <p>INTEREST RATE :: {{pfReport.intRate}}%</p>
+      </div>
+    </div>
+    <div *ngIf="pfReport.monthlyData!== null && pfReport.monthlyData !== undefined ">
+      <table>
+        <thead>
+          <th>MONTH</th>
+          <th>APR</th>
+          <th>MAY</th>
+          <th>JUN</th>
+          <th>JUL</th>
+          <th>AUG</th>
+          <th>SEP</th>
+          <th>OCT</th>
+          <th>NOV</th>
+          <th>DEC</th>
+          <th>JAN</th>
+          <th>FEB</th>
+          <th>MAR</th>
+          <th>TOTAL</th>
+        </thead>
+
+        <tr>
+          <td>MEM. CONT</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.employeeContribution}}</td>
+          <td>{{ getTotalEmpCont() | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td>VPF</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.voluntaryContribution}}</td>
+          <td>{{ getTotalVpfCont() | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td>COMP. CONT</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.employerContribution}}</td>
+          <td>{{ getTotalEmplCont() | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td>EMP. WITHDRAWAL TAXABLE</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.employeeWithdrawalTaxable}}</td>
+          <td>{{ getTotalEmpWithdrawalTaxable() | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td>EMP. WITHDRAWAL NON TAXABLE</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.empployeeWithdrawalNonTaxable}}</td>
+          <td>{{ getTotalEmpWithdrawalNonTaxable() | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td>COMP. WITHDRAWAL</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.employerWithdrawal}}</td>
+          <td>{{ getTotalEmplWithdrawal() | currency:'INR' }}</td>
+        </tr>
+
+        <tr>
+          <td>RPFC PENSION</td>
+          <td *ngFor="let month of pfReport.monthlyData">{{month.pensionAmount}}</td>
+          <td>{{ getTotalPensionAmt() | currency:'INR' }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <table style="margin-top: 20px">
+      <thead>
+        <th>CONTRIBUTION</th>
+        <th>OPENING BALANCE</th>
+        <th>CPF + VPF </th>
+        <th>AMOUNT WITHDRAWN</th>
+        <th>AMOUNT REFUND</th>
+        <th>INTEREST </th>
+        <th>CLOSING BALANCE</th>
+      </thead>
+      <tr>
+        <td>MEM.(NON TAXABLE)</td>
+        <td>{{ pfReport.summaryData.openingBalanceEmployeeNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.cpfEmployeeNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.amtWithdrawnEmployeeNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.amtRefundEmployee | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.interestNonTaxableEmpployee | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.closingBalEmloyeeNonTaxable | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td>MEM.(TAXABLE)</td>
+        <td>{{ pfReport.summaryData.openingBalanceEmployeeTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.cpfEmployeeTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.amtWithdrawnEmployeeTaxable | currency:'INR' }}</td>
+        <td>{{ 0.00| currency:'INR'}}</td>
+        <td>{{ pfReport.summaryData.interestTaxableEmpployee | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.closinBalEmployeeTaxable | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td>COMP.(NON TAXABLE)</td>
+        <td>{{ pfReport.summaryData.openingBalEmployerNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.cpfEmployerNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.amtWithdrawnEmployerNonTaxable | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.amtRefundEmployer | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.interestNonTaxableEmpployer | currency:'INR' }}</td>
+        <td>{{ pfReport.summaryData.closingBalEmloyerNonTaxable | currency:'INR' }}</td>
+      </tr>
+
+      <tr>
+        <td class="right" colspan="6">TOTAL</td>
+        <td>{{ pfReport.summaryData.totalPf | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td class="right" colspan="6">TDS Deducted</td>
+        <td>{{ pfReport.summaryData.tdsDeducted | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td class="right" colspan="6">Balance</td>
+        <td>{{ getBalanceAmount() | currency:'INR' }}</td>
+      </tr>
+    </table>
+  </mat-card>
+
   <mat-card id="general-info" fxLayout="row" fxLayoutGap="25px">
     <div fxFlex="65">
       <P class="info">EMPLOYEE INFORMATION</P>
@@ -34,164 +189,6 @@
           <td>{{nominee.share}}</td>
         </tr>
       </table>
-    </div>
-  </mat-card>
-
-  <mat-card style="margin-top: 20px;" id="detail-info">
-    <div fxLayout="row" fxLayoutAlign="start center" class="heading">
-      <div fxFlex="20">
-        <mat-form-field>
-          <mat-select placeholder="Financial Year" [(value)]="selectedFinYear" (selectionChange)="onSelectionChange()">
-            <mat-option *ngFor="let finYear of finYears" [value]="finYear">
-              {{finYear}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div fxFlex="60">
-        <p>
-          {{pfReport.memberData.firstName | uppercase }} {{pfReport.memberData.lastName | uppercase}}'S
-          PF STATEMENT FOR THE PERIOD FROM 1ST APRIL TO 31ST MARCH
-        </p>
-        <p>FINANCIAL YEAR {{pfReport.finYear}}</p>
-      </div>
-
-      <div fxFlex="20">
-        <p>INTEREST RATE :: {{pfReport.intRate}}%</p>
-      </div>
-    </div>
-    <div>
-      <table>
-        <thead>
-          <th>MONTH</th>
-          <th>APR</th>
-          <th>MAY</th>
-          <th>JUN</th>
-          <th>JUL</th>
-          <th>AUG</th>
-          <th>SEP</th>
-          <th>OCT</th>
-          <th>NOV</th>
-          <th>DEC</th>
-          <th>JAN</th>
-          <th>FEB</th>
-          <th>MAR</th>
-          <th>TOTAL</th>
-        </thead>
-        <tr>
-          <td>MEM. CONT</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.employeeContribution}}</td>
-          <td>{{ getTotalEmpCont() | currency:'INR' }}</td>
-        </tr>
-        <tr>
-          <td>VPF</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.voluntaryContribution}}</td>
-          <td>{{ getTotalVpfCont() | currency:'INR' }}</td>
-        </tr>
-        <tr>
-          <td>COMP. CONT</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.employerContribution}}</td>
-          <td>{{ getTotalEmplCont() | currency:'INR' }}</td>
-        </tr>
-        <tr>
-          <td>EMP. WITHDRAWAL(Non Taxable)</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.empployeeWithdrawalNonTaxable}}</td>
-          <td>{{ getTotalEmpWithdrawalNonTaxable() | currency:'INR' }}</td>
-        </tr>
-        <tr>
-          <td>EMP. WITHDRAWAL(Taxable)</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.employeeWithdrawalTaxable}}</td>
-          <td>{{ getTotalEmpWithdrawalTaxable() | currency:'INR' }}</td>
-        </tr>
-        <tr>
-          <td>COMP. WITHDRAWAL</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.employerWithdrawal}}</td>
-          <td>{{ getTotalEmplWithdrawal() | currency:'INR' }}</td>
-        </tr>
-
-        <tr>
-          <td>RPFC PENSION</td>
-          <td *ngFor="let month of pfReport.monthlyData">{{month.pensionAmount}}</td>
-          <td>{{ getTotalPensionAmt() | currency:'INR' }}</td>
-        </tr>
-      </table>
-    </div>
-
-    <table style="margin-top: 20px">
-      <thead>
-        <th>CONTRIBUTION</th>
-        <th>OPENING BALANCE</th>
-        <th>CPF + VPF </th>
-        <th>AMOUNT WITHDRAWN</th>
-        <th>AMOUNT REFUND</th>
-        <th>INTEREST </th>
-        <th>CLOSING BALANCE</th>
-      </thead>
-      <tr>
-        <td>MEM.(NON TAXABLE)</td>
-        <td>{{pfReport.summaryData.openingBalanceEmployeeNonTaxable | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.cpfEmployeeNonTaxable | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.amtWithdrawnEmployeeNonTaxable | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.amtRefundEmployee | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.interestNonTaxableEmpployee | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.closingBalEmloyeeNonTaxable | currency:'INR'}}</td>
-      </tr>
-      <tr>
-        <td>MEM.(TAXABLE)</td>
-        <td>{{pfReport.summaryData.openingBalanceEmployeeTaxable | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.cpfEmployeeTaxable | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.amtWithdrawnEmployeeTaxable | currency:'INR'}}</td>
-        <td>{{0.00| currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.interestTaxableEmpployee | currency:'INR'}}</td>
-        <td>{{pfReport.summaryData.closinBalEmployeeTaxable | currency:'INR'}}</td>
-      </tr>
-      <tr>
-        <td>COMP.(NON TAXABLE)</td>
-        <td>{{ pfReport.summaryData.openingBalEmployerNonTaxable | currency:'INR' }}</td>
-        <td>{{ pfReport.summaryData.cpfEmployerNonTaxable | currency:'INR' }}</td>
-        <td>{{ pfReport.summaryData.amtWithdrawnEmployerNonTaxable | currency:'INR' }}</td>
-        <td>{{ pfReport.summaryData.amtRefundEmployer | currency:'INR' }}</td>
-        <td>{{ pfReport.summaryData.interestNonTaxableEmpployer | currency:'INR' }}</td>
-        <td>{{ pfReport.summaryData.closingBalEmloyerNonTaxable | currency:'INR' }}</td>
-      </tr>
-
-      <tr>
-        <td class="right" colspan="6">TOTAL</td>
-        <td>{{ pfReport.summaryData.totalPf | currency:'INR' }}</td>
-      </tr>
-      <tr>
-        <td class="right" colspan="6">TDS Deducted</td>
-        <td>{{ pfReport.summaryData.tdsDeducted | currency:'INR' }}</td>
-      </tr>
-      <tr>
-        <td class="right" colspan="6">Balance</td>
-        <td>{{ getBalanceAmount() | currency:'INR' }}</td>
-      </tr>
-    </table>
-
-    <div fxLayout="row" fxLayoutAlign="start end" id="notes">
-      <div fxFlex="70">
-        <p>NOTES</p>
-        <ol>
-          <li>
-            Contribution shown above are deductions from your pay for March
-            {{selectedFinYear.split('-')[0]}} to February {{selectedFinYear.split('-')[1]}}.The balance amount shown
-            depends on the completion of accounting of last PF month.
-          </li>
-          <li>This is a provisional statement subject to audit of accounts for the year.</li>
-          <li>
-            Discrepancies, if any, may please be intimated to PF Department by 15th of May
-            {{selectedFinYear.split('-')[1]}}.
-
-          </li>
-        </ol>
-        <p class="center">*** This is a computer generated report and therfore no signature is requried. ***</p>
-      </div>
-      <div fxFlex="30">
-        <div class="center">SECRETARY</div>
-        <p class="center">FOR NEEPCO LTD. EPF TRUST</p>
-      </div>
     </div>
   </mat-card>
 </div>

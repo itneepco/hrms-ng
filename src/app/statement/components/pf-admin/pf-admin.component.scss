@@ -1,0 +1,60 @@
+table, td, th {  
+  border: 1px solid #999;
+  text-align: left;
+  font-size: 14px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  background-color: #582c4f;
+  opacity: 0.9;
+  color: #fff !important;
+  th { 
+    font-size: 12px;
+    font-weight: 400; 
+  }
+}
+
+th, td {
+  padding: 5px;
+}
+
+.heading {
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  p {
+    margin: 0px;
+  }
+  margin-bottom: 20px;
+}
+
+.right {
+  text-align: right
+}
+
+.info {
+  margin-bottom: 5px;
+  color: #888;
+}
+
+.fab-bottom-right {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+}
+
+#notes {
+  margin-top: 20px;
+  .center {
+    text-align: center
+  }
+}
+
+mat-card.errorInfo {
+  width: 70%;
+}
